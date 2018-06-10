@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'rubocop'
+require 'rubocop'
 require_relative 'rubocop-performance/version'
 
 require_relative 'rubocop/cop/performance/caller'
