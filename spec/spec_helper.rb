@@ -1,4 +1,4 @@
-require_relative '../../rubocop/lib/rubocop'
+require 'rubocop-performance'
 require 'rubocop/rspec/support'
 
 RSpec.configure do |config|
