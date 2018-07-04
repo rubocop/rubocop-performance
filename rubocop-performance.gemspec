@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 $LOAD_PATH.unshift File.expand_path('lib', __dir__)
-require 'rubocop-performance/version'
+require 'rubocop/performance/version'
 
 Gem::Specification.new do |s|
   s.name = 'rubocop-performance'
-  s.version = RuboCopPerformance::Version::STRING
+  s.version = RuboCop::Performance::Version::STRING
   s.platform = Gem::Platform::RUBY
   s.required_ruby_version = '>= 2.3.0'
   s.authors = ['Bozhidar Batsov', 'Jonas Arvidsson', 'Yuji Nakayama']
