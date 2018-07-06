@@ -30,4 +30,5 @@ Gem::Specification.new do |s|
   }
 
   s.add_runtime_dependency('rubocop', '~> 0.57')
+  s.add_development_dependency('simplecov')
 end
