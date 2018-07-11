@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.name = 'rubocop-performance'
   s.version = RuboCop::Performance::Version::STRING
   s.platform = Gem::Platform::RUBY
-  s.required_ruby_version = '>= 2.3.0'
+  s.required_ruby_version = '>= 2.2.0'
   s.authors = ['Bozhidar Batsov', 'Jonas Arvidsson', 'Yuji Nakayama']
   s.description = <<-DESCRIPTION
     A collection of RuboCop cops to check for performance optimizations
@@ -29,6 +29,6 @@ Gem::Specification.new do |s|
     'bug_tracker_uri' => 'https://github.com/rubocop-hq/rubocop-performance/issues'
   }
 
-  s.add_runtime_dependency('rubocop', '~> 0.57')
+  s.add_runtime_dependency('rubocop', '~> 0.58')
   s.add_development_dependency('simplecov')
 end
