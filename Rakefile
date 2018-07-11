@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'bundler'
+require 'bundler/gem_tasks'
 
 begin
   Bundler.setup(:default, :development)
