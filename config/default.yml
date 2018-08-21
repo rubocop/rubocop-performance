@@ -1,5 +1,12 @@
 # This is the default configuration file.
 
+Performance/CaseWhenSplat:
+  Description: >-
+                 Reordering `when` conditions with a splat to the end
+                 of the `when` branches can improve performance.
+  Enabled: false
+  AutoCorrect: false
+
 Performance/DoubleStartEndWith:
   # Used to check for `starts_with?` and `ends_with?`.
   # These methods are defined by `ActiveSupport`.
