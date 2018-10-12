@@ -7,6 +7,13 @@ Performance/CaseWhenSplat:
   Enabled: false
   AutoCorrect: false
 
+Performance/ChainArrayAllocation:
+  Description: >-
+                  Instead of chaining array methods that allocate new arrays, mutate an
+                  existing array.
+  Reference: 'https://twitter.com/schneems/status/1034123879978029057'
+  Enabled: false
+
 Performance/DoubleStartEndWith:
   # Used to check for `starts_with?` and `ends_with?`.
   # These methods are defined by `ActiveSupport`.
