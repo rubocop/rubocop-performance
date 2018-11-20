@@ -19,6 +19,11 @@ Performance/DoubleStartEndWith:
   # These methods are defined by `ActiveSupport`.
   IncludeActiveSupportAliases: false
 
+Performance/OpenStruct:
+  Description: 'Use `Struct` instead of `OpenStruct`.'
+  Enabled: false
+  Safe: false
+
 Performance/RedundantMerge:
   # Max number of key-value pairs to consider an offense
   MaxKeyValuePairs: 2
