@@ -24,6 +24,12 @@ Performance/OpenStruct:
   Enabled: false
   Safe: false
 
+Performance/RangeInclude:
+  Description: 'Use `Range#cover?` instead of `Range#include?`.'
+  Reference: 'https://github.com/JuanitoFatas/fast-ruby#cover-vs-include-code'
+  Enabled: true
+  Safe: false
+
 Performance/RedundantMerge:
   # Max number of key-value pairs to consider an offense
   MaxKeyValuePairs: 2
