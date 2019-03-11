@@ -1,73 +1,46 @@
-version: 2
-
-rspec: &rspec
-  steps:
-    - checkout
-    - run: bundle install
-    - run: rake spec
+version: 2.1
 
 jobs:
-  # Ruby 2.3
-  ruby-2.3-rspec:
+  rake_default:
+    parameters:
+      image:
+        description: "Name of the Docker image."
+        type: string
+        default: "circleci/ruby"
     docker:
-      - image: circleci/ruby:2.3
-    <<: *rspec
-
-  # Ruby 2.4
-  ruby-2.4-rspec:
-    docker:
-      - image: circleci/ruby:2.4
-    <<: *rspec
-
-  # Ruby 2.5
-  ruby-2.5-rspec:
-    docker:
-      - image: circleci/ruby:2.5
-    <<: *rspec
-
-  # JRuby
-  jruby:
-    docker:
-      - image: circleci/jruby:9
-    steps:
-      - checkout
-      - run: sudo apt-get install -y make
-      - run: bundle lock
-      - restore_cache:
-          keys:
-            - bundle-v2-{{ checksum "Gemfile.lock" }}
-            - bundle-v2-
-      - run: bundle install --path vendor/bundle
-      - save_cache:
-          key: bundle-v2-{{ checksum "Gemfile.lock" }}
-          paths:
-            - vendor/bundle
-      - run: rake spec
-
-  code-climate:
-    docker:
-      - image: circleci/ruby:2.5
+      - image: << parameters.image >>
+    environment:
+      # CircleCI container has two cores, but Ruby can see 32 cores. So we
+      # configure test-queue.
+      # See https://github.com/tmm1/test-queue#environment-variables
+      TEST_QUEUE_WORKERS: 2
+      JRUBY_OPTS: "--dev -J-Xmx1000M" # get more accurate coverage data in JRuby
     steps:
       - checkout
       - run: bundle install
-      - run:
-          name: Setup Code Climate test-reporter
-          command: |
-            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-            chmod +x ./cc-test-reporter
-      - run:
-          name: Run specs
-          command: |
-            ./cc-test-reporter before-build
-            rake coverage
-            ./cc-test-reporter after-build --exit-code $?
+      - run: bundle exec rake
 
 workflows:
-  version: 2
   build:
     jobs:
-      - ruby-2.3-rspec
-      - ruby-2.4-rspec
-      - ruby-2.5-rspec
-      - jruby
-      - code-climate
+      - rake_default:
+          name: Ruby 2.2
+          image: circleci/ruby:2.2
+      - rake_default:
+          name: Ruby 2.3
+          image: circleci/ruby:2.3
+      - rake_default:
+          name: Ruby 2.4
+          image: circleci/ruby:2.4
+      - rake_default:
+          name: Ruby 2.5
+          image: circleci/ruby:2.5
+      - rake_default:
+          name: Ruby 2.6
+          image: circleci/ruby:2.6
+      - rake_default:
+          name: Ruby HEAD
+          image: rubocophq/circleci-ruby-snapshot:latest # Nightly snapshot build
+      - rake_default:
+          name: JRuby 9.2
+          image: circleci/jruby:9.2
