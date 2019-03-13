@@ -63,6 +63,10 @@ Performance/Size:
     - lib/example.rb
 ```
 
+## Contributing
+
+Checkout the [contribution guidelines](CONTRIBUTING.md).
+
 ## License
 
 `rubocop-performance` is MIT licensed. [See the accompanying file](LICENSE.txt) for
