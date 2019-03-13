@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module RuboCop
+  # RuboCop included the performance cops directly before version 1.0.0.
+  # We can remove them to avoid warnings about redefining constants.
   module Cop
-    # RuboCop included the performance cops directly before version 1.0.0.
-    # We can remove them to avoid warnings about redefining constants.
     remove_const('Performance') if const_defined?('Performance')
   end
 end
