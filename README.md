@@ -65,5 +65,5 @@ Performance/Size:
 
 ## License
 
-`rubocop-performance` is MIT licensed. [See the accompanying file](MIT-LICENSE.md) for
+`rubocop-performance` is MIT licensed. [See the accompanying file](LICENSE.txt) for
 the full text.
