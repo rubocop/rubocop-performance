@@ -13,7 +13,6 @@
 * [Performance/FixedSize](cops_performance.md#performancefixedsize)
 * [Performance/FlatMap](cops_performance.md#performanceflatmap)
 * [Performance/InefficientHashSearch](cops_performance.md#performanceinefficienthashsearch)
-* [Performance/LstripRstrip](cops_performance.md#performancelstriprstrip)
 * [Performance/OpenStruct](cops_performance.md#performanceopenstruct)
 * [Performance/RangeInclude](cops_performance.md#performancerangeinclude)
 * [Performance/RedundantBlockCall](cops_performance.md#performanceredundantblockcall)

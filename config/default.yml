@@ -113,11 +113,6 @@ Performance/InefficientHashSearch:
   VersionAdded: '0.56'
   Safe: false
 
-Performance/LstripRstrip:
-  Description: 'Use `strip` instead of `lstrip.rstrip`.'
-  Enabled: true
-  VersionAdded: '0.36'
-
 Performance/OpenStruct:
   Description: 'Use `Struct` instead of `OpenStruct`.'
   Enabled: false
