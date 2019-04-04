@@ -1,5 +1,6 @@
 # RuboCop Performance
 
+[![Gem Version](https://badge.fury.io/rb/rubocop-performance.svg)](https://badge.fury.io/rb/rubocop-performance)
 [![CircleCI](https://circleci.com/gh/rubocop-hq/rubocop-performance.svg?style=svg)](https://circleci.com/gh/rubocop-hq/rubocop-performance)
 
 Performance optimization analysis for your projects, as an extension to [RuboCop](https://github.com/rubocop-hq/rubocop).
