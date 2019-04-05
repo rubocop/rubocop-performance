@@ -18,16 +18,13 @@
 * [Performance/RedundantBlockCall](cops_performance.md#performanceredundantblockcall)
 * [Performance/RedundantMatch](cops_performance.md#performanceredundantmatch)
 * [Performance/RedundantMerge](cops_performance.md#performanceredundantmerge)
-* [Performance/RedundantSortBy](cops_performance.md#performanceredundantsortby)
 * [Performance/RegexpMatch](cops_performance.md#performanceregexpmatch)
 * [Performance/ReverseEach](cops_performance.md#performancereverseeach)
-* [Performance/Sample](cops_performance.md#performancesample)
 * [Performance/Size](cops_performance.md#performancesize)
 * [Performance/StartWith](cops_performance.md#performancestartwith)
 * [Performance/StringReplacement](cops_performance.md#performancestringreplacement)
 * [Performance/TimesMap](cops_performance.md#performancetimesmap)
 * [Performance/UnfreezeString](cops_performance.md#performanceunfreezestring)
-* [Performance/UnneededSort](cops_performance.md#performanceunneededsort)
 * [Performance/UriDefaultParser](cops_performance.md#performanceuridefaultparser)
 
 <!-- END_COP_LIST -->
