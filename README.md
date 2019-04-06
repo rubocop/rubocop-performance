@@ -29,7 +29,8 @@ ways to do this:
 Put this into your `.rubocop.yml`.
 
 ```yaml
-require: rubocop-performance
+AllCops:
+  Require: rubocop-performance
 ```
 
 Now you can run `rubocop` and it will automatically load the RuboCop Performance
