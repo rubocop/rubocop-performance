@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 1.1.0 (2019-04-08)
+
 ### Changes
 
 * [#39](https://github.com/rubocop-hq/rubocop-performance/pull/39): Remove `Performance/LstripRstrip` cop. ([@koic][])
