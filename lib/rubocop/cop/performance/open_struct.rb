@@ -36,8 +36,8 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          open_struct(node) do |method|
-            add_offense(node, location: :selector, message: format(MSG, method))
+          open_struct(node) do
+            add_offense(node, location: :selector)
           end
         end
       end
