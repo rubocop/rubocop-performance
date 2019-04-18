@@ -86,7 +86,8 @@ module RuboCop
 
           unless first_param.str_type?
             return true if options
-            return true unless first_source =~ DETERMINISTIC_REGEX
+            return true unless first_source.is_a?(String) &&
+                               first_source =~ DETERMINISTIC_REGEX
 
             # This must be done after checking DETERMINISTIC_REGEX
             # Otherwise things like \s will trip us up
