@@ -29,6 +29,6 @@ Gem::Specification.new do |s|
     'bug_tracker_uri' => 'https://github.com/rubocop-hq/rubocop-performance/issues'
   }
 
-  s.add_runtime_dependency('rubocop', '>= 0.67.0')
+  s.add_runtime_dependency('rubocop', '>= 0.68.0')
   s.add_development_dependency('simplecov')
 end
