@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 1.2.0 (2019-05-04)
+
 ### Bug fixes
 
 * [#47](https://github.com/rubocop-hq/rubocop-performance/pull/47): Fix a false negartive for `Performance/RegexpMatch` when using RuboCop 0.68 or higher. ([@koic][])
