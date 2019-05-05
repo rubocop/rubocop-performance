@@ -6,23 +6,23 @@ RSpec.describe RuboCop::Cop::Performance::EndWith do
   shared_examples 'different match methods' do |method|
     it "autocorrects #{method} /abc\\z/" do
       new_source = autocorrect_source("str#{method} /abc\\z/")
-      expect(new_source).to eq "str.end_with?('abc')"
+      expect(new_source).to eq "str&.end_with?('abc')"
     end
 
     it "autocorrects #{method} /\\n\\z/" do
       new_source = autocorrect_source("str#{method} /\\n\\z/")
-      expect(new_source).to eq 'str.end_with?("\n")'
+      expect(new_source).to eq 'str&.end_with?("\n")'
     end
 
     it "autocorrects #{method} /\\t\\z/" do
       new_source = autocorrect_source("str#{method} /\\t\\z/")
-      expect(new_source).to eq 'str.end_with?("\t")'
+      expect(new_source).to eq 'str&.end_with?("\t")'
     end
 
     %w[. $ ^ |].each do |str|
       it "autocorrects #{method} /\\#{str}\\z/" do
         new_source = autocorrect_source("str#{method} /\\#{str}\\z/")
-        expect(new_source).to eq "str.end_with?('#{str}')"
+        expect(new_source).to eq "str&.end_with?('#{str}')"
       end
 
       it "doesn't register an error for #{method} /#{str}\\z/" do
@@ -36,7 +36,7 @@ RSpec.describe RuboCop::Cop::Performance::EndWith do
     %w[a e f r t v].each do |str|
       it "autocorrects #{method} /\\#{str}\\z/" do
         new_source = autocorrect_source("str#{method} /\\#{str}\\z/")
-        expect(new_source).to eq %{str.end_with?("\\#{str}")}
+        expect(new_source).to eq %{str&.end_with?("\\#{str}")}
       end
     end
 
@@ -51,7 +51,7 @@ RSpec.describe RuboCop::Cop::Performance::EndWith do
     %w[i j l m o q y].each do |str|
       it "autocorrects #{method} /\\#{str}\\z/" do
         new_source = autocorrect_source("str#{method} /\\#{str}\\z/")
-        expect(new_source).to eq "str.end_with?('#{str}')"
+        expect(new_source).to eq "str&.end_with?('#{str}')"
       end
     end
 
@@ -64,7 +64,7 @@ RSpec.describe RuboCop::Cop::Performance::EndWith do
 
     it "autocorrects #{method} /\\\\\\z/" do
       new_source = autocorrect_source("str#{method} /\\\\\\z/")
-      expect(new_source).to eq("str.end_with?('\\\\')")
+      expect(new_source).to eq("str&.end_with?('\\\\')")
     end
   end
 

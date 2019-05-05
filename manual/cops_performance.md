@@ -324,7 +324,7 @@ would suffice.
 
 Name | Default value | Configurable values
 --- | --- | ---
-AutoCorrect | `false` | Boolean
+AutoCorrect | `true` | Boolean
 
 ### References
 
@@ -775,7 +775,7 @@ This cop identifies unnecessary use of a regex where
 
 Name | Default value | Configurable values
 --- | --- | ---
-AutoCorrect | `false` | Boolean
+AutoCorrect | `true` | Boolean
 
 ### References
 

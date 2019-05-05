@@ -6,7 +6,7 @@ RSpec.describe RuboCop::Cop::Performance::StartWith do
   shared_examples 'different match methods' do |method|
     it "autocorrects #{method} /\\Aabc/" do
       new_source = autocorrect_source("str#{method} /\\Aabc/")
-      expect(new_source).to eq "str.start_with?('abc')"
+      expect(new_source).to eq "str&.start_with?('abc')"
     end
 
     # escapes like "\n"
@@ -15,7 +15,7 @@ RSpec.describe RuboCop::Cop::Performance::StartWith do
     %w[a e f r t v].each do |str|
       it "autocorrects #{method} /\\A\\#{str}/" do
         new_source = autocorrect_source("str#{method} /\\A\\#{str}/")
-        expect(new_source).to eq %{str.start_with?("\\#{str}")}
+        expect(new_source).to eq %{str&.start_with?("\\#{str}")}
       end
     end
 
@@ -23,7 +23,7 @@ RSpec.describe RuboCop::Cop::Performance::StartWith do
     %w[. * ? $ ^ |].each do |str|
       it "autocorrects #{method} /\\A\\#{str}/" do
         new_source = autocorrect_source("str#{method} /\\A\\#{str}/")
-        expect(new_source).to eq "str.start_with?('#{str}')"
+        expect(new_source).to eq "str&.start_with?('#{str}')"
       end
 
       it "doesn't register an error for #{method} /\\A#{str}/" do
@@ -42,7 +42,7 @@ RSpec.describe RuboCop::Cop::Performance::StartWith do
     %w[i j l m o q y].each do |str|
       it "autocorrects #{method} /\\A\\#{str}/" do
         new_source = autocorrect_source("str#{method} /\\A\\#{str}/")
-        expect(new_source).to eq "str.start_with?('#{str}')"
+        expect(new_source).to eq "str&.start_with?('#{str}')"
       end
     end
 
@@ -55,7 +55,7 @@ RSpec.describe RuboCop::Cop::Performance::StartWith do
 
     it "autocorrects #{method} /\\A\\\\/" do
       new_source = autocorrect_source("str#{method} /\\A\\\\/")
-      expect(new_source).to eq("str.start_with?('\\\\')")
+      expect(new_source).to eq("str&.start_with?('\\\\')")
     end
   end
 

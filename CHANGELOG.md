@@ -5,12 +5,13 @@
 ### Bug fixes
 
 * [#54](https://github.com/rubocop-hq/rubocop-performance/issues/54): Fix `Performance/FixedSize` to accept const assign with some operation. ([@tejasbubane][])
+* [#50](https://github.com/rubocop-hq/rubocop-performance/issues/50): Make `Performance/EndWith` and `Performance/StartWith` autocorrects nil-safe. ([@dduugg][])
 
 ## 1.3.0 (2019-05-13)
 
 ### Bug fixes
 
-* [#48](https://github.com/rubocop-hq/rubocop-performance/issues/48): Reduce `Performance/RegexpMatch` false positive by only flagging `match` used with Regexp/String/Symbol literals. ([@dduugg][])
+* [#48](https://github.com/rubocop-hq/rubocop-performance/issues/48): Reduce `Performance/RegexpMatch` false positives by only flagging `match` used with Regexp/String/Symbol literals. ([@dduugg][])
 
 ### Changes
 
