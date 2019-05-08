@@ -23,12 +23,12 @@ RSpec.describe RuboCop::Cop::Performance::RedundantMatch do
   end
 
   it 'autocorrects .match in while condition' do
-    new_source = autocorrect_source(<<-RUBY.strip_indent)
+    new_source = autocorrect_source(<<~RUBY)
       while str.match(/regex/)
         do_something
       end
     RUBY
-    expect(new_source).to eq(<<-RUBY.strip_indent)
+    expect(new_source).to eq(<<~RUBY)
       while str =~ /regex/
         do_something
       end
@@ -36,12 +36,12 @@ RSpec.describe RuboCop::Cop::Performance::RedundantMatch do
   end
 
   it 'autocorrects .match in until condition' do
-    new_source = autocorrect_source(<<-RUBY.strip_indent)
+    new_source = autocorrect_source(<<~RUBY)
       until str.match(/regex/)
         do_something
       end
     RUBY
-    expect(new_source).to eq(<<-RUBY.strip_indent)
+    expect(new_source).to eq(<<~RUBY)
       until str =~ /regex/
         do_something
       end
@@ -49,13 +49,13 @@ RSpec.describe RuboCop::Cop::Performance::RedundantMatch do
   end
 
   it 'autocorrects .match in method body (but not tail position)' do
-    new_source = autocorrect_source(<<-RUBY.strip_indent)
+    new_source = autocorrect_source(<<~RUBY)
       def method(str)
         str.match(/regex/)
         true
       end
     RUBY
-    expect(new_source).to eq(<<-RUBY.strip_indent)
+    expect(new_source).to eq(<<~RUBY)
       def method(str)
         str =~ /regex/
         true
@@ -70,7 +70,7 @@ RSpec.describe RuboCop::Cop::Performance::RedundantMatch do
 
   it 'does not register an error when return value of .match is passed ' \
      'to another method' do
-    expect_no_offenses(<<-RUBY.strip_indent)
+    expect_no_offenses(<<~RUBY)
       def method(str)
        something(str.match(/regex/))
       end
@@ -79,7 +79,7 @@ RSpec.describe RuboCop::Cop::Performance::RedundantMatch do
 
   it 'does not register an error when return value of .match is stored in an ' \
      'instance variable' do
-    expect_no_offenses(<<-RUBY.strip_indent)
+    expect_no_offenses(<<~RUBY)
       def method(str)
        @var = str.match(/regex/)
        true
@@ -89,7 +89,7 @@ RSpec.describe RuboCop::Cop::Performance::RedundantMatch do
 
   it 'does not register an error when return value of .match is returned from' \
      ' surrounding method' do
-    expect_no_offenses(<<-RUBY.strip_indent)
+    expect_no_offenses(<<~RUBY)
       def method(str)
        str.match(/regex/)
       end
@@ -97,7 +97,7 @@ RSpec.describe RuboCop::Cop::Performance::RedundantMatch do
   end
 
   it 'does not register an offense when match has a block' do
-    expect_no_offenses(<<-RUBY.strip_indent)
+    expect_no_offenses(<<~RUBY)
       /regex/.match(str) do |m|
         something(m)
       end
@@ -109,7 +109,7 @@ RSpec.describe RuboCop::Cop::Performance::RedundantMatch do
   end
 
   it 'formats error message correctly for something if str.match(/regex/)' do
-    expect_offense(<<-RUBY.strip_indent)
+    expect_offense(<<~RUBY)
       something if str.match(/regex/)
                    ^^^^^^^^^^^^^^^^^^ Use `=~` in places where the `MatchData` returned by `#match` will not be used.
     RUBY

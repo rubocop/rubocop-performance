@@ -24,7 +24,7 @@ RSpec.describe RuboCop::Cop::Performance::RangeInclude do
   end
 
   it 'formats the error message correctly for (a..b).include? 1' do
-    expect_offense(<<-RUBY.strip_indent)
+    expect_offense(<<~RUBY)
       (a..b).include? 1
              ^^^^^^^^ Use `Range#cover?` instead of `Range#include?`.
     RUBY

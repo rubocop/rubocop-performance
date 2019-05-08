@@ -14,7 +14,7 @@ module RuboCop
         AREF_ASGN = '%<receiver>s[%<key>s] = %<value>s'
         MSG = 'Use `%<prefer>s` instead of `%<current>s`.'
 
-        WITH_MODIFIER_CORRECTION = <<-RUBY.strip_indent
+        WITH_MODIFIER_CORRECTION = <<~RUBY
           %<keyword>s %<condition>s
           %<leading_space>s%<indent>s%<body>s
           %<leading_space>send

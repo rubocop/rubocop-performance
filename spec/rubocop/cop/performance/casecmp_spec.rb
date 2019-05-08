@@ -115,14 +115,14 @@ RSpec.describe RuboCop::Cop::Performance::Casecmp do
     end
 
     it "doesn't report an offense for variable == str.#{selector}" do
-      expect_no_offenses(<<-RUBY.strip_indent)
+      expect_no_offenses(<<~RUBY)
         var = "a"
         var == str.#{selector}
       RUBY
     end
 
     it "doesn't report an offense for str.#{selector} == variable" do
-      expect_no_offenses(<<-RUBY.strip_indent)
+      expect_no_offenses(<<~RUBY)
         var = "a"
         str.#{selector} == var
       RUBY

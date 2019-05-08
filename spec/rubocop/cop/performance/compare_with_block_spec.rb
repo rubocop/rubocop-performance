@@ -56,7 +56,7 @@ RSpec.describe RuboCop::Cop::Performance::CompareWithBlock do
     end
 
     it "autocorrects array.#{method} do |a, b| a.foo <=> b.foo end" do
-      new_source = autocorrect_source(<<-RUBY.strip_indent)
+      new_source = autocorrect_source(<<~RUBY)
         array.#{method} do |a, b|
           a.foo <=> b.foo
         end

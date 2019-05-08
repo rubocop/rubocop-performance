@@ -72,7 +72,7 @@ RSpec.describe RuboCop::Cop::Performance::FixedSize do
       end
 
       it "accepts calling #{method} on a variable " do
-        expect_no_offenses(<<-RUBY.strip_indent)
+        expect_no_offenses(<<~RUBY)
           foo = "abc"
           foo.#{method}
         RUBY
@@ -133,7 +133,7 @@ RSpec.describe RuboCop::Cop::Performance::FixedSize do
       end
 
       it "accepts calling #{method} on array that is set to a variable" do
-        expect_no_offenses(<<-RUBY.strip_indent)
+        expect_no_offenses(<<~RUBY)
           foo = [1, 2, 3]
           foo.#{method}
         RUBY
@@ -153,7 +153,7 @@ RSpec.describe RuboCop::Cop::Performance::FixedSize do
       end
 
       it "accepts calling #{method} on a hash set to a variable" do
-        expect_no_offenses(<<-RUBY.strip_indent)
+        expect_no_offenses(<<~RUBY)
           foo = {a: 1, b: 2}
           foo.#{method}
         RUBY

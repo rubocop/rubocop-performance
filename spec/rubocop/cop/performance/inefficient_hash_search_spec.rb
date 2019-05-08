@@ -8,48 +8,48 @@ RSpec.describe RuboCop::Cop::Performance::InefficientHashSearch do
     let(:expected_value_method) { expected == :short ? 'value?' : 'has_value?' }
 
     it 'registers an offense when a hash literal receives `keys.include?`' do
-      expect_offense(<<-RUBY.strip_indent)
+      expect_offense(<<~RUBY)
         { a: 1 }.keys.include? 1
         ^^^^^^^^^^^^^^^^^^^^^^^^ Use `##{expected_key_method}` instead of `#keys.include?`.
       RUBY
     end
 
     it 'registers an offense when an existing hash receives `keys.include?`' do
-      expect_offense(<<-RUBY.strip_indent)
+      expect_offense(<<~RUBY)
         h = { a: 1 }; h.keys.include? 1
                       ^^^^^^^^^^^^^^^^^ Use `##{expected_key_method}` instead of `#keys.include?`.
       RUBY
     end
 
     it 'registers an offense when a hash literal receives `values.include?`' do
-      expect_offense(<<-RUBY.strip_indent)
+      expect_offense(<<~RUBY)
         { a: 1 }.values.include? 1
         ^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `##{expected_value_method}` instead of `#values.include?`.
       RUBY
     end
 
     it 'registers an offense when a hash variable receives `values.include?`' do
-      expect_offense(<<-RUBY.strip_indent)
+      expect_offense(<<~RUBY)
         h = { a: 1 }; h.values.include? 1
                       ^^^^^^^^^^^^^^^^^^^ Use `##{expected_value_method}` instead of `#values.include?`.
       RUBY
     end
 
     it 'finds no offense when a `keys` array variable receives `include?`' do
-      expect_no_offenses(<<-RUBY.strip_indent)
+      expect_no_offenses(<<~RUBY)
         h = { a: 1 }; keys = h.keys ; keys.include? 1
       RUBY
     end
 
     it 'finds no offense when a `values` array variable receives `include?` ' do
-      expect_no_offenses(<<-RUBY.strip_indent)
+      expect_no_offenses(<<~RUBY)
         h = { a: 1 }; values = h.values ; values.include? 1
       RUBY
     end
 
     it 'does not register an offense when `keys` method defined by itself ' \
        'and `include?` method are method chaining' do
-      expect_no_offenses(<<-RUBY.strip_indent)
+      expect_no_offenses(<<~RUBY)
         def my_include?(key)
           keys.include?(key)
         end
