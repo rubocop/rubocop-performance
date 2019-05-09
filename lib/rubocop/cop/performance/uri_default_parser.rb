@@ -15,7 +15,7 @@ module RuboCop
       #
       class UriDefaultParser < Cop
         MSG = 'Use `%<double_colon>sURI::DEFAULT_PARSER` instead of ' \
-              '`%<double_colon>sURI::Parser.new`.'.freeze
+              '`%<double_colon>sURI::Parser.new`.'
 
         def_node_matcher :uri_parser_new?, <<-PATTERN
           (send

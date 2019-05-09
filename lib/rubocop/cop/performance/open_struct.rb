@@ -29,7 +29,7 @@ module RuboCop
       #
       class OpenStruct < Cop
         MSG = 'Consider using `Struct` over `OpenStruct` ' \
-              'to optimize the performance.'.freeze
+              'to optimize the performance.'
 
         def_node_matcher :open_struct, <<-PATTERN
           (send (const {nil? cbase} :OpenStruct) :new ...)

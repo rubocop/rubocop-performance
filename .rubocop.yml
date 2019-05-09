@@ -11,7 +11,7 @@ AllCops:
     - 'vendor/**/*'
     - 'spec/fixtures/**/*'
     - 'tmp/**/*'
-  TargetRubyVersion: 2.2
+  TargetRubyVersion: 2.3
 
 Naming/PredicateName:
   # Method define macros for dynamically generated method.
@@ -20,9 +20,6 @@ Naming/PredicateName:
     - define_singleton_method
     - def_node_matcher
     - def_node_search
-
-Style/FrozenStringLiteralComment:
-  EnforcedStyle: always
 
 Style/FormatStringToken:
   # Because we parse a lot of source codes from strings. Percent arrays
@@ -53,9 +50,6 @@ Layout/ClassStructure:
       - instance_methods
       - protected_methods
       - private_methods
-
-Layout/IndentHeredoc:
-  EnforcedStyle: powerpack
 
 # Trailing white space is meaningful in code examples
 Layout/TrailingWhitespace:

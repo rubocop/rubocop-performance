@@ -14,21 +14,21 @@ RSpec.describe RuboCop::Cop::Performance::StringReplacement do
       end
 
       it 'accepts the first param being a variable' do
-        expect_no_offenses(<<-RUBY.strip_indent)
+        expect_no_offenses(<<~RUBY)
           regex = /a/
           'abc'.#{method}(regex, '1')
         RUBY
       end
 
       it 'accepts the second param being a variable' do
-        expect_no_offenses(<<-RUBY.strip_indent)
+        expect_no_offenses(<<~RUBY)
           replacement = 'e'
           'abc'.#{method}('abc', replacement)
         RUBY
       end
 
       it 'accepts the both params being a variables' do
-        expect_no_offenses(<<-RUBY.strip_indent)
+        expect_no_offenses(<<~RUBY)
           regex = /a/
           replacement = 'e'
           'abc'.#{method}(regex, replacement)
@@ -44,14 +44,14 @@ RSpec.describe RuboCop::Cop::Performance::StringReplacement do
       end
 
       it 'accepts a pattern with string interpolation' do
-        expect_no_offenses(<<-RUBY.strip_indent)
+        expect_no_offenses(<<~RUBY)
           foo = 'a'
           'abc'.#{method}(\"\#{foo}\", '1')
         RUBY
       end
 
       it 'accepts a replacement with string interpolation' do
-        expect_no_offenses(<<-RUBY.strip_indent)
+        expect_no_offenses(<<~RUBY)
           foo = '1'
           'abc'.#{method}('a', \"\#{foo}\")
         RUBY
@@ -99,7 +99,7 @@ RSpec.describe RuboCop::Cop::Performance::StringReplacement do
   describe 'deterministic regex' do
     describe 'regex literal' do
       it 'registers an offense when using space' do
-        expect_offense(<<-RUBY.strip_indent)
+        expect_offense(<<~RUBY)
           'abc'.gsub(/ /, '')
                 ^^^^^^^^^^^^^ Use `delete` instead of `gsub`.
         RUBY
@@ -130,7 +130,7 @@ RSpec.describe RuboCop::Cop::Performance::StringReplacement do
       end
 
       it 'registers an offense when using %r notation' do
-        expect_offense(<<-RUBY.strip_indent)
+        expect_offense(<<~RUBY)
           '/abc'.gsub(%r{a}, 'd')
                  ^^^^^^^^^^^^^^^^ Use `tr` instead of `gsub`.
         RUBY
@@ -139,21 +139,21 @@ RSpec.describe RuboCop::Cop::Performance::StringReplacement do
 
     describe 'regex constructor' do
       it 'registers an offense when only using word characters' do
-        expect_offense(<<-RUBY.strip_indent)
+        expect_offense(<<~RUBY)
           'abc'.gsub(Regexp.new('b'), '2')
                 ^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `tr` instead of `gsub`.
         RUBY
       end
 
       it 'registers an offense when regex is built from regex' do
-        expect_offense(<<-RUBY.strip_indent)
+        expect_offense(<<~RUBY)
           'abc'.gsub(Regexp.new(/b/), '2')
                 ^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `tr` instead of `gsub`.
         RUBY
       end
 
       it 'registers an offense when using compile' do
-        expect_offense(<<-RUBY.strip_indent)
+        expect_offense(<<~RUBY)
           '123'.gsub(Regexp.compile('1'), 'a')
                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `tr` instead of `gsub`.
         RUBY
@@ -211,21 +211,21 @@ RSpec.describe RuboCop::Cop::Performance::StringReplacement do
     end
 
     it 'allows regex literal containing interpolations' do
-      expect_no_offenses(<<-'RUBY'.strip_indent)
+      expect_no_offenses(<<~'RUBY')
         foo = 'a'
         "abc".gsub(/#{foo}/, "d")
       RUBY
     end
 
     it 'allows regex constructor containing a string with interpolations' do
-      expect_no_offenses(<<-'RUBY'.strip_indent)
+      expect_no_offenses(<<~'RUBY')
         foo = 'a'
         "abc".gsub(Regexp.new("#{foo}"), "d")
       RUBY
     end
 
     it 'allows regex constructor containing regex with interpolations' do
-      expect_no_offenses(<<-'RUBY'.strip_indent)
+      expect_no_offenses(<<~'RUBY')
         foo = 'a'
         "abc".gsub(Regexp.new(/#{foo}/), "d")
       RUBY
@@ -234,7 +234,7 @@ RSpec.describe RuboCop::Cop::Performance::StringReplacement do
 
   it 'registers an offense when the pattern has non deterministic regex ' \
      'as a string' do
-    expect_offense(<<-RUBY.strip_indent)
+    expect_offense(<<~RUBY)
       'a + c'.gsub('+', '-')
               ^^^^^^^^^^^^^^ Use `tr` instead of `gsub`.
     RUBY
@@ -242,7 +242,7 @@ RSpec.describe RuboCop::Cop::Performance::StringReplacement do
 
   it 'registers an offense when using gsub to find and replace ' \
      'a single character' do
-    expect_offense(<<-RUBY.strip_indent)
+    expect_offense(<<~RUBY)
       'abc'.gsub('a', '1')
             ^^^^^^^^^^^^^^ Use `tr` instead of `gsub`.
     RUBY
@@ -250,14 +250,14 @@ RSpec.describe RuboCop::Cop::Performance::StringReplacement do
 
   it 'registers an offense when using gsub! to find and replace ' \
      'a single character ' do
-    expect_offense(<<-RUBY.strip_indent)
+    expect_offense(<<~RUBY)
       'abc'.gsub!('a', '1')
             ^^^^^^^^^^^^^^^ Use `tr!` instead of `gsub!`.
     RUBY
   end
 
   it 'registers an offense for gsub! when deleting one characters' do
-    expect_offense(<<-RUBY.strip_indent)
+    expect_offense(<<~RUBY)
       'abc'.gsub!('a', '')
             ^^^^^^^^^^^^^^ Use `delete!` instead of `gsub!`.
     RUBY

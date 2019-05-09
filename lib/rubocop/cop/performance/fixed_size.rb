@@ -46,7 +46,7 @@ module RuboCop
       #   waldo.size
       #
       class FixedSize < Cop
-        MSG = 'Do not compute the size of statically sized objects.'.freeze
+        MSG = 'Do not compute the size of statically sized objects.'
 
         def_node_matcher :counter, <<-MATCHER
           (send ${array hash str sym} {:count :length :size} $...)

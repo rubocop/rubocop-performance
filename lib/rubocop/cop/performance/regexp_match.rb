@@ -82,7 +82,7 @@ module RuboCop
         TYPES_IMPLEMENTING_MATCH = %i[const regexp str sym].freeze
         MSG =
           'Use `match?` instead of `%<current>s` when `MatchData` ' \
-          'is not used.'.freeze
+          'is not used.'
 
         def_node_matcher :match_method?, <<-PATTERN
           {
@@ -106,7 +106,7 @@ module RuboCop
           regexp.to_regexp.named_captures.empty?
         end
 
-        MATCH_NODE_PATTERN = <<-PATTERN.freeze
+        MATCH_NODE_PATTERN = <<-PATTERN
           {
             #match_method?
             #match_operator?

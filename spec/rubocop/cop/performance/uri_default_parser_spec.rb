@@ -6,14 +6,14 @@ RSpec.describe RuboCop::Cop::Performance::UriDefaultParser do
   let(:config) { RuboCop::Config.new }
 
   it 'registers an offense when using `URI::Parser.new`' do
-    expect_offense(<<-RUBY.strip_indent)
+    expect_offense(<<~RUBY)
       URI::Parser.new.make_regexp
       ^^^^^^^^^^^^^^^ Use `URI::DEFAULT_PARSER` instead of `URI::Parser.new`.
     RUBY
   end
 
   it 'registers an offense when using `::URI::Parser.new`' do
-    expect_offense(<<-RUBY.strip_indent)
+    expect_offense(<<~RUBY)
       ::URI::Parser.new.make_regexp
       ^^^^^^^^^^^^^^^^^ Use `::URI::DEFAULT_PARSER` instead of `::URI::Parser.new`.
     RUBY

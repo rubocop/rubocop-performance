@@ -4,7 +4,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
   subject(:cop) { described_class.new }
 
   it 'allows case when without splat' do
-    expect_no_offenses(<<-RUBY.strip_indent)
+    expect_no_offenses(<<~RUBY)
       case foo
       when 1
         bar
@@ -15,7 +15,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
   end
 
   it 'allows splat on a variable in the last when condition' do
-    expect_no_offenses(<<-RUBY.strip_indent)
+    expect_no_offenses(<<~RUBY)
       case foo
       when 4
         foobar
@@ -28,7 +28,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
   end
 
   it 'allows multiple splat conditions on variables at the end' do
-    expect_no_offenses(<<-RUBY.strip_indent)
+    expect_no_offenses(<<~RUBY)
       case foo
       when 4
         foobar
@@ -43,7 +43,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
   end
 
   it 'registers an offense for case when with a splat in the first condition' do
-    expect_offense(<<-RUBY.strip_indent)
+    expect_offense(<<~RUBY)
       case foo
       when *cond
       ^^^^^^^^^^ Reordering `when` conditions with a splat to the end of the `when` branches can improve performance.
@@ -57,7 +57,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
   end
 
   it 'registers an offense for case when with a splat without an else' do
-    expect_offense(<<-RUBY.strip_indent)
+    expect_offense(<<~RUBY)
       case foo
       when *baz
       ^^^^^^^^^ Reordering `when` conditions with a splat to the end of the `when` branches can improve performance.
@@ -69,7 +69,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
   end
 
   it 'registers an offense for splat conditions in when then' do
-    expect_offense(<<-RUBY.strip_indent)
+    expect_offense(<<~RUBY)
       case foo
       when *cond then bar
       ^^^^^^^^^^ Reordering `when` conditions with a splat to the end of the `when` branches can improve performance.
@@ -80,7 +80,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
 
   it 'registers an offense for a single when with splat expansion followed ' \
      'by another value' do
-    expect_offense(<<-RUBY.strip_indent)
+    expect_offense(<<~RUBY)
       case foo
       when *Foo, Bar
       ^^^^^^^^^ Reordering `when` conditions with a splat to the end of the `when` branches can improve performance.
@@ -90,7 +90,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
   end
 
   it 'registers an offense for multiple splat conditions at the beginning' do
-    expect_offense(<<-RUBY.strip_indent)
+    expect_offense(<<~RUBY)
       case foo
       when *cond1
       ^^^^^^^^^^^ Reordering `when` conditions with a splat to the end of the `when` branches can improve performance.
@@ -107,7 +107,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
   end
 
   it 'registers an offense for multiple out of order splat conditions' do
-    expect_offense(<<-RUBY.strip_indent)
+    expect_offense(<<~RUBY)
       case foo
       when *cond1
       ^^^^^^^^^^^ Reordering `when` conditions with a splat to the end of the `when` branches can improve performance.
@@ -126,7 +126,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
   end
 
   it 'registers an offense for splat condition that do not appear at the end' do
-    expect_offense(<<-RUBY.strip_indent)
+    expect_offense(<<~RUBY)
       case foo
       when *cond1
       ^^^^^^^^^^^ Reordering `when` conditions with a splat to the end of the `when` branches can improve performance.
@@ -147,7 +147,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
   end
 
   it 'allows splat expansion on an array literal' do
-    expect_no_offenses(<<-RUBY.strip_indent)
+    expect_no_offenses(<<~RUBY)
       case foo
       when *[1, 2]
         bar
@@ -160,7 +160,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
   end
 
   it 'allows splat expansion on array literal as the last condition' do
-    expect_no_offenses(<<-RUBY.strip_indent)
+    expect_no_offenses(<<~RUBY)
       case foo
       when *[1, 2]
         bar
@@ -170,7 +170,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
 
   it 'registers an offense for a splat on a variable that proceeds a splat ' \
      'on an array literal as the last condition' do
-    expect_offense(<<-RUBY.strip_indent)
+    expect_offense(<<~RUBY)
       case foo
       when *cond
       ^^^^^^^^^^ Reordering `when` conditions with a splat to the end of the `when` branches can improve performance.
@@ -182,7 +182,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
   end
 
   it 'registers an offense when splat is part of the condition' do
-    expect_offense(<<-RUBY.strip_indent)
+    expect_offense(<<~RUBY)
       case foo
       when cond1, *cond2
       ^^^^^^^^^^^^^^^^^^ Reordering `when` conditions with a splat to the end of the `when` branches can improve performance.
@@ -196,14 +196,14 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
   context 'autocorrect' do
     it 'corrects a single when with splat expansion followed by ' \
       'another value' do
-      source = <<-RUBY.strip_indent
+      source = <<~RUBY
         case foo
         when *Foo, Bar, Baz
           nil
         end
       RUBY
       new_source = autocorrect_source(source)
-      expect(new_source).to eq(<<-RUBY.strip_indent)
+      expect(new_source).to eq(<<~RUBY)
         case foo
         when Bar, Baz, *Foo
           nil
@@ -213,7 +213,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
 
     it 'corrects a when with splat expansion followed by another value ' \
       'when there are multiple whens' do
-      source = <<-RUBY.strip_indent
+      source = <<~RUBY
         case foo
         when *Foo, Bar
           nil
@@ -222,7 +222,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
         end
       RUBY
       new_source = autocorrect_source(source)
-      expect(new_source).to eq(<<-RUBY.strip_indent)
+      expect(new_source).to eq(<<~RUBY)
         case foo
         when FooBar
           1
@@ -234,7 +234,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
 
     it 'corrects a when with multiple out of order splat expansions ' \
       'followed by other values when there are multiple whens' do
-      source = <<-RUBY.strip_indent
+      source = <<~RUBY
         case foo
         when *Foo, Bar, *Baz, Qux
           nil
@@ -243,7 +243,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
         end
       RUBY
       new_source = autocorrect_source(source)
-      expect(new_source).to eq(<<-RUBY.strip_indent)
+      expect(new_source).to eq(<<~RUBY)
         case foo
         when FooBar
           1
@@ -254,7 +254,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
     end
 
     it 'moves a single splat condition to the end of the when conditions' do
-      new_source = autocorrect_source(<<-RUBY.strip_indent)
+      new_source = autocorrect_source(<<~RUBY)
         case foo
         when *cond
           bar
@@ -263,7 +263,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
         end
       RUBY
 
-      expect(new_source).to eq(<<-RUBY.strip_indent)
+      expect(new_source).to eq(<<~RUBY)
         case foo
         when 3
           baz
@@ -274,7 +274,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
     end
 
     it 'moves multiple splat condition to the end of the when conditions' do
-      new_source = autocorrect_source_with_loop(<<-RUBY.strip_indent)
+      new_source = autocorrect_source_with_loop(<<~RUBY)
         case foo
         when *cond1
           bar
@@ -285,7 +285,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
         end
       RUBY
 
-      expect(new_source).to eq(<<-RUBY.strip_indent)
+      expect(new_source).to eq(<<~RUBY)
         case foo
         when 5
           baz
@@ -299,7 +299,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
 
     it 'moves multiple out of order splat condition to the end ' \
        'of the when conditions' do
-      new_source = autocorrect_source_with_loop(<<-RUBY.strip_indent)
+      new_source = autocorrect_source_with_loop(<<~RUBY)
         case foo
         when *cond1
           bar
@@ -312,7 +312,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
         end
       RUBY
 
-      expect(new_source).to eq(<<-RUBY.strip_indent)
+      expect(new_source).to eq(<<~RUBY)
         case foo
         when 3
           doo
@@ -327,14 +327,14 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
     end
 
     it 'corrects splat condition when using when then' do
-      new_source = autocorrect_source(<<-RUBY.strip_indent)
+      new_source = autocorrect_source(<<~RUBY)
         case foo
         when *cond then bar
         when 4 then baz
         end
       RUBY
 
-      expect(new_source).to eq(<<-RUBY.strip_indent)
+      expect(new_source).to eq(<<~RUBY)
         case foo
         when 4 then baz
         when *cond then bar
@@ -343,7 +343,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
     end
 
     it 'corrects nested case when statements' do
-      new_source = autocorrect_source(<<-RUBY.strip_indent)
+      new_source = autocorrect_source(<<~RUBY)
         def check
           case foo
           when *cond
@@ -354,7 +354,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
         end
       RUBY
 
-      expect(new_source).to eq(<<-RUBY.strip_indent)
+      expect(new_source).to eq(<<~RUBY)
         def check
           case foo
           when 3
@@ -367,7 +367,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
     end
 
     it 'corrects splat on a variable and leaves an array literal alone' do
-      new_source = autocorrect_source(<<-RUBY.strip_indent)
+      new_source = autocorrect_source(<<~RUBY)
         case foo
         when *cond
           bar
@@ -376,7 +376,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
         end
       RUBY
 
-      expect(new_source).to eq(<<-RUBY.strip_indent)
+      expect(new_source).to eq(<<~RUBY)
         case foo
         when *[1, 2]
           baz
@@ -387,7 +387,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
     end
 
     it 'corrects a splat as part of the condition' do
-      new_source = autocorrect_source(<<-RUBY.strip_indent)
+      new_source = autocorrect_source(<<~RUBY)
         case foo
         when cond1, *cond2
           bar
@@ -396,7 +396,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
         end
       RUBY
 
-      expect(new_source).to eq(<<-RUBY.strip_indent)
+      expect(new_source).to eq(<<~RUBY)
         case foo
         when cond3
           baz
@@ -407,7 +407,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
     end
 
     it 'corrects an array followed by splat in the same condition' do
-      new_source = autocorrect_source(<<-RUBY.strip_indent)
+      new_source = autocorrect_source(<<~RUBY)
         case foo
         when *[cond1, cond2], *cond3
           bar
@@ -416,7 +416,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
         end
       RUBY
 
-      expect(new_source).to eq(<<-RUBY.strip_indent)
+      expect(new_source).to eq(<<~RUBY)
         case foo
         when cond4
           baz
@@ -427,7 +427,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
     end
 
     it 'corrects a splat followed by array in the same condition' do
-      new_source = autocorrect_source(<<-RUBY.strip_indent)
+      new_source = autocorrect_source(<<~RUBY)
         case foo
         when *cond1, *[cond2, cond3]
           bar
@@ -436,7 +436,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
         end
       RUBY
 
-      expect(new_source).to eq(<<-RUBY.strip_indent)
+      expect(new_source).to eq(<<~RUBY)
         case foo
         when cond4
           baz

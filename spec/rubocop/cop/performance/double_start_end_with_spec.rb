@@ -190,7 +190,7 @@ RSpec.describe RuboCop::Cop::Performance::DoubleStartEndWith do
 
         context 'one of the parameters of the second call is not pure' do
           it "doesn't register an offense" do
-            expect_no_offenses(<<-RUBY.strip_indent)
+            expect_no_offenses(<<~RUBY)
               x.starts_with?(a, "b") || x.starts_with?(C, d)
             RUBY
           end

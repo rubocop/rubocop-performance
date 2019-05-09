@@ -4,14 +4,14 @@ RSpec.describe RuboCop::Cop::Performance::ReverseEach do
   subject(:cop) { described_class.new }
 
   it 'registers an offense when each is called on reverse' do
-    expect_offense(<<-RUBY.strip_indent)
+    expect_offense(<<~RUBY)
       [1, 2, 3].reverse.each { |e| puts e }
                 ^^^^^^^^^^^^ Use `reverse_each` instead of `reverse.each`.
     RUBY
   end
 
   it 'registers an offense when each is called on reverse on a variable' do
-    expect_offense(<<-RUBY.strip_indent)
+    expect_offense(<<~RUBY)
       arr = [1, 2, 3]
       arr.reverse.each { |e| puts e }
           ^^^^^^^^^^^^ Use `reverse_each` instead of `reverse.each`.
@@ -19,7 +19,7 @@ RSpec.describe RuboCop::Cop::Performance::ReverseEach do
   end
 
   it 'registers an offense when each is called on reverse on a method call' do
-    expect_offense(<<-RUBY.strip_indent)
+    expect_offense(<<~RUBY)
       def arr
         [1, 2, 3]
       end
@@ -45,19 +45,19 @@ RSpec.describe RuboCop::Cop::Performance::ReverseEach do
     end
 
     it 'corrects reverse.each to reverse_each on a variable' do
-      new_source = autocorrect_source(<<-RUBY.strip_indent)
+      new_source = autocorrect_source(<<~RUBY)
         arr = [1, 2]
         arr.reverse.each { |e| puts e }
       RUBY
 
-      expect(new_source).to eq(<<-RUBY.strip_indent)
+      expect(new_source).to eq(<<~RUBY)
         arr = [1, 2]
         arr.reverse_each { |e| puts e }
       RUBY
     end
 
     it 'corrects reverse.each to reverse_each on a method call' do
-      new_source = autocorrect_source(<<-RUBY.strip_indent)
+      new_source = autocorrect_source(<<~RUBY)
         def arr
           [1, 2]
         end
@@ -65,7 +65,7 @@ RSpec.describe RuboCop::Cop::Performance::ReverseEach do
         arr.reverse.each { |e| puts e }
       RUBY
 
-      expect(new_source).to eq(<<-RUBY.strip_indent)
+      expect(new_source).to eq(<<~RUBY)
         def arr
           [1, 2]
         end

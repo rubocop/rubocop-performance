@@ -53,19 +53,19 @@ RSpec.describe RuboCop::Cop::Performance::Count do
     end
 
     it "allows usage of #{selector}...count with a block on an array" do
-      expect_no_offenses(<<-RUBY.strip_indent)
+      expect_no_offenses(<<~RUBY)
         [1, 2, 3].#{selector} { |e| e.odd? }.count { |e| e > 2 }
       RUBY
     end
 
     it "allows usage of #{selector}...count with a block on a hash" do
-      expect_no_offenses(<<-RUBY.strip_indent)
+      expect_no_offenses(<<~RUBY)
         {a: 1, b: 2}.#{selector} { |e| e == :a }.count { |e| e > 2 }
       RUBY
     end
 
     it "registers an offense for #{selector} with params instead of a block" do
-      inspect_source(<<-RUBY.strip_indent)
+      inspect_source(<<~RUBY)
         Data = Struct.new(:value)
         array = [Data.new(2), Data.new(3), Data.new(2)]
         puts array.#{selector}(&:value).count
@@ -86,7 +86,7 @@ RSpec.describe RuboCop::Cop::Performance::Count do
 
     it "registers an offense for #{selector}(&:something).count " \
        'when called as an instance method on its own class' do
-      source = <<-RUBY.strip_indent
+      source = <<~RUBY
         class A < Array
           def count(&block)
             #{selector}(&block).count
@@ -128,7 +128,7 @@ RSpec.describe RuboCop::Cop::Performance::Count do
     end
 
     it 'allows usage of select with multiple strings' do
-      expect_no_offenses(<<-RUBY.strip_indent)
+      expect_no_offenses(<<~RUBY)
         Model.select('field AS field_one', 'other AS field_two').count
       RUBY
     end
@@ -155,7 +155,7 @@ RSpec.describe RuboCop::Cop::Performance::Count do
   end
 
   it 'allows usage of count on an interstitial method called on select' do
-    expect_no_offenses(<<-RUBY.strip_indent)
+    expect_no_offenses(<<~RUBY)
       Data = Struct.new(:value)
       array = [Data.new(2), Data.new(3), Data.new(2)]
       puts array.select(&:value).uniq.count
@@ -164,7 +164,7 @@ RSpec.describe RuboCop::Cop::Performance::Count do
 
   it 'allows usage of count on an interstitial method with blocks ' \
      'called on select' do
-    expect_no_offenses(<<-RUBY.strip_indent)
+    expect_no_offenses(<<~RUBY)
       Data = Struct.new(:value)
       array = [Data.new(2), Data.new(3), Data.new(2)]
       array.select(&:value).uniq { |v| v > 2 }.count
@@ -172,7 +172,7 @@ RSpec.describe RuboCop::Cop::Performance::Count do
   end
 
   it 'allows usage of size called on an assigned variable' do
-    expect_no_offenses(<<-RUBY.strip_indent)
+    expect_no_offenses(<<~RUBY)
       nodes = [1]
       nodes.size
     RUBY
@@ -215,7 +215,7 @@ RSpec.describe RuboCop::Cop::Performance::Count do
       end
 
       it 'select...size when select has parameters' do
-        source = <<-RUBY.strip_indent
+        source = <<~RUBY
           Data = Struct.new(:value)
           array = [Data.new(2), Data.new(3), Data.new(2)]
           puts array.select(&:value).size
@@ -224,7 +224,7 @@ RSpec.describe RuboCop::Cop::Performance::Count do
         new_source = autocorrect_source(source)
 
         expect(new_source)
-          .to eq(<<-RUBY.strip_indent)
+          .to eq(<<~RUBY)
             Data = Struct.new(:value)
             array = [Data.new(2), Data.new(3), Data.new(2)]
             puts array.count(&:value)
@@ -259,7 +259,7 @@ RSpec.describe RuboCop::Cop::Performance::Count do
       end
 
       it 'reject...size when select has parameters' do
-        source = <<-RUBY.strip_indent
+        source = <<~RUBY
           Data = Struct.new(:value)
           array = [Data.new(2), Data.new(3), Data.new(2)]
           puts array.reject(&:value).size
