@@ -23,11 +23,11 @@ module RuboCop
       #     yield 1, 2, 3
       #   end
       class RedundantBlockCall < Cop
-        MSG = 'Use `yield` instead of `%<argname>s.call`.'.freeze
-        YIELD = 'yield'.freeze
-        OPEN_PAREN = '('.freeze
-        CLOSE_PAREN = ')'.freeze
-        SPACE = ' '.freeze
+        MSG = 'Use `yield` instead of `%<argname>s.call`.'
+        YIELD = 'yield'
+        OPEN_PAREN = '('
+        CLOSE_PAREN = ')'
+        SPACE = ' '
 
         def_node_matcher :blockarg_def, <<-PATTERN
           {(def  _   (args ... (blockarg $_)) $_)

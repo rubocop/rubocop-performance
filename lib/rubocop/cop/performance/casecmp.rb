@@ -18,7 +18,7 @@ module RuboCop
       #   str.casecmp('ABC').zero?
       #   'abc'.casecmp(str).zero?
       class Casecmp < Cop
-        MSG = 'Use `%<good>s` instead of `%<bad>s`.'.freeze
+        MSG = 'Use `%<good>s` instead of `%<bad>s`.'
         CASE_METHODS = %i[downcase upcase].freeze
 
         def_node_matcher :downcase_eq, <<-PATTERN

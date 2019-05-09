@@ -28,7 +28,7 @@ module RuboCop
 
         MSG = 'Use `%<compare_method>s_by%<instead>s` instead of ' \
               '`%<compare_method>s { |%<var_a>s, %<var_b>s| %<str_a>s ' \
-              '<=> %<str_b>s }`.'.freeze
+              '<=> %<str_b>s }`.'
 
         def_node_matcher :compare?, <<-PATTERN
           (block

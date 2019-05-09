@@ -29,10 +29,10 @@ module RuboCop
         #   [1,2].first    # => 1
         #   [1,2].first(1) # => [1]
         #
-        RETURN_NEW_ARRAY_WHEN_ARGS = ':first :last :pop :sample :shift '.freeze
+        RETURN_NEW_ARRAY_WHEN_ARGS = ':first :last :pop :sample :shift '
 
         # These methods return a new array only when called without a block.
-        RETURNS_NEW_ARRAY_WHEN_NO_BLOCK = ':zip :product '.freeze
+        RETURNS_NEW_ARRAY_WHEN_NO_BLOCK = ':zip :product '
 
         # These methods ALWAYS return a new array
         # after they're called it's safe to mutate the the resulting array
@@ -40,16 +40,16 @@ module RuboCop
                                    ':drop_while :flatten :map :reject ' \
                                    ':reverse :rotate :select :shuffle :sort ' \
                                    ':take :take_while :transpose :uniq ' \
-                                   ':values_at :| '.freeze
+                                   ':values_at :| '
 
         # These methods have a mutation alternative. For example :collect
         # can be called as :collect!
         HAS_MUTATION_ALTERNATIVE = ':collect :compact :flatten :map :reject '\
                                    ':reverse :rotate :select :shuffle :sort '\
-                                   ':uniq '.freeze
+                                   ':uniq '
         MSG = 'Use unchained `%<method>s!` and `%<second_method>s!` '\
               '(followed by `return array` if required) instead of chaining '\
-              '`%<method>s...%<second_method>s`.'.freeze
+              '`%<method>s...%<second_method>s`.'
 
         def_node_matcher :flat_map_candidate?, <<-PATTERN
           {

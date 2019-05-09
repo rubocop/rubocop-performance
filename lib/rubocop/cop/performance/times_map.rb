@@ -19,8 +19,8 @@ module RuboCop
       #   end
       class TimesMap < Cop
         MESSAGE = 'Use `Array.new(%<count>s)` with a block ' \
-                  'instead of `.times.%<map_or_collect>s`'.freeze
-        MESSAGE_ONLY_IF = 'only if `%<count>s` is always 0 or more'.freeze
+                  'instead of `.times.%<map_or_collect>s`'
+        MESSAGE_ONLY_IF = 'only if `%<count>s` is always 0 or more'
 
         def on_send(node)
           check(node)

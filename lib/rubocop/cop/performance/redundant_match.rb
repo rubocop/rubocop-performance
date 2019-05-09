@@ -19,7 +19,7 @@ module RuboCop
       #   return value unless regex =~ 'str'
       class RedundantMatch < Cop
         MSG = 'Use `=~` in places where the `MatchData` returned by ' \
-              '`#match` will not be used.'.freeze
+              '`#match` will not be used.'
 
         # 'match' is a fairly generic name, so we don't flag it unless we see
         # a string or regexp literal on one side or the other

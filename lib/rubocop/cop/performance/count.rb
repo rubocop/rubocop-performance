@@ -41,7 +41,7 @@ module RuboCop
         include SafeMode
         include RangeHelp
 
-        MSG = 'Use `count` instead of `%<selector>s...%<counter>s`.'.freeze
+        MSG = 'Use `count` instead of `%<selector>s...%<counter>s`.'
 
         def_node_matcher :count_candidate?, <<-PATTERN
           {

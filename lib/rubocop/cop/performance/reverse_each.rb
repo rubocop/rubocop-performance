@@ -15,8 +15,8 @@ module RuboCop
       class ReverseEach < Cop
         include RangeHelp
 
-        MSG = 'Use `reverse_each` instead of `reverse.each`.'.freeze
-        UNDERSCORE = '_'.freeze
+        MSG = 'Use `reverse_each` instead of `reverse.each`.'
+        UNDERSCORE = '_'
 
         def_node_matcher :reverse_each?, <<-MATCHER
           (send $(send _ :reverse) :each)

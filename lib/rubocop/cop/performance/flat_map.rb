@@ -17,10 +17,10 @@ module RuboCop
       class FlatMap < Cop
         include RangeHelp
 
-        MSG = 'Use `flat_map` instead of `%<method>s...%<flatten>s`.'.freeze
+        MSG = 'Use `flat_map` instead of `%<method>s...%<flatten>s`.'
         FLATTEN_MULTIPLE_LEVELS = ' Beware, `flat_map` only flattens 1 level ' \
                                   'and `flatten` can be used to flatten ' \
-                                  'multiple levels.'.freeze
+                                  'multiple levels.'
 
         def_node_matcher :flat_map_candidate?, <<-PATTERN
           (send (block $(send _ ${:collect :map}) ...) ${:flatten :flatten!} $...)

@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.name = 'rubocop-performance'
   s.version = RuboCop::Performance::Version::STRING
   s.platform = Gem::Platform::RUBY
-  s.required_ruby_version = '>= 2.2.2'
+  s.required_ruby_version = '>= 2.3.0'
   s.authors = ['Bozhidar Batsov', 'Jonas Arvidsson', 'Yuji Nakayama']
   s.description = <<-DESCRIPTION
     A collection of RuboCop cops to check for performance optimizations

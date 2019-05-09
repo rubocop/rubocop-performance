@@ -20,9 +20,9 @@ module RuboCop
       #   caller_locations(1..1).first
       class Caller < Cop
         MSG_BRACE = 'Use `%<method>s(%<n>d..%<n>d).first`' \
-                    ' instead of `%<method>s[%<m>d]`.'.freeze
+                    ' instead of `%<method>s[%<m>d]`.'
         MSG_FIRST = 'Use `%<method>s(%<n>d..%<n>d).first`' \
-                    ' instead of `%<method>s.first`.'.freeze
+                    ' instead of `%<method>s.first`.'
 
         def_node_matcher :slow_caller?, <<-PATTERN
           {

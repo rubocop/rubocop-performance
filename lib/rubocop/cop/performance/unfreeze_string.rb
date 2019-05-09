@@ -28,7 +28,7 @@ module RuboCop
 
         minimum_target_ruby_version 2.3
 
-        MSG = 'Use unary plus to get an unfrozen string literal.'.freeze
+        MSG = 'Use unary plus to get an unfrozen string literal.'
 
         def_node_matcher :dup_string?, <<-PATTERN
           (send {str dstr} :dup)

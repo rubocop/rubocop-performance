@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### Changes
+
+* [#52](https://github.com/rubocop-hq/rubocop-performance/issues/52): Drop support for Ruby 2.2. ([@bquorning][])
+
 ## 1.2.0 (2019-05-04)
 
 ### Bug fixes
@@ -23,3 +27,4 @@
 
 [@composerinteralia]: https://github.com/composerinteralia
 [@koic]: https://github.com/koic
+[@bquorning]: https://github.com/bquorning

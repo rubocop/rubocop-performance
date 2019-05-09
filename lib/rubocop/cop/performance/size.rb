@@ -24,7 +24,7 @@ module RuboCop
       # TODO: Add advanced detection of variables that could
       # have been assigned to an array or a hash.
       class Size < Cop
-        MSG = 'Use `size` instead of `count`.'.freeze
+        MSG = 'Use `size` instead of `count`.'
 
         def on_send(node)
           return unless eligible_node?(node)
@@ -51,7 +51,7 @@ module RuboCop
         end
 
         def allowed_parent?(node)
-          node && node.block_type?
+          node&.block_type?
         end
 
         def array?(node)

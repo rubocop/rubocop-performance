@@ -58,9 +58,9 @@ module RuboCop
         include RangeHelp
 
         MSG = 'Reordering `when` conditions with a splat to the end ' \
-          'of the `when` branches can improve performance.'.freeze
+          'of the `when` branches can improve performance.'
         ARRAY_MSG = 'Pass the contents of array literals ' \
-          'directly to `when` conditions.'.freeze
+          'directly to `when` conditions.'
 
         def on_case(case_node)
           when_conditions = case_node.when_branches.flat_map(&:conditions)

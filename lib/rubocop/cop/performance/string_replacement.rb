@@ -21,12 +21,12 @@ module RuboCop
       class StringReplacement < Cop
         include RangeHelp
 
-        MSG = 'Use `%<prefer>s` instead of `%<current>s`.'.freeze
+        MSG = 'Use `%<prefer>s` instead of `%<current>s`.'
         DETERMINISTIC_REGEX = /\A(?:#{LITERAL_REGEX})+\Z/.freeze
-        DELETE = 'delete'.freeze
-        TR = 'tr'.freeze
-        BANG = '!'.freeze
-        SINGLE_QUOTE = "'".freeze
+        DELETE = 'delete'
+        TR = 'tr'
+        BANG = '!'
+        SINGLE_QUOTE = "'"
 
         def_node_matcher :string_replacement?, <<-PATTERN
           (send _ {:gsub :gsub!}

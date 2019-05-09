@@ -26,9 +26,9 @@ module RuboCop
         include SafeMode
 
         MSG = 'Use `%<prefer>s` instead of ' \
-              '`%<first_method>s.%<second_method>s`.'.freeze
+              '`%<first_method>s.%<second_method>s`.'
         REVERSE_MSG = 'Use `reverse.%<prefer>s` instead of ' \
-                      '`%<first_method>s.%<second_method>s`.'.freeze
+                      '`%<first_method>s.%<second_method>s`.'
 
         def_node_matcher :detect_candidate?, <<-PATTERN
           {

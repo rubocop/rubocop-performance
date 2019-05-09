@@ -11,8 +11,8 @@ module RuboCop
       #   hash.merge!({'key' => 'value'})
       #   hash.merge!(a: 1, b: 2)
       class RedundantMerge < Cop
-        AREF_ASGN = '%<receiver>s[%<key>s] = %<value>s'.freeze
-        MSG = 'Use `%<prefer>s` instead of `%<current>s`.'.freeze
+        AREF_ASGN = '%<receiver>s[%<key>s] = %<value>s'
+        MSG = 'Use `%<prefer>s` instead of `%<current>s`.'
 
         WITH_MODIFIER_CORRECTION = <<-RUBY.strip_indent
           %<keyword>s %<condition>s
