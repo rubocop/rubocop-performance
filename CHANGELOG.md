@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#48](https://github.com/rubocop-hq/rubocop-performance/issues/48): Reduce `Performance/RegexpMatch` false positive by only flagging `match` used with Regexp/String/Symbol literals. ([@dduugg][])
+
 ### Changes
 
 * [#52](https://github.com/rubocop-hq/rubocop-performance/issues/52): Drop support for Ruby 2.2. ([@bquorning][])
@@ -10,7 +14,7 @@
 
 ### Bug fixes
 
-* [#47](https://github.com/rubocop-hq/rubocop-performance/pull/47): Fix a false negartive for `Performance/RegexpMatch` when using RuboCop 0.68 or higher. ([@koic][])
+* [#47](https://github.com/rubocop-hq/rubocop-performance/pull/47): Fix a false negative for `Performance/RegexpMatch` when using RuboCop 0.68 or higher. ([@koic][])
 
 ## 1.1.0 (2019-04-08)
 
@@ -28,3 +32,4 @@
 [@composerinteralia]: https://github.com/composerinteralia
 [@koic]: https://github.com/koic
 [@bquorning]: https://github.com/bquorning
+[@dduugg]: https://github.com/dduugg

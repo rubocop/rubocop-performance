@@ -381,5 +381,13 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
         end
       RUBY
     end
+
+    it 'accepts match without explicit regexp/str/sym use' do
+      expect_no_offenses(<<-RUBY)
+        if CONST.match(var)
+          do_something
+        end
+      RUBY
+    end
   end
 end
