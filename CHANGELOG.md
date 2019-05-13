@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 1.3.0 (2019-05-13)
+
 ### Bug fixes
 
 * [#48](https://github.com/rubocop-hq/rubocop-performance/issues/48): Reduce `Performance/RegexpMatch` false positive by only flagging `match` used with Regexp/String/Symbol literals. ([@dduugg][])
