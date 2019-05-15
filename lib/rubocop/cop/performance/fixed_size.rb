@@ -53,7 +53,7 @@ module RuboCop
         MATCHER
 
         def on_send(node)
-          return if allowed_parent?(node.parent)
+          return if node.ancestors.any? { |ancestor| allowed_parent?(ancestor) }
 
           counter(node) do |var, arg|
             return if allowed_variable?(var) || allowed_argument?(arg)
