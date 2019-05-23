@@ -38,7 +38,7 @@ module RuboCop
       #   # good
       #   [1, 2, *thud].count
       #   garply = [1, 2, 3]
-      #   garly.size
+      #   garply.size
       #
       #   # good
       #   { a: corge, **grault }.length
