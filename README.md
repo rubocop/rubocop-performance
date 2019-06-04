@@ -32,6 +32,14 @@ Put this into your `.rubocop.yml`.
 require: rubocop-performance
 ```
 
+Alternatively, use the following array notation when specifying multiple extensions.
+
+```yaml
+require:
+  - rubocop-other-extension
+  - rubocop-performance
+```
+
 Now you can run `rubocop` and it will automatically load the RuboCop Performance
 cops together with the standard cops.
 
