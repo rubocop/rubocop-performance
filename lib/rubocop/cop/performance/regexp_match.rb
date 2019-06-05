@@ -85,10 +85,13 @@ module RuboCop
 
         def_node_matcher :match_method?, <<-PATTERN
           {
-            (send _recv :match _ <int ...>)
             (send _recv :match {regexp str sym})
             (send {regexp str sym} :match _)
           }
+        PATTERN
+
+        def_node_matcher :match_with_int_arg_method?, <<-PATTERN
+          (send _recv :match _ (int ...))
         PATTERN
 
         def_node_matcher :match_operator?, <<-PATTERN
@@ -109,6 +112,7 @@ module RuboCop
         MATCH_NODE_PATTERN = <<-PATTERN
           {
             #match_method?
+            #match_with_int_arg_method?
             #match_operator?
             #match_threequals?
             #match_with_lvasgn?
@@ -143,7 +147,7 @@ module RuboCop
 
         def autocorrect(node)
           lambda do |corrector|
-            if match_method?(node)
+            if match_method?(node) || match_with_int_arg_method?(node)
               corrector.replace(node.loc.selector, 'match?')
             elsif match_operator?(node) || match_threequals?(node)
               recv, oper, arg = *node
