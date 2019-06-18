@@ -89,6 +89,9 @@ Performance/Caller:
   Exclude:
     - spec/rubocop/cop/performance/caller_spec.rb
 
+Performance/ChainArrayAllocation:
+  Enabled: false
+
 RSpec/PredicateMatcher:
   EnforcedStyle: explicit
 
