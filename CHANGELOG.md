@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 1.4.0 (2019-06-20)
+
 ### Bug fixes
 
 * [#54](https://github.com/rubocop-hq/rubocop-performance/issues/54): Fix `Performance/FixedSize` to accept const assign with some operation. ([@tejasbubane][])

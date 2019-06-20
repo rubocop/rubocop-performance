@@ -3,7 +3,7 @@
 module RuboCop
   module Performance
     module Version
-      STRING = '1.3.0'
+      STRING = '1.4.0'
     end
   end
 end
