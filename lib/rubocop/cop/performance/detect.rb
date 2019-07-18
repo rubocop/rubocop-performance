@@ -23,8 +23,6 @@ module RuboCop
       # own meaning. Correcting ActiveRecord methods with this cop should be
       # considered unsafe.
       class Detect < Cop
-        include SafeMode
-
         MSG = 'Use `%<prefer>s` instead of ' \
               '`%<first_method>s.%<second_method>s`.'
         REVERSE_MSG = 'Use `reverse.%<prefer>s` instead of ' \
@@ -38,8 +36,6 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          return if rails_safe_mode?
-
           detect_candidate?(node) do |receiver, second_method, args|
             return unless args.empty?
             return unless receiver

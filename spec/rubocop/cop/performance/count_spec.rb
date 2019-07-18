@@ -271,28 +271,4 @@ RSpec.describe RuboCop::Cop::Performance::Count do
       end
     end
   end
-
-  context 'SafeMode true' do
-    subject(:cop) { described_class.new(config) }
-
-    let(:config) do
-      RuboCop::Config.new(
-        'Rails' => {
-          'Enabled' => true
-        },
-        'Performance/Count' => {
-          'SafeMode' => true
-        }
-      )
-    end
-
-    shared_examples 'selectors' do |selector|
-      it "allows using array.#{selector}...size" do
-        expect_no_offenses("[1, 2, 3].#{selector} { |e| e.even? }.size")
-      end
-    end
-
-    it_behaves_like('selectors', 'select')
-    it_behaves_like('selectors', 'reject')
-  end
 end

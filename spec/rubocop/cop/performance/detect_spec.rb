@@ -212,28 +212,4 @@ RSpec.describe RuboCop::Cop::Performance::Detect do
     it_behaves_like 'detect_autocorrect', 'detect'
     it_behaves_like 'detect_autocorrect', 'find'
   end
-
-  context 'SafeMode true' do
-    let(:config) do
-      RuboCop::Config.new(
-        'Rails' => {
-          'Enabled' => true
-        },
-        'Style/CollectionMethods' => {
-          'PreferredMethods' => {
-            'detect' => collection_method
-          }
-        },
-        'Performance/Detect' => {
-          'SafeMode' => true
-        }
-      )
-    end
-
-    select_methods.each do |method|
-      it "doesn't register an offense when first is called on #{method}" do
-        expect_no_offenses("[1, 2, 3].#{method} { |i| i % 2 == 0 }.first")
-      end
-    end
-  end
 end
