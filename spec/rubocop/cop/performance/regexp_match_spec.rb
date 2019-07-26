@@ -38,6 +38,18 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
       end
     RUBY2
 
+    include_examples 'offense', "#{name} in if condition", <<-RUBY, <<-RUBY2
+      do_something if #{cond}
+    RUBY
+      do_something if #{correction}
+    RUBY2
+
+    include_examples 'offense', "#{name} in unless condition", <<-RUBY, <<-RUBY2
+      do_something unless #{cond}
+    RUBY
+      do_something unless #{correction}
+    RUBY2
+
     include_examples 'offense', "#{name} in elsif condition", <<-RUBY, <<-RUBY2
       if cond
         do_something

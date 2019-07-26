@@ -177,15 +177,23 @@ module RuboCop
           scope_root = scope_root(match_node)
           body = scope_root ? scope_body(scope_root) : match_node.ancestors.last
 
-          return true if match_node.parent.if_type? &&
-                         match_node.parent.modifier_form?
+          range =
+            if match_node.parent.if_type? && match_node.parent.modifier_form?
+              if_branch_range(match_node)
+            else
+              match_node_pos = match_node.loc.expression.begin_pos
+              next_match_pos = next_match_pos(body, match_node_pos, scope_root)
 
-          match_node_pos = match_node.loc.expression.begin_pos
-
-          next_match_pos = next_match_pos(body, match_node_pos, scope_root)
-          range = match_node_pos..next_match_pos
+              match_node_pos..next_match_pos
+            end
 
           find_last_match(body, range, scope_root)
+        end
+
+        def if_branch_range(match_node)
+          expression = match_node.parent.if_branch.loc.expression
+
+          expression.begin_pos..expression.end_pos
         end
 
         def next_match_pos(body, match_node_pos, scope_root)
