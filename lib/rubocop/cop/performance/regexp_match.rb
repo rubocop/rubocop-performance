@@ -177,30 +177,41 @@ module RuboCop
           scope_root = scope_root(match_node)
           body = scope_root ? scope_body(scope_root) : match_node.ancestors.last
 
-          range =
-            if match_node.parent.if_type? && match_node.parent.modifier_form?
-              if_branch_range(match_node)
-            else
-              match_node_pos = match_node.loc.expression.begin_pos
-              next_match_pos = next_match_pos(body, match_node_pos, scope_root)
-
-              match_node_pos..next_match_pos
-            end
+          range = range_to_search_for_last_matches(match_node, body, scope_root)
 
           find_last_match(body, range, scope_root)
         end
 
-        def if_branch_range(match_node)
-          expression = match_node.parent.if_branch.loc.expression
+        def range_to_search_for_last_matches(match_node, body, scope_root)
+          expression = if (modifier_form = modifier_form?(match_node))
+                         match_node.parent.if_branch.loc.expression
+                       else
+                         match_node.loc.expression
+                       end
 
-          expression.begin_pos..expression.end_pos
+          match_node_pos = expression.begin_pos
+          next_match_pos = next_match_pos(
+            body, match_node_pos, scope_root, modifier_form
+          )
+
+          match_node_pos..next_match_pos
         end
 
-        def next_match_pos(body, match_node_pos, scope_root)
+        def modifier_form?(match_node)
+          match_node.parent.if_type? && match_node.parent.modifier_form?
+        end
+
+        def next_match_pos(body, match_node_pos, scope_root, modifier_form)
           node = search_match_nodes(body).find do |match|
-            match.loc.expression.begin_pos > match_node_pos &&
-              scope_root(match) == scope_root
+            begin_pos = if modifier_form
+                          match.parent.if_branch.loc.expression.begin_pos
+                        else
+                          match.loc.expression.begin_pos
+                        end
+
+            begin_pos > match_node_pos && scope_root(match) == scope_root
           end
+
           node ? node.loc.expression.begin_pos : Float::INFINITY
         end
 

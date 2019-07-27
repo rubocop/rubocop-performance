@@ -138,6 +138,37 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
         RUBY
       end
 
+      it "accepts #{name} in guard condition with " \
+         "#{var} is used in the line after that" do
+        expect_no_offenses(<<-RUBY)
+          def foo
+            return if #{cond}
+
+            do_something(#{var})
+          end
+        RUBY
+      end
+
+      include_examples 'offense',
+                       "#{name} in if guard condition with " \
+                       "#{var} is used in another method", <<-RUBY, <<-RUBY2
+        def foo
+          return if #{cond}
+        end
+
+        def bar
+          do_something(#{var})
+        end
+      RUBY
+        def foo
+          return if #{correction}
+        end
+
+        def bar
+          do_something(#{var})
+        end
+      RUBY2
+
       it "accepts #{name} in method with #{var} in block" do
         expect_no_offenses(<<-RUBY)
           def foo
