@@ -432,5 +432,17 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
         end
       RUBY
     end
+
+    it 'registers an offense when a regexp used independently ' \
+       'with a regexp used in `if` are mixed' do
+      expect_offense(<<-RUBY)
+        def foo
+          /re/ === re # A regexp used independently is not yet supported.
+
+          do_something if /re/ === re
+                          ^^^^^^^^^^^ Use `match?` instead of `===` when `MatchData` is not used.
+        end
+      RUBY
+    end
   end
 end

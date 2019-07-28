@@ -183,27 +183,21 @@ module RuboCop
         end
 
         def range_to_search_for_last_matches(match_node, body, scope_root)
-          expression = if (modifier_form = modifier_form?(match_node))
+          expression = if modifier_form?(match_node)
                          match_node.parent.if_branch.loc.expression
                        else
                          match_node.loc.expression
                        end
 
           match_node_pos = expression.begin_pos
-          next_match_pos = next_match_pos(
-            body, match_node_pos, scope_root, modifier_form
-          )
+          next_match_pos = next_match_pos(body, match_node_pos, scope_root)
 
           match_node_pos..next_match_pos
         end
 
-        def modifier_form?(match_node)
-          match_node.parent.if_type? && match_node.parent.modifier_form?
-        end
-
-        def next_match_pos(body, match_node_pos, scope_root, modifier_form)
+        def next_match_pos(body, match_node_pos, scope_root)
           node = search_match_nodes(body).find do |match|
-            begin_pos = if modifier_form
+            begin_pos = if modifier_form?(match)
                           match.parent.if_branch.loc.expression.begin_pos
                         else
                           match.loc.expression.begin_pos
@@ -213,6 +207,10 @@ module RuboCop
           end
 
           node ? node.loc.expression.begin_pos : Float::INFINITY
+        end
+
+        def modifier_form?(match_node)
+          match_node.parent.if_type? && match_node.parent.modifier_form?
         end
 
         def find_last_match(body, range, scope_root)
