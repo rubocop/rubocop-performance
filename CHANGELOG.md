@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 1.4.1 (2019-07-29)
+
 ### Bug fixes
 
 * [#67](https://github.com/rubocop-hq/rubocop-performance/issues/67): Fix an error for `Performance/RedundantMerge` when `MaxKeyValuePairs` option is set to `null`. ([@koic][])
