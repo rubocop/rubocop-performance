@@ -38,6 +38,18 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
       end
     RUBY2
 
+    include_examples 'offense', "#{name} in if condition", <<-RUBY, <<-RUBY2
+      do_something if #{cond}
+    RUBY
+      do_something if #{correction}
+    RUBY2
+
+    include_examples 'offense', "#{name} in unless condition", <<-RUBY, <<-RUBY2
+      do_something unless #{cond}
+    RUBY
+      do_something unless #{correction}
+    RUBY2
+
     include_examples 'offense', "#{name} in elsif condition", <<-RUBY, <<-RUBY2
       if cond
         do_something
@@ -125,6 +137,37 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
           end
         RUBY
       end
+
+      it "accepts #{name} in guard condition with " \
+         "#{var} is used in the line after that" do
+        expect_no_offenses(<<-RUBY)
+          def foo
+            return if #{cond}
+
+            do_something(#{var})
+          end
+        RUBY
+      end
+
+      include_examples 'offense',
+                       "#{name} in if guard condition with " \
+                       "#{var} is used in another method", <<-RUBY, <<-RUBY2
+        def foo
+          return if #{cond}
+        end
+
+        def bar
+          do_something(#{var})
+        end
+      RUBY
+        def foo
+          return if #{correction}
+        end
+
+        def bar
+          do_something(#{var})
+        end
+      RUBY2
 
       it "accepts #{name} in method with #{var} in block" do
         expect_no_offenses(<<-RUBY)
@@ -386,6 +429,18 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
       expect_no_offenses(<<-RUBY)
         if CONST.match(var)
           do_something
+        end
+      RUBY
+    end
+
+    it 'registers an offense when a regexp used independently ' \
+       'with a regexp used in `if` are mixed' do
+      expect_offense(<<-RUBY)
+        def foo
+          /re/ === re # A regexp used independently is not yet supported.
+
+          do_something if /re/ === re
+                          ^^^^^^^^^^^ Use `match?` instead of `===` when `MatchData` is not used.
         end
       RUBY
     end
