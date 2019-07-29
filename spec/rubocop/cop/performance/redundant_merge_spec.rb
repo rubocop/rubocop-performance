@@ -261,4 +261,18 @@ RSpec.describe RuboCop::Cop::Performance::RedundantMerge, :config do
       RUBY
     end
   end
+
+  context 'when MaxKeyValuePairs is set to nil' do
+    let(:cop_config) do
+      { 'MaxKeyValuePairs' => nil }
+    end
+
+    it 'does not raise `TypeError`' do
+      expect_offense(<<~RUBY)
+        hash = {}
+        hash.merge!(a: 1, b: 2)
+        ^^^^^^^^^^^^^^^^^^^^^^^ Use `hash[:a] = 1; hash[:b] = 2` instead of `hash.merge!(a: 1, b: 2)`.
+      RUBY
+    end
+  end
 end
