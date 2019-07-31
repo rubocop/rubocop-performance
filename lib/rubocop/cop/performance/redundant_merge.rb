@@ -132,7 +132,7 @@ module RuboCop
         end
 
         def max_key_value_pairs
-          Integer(cop_config['MaxKeyValuePairs']) || 2
+          Integer(cop_config['MaxKeyValuePairs'] || 2)
         end
 
         # A utility class for checking the use of values within an
