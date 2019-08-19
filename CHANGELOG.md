@@ -19,6 +19,9 @@
 ### Bug fixes
 
 * [#54](https://github.com/rubocop-hq/rubocop-performance/issues/54): Fix `Performance/FixedSize` to accept const assign with some operation. ([@tejasbubane][])
+
+### Changes
+
 * [#61](https://github.com/rubocop-hq/rubocop-performance/pull/61): Fix a false negative for `Performance/RegexpMatch` when using RuboCop 0.71 or higher. ([@koic][])
 
 ## 1.3.0 (2019-05-13)
