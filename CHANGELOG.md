@@ -5,6 +5,7 @@
 ### Bug fixes
 
 * [#74](https://github.com/rubocop-hq/rubocop-performance/pull/74): Fix an error for `Performance/RedundantMerge` when `MaxKeyValuePairs` option is set to `null`. ([@koic][])
+* [#69](https://github.com/rubocop-hq/rubocop-performance/issues/69): Remove `SafeMode` from `Performance/Count` and `Performance/Detect`. Set `SafeAutoCorrect` to `false` for these cops by default. ([@rrosenblum][])
 
 ## 1.4.1 (2019-07-29)
 
@@ -54,3 +55,4 @@
 [@bquorning]: https://github.com/bquorning
 [@dduugg]: https://github.com/dduugg
 [@tejasbubane]: https://github.com/tejasbubane
+[@rrosenblum]: https://github.com/rrosenblum

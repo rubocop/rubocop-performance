@@ -38,7 +38,6 @@ module RuboCop
       #
       #   Model.where(id: [1, 2, 3]).to_a.count { |m| m.method == true }
       class Count < Cop
-        include SafeMode
         include RangeHelp
 
         MSG = 'Use `count` instead of `%<selector>s...%<counter>s`.'
@@ -51,8 +50,6 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          return if rails_safe_mode?
-
           count_candidate?(node) do |selector_node, selector, counter|
             return unless eligible_node?(node)
 

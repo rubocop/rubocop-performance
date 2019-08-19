@@ -44,11 +44,10 @@ Performance/Count:
   # This cop has known compatibility issues with `ActiveRecord` and other
   # frameworks. ActiveRecord's `count` ignores the block that is passed to it.
   # For more information, see the documentation in the cop itself.
-  # If you understand the known risk, you can disable `SafeMode`.
-  SafeMode: true
+  SafeAutoCorrect: false
   Enabled: true
   VersionAdded: '0.31'
-  VersionChanged: '0.39'
+  VersionChanged: '1.5'
 
 Performance/Detect:
   Description: >-
@@ -59,10 +58,10 @@ Performance/Detect:
   # frameworks. `ActiveRecord` does not implement a `detect` method and `find`
   # has its own meaning. Correcting `ActiveRecord` methods with this cop
   # should be considered unsafe.
-  SafeMode: true
+  SafeAutoCorrect: false
   Enabled: true
   VersionAdded: '0.30'
-  VersionChanged: '0.39'
+  VersionChanged: '1.5'
 
 Performance/DoubleStartEndWith:
   Description: >-

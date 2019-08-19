@@ -184,7 +184,7 @@ array.sort_by { |a| a[:foo] }
 
 Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 --- | --- | --- | --- | ---
-Enabled | Yes | Yes  | 0.31 | 0.39
+Enabled | Yes | Yes (Unsafe) | 0.31 | 1.5
 
 This cop is used to identify usages of `count` on an `Enumerable` that
 follow calls to `select` or `reject`. Querying logic can instead be
@@ -224,17 +224,11 @@ Model.select('field AS field_one').count
 Model.select(:value).count
 ```
 
-### Configurable attributes
-
-Name | Default value | Configurable values
---- | --- | ---
-SafeMode | `true` | Boolean
-
 ## Performance/Detect
 
 Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 --- | --- | --- | --- | ---
-Enabled | Yes | Yes  | 0.30 | 0.39
+Enabled | Yes | Yes (Unsafe) | 0.30 | 1.5
 
 This cop is used to identify usages of
 `select.first`, `select.last`, `find_all.first`, and `find_all.last`
@@ -258,12 +252,6 @@ considered unsafe.
 [].detect { |item| true }
 [].reverse.detect { |item| true }
 ```
-
-### Configurable attributes
-
-Name | Default value | Configurable values
---- | --- | ---
-SafeMode | `true` | Boolean
 
 ### References
 
