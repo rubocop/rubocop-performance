@@ -5,6 +5,9 @@
 ### Bug fixes
 
 * [#74](https://github.com/rubocop-hq/rubocop-performance/pull/74): Fix an error for `Performance/RedundantMerge` when `MaxKeyValuePairs` option is set to `null`. ([@koic][])
+
+### Changes
+
 * [#69](https://github.com/rubocop-hq/rubocop-performance/issues/69): Remove `SafeMode` from `Performance/Count` and `Performance/Detect`. Set `SafeAutoCorrect` to `false` for these cops by default. ([@rrosenblum][])
 
 ## 1.4.1 (2019-07-29)
@@ -19,9 +22,6 @@
 ### Bug fixes
 
 * [#54](https://github.com/rubocop-hq/rubocop-performance/issues/54): Fix `Performance/FixedSize` to accept const assign with some operation. ([@tejasbubane][])
-
-### Changes
-
 * [#61](https://github.com/rubocop-hq/rubocop-performance/pull/61): Fix a false negative for `Performance/RegexpMatch` when using RuboCop 0.71 or higher. ([@koic][])
 
 ## 1.3.0 (2019-05-13)
