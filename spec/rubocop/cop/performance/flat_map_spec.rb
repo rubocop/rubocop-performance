@@ -12,6 +12,22 @@ RSpec.describe RuboCop::Cop::Performance::FlatMap, :config do
       expect(cop.highlights).to eq(["#{method} { |e| [e, e] }.#{flatten}(1)"])
     end
 
+    it "registers an offense when calling #{method}(&:foo).#{flatten}(1)" do
+      inspect_source("[1, 2, 3, 4].#{method}(&:foo).#{flatten}(1)")
+
+      expect(cop.messages)
+        .to eq(["Use `flat_map` instead of `#{method}...#{flatten}`."])
+      expect(cop.highlights).to eq(["#{method}(&:foo).#{flatten}(1)"])
+    end
+
+    it "registers an offense when calling #{method}(&foo).#{flatten}(1)" do
+      inspect_source("[1, 2, 3, 4].#{method}(&foo).#{flatten}(1)")
+
+      expect(cop.messages)
+        .to eq(["Use `flat_map` instead of `#{method}...#{flatten}`."])
+      expect(cop.highlights).to eq(["#{method}(&foo).#{flatten}(1)"])
+    end
+
     it "does not register an offense when calling #{method}...#{flatten} " \
       'with a number greater than 1' do
       expect_no_offenses("[1, 2, 3, 4].#{method} { |e| [e, e] }.#{flatten}(3)")
@@ -26,6 +42,20 @@ RSpec.describe RuboCop::Cop::Performance::FlatMap, :config do
       new_source = autocorrect_source(source)
 
       expect(new_source).to eq('[1, 2].flat_map { |e| [e, e] }')
+    end
+
+    it "corrects #{method}(&:foo).#{flatten} to flat_map" do
+      source = "[1, 2].#{method}(&:foo).#{flatten}(1)"
+      new_source = autocorrect_source(source)
+
+      expect(new_source).to eq('[1, 2].flat_map(&:foo)')
+    end
+
+    it "corrects #{method}(&foo).#{flatten} to flat_map" do
+      source = "[1, 2].#{method}(&:foo).#{flatten}(1)"
+      new_source = autocorrect_source(source)
+
+      expect(new_source).to eq('[1, 2].flat_map(&:foo)')
     end
   end
 

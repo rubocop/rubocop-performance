@@ -5,6 +5,7 @@
 ### Bug fixes
 
 * [#74](https://github.com/rubocop-hq/rubocop-performance/pull/74): Fix an error for `Performance/RedundantMerge` when `MaxKeyValuePairs` option is set to `null`. ([@koic][])
+* [#70](https://github.com/rubocop-hq/rubocop-performance/issues/70): This PR fixes a false negative for `Performance/FlatMap` when using symbol to proc operator argument of `map` method. ([@koic][], [@splattael][])
 
 ### Changes
 
@@ -59,3 +60,4 @@
 [@dduugg]: https://github.com/dduugg
 [@tejasbubane]: https://github.com/tejasbubane
 [@rrosenblum]: https://github.com/rrosenblum
+[@splattael]: https://github.com/splattael
