@@ -23,7 +23,14 @@ module RuboCop
                                   'multiple levels.'
 
         def_node_matcher :flat_map_candidate?, <<-PATTERN
-          (send (block $(send _ ${:collect :map}) ...) ${:flatten :flatten!} $...)
+          (send
+            {
+              (block $(send _ ${:collect :map}) ...)
+              $(send _ ${:collect :map} (block_pass _))
+            }
+            ${:flatten :flatten!}
+            $...
+          )
         PATTERN
 
         def on_send(node)
