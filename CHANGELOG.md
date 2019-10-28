@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#82](https://github.com/rubocop-hq/rubocop-performance/pull/82): Let `Performance/StartWith` and `Performance/EndWith` correct `Regexp#match?` and `Regexp#=~`. ([@eugeneius][])
+
 ## 1.5.0 (2019-10-01)
 
 ### Bug fixes
@@ -63,3 +67,4 @@
 [@tejasbubane]: https://github.com/tejasbubane
 [@rrosenblum]: https://github.com/rrosenblum
 [@splattael]: https://github.com/splattael
+[@eugeneius]: https://github.com/eugeneius

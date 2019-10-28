@@ -301,8 +301,11 @@ would suffice.
 ```ruby
 # bad
 'abc'.match?(/bc\Z/)
+/bc\Z/.match?('abc')
 'abc' =~ /bc\Z/
+/bc\Z/ =~ 'abc'
 'abc'.match(/bc\Z/)
+/bc\Z/.match('abc')
 
 # good
 'abc'.end_with?('bc')
@@ -752,8 +755,11 @@ This cop identifies unnecessary use of a regex where
 ```ruby
 # bad
 'abc'.match?(/\Aab/)
+/\Aab/.match?('abc')
 'abc' =~ /\Aab/
+/\Aab/ =~ 'abc'
 'abc'.match(/\Aab/)
+/\Aab/.match('abc')
 
 # good
 'abc'.start_with?('ab')

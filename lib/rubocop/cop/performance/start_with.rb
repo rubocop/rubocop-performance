@@ -9,8 +9,11 @@ module RuboCop
       # @example
       #   # bad
       #   'abc'.match?(/\Aab/)
+      #   /\Aab/.match?('abc')
       #   'abc' =~ /\Aab/
+      #   /\Aab/ =~ 'abc'
       #   'abc'.match(/\Aab/)
+      #   /\Aab/.match('abc')
       #
       #   # good
       #   'abc'.start_with?('ab')
@@ -21,7 +24,8 @@ module RuboCop
 
         def_node_matcher :redundant_regex?, <<-PATTERN
           {(send $!nil? {:match :=~ :match?} (regexp (str $#literal_at_start?) (regopt)))
-           (send (regexp (str $#literal_at_start?) (regopt)) {:match :=~} $_)}
+           (send (regexp (str $#literal_at_start?) (regopt)) {:match :match?} $_)
+           (match-with-lvasgn (regexp (str $#literal_at_start?) (regopt)) $_)}
         PATTERN
 
         def literal_at_start?(regex_str)
@@ -39,6 +43,7 @@ module RuboCop
 
           add_offense(node)
         end
+        alias on_match_with_lvasgn on_send
 
         def autocorrect(node)
           redundant_regex?(node) do |receiver, regex_str|
