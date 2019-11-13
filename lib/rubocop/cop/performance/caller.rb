@@ -51,7 +51,7 @@ module RuboCop
           caller_arg = node.receiver.first_argument
           n = caller_arg ? int_value(caller_arg) : 1
 
-          if node.method_name == :[]
+          if node.method?(:[])
             m = int_value(node.first_argument)
             n += m
             format(MSG_BRACE, n: n, m: m, method: method_name)

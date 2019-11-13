@@ -60,7 +60,7 @@ module RuboCop
 
           _, constant = *node.receiver
 
-          constant == :Array || node.method_name == :to_a
+          constant == :Array || node.method?(:to_a)
         end
 
         def hash?(node)
@@ -69,7 +69,7 @@ module RuboCop
 
           _, constant = *node.receiver
 
-          constant == :Hash || node.method_name == :to_h
+          constant == :Hash || node.method?(:to_h)
         end
       end
     end
