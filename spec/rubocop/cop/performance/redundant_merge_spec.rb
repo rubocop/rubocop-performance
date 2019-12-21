@@ -235,6 +235,12 @@ RSpec.describe RuboCop::Cop::Performance::RedundantMerge, :config do
     end
   end
 
+  it 'does not register an offense when using an empty hash argument' do
+    expect_no_offenses(<<~RUBY)
+      foo.merge!({})
+    RUBY
+  end
+
   it "doesn't register an error when return value is used" do
     expect_no_offenses(<<~RUBY)
       variable = hash.merge!(a: 1)

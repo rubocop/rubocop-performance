@@ -65,7 +65,8 @@ module RuboCop
         end
 
         def non_redundant_merge?(node, receiver, pairs)
-          non_redundant_pairs?(receiver, pairs) ||
+          pairs.empty? ||
+            non_redundant_pairs?(receiver, pairs) ||
             kwsplat_used?(pairs) ||
             non_redundant_value_used?(receiver, node)
         end
