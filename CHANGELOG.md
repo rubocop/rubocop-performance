@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 1.5.2 (2019-12-25)
+
 ### Bug fixes
 
 * [#86](https://github.com/rubocop-hq/rubocop-performance/issues/86): Fix an incorrect autocorrect for `Performance/RedundantMerge` when using an empty hash argument. ([@koic][])
