@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#77](https://github.com/rubocop-hq/rubocop-performance/issues/77): Add new `Performance/BindCall` cop. ([@koic][])
+
 ## 1.5.2 (2019-12-25)
 
 ### Bug fixes

@@ -1,5 +1,10 @@
 # This is the default configuration file.
 
+Performance/BindCall:
+  Description: 'Use `bind_call(obj, args, ...)` instead of `bind(obj).call(args, ...)`.'
+  Enabled: true
+  VersionAdded: '1.6'
+
 Performance/Caller:
   Description: >-
              Use `caller(n..n)` instead of `caller`.
