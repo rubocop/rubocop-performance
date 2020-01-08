@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative 'performance/bind_call'
 require_relative 'performance/caller'
 require_relative 'performance/case_when_splat'
 require_relative 'performance/casecmp'

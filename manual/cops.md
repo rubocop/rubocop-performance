@@ -1,6 +1,7 @@
 <!-- START_COP_LIST -->
 #### Department [Performance](cops_performance.md)
 
+* [Performance/BindCall](cops_performance.md#performancebindcall)
 * [Performance/Caller](cops_performance.md#performancecaller)
 * [Performance/CaseWhenSplat](cops_performance.md#performancecasewhensplat)
 * [Performance/Casecmp](cops_performance.md#performancecasecmp)
