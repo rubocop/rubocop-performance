@@ -16,7 +16,7 @@ gem install rubocop-performance
 or if you use bundler put this in your `Gemfile`
 
 ```ruby
-gem 'rubocop-performance'
+gem 'rubocop-performance', require: false
 ```
 
 ## Usage
