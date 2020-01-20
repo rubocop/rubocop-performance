@@ -20,11 +20,11 @@ module RuboCop
           %<leading_space>send
         RUBY
 
-        def_node_matcher :redundant_merge_candidate, <<-PATTERN
+        def_node_matcher :redundant_merge_candidate, <<~PATTERN
           (send $!nil? :merge! [(hash $...) !kwsplat_type?])
         PATTERN
 
-        def_node_matcher :modifier_flow_control?, <<-PATTERN
+        def_node_matcher :modifier_flow_control?, <<~PATTERN
           [{if while until} modifier_form?]
         PATTERN
 
@@ -174,7 +174,7 @@ module RuboCop
             receiver
           end
 
-          def_node_matcher :each_with_object_node, <<-PATTERN
+          def_node_matcher :each_with_object_node, <<~PATTERN
             (block (send _ :each_with_object _) (args _ $_) ...)
           PATTERN
         end

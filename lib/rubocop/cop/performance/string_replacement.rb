@@ -28,7 +28,7 @@ module RuboCop
         BANG = '!'
         SINGLE_QUOTE = "'"
 
-        def_node_matcher :string_replacement?, <<-PATTERN
+        def_node_matcher :string_replacement?, <<~PATTERN
           (send _ {:gsub :gsub!}
                     ${regexp str (send (const nil? :Regexp) {:new :compile} _)}
                     $str)

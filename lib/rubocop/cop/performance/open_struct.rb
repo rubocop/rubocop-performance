@@ -31,7 +31,7 @@ module RuboCop
         MSG = 'Consider using `Struct` over `OpenStruct` ' \
               'to optimize the performance.'
 
-        def_node_matcher :open_struct, <<-PATTERN
+        def_node_matcher :open_struct, <<~PATTERN
           (send (const {nil? cbase} :OpenStruct) :new ...)
         PATTERN
 

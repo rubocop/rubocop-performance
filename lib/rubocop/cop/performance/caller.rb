@@ -24,14 +24,14 @@ module RuboCop
         MSG_FIRST = 'Use `%<method>s(%<n>d..%<n>d).first`' \
                     ' instead of `%<method>s.first`.'
 
-        def_node_matcher :slow_caller?, <<-PATTERN
+        def_node_matcher :slow_caller?, <<~PATTERN
           {
             (send nil? {:caller :caller_locations})
             (send nil? {:caller :caller_locations} int)
           }
         PATTERN
 
-        def_node_matcher :caller_with_scope_method?, <<-PATTERN
+        def_node_matcher :caller_with_scope_method?, <<~PATTERN
           {
             (send #slow_caller? :first)
             (send #slow_caller? :[] int)

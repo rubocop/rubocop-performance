@@ -22,7 +22,7 @@ module RuboCop
               'the end of the string.'
         SINGLE_QUOTE = "'"
 
-        def_node_matcher :redundant_regex?, <<-PATTERN
+        def_node_matcher :redundant_regex?, <<~PATTERN
           {(send $!nil? {:match :=~ :match?} (regexp (str $#literal_at_end?) (regopt)))
            (send (regexp (str $#literal_at_end?) (regopt)) {:match :match?} $_)
            (match-with-lvasgn (regexp (str $#literal_at_end?) (regopt)) $_)}

@@ -23,12 +23,12 @@ module RuboCop
 
         # 'match' is a fairly generic name, so we don't flag it unless we see
         # a string or regexp literal on one side or the other
-        def_node_matcher :match_call?, <<-PATTERN
+        def_node_matcher :match_call?, <<~PATTERN
           {(send {str regexp} :match _)
            (send !nil? :match {str regexp})}
         PATTERN
 
-        def_node_matcher :only_truthiness_matters?, <<-PATTERN
+        def_node_matcher :only_truthiness_matters?, <<~PATTERN
           ^({if while until case while_post until_post} equal?(%0) ...)
         PATTERN
 

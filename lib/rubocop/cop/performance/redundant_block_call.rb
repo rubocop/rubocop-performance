@@ -29,16 +29,16 @@ module RuboCop
         CLOSE_PAREN = ')'
         SPACE = ' '
 
-        def_node_matcher :blockarg_def, <<-PATTERN
+        def_node_matcher :blockarg_def, <<~PATTERN
           {(def  _   (args ... (blockarg $_)) $_)
            (defs _ _ (args ... (blockarg $_)) $_)}
         PATTERN
 
-        def_node_search :blockarg_calls, <<-PATTERN
+        def_node_search :blockarg_calls, <<~PATTERN
           (send (lvar %1) :call ...)
         PATTERN
 
-        def_node_search :blockarg_assigned?, <<-PATTERN
+        def_node_search :blockarg_assigned?, <<~PATTERN
           (lvasgn %1 ...)
         PATTERN
 

@@ -18,7 +18,7 @@ module RuboCop
         MSG = 'Use `reverse_each` instead of `reverse.each`.'
         UNDERSCORE = '_'
 
-        def_node_matcher :reverse_each?, <<-MATCHER
+        def_node_matcher :reverse_each?, <<~MATCHER
           (send $(send _ :reverse) :each)
         MATCHER
 

@@ -30,11 +30,11 @@ module RuboCop
 
         MSG = 'Use unary plus to get an unfrozen string literal.'
 
-        def_node_matcher :dup_string?, <<-PATTERN
+        def_node_matcher :dup_string?, <<~PATTERN
           (send {str dstr} :dup)
         PATTERN
 
-        def_node_matcher :string_new?, <<-PATTERN
+        def_node_matcher :string_new?, <<~PATTERN
           {
             (send (const nil? :String) :new {str dstr})
             (send (const nil? :String) :new)
