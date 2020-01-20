@@ -30,14 +30,14 @@ module RuboCop
               '`%<compare_method>s { |%<var_a>s, %<var_b>s| %<str_a>s ' \
               '<=> %<str_b>s }`.'
 
-        def_node_matcher :compare?, <<-PATTERN
+        def_node_matcher :compare?, <<~PATTERN
           (block
             $(send _ {:sort :min :max})
             (args (arg $_a) (arg $_b))
             $send)
         PATTERN
 
-        def_node_matcher :replaceable_body?, <<-PATTERN
+        def_node_matcher :replaceable_body?, <<~PATTERN
           (send
             (send (lvar %1) $_method $...)
             :<=>

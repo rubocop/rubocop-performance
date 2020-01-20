@@ -21,21 +21,21 @@ module RuboCop
         MSG = 'Use `%<good>s` instead of `%<bad>s`.'
         CASE_METHODS = %i[downcase upcase].freeze
 
-        def_node_matcher :downcase_eq, <<-PATTERN
+        def_node_matcher :downcase_eq, <<~PATTERN
           (send
             $(send _ ${:downcase :upcase})
             ${:== :eql? :!=}
             ${str (send _ {:downcase :upcase} ...) (begin str)})
         PATTERN
 
-        def_node_matcher :eq_downcase, <<-PATTERN
+        def_node_matcher :eq_downcase, <<~PATTERN
           (send
             {str (send _ {:downcase :upcase} ...) (begin str)}
             ${:== :eql? :!=}
             $(send _ ${:downcase :upcase}))
         PATTERN
 
-        def_node_matcher :downcase_downcase, <<-PATTERN
+        def_node_matcher :downcase_downcase, <<~PATTERN
           (send
             $(send _ ${:downcase :upcase})
             ${:== :eql? :!=}

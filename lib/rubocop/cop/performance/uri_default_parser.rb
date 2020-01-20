@@ -17,7 +17,7 @@ module RuboCop
         MSG = 'Use `%<double_colon>sURI::DEFAULT_PARSER` instead of ' \
               '`%<double_colon>sURI::Parser.new`.'
 
-        def_node_matcher :uri_parser_new?, <<-PATTERN
+        def_node_matcher :uri_parser_new?, <<~PATTERN
           (send
             (const
               (const ${nil? cbase} :URI) :Parser) :new)

@@ -42,7 +42,7 @@ module RuboCop
 
         MSG = 'Use `count` instead of `%<selector>s...%<counter>s`.'
 
-        def_node_matcher :count_candidate?, <<-PATTERN
+        def_node_matcher :count_candidate?, <<~PATTERN
           {
             (send (block $(send _ ${:select :reject}) ...) ${:count :length :size})
             (send $(send _ ${:select :reject} (:block_pass _)) ${:count :length :size})

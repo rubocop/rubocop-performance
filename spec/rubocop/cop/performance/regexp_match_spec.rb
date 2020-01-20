@@ -103,7 +103,7 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
       Regexp.last_match Regexp.last_match(1)
     ].each do |var|
       it "accepts #{name} in method with #{var}" do
-        expect_no_offenses(<<-RUBY)
+        expect_no_offenses(<<~RUBY)
           def foo
             if #{cond}
               do_something(#{var})
@@ -113,7 +113,7 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
       end
 
       it "accepts #{name} in a class method with #{var}" do
-        expect_no_offenses(<<-RUBY)
+        expect_no_offenses(<<~RUBY)
           def self.foo
             if #{cond}
               do_something(#{var})
@@ -123,7 +123,7 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
       end
 
       it "accepts #{name} in method with #{var} before if" do
-        expect_no_offenses(<<-RUBY)
+        expect_no_offenses(<<~RUBY)
           def foo
             return #{var} if #{cond}
           end
@@ -131,7 +131,7 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
       end
 
       it "accepts #{name} in method with #{var} before unless" do
-        expect_no_offenses(<<-RUBY)
+        expect_no_offenses(<<~RUBY)
           def foo
             return #{var} unless #{cond}
           end
@@ -140,7 +140,7 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
 
       it "accepts #{name} in guard condition with " \
          "#{var} is used in the line after that" do
-        expect_no_offenses(<<-RUBY)
+        expect_no_offenses(<<~RUBY)
           def foo
             return if #{cond}
 
@@ -170,7 +170,7 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
       RUBY2
 
       it "accepts #{name} in method with #{var} in block" do
-        expect_no_offenses(<<-RUBY)
+        expect_no_offenses(<<~RUBY)
           def foo
             bar do
               if #{cond}
@@ -314,7 +314,7 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
 
   context 'target ruby version < 2.4', :ruby23 do
     it 'accepts match method call in if condition' do
-      expect_no_offenses(<<-RUBY)
+      expect_no_offenses(<<~RUBY)
         if foo.match(/re/)
           do_something
         end
@@ -322,7 +322,7 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
     end
 
     it 'accepts match method call in elsif condition' do
-      expect_no_offenses(<<-RUBY)
+      expect_no_offenses(<<~RUBY)
         if cond
           do_something
         elsif foo.match(/re/)
@@ -396,7 +396,7 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
                     '/re/i === foo', '/re/i.match?(foo)')
 
     it 'accepts Regexp#match? method call' do
-      expect_no_offenses(<<-RUBY)
+      expect_no_offenses(<<~RUBY)
         if /re/.match?(str)
           do_something
         end
@@ -404,7 +404,7 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
     end
 
     it 'accepts String#match? method call' do
-      expect_no_offenses(<<-RUBY)
+      expect_no_offenses(<<~RUBY)
         if str.match?(/re/)
           do_something
         end
@@ -412,13 +412,13 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
     end
 
     it 'accepts match without arguments' do
-      expect_no_offenses(<<-RUBY)
+      expect_no_offenses(<<~RUBY)
         code if match
       RUBY
     end
 
     it 'accepts =~ with assignment' do
-      expect_no_offenses(<<-RUBY)
+      expect_no_offenses(<<~RUBY)
         if /alias_(?<alias_id>.*)/ =~ something
           do_something
         end
@@ -426,7 +426,7 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
     end
 
     it 'accepts match without explicit regexp/str/sym use' do
-      expect_no_offenses(<<-RUBY)
+      expect_no_offenses(<<~RUBY)
         if CONST.match(var)
           do_something
         end
@@ -435,7 +435,7 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
 
     it 'registers an offense when a regexp used independently ' \
        'with a regexp used in `if` are mixed' do
-      expect_offense(<<-RUBY)
+      expect_offense(<<~RUBY)
         def foo
           /re/ === re # A regexp used independently is not yet supported.
 

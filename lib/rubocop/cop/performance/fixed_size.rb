@@ -48,7 +48,7 @@ module RuboCop
       class FixedSize < Cop
         MSG = 'Do not compute the size of statically sized objects.'
 
-        def_node_matcher :counter, <<-MATCHER
+        def_node_matcher :counter, <<~MATCHER
           (send ${array hash str sym} {:count :length :size} $...)
         MATCHER
 

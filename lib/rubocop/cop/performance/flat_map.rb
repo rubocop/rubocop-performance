@@ -22,7 +22,7 @@ module RuboCop
                                   'and `flatten` can be used to flatten ' \
                                   'multiple levels.'
 
-        def_node_matcher :flat_map_candidate?, <<-PATTERN
+        def_node_matcher :flat_map_candidate?, <<~PATTERN
           (send
             {
               (block $(send _ ${:collect :map}) ...)

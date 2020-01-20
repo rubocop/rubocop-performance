@@ -37,7 +37,7 @@ module RuboCop
       #   h = { a: 1, b: 2 }; h.value?(nil)
       #
       class InefficientHashSearch < Cop
-        def_node_matcher :inefficient_include?, <<-PATTERN
+        def_node_matcher :inefficient_include?, <<~PATTERN
           (send (send $_ {:keys :values}) :include? _)
         PATTERN
 

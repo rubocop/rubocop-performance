@@ -28,7 +28,7 @@ module RuboCop
         REVERSE_MSG = 'Use `reverse.%<prefer>s` instead of ' \
                       '`%<first_method>s.%<second_method>s`.'
 
-        def_node_matcher :detect_candidate?, <<-PATTERN
+        def_node_matcher :detect_candidate?, <<~PATTERN
           {
             (send $(block (send _ {:select :find_all}) ...) ${:first :last} $...)
             (send $(send _ {:select :find_all} ...) ${:first :last} $...)

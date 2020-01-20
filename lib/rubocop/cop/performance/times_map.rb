@@ -61,7 +61,7 @@ module RuboCop
                  map_or_collect: map_or_collect.method_name)
         end
 
-        def_node_matcher :times_map_call, <<-PATTERN
+        def_node_matcher :times_map_call, <<~PATTERN
           {(block $(send (send $!nil? :times) {:map :collect}) ...)
            $(send (send $!nil? :times) {:map :collect} (block_pass ...))}
         PATTERN

@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
   s.required_ruby_version = '>= 2.3.0'
   s.authors = ['Bozhidar Batsov', 'Jonas Arvidsson', 'Yuji Nakayama']
-  s.description = <<-DESCRIPTION
+  s.description = <<~DESCRIPTION
     A collection of RuboCop cops to check for performance optimizations
     in Ruby code.
   DESCRIPTION

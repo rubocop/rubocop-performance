@@ -51,7 +51,7 @@ module RuboCop
               '(followed by `return array` if required) instead of chaining '\
               '`%<method>s...%<second_method>s`.'
 
-        def_node_matcher :flat_map_candidate?, <<-PATTERN
+        def_node_matcher :flat_map_candidate?, <<~PATTERN
           {
             (send (send _ ${#{RETURN_NEW_ARRAY_WHEN_ARGS}} {int lvar ivar cvar gvar}) ${#{HAS_MUTATION_ALTERNATIVE}} $...)
             (send (block (send _ ${#{ALWAYS_RETURNS_NEW_ARRAY} }) ...) ${#{HAS_MUTATION_ALTERNATIVE}} $...)

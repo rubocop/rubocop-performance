@@ -83,22 +83,22 @@ module RuboCop
         MSG = 'Use `match?` instead of `%<current>s` when `MatchData` ' \
           'is not used.'
 
-        def_node_matcher :match_method?, <<-PATTERN
+        def_node_matcher :match_method?, <<~PATTERN
           {
             (send _recv :match {regexp str sym})
             (send {regexp str sym} :match _)
           }
         PATTERN
 
-        def_node_matcher :match_with_int_arg_method?, <<-PATTERN
+        def_node_matcher :match_with_int_arg_method?, <<~PATTERN
           (send _recv :match _ (int ...))
         PATTERN
 
-        def_node_matcher :match_operator?, <<-PATTERN
+        def_node_matcher :match_operator?, <<~PATTERN
           (send !nil? {:=~ :!~} !nil?)
         PATTERN
 
-        def_node_matcher :match_threequals?, <<-PATTERN
+        def_node_matcher :match_threequals?, <<~PATTERN
           (send (regexp (str _) {(regopt) (regopt _)}) :=== !nil?)
         PATTERN
 
@@ -109,7 +109,7 @@ module RuboCop
           regexp.to_regexp.named_captures.empty?
         end
 
-        MATCH_NODE_PATTERN = <<-PATTERN
+        MATCH_NODE_PATTERN = <<~PATTERN
           {
             #match_method?
             #match_with_int_arg_method?
@@ -122,7 +122,7 @@ module RuboCop
         def_node_matcher :match_node?, MATCH_NODE_PATTERN
         def_node_search :search_match_nodes, MATCH_NODE_PATTERN
 
-        def_node_search :last_matches, <<-PATTERN
+        def_node_search :last_matches, <<~PATTERN
           {
             (send (const nil? :Regexp) :last_match)
             (send (const nil? :Regexp) :last_match _)

@@ -75,13 +75,13 @@ module RuboCop
           cop_config['IncludeActiveSupportAliases']
         end
 
-        def_node_matcher :two_start_end_with_calls, <<-PATTERN
+        def_node_matcher :two_start_end_with_calls, <<~PATTERN
           (or
             (send $_recv [{:start_with? :end_with?} $_method] $...)
             (send _recv _method $...))
         PATTERN
 
-        def_node_matcher :check_with_active_support_aliases, <<-PATTERN
+        def_node_matcher :check_with_active_support_aliases, <<~PATTERN
           (or
             (send $_recv
                     [{:start_with? :starts_with? :end_with? :ends_with?} $_method]
