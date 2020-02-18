@@ -22,10 +22,10 @@ Gem::Specification.new do |s|
   s.summary = 'Automatic performance checking tool for Ruby code.'
 
   s.metadata = {
-    'homepage_uri' => 'https://docs.rubocop.org/projects/performance',
+    'homepage_uri' => 'https://docs.rubocop.org/projects/performance/',
     'changelog_uri' => 'https://github.com/rubocop-hq/rubocop-performance/blob/master/CHANGELOG.md',
     'source_code_uri' => 'https://github.com/rubocop-hq/rubocop-performance/',
-    'documentation_uri' => 'https://docs.rubocop.org/projects/performance',
+    'documentation_uri' => 'https://docs.rubocop.org/projects/performance/',
     'bug_tracker_uri' => 'https://github.com/rubocop-hq/rubocop-performance/issues'
   }
 
