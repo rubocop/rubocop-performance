@@ -72,6 +72,10 @@ Performance/Size:
     - lib/example.rb
 ```
 
+## Documentation
+
+You can read a lot more about RuboCop Performance in its [official docs](https://docs.rubocop.org/projects/performance/).
+
 ## Contributing
 
 Checkout the [contribution guidelines](CONTRIBUTING.md).
