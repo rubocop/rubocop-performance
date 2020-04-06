@@ -120,10 +120,12 @@ AutoCorrect | `false` | Boolean
 
 Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 --- | --- | --- | --- | ---
-Enabled | Yes | Yes  | 0.36 | -
+Enabled | No | Yes  | 0.36 | -
 
 This cop identifies places where a case-insensitive string comparison
 can better be implemented using `casecmp`.
+This cop is unsafe because `String#casecmp` and `String#casecmp?` behave
+differently when using Non-ASCII characters.
 
 ### Examples
 
