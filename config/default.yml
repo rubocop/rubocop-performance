@@ -92,7 +92,7 @@ Performance/EndWith:
   VersionChanged: '0.44'
 
 Performance/FixedSize:
-  Description: 'Do not compute the size of statically sized objects except in constants'
+  Description: 'Do not compute the size of statically sized objects except in constants.'
   Enabled: true
   VersionAdded: '0.35'
 
@@ -100,7 +100,7 @@ Performance/FlatMap:
   Description: >-
                   Use `Enumerable#flat_map`
                   instead of `Enumerable#map...Array#flatten(1)`
-                  or `Enumberable#collect..Array#flatten(1)`
+                  or `Enumberable#collect..Array#flatten(1)`.
   Reference: 'https://github.com/JuanitoFatas/fast-ruby#enumerablemaparrayflatten-vs-enumerableflat_map-code'
   Enabled: true
   VersionAdded: '0.30'
@@ -111,7 +111,7 @@ Performance/FlatMap:
   # `flatten` without any parameters can flatten multiple levels.
 
 Performance/InefficientHashSearch:
-  Description: 'Use `key?` or `value?` instead of `keys.include?` or `values.include?`'
+  Description: 'Use `key?` or `value?` instead of `keys.include?` or `values.include?`.'
   Reference: 'https://github.com/JuanitoFatas/fast-ruby#hashkey-instead-of-hashkeysinclude-code'
   Enabled: true
   VersionAdded: '0.56'
