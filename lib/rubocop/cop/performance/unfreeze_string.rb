@@ -24,10 +24,6 @@ module RuboCop
       #   +'something'
       #   +''
       class UnfreezeString < Cop
-        extend TargetRubyVersion
-
-        minimum_target_ruby_version 2.3
-
         MSG = 'Use unary plus to get an unfrozen string literal.'
 
         def_node_matcher :dup_string?, <<~PATTERN
