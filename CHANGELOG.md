@@ -18,6 +18,10 @@
 
 * [#82](https://github.com/rubocop-hq/rubocop-performance/pull/82): Let `Performance/StartWith` and `Performance/EndWith` correct `Regexp#match?` and `Regexp#=~`. ([@eugeneius][])
 
+### Changes
+
+* [#103](https://github.com/rubocop-hq/rubocop-performance/pull/103): **(BREAKING)** Drop support for Ruby 2.3. ([@koic][])
+
 ## 1.5.0 (2019-10-01)
 
 ### Bug fixes
