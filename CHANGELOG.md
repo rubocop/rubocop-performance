@@ -6,6 +6,10 @@
 
 * [#77](https://github.com/rubocop-hq/rubocop-performance/issues/77): Add new `Performance/BindCall` cop. ([@koic][])
 
+### Changes
+
+* [#103](https://github.com/rubocop-hq/rubocop-performance/pull/103): **(BREAKING)** Drop support for Ruby 2.3. ([@koic][])
+
 ## 1.5.2 (2019-12-25)
 
 ### Bug fixes
@@ -17,10 +21,6 @@
 ### Bug fixes
 
 * [#82](https://github.com/rubocop-hq/rubocop-performance/pull/82): Let `Performance/StartWith` and `Performance/EndWith` correct `Regexp#match?` and `Regexp#=~`. ([@eugeneius][])
-
-### Changes
-
-* [#103](https://github.com/rubocop-hq/rubocop-performance/pull/103): **(BREAKING)** Drop support for Ruby 2.3. ([@koic][])
 
 ## 1.5.0 (2019-10-01)
 
