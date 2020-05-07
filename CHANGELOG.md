@@ -9,6 +9,7 @@
 ### Changes
 
 * [#103](https://github.com/rubocop-hq/rubocop-performance/pull/103): **(BREAKING)** Drop support for Ruby 2.3. ([@koic][])
+* [#101](https://github.com/rubocop-hq/rubocop-performance/issues/101): Mark unsafe for `Performance/Casecmp` cop. ([@koic][])
 
 ## 1.5.2 (2019-12-25)
 

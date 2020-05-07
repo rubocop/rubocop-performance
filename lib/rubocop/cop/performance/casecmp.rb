@@ -5,6 +5,8 @@ module RuboCop
     module Performance
       # This cop identifies places where a case-insensitive string comparison
       # can better be implemented using `casecmp`.
+      # This cop is unsafe because `String#casecmp` and `String#casecmp?` behave
+      # differently when using Non-ASCII characters.
       #
       # @example
       #   # bad
