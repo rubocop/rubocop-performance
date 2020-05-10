@@ -55,6 +55,16 @@ Performance/Count:
   VersionAdded: '0.31'
   VersionChanged: '1.5'
 
+Performance/DeletePrefix:
+  Description: 'Use `delete_prefix` instead of `gsub`.'
+  Enabled: true
+  VersionAdded: '1.6'
+
+Performance/DeleteSuffix:
+  Description: 'Use `delete_suffix` instead of `gsub`.'
+  Enabled: true
+  VersionAdded: '1.6'
+
 Performance/Detect:
   Description: >-
                   Use `detect` instead of `select.first`, `find_all.first`,

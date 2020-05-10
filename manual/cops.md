@@ -8,6 +8,8 @@
 * [Performance/ChainArrayAllocation](cops_performance.md#performancechainarrayallocation)
 * [Performance/CompareWithBlock](cops_performance.md#performancecomparewithblock)
 * [Performance/Count](cops_performance.md#performancecount)
+* [Performance/DeletePrefix](cops_performance.md#performancedeleteprefix)
+* [Performance/DeleteSuffix](cops_performance.md#performancedeletesuffix)
 * [Performance/Detect](cops_performance.md#performancedetect)
 * [Performance/DoubleStartEndWith](cops_performance.md#performancedoublestartendwith)
 * [Performance/EndWith](cops_performance.md#performanceendwith)

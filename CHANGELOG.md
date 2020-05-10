@@ -5,6 +5,7 @@
 ### New features
 
 * [#77](https://github.com/rubocop-hq/rubocop-performance/issues/77): Add new `Performance/BindCall` cop. ([@koic][])
+* [#105](https://github.com/rubocop-hq/rubocop-performance/pull/105): Add new `Performance/DeletePrefix` and `Performance/DeleteSuffix` cops. ([@koic][])
 
 ### Changes
 
