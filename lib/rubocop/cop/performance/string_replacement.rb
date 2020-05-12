@@ -48,9 +48,7 @@ module RuboCop
           first_source, = first_source(first_param)
           second_source, = *second_param
 
-          unless first_param.str_type?
-            first_source = interpret_string_escapes(first_source)
-          end
+          first_source = interpret_string_escapes(first_source) unless first_param.str_type?
 
           replacement_method =
             replacement_method(node, first_source, second_source)
@@ -67,9 +65,7 @@ module RuboCop
                                 to_string_literal(first))
             end
 
-            if second.empty? && first.length == 1
-              remove_second_param(corrector, node, first_param)
-            end
+            remove_second_param(corrector, node, first_param) if second.empty? && first.length == 1
           end
         end
 
@@ -99,9 +95,7 @@ module RuboCop
 
         def offense(node, first_param, second_param)
           first_source, = first_source(first_param)
-          unless first_param.str_type?
-            first_source = interpret_string_escapes(first_source)
-          end
+          first_source = interpret_string_escapes(first_source) unless first_param.str_type?
           second_source, = *second_param
           message = message(node, first_source, second_source)
 

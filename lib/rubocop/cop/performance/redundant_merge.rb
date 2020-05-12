@@ -182,9 +182,7 @@ module RuboCop
           end
 
           def unwind(receiver)
-            while receiver.respond_to?(:send_type?) && receiver.send_type?
-              receiver, = *receiver
-            end
+            receiver, = *receiver while receiver.respond_to?(:send_type?) && receiver.send_type?
             receiver
           end
 
