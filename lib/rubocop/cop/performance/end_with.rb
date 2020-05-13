@@ -15,9 +15,18 @@ module RuboCop
       #   'abc'.match(/bc\Z/)
       #   /bc\Z/.match('abc')
       #
+      #   'abc'.match?(/bc$/)
+      #   /bc$/.match?('abc')
+      #   'abc' =~ /bc$/
+      #   /bc$/ =~ 'abc'
+      #   'abc'.match(/bc$/)
+      #   /bc$/.match('abc')
+      #
       #   # good
       #   'abc'.end_with?('bc')
       class EndWith < Cop
+        include RegexpMetacharacter
+
         MSG = 'Use `String#end_with?` instead of a regex match anchored to ' \
               'the end of the string.'
         SINGLE_QUOTE = "'"
@@ -27,13 +36,6 @@ module RuboCop
            (send (regexp (str $#literal_at_end?) (regopt)) {:match :match?} $_)
            (match-with-lvasgn (regexp (str $#literal_at_end?) (regopt)) $_)}
         PATTERN
-
-        def literal_at_end?(regex_str)
-          # is this regexp 'literal' in the sense of only matching literal
-          # chars, rather than using metachars like . and * and so on?
-          # also, is it anchored at the end of the string?
-          regex_str =~ /\A(?:#{LITERAL_REGEX})+\\z\z/
-        end
 
         def on_send(node)
           return unless redundant_regex?(node)
@@ -45,7 +47,7 @@ module RuboCop
         def autocorrect(node)
           redundant_regex?(node) do |receiver, regex_str|
             receiver, regex_str = regex_str, receiver if receiver.is_a?(String)
-            regex_str = regex_str[0..-3] # drop \Z anchor
+            regex_str = drop_end_metacharacter(regex_str)
             regex_str = interpret_string_escapes(regex_str)
 
             lambda do |corrector|

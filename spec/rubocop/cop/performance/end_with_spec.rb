@@ -14,6 +14,16 @@ RSpec.describe RuboCop::Cop::Performance::EndWith do
       expect(new_source).to eq "str.end_with?('abc')"
     end
 
+    it "autocorrects str#{method} /abc$/" do
+      new_source = autocorrect_source("str#{method} /abc$/")
+      expect(new_source).to eq "str.end_with?('abc')"
+    end
+
+    it "autocorrects /abc$/#{method} str" do
+      new_source = autocorrect_source("/abc$/#{method} str")
+      expect(new_source).to eq "str.end_with?('abc')"
+    end
+
     it "autocorrects str#{method} /\\n\\z/" do
       new_source = autocorrect_source("str#{method} /\\n\\z/")
       expect(new_source).to eq 'str.end_with?("\n")'

@@ -390,6 +390,13 @@ would suffice.
 'abc'.match(/bc\Z/)
 /bc\Z/.match('abc')
 
+'abc'.match?(/bc$/)
+/bc$/.match?('abc')
+'abc' =~ /bc$/
+/bc$/ =~ 'abc'
+'abc'.match(/bc$/)
+/bc$/.match('abc')
+
 # good
 'abc'.end_with?('bc')
 ```
@@ -859,6 +866,13 @@ This cop identifies unnecessary use of a regex where
 /\Aab/ =~ 'abc'
 'abc'.match(/\Aab/)
 /\Aab/.match('abc')
+
+'abc'.match?(/^ab/)
+/^ab/.match?('abc')
+'abc' =~ /^ab/
+/^ab/ =~ 'abc'
+'abc'.match(/^ab/)
+/^ab/.match('abc')
 
 # good
 'abc'.start_with?('ab')
