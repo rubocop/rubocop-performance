@@ -20,7 +20,6 @@ module RuboCop
       class StartWith < Cop
         MSG = 'Use `String#start_with?` instead of a regex match anchored to ' \
               'the beginning of the string.'
-        SINGLE_QUOTE = "'"
 
         def_node_matcher :redundant_regex?, <<~PATTERN
           {(send $!nil? {:match :=~ :match?} (regexp (str $#literal_at_start?) (regopt)))

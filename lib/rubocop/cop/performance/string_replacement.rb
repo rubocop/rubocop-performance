@@ -26,7 +26,6 @@ module RuboCop
         DELETE = 'delete'
         TR = 'tr'
         BANG = '!'
-        SINGLE_QUOTE = "'"
 
         def_node_matcher :string_replacement?, <<~PATTERN
           (send _ {:gsub :gsub!}
