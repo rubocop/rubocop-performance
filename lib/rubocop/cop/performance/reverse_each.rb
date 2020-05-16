@@ -34,7 +34,8 @@ module RuboCop
         end
 
         def autocorrect(node)
-          ->(corrector) { corrector.replace(node.loc.dot, UNDERSCORE) }
+          range = range_between(node.loc.dot.begin_pos, node.loc.selector.begin_pos)
+          ->(corrector) { corrector.replace(range, UNDERSCORE) }
         end
       end
     end

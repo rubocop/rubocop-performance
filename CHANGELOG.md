@@ -2,6 +2,9 @@
 
 ## master (unreleased)
 
+### Bug fixes
+* [#108](https://github.com/rubocop-hq/rubocop-performance/pull/108): Fix an incorrect autocorrect for `Performance/ReverseEach` when there is a newline between reverse and each. ([@joe-sharp][], [@dischorde][], [@siegfault][])
+
 ### New features
 
 * [#77](https://github.com/rubocop-hq/rubocop-performance/issues/77): Add new `Performance/BindCall` cop. ([@koic][])
@@ -86,3 +89,6 @@
 [@rrosenblum]: https://github.com/rrosenblum
 [@splattael]: https://github.com/splattael
 [@eugeneius]: https://github.com/eugeneius
+[@joe-sharp]: https://github.com/joe-sharp
+[@dischorde]: https://github.com/dischorde
+[@siegfault]: https://github.com/siegfault

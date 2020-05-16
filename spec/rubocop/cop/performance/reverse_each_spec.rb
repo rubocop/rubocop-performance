@@ -29,6 +29,19 @@ RSpec.describe RuboCop::Cop::Performance::ReverseEach do
     RUBY
   end
 
+  it 'registers an offense for a multi-line reverse.each' do
+    expect_offense(<<~RUBY)
+      def arr
+        [1, 2, 3]
+      end
+
+      arr.
+        reverse.
+        ^^^^^^^^ Use `reverse_each` instead of `reverse.each`.
+        each { |e| puts e }
+    RUBY
+  end
+
   it 'does not register an offense when reverse is used without each' do
     expect_no_offenses('[1, 2, 3].reverse')
   end
@@ -71,6 +84,27 @@ RSpec.describe RuboCop::Cop::Performance::ReverseEach do
         end
 
         arr.reverse_each { |e| puts e }
+      RUBY
+    end
+
+    it 'corrects a multi-line reverse_each' do
+      new_source = autocorrect_source(<<~RUBY)
+        def arr
+          [1, 2]
+        end
+
+        arr.
+          reverse.
+          each { |e| puts e }
+      RUBY
+
+      expect(new_source).to eq(<<~RUBY)
+        def arr
+          [1, 2]
+        end
+
+        arr.
+          reverse_each { |e| puts e }
       RUBY
     end
   end
