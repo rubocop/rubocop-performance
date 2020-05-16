@@ -252,6 +252,13 @@ module RuboCop
         def correct_operator(corrector, recv, arg, oper = nil)
           op_range = correction_range(recv, arg)
 
+          replace_with_match_predicate_method(corrector, recv, arg, op_range)
+
+          corrector.insert_after(arg.loc.expression, ')') unless op_range.source.end_with?('(')
+          corrector.insert_before(recv.loc.expression, '!') if oper == :!~
+        end
+
+        def replace_with_match_predicate_method(corrector, recv, arg, op_range)
           if TYPES_IMPLEMENTING_MATCH.include?(recv.type)
             corrector.replace(op_range, '.match?(')
           elsif TYPES_IMPLEMENTING_MATCH.include?(arg.type)
@@ -260,9 +267,6 @@ module RuboCop
           else
             corrector.replace(op_range, '&.match?(')
           end
-
-          corrector.insert_after(arg.loc.expression, ')')
-          corrector.insert_before(recv.loc.expression, '!') if oper == :!~
         end
 
         def swap_receiver_and_arg(corrector, recv, arg)

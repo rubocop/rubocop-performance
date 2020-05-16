@@ -8,6 +8,8 @@
 * [#105](https://github.com/rubocop-hq/rubocop-performance/pull/105): Add new `Performance/DeletePrefix` and `Performance/DeleteSuffix` cops. ([@koic][])
 
 ### Bug fixes
+
+* [#55](https://github.com/rubocop-hq/rubocop-performance/issues/55): Fix an incorrect autocorrect for `Performance/RegexpMatch` when using `str.=~(/regexp/)`. ([@koic][])
 * [#108](https://github.com/rubocop-hq/rubocop-performance/pull/108): Fix an incorrect autocorrect for `Performance/ReverseEach` when there is a newline between reverse and each. ([@joe-sharp][], [@dischorde][], [@siegfault][])
 
 ### Changes

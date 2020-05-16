@@ -342,6 +342,8 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
   it_behaves_like('all legacy match methods', 'matching by =~`',
                   're =~ "foo"', '"foo".match?(re)')
   it_behaves_like('all legacy match methods', 'matching by =~`',
+                  're.=~("foo")', '"foo".match?(re)')
+  it_behaves_like('all legacy match methods', 'matching by =~`',
                   ':foo =~ re', ':foo.match?(re)')
   it_behaves_like('all legacy match methods', 'matching by =~`',
                   're =~ :foo', ':foo.match?(re)')
