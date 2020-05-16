@@ -14,6 +14,16 @@ RSpec.describe RuboCop::Cop::Performance::StartWith do
       expect(new_source).to eq "str.start_with?('abc')"
     end
 
+    it "autocorrects str#{method} /^abc/" do
+      new_source = autocorrect_source("str#{method} /^abc/")
+      expect(new_source).to eq "str.start_with?('abc')"
+    end
+
+    it "autocorrects /^abc/#{method} str" do
+      new_source = autocorrect_source("/^abc/#{method} str")
+      expect(new_source).to eq "str.start_with?('abc')"
+    end
+
     # escapes like "\n"
     # note that "\b" is a literal backspace char in a double-quoted string...
     # but in a regex, it's an anchor on a word boundary

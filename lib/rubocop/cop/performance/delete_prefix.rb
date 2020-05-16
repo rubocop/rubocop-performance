@@ -25,6 +25,7 @@ module RuboCop
       #
       class DeletePrefix < Cop
         extend TargetRubyVersion
+        include RegexpMetacharacter
 
         minimum_target_ruby_version 2.5
 
@@ -55,12 +56,7 @@ module RuboCop
           gsub_method?(node) do |receiver, bad_method, regexp_str, _|
             lambda do |corrector|
               good_method = PREFERRED_METHODS[bad_method]
-
-              regexp_str = if regexp_str.start_with?('\\A')
-                             regexp_str[2..-1] # drop `\A` anchor
-                           else
-                             regexp_str[1..-1] # drop `^` anchor
-                           end
+              regexp_str = drop_start_metacharacter(regexp_str)
               regexp_str = interpret_string_escapes(regexp_str)
               string_literal = to_string_literal(regexp_str)
 
@@ -69,18 +65,6 @@ module RuboCop
               corrector.replace(node, new_code)
             end
           end
-        end
-
-        private
-
-        def literal_at_start?(regex_str)
-          # is this regexp 'literal' in the sense of only matching literal
-          # chars, rather than using metachars like `.` and `*` and so on?
-          # also, is it anchored at the start of the string?
-          # (tricky: \s, \d, and so on are metacharacters, but other characters
-          #  escaped with a slash are just literals. LITERAL_REGEX takes all
-          #  that into account.)
-          regex_str =~ /\A(\\A|\^)(?:#{LITERAL_REGEX})+\z/
         end
       end
     end

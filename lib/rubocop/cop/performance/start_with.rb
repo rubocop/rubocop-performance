@@ -15,9 +15,18 @@ module RuboCop
       #   'abc'.match(/\Aab/)
       #   /\Aab/.match('abc')
       #
+      #   'abc'.match?(/^ab/)
+      #   /^ab/.match?('abc')
+      #   'abc' =~ /^ab/
+      #   /^ab/ =~ 'abc'
+      #   'abc'.match(/^ab/)
+      #   /^ab/.match('abc')
+      #
       #   # good
       #   'abc'.start_with?('ab')
       class StartWith < Cop
+        include RegexpMetacharacter
+
         MSG = 'Use `String#start_with?` instead of a regex match anchored to ' \
               'the beginning of the string.'
 
@@ -26,16 +35,6 @@ module RuboCop
            (send (regexp (str $#literal_at_start?) (regopt)) {:match :match?} $_)
            (match-with-lvasgn (regexp (str $#literal_at_start?) (regopt)) $_)}
         PATTERN
-
-        def literal_at_start?(regex_str)
-          # is this regexp 'literal' in the sense of only matching literal
-          # chars, rather than using metachars like `.` and `*` and so on?
-          # also, is it anchored at the start of the string?
-          # (tricky: \s, \d, and so on are metacharacters, but other characters
-          #  escaped with a slash are just literals. LITERAL_REGEX takes all
-          #  that into account.)
-          regex_str =~ /\A\\A(?:#{LITERAL_REGEX})+\z/
-        end
 
         def on_send(node)
           return unless redundant_regex?(node)
@@ -47,7 +46,7 @@ module RuboCop
         def autocorrect(node)
           redundant_regex?(node) do |receiver, regex_str|
             receiver, regex_str = regex_str, receiver if receiver.is_a?(String)
-            regex_str = regex_str[2..-1] # drop \A anchor
+            regex_str = drop_start_metacharacter(regex_str)
             regex_str = interpret_string_escapes(regex_str)
 
             lambda do |corrector|
