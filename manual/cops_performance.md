@@ -2,6 +2,10 @@
 
 ## Performance/BindCall
 
+!!! Note
+
+    Required Ruby version: 2.7
+
 Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 --- | --- | --- | --- | ---
 Enabled | Yes | Yes  | 1.6 | -
@@ -253,6 +257,10 @@ Model.select(:value).count
 
 ## Performance/DeletePrefix
 
+!!! Note
+
+    Required Ruby version: 2.5
+
 Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 --- | --- | --- | --- | ---
 Enabled | Yes | Yes  | 1.6 | -
@@ -280,6 +288,10 @@ str.delete_prefix!('prefix')
 ```
 
 ## Performance/DeleteSuffix
+
+!!! Note
+
+    Required Ruby version: 2.5
 
 Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 --- | --- | --- | --- | ---
