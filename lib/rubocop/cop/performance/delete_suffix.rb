@@ -62,7 +62,9 @@ module RuboCop
 
               new_code = "#{receiver.source}.#{good_method}(#{string_literal})"
 
-              corrector.replace(node, new_code)
+              # TODO: `source_range` is no longer required when RuboCop 0.81 or lower support will be dropped.
+              # https://github.com/rubocop-hq/rubocop/commit/82eb350d2cba16
+              corrector.replace(node.source_range, new_code)
             end
           end
         end
