@@ -207,6 +207,11 @@ Performance/StartWith:
   VersionAdded: '0.36'
   VersionChanged: '1.6'
 
+Performance/StringInclude:
+  Description: 'Use `String#include?` instead of a regex match with literal-only pattern.'
+  Enabled: true
+  VersionAdded: '1.7'
+
 Performance/StringReplacement:
   Description: >-
                   Use `tr` instead of `gsub` when you are replacing the same

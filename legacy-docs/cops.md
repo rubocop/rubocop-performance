@@ -25,6 +25,7 @@
 * [Performance/ReverseEach](cops_performance.md#performancereverseeach)
 * [Performance/Size](cops_performance.md#performancesize)
 * [Performance/StartWith](cops_performance.md#performancestartwith)
+* [Performance/StringInclude](cops_performance.md#performancestringinclude)
 * [Performance/StringReplacement](cops_performance.md#performancestringreplacement)
 * [Performance/TimesMap](cops_performance.md#performancetimesmap)
 * [Performance/UnfreezeString](cops_performance.md#performanceunfreezestring)
