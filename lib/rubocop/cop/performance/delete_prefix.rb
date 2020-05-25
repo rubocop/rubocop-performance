@@ -8,25 +8,40 @@ module RuboCop
       # This cop identifies places where `gsub(/\Aprefix/, '')` and `sub(/\Aprefix/, '')`
       # can be replaced by `delete_prefix('prefix')`.
       #
-      # The `delete_prefix('prefix')` method is faster than
-      # `gsub(/\Aprefix/, '')`.
+      # This cop has `SafeMultiline` configuration option that `true` by default because
+      # `^prefix` is unsafe as it will behave incompatible with `delete_prefix`
+      # for receiver is multiline string.
+      #
+      # The `delete_prefix('prefix')` method is faster than `gsub(/\Aprefix/, '')`.
       #
       # @example
       #
       #   # bad
       #   str.gsub(/\Aprefix/, '')
       #   str.gsub!(/\Aprefix/, '')
-      #   str.gsub(/^prefix/, '')
-      #   str.gsub!(/^prefix/, '')
       #
       #   str.sub(/\Aprefix/, '')
       #   str.sub!(/\Aprefix/, '')
-      #   str.sub(/^prefix/, '')
-      #   str.sub!(/^prefix/, '')
       #
       #   # good
       #   str.delete_prefix('prefix')
       #   str.delete_prefix!('prefix')
+      #
+      # @example SafeMultiline: true (default)
+      #
+      #   # good
+      #   str.gsub(/^prefix/, '')
+      #   str.gsub!(/^prefix/, '')
+      #   str.sub(/^prefix/, '')
+      #   str.sub!(/^prefix/, '')
+      #
+      # @example SafeMultiline: false
+      #
+      #   # bad
+      #   str.gsub(/^prefix/, '')
+      #   str.gsub!(/^prefix/, '')
+      #   str.sub(/^prefix/, '')
+      #   str.sub!(/^prefix/, '')
       #
       class DeletePrefix < Cop
         extend TargetRubyVersion

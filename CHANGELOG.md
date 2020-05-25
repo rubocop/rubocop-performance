@@ -9,6 +9,7 @@
 ### Bug fixes
 
 * [#111](https://github.com/rubocop-hq/rubocop-performance/issues/111): Fix an error for `Performance/DeletePrefix` and `Performance/DeleteSuffix` cops when using autocorrection with RuboCop 0.81 or lower. ([@koic][])
+* [#118](https://github.com/rubocop-hq/rubocop-performance/issues/118): Fix a false positive for `Performance/DeletePrefix`, `Performance/DeleteSuffix`, `Performance/StartWith`, and `Performance/EndWith` cops when receiver is multiline string. ([@koic][])
 
 ## 1.6.0 (2020-05-22)
 

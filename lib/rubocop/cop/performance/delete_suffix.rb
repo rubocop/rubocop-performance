@@ -8,25 +8,40 @@ module RuboCop
       # This cop identifies places where `gsub(/suffix\z/, '')` and `sub(/suffix\z/, '')`
       # can be replaced by `delete_suffix('suffix')`.
       #
-      # The `delete_suffix('suffix')` method is faster than
-      # `gsub(/suffix\z/, '')`.
+      # This cop has `SafeMultiline` configuration option that `true` by default because
+      # `suffix$` is unsafe as it will behave incompatible with `delete_suffix?`
+      # for receiver is multiline string.
+      #
+      # The `delete_suffix('suffix')` method is faster than `gsub(/suffix\z/, '')`.
       #
       # @example
       #
       #   # bad
       #   str.gsub(/suffix\z/, '')
       #   str.gsub!(/suffix\z/, '')
-      #   str.gsub(/suffix$/, '')
-      #   str.gsub!(/suffix$/, '')
       #
       #   str.sub(/suffix\z/, '')
       #   str.sub!(/suffix\z/, '')
-      #   str.sub(/suffix$/, '')
-      #   str.sub!(/suffix$/, '')
       #
       #   # good
       #   str.delete_suffix('suffix')
       #   str.delete_suffix!('suffix')
+      #
+      # @example SafeMultiline: true (default)
+      #
+      #   # good
+      #   str.gsub(/suffix$/, '')
+      #   str.gsub!(/suffix$/, '')
+      #   str.sub(/suffix$/, '')
+      #   str.sub!(/suffix$/, '')
+      #
+      # @example SafeMultiline: false
+      #
+      #   # bad
+      #   str.gsub(/suffix$/, '')
+      #   str.gsub!(/suffix$/, '')
+      #   str.sub(/suffix$/, '')
+      #   str.sub!(/suffix$/, '')
       #
       class DeleteSuffix < Cop
         extend TargetRubyVersion

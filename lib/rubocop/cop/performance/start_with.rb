@@ -3,8 +3,11 @@
 module RuboCop
   module Cop
     module Performance
-      # This cop identifies unnecessary use of a regex where
-      # `String#start_with?` would suffice.
+      # This cop identifies unnecessary use of a regex where `String#start_with?` would suffice.
+      #
+      # This cop has `SafeMultiline` configuration option that `true` by default because
+      # `^start` is unsafe as it will behave incompatible with `start_with?`
+      # for receiver is multiline string.
       #
       # @example
       #   # bad
@@ -15,6 +18,12 @@ module RuboCop
       #   'abc'.match(/\Aab/)
       #   /\Aab/.match('abc')
       #
+      #   # good
+      #   'abc'.start_with?('ab')
+      #
+      # @example SafeMultiline: true (default)
+      #
+      #   # good
       #   'abc'.match?(/^ab/)
       #   /^ab/.match?('abc')
       #   'abc' =~ /^ab/
@@ -22,8 +31,16 @@ module RuboCop
       #   'abc'.match(/^ab/)
       #   /^ab/.match('abc')
       #
-      #   # good
-      #   'abc'.start_with?('ab')
+      # @example SafeMultiline: false
+      #
+      #   # bad
+      #   'abc'.match?(/^ab/)
+      #   /^ab/.match?('abc')
+      #   'abc' =~ /^ab/
+      #   /^ab/ =~ 'abc'
+      #   'abc'.match(/^ab/)
+      #   /^ab/.match('abc')
+      #
       class StartWith < Cop
         include RegexpMetacharacter
 

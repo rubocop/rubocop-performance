@@ -327,8 +327,11 @@ In Ruby 2.5, `String#delete_prefix` has been added.
 This cop identifies places where `gsub(/\Aprefix/, '')` and `sub(/\Aprefix/, '')`
 can be replaced by `delete_prefix('prefix')`.
 
-The `delete_prefix('prefix')` method is faster than
-`gsub(/\Aprefix/, '')`.
+This cop has `SafeMultiline` configuration option that `true` by default because
+`^prefix` is unsafe as it will behave incompatible with `delete_prefix`
+for receiver is multiline string.
+
+The `delete_prefix('prefix')` method is faster than `gsub(/\Aprefix/, '')`.
 
 === Examples
 
@@ -337,18 +340,46 @@ The `delete_prefix('prefix')` method is faster than
 # bad
 str.gsub(/\Aprefix/, '')
 str.gsub!(/\Aprefix/, '')
-str.gsub(/^prefix/, '')
-str.gsub!(/^prefix/, '')
 
 str.sub(/\Aprefix/, '')
 str.sub!(/\Aprefix/, '')
-str.sub(/^prefix/, '')
-str.sub!(/^prefix/, '')
 
 # good
 str.delete_prefix('prefix')
 str.delete_prefix!('prefix')
 ----
+
+==== SafeMultiline: true (default)
+
+[source,ruby]
+----
+# good
+str.gsub(/^prefix/, '')
+str.gsub!(/^prefix/, '')
+str.sub(/^prefix/, '')
+str.sub!(/^prefix/, '')
+----
+
+==== SafeMultiline: false
+
+[source,ruby]
+----
+# bad
+str.gsub(/^prefix/, '')
+str.gsub!(/^prefix/, '')
+str.sub(/^prefix/, '')
+str.sub!(/^prefix/, '')
+----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| SafeMultiline
+| `true`
+| Boolean
+|===
 
 == Performance/DeleteSuffix
 
@@ -369,8 +400,11 @@ In Ruby 2.5, `String#delete_suffix` has been added.
 This cop identifies places where `gsub(/suffix\z/, '')` and `sub(/suffix\z/, '')`
 can be replaced by `delete_suffix('suffix')`.
 
-The `delete_suffix('suffix')` method is faster than
-`gsub(/suffix\z/, '')`.
+This cop has `SafeMultiline` configuration option that `true` by default because
+`suffix$` is unsafe as it will behave incompatible with `delete_suffix?`
+for receiver is multiline string.
+
+The `delete_suffix('suffix')` method is faster than `gsub(/suffix\z/, '')`.
 
 === Examples
 
@@ -379,18 +413,46 @@ The `delete_suffix('suffix')` method is faster than
 # bad
 str.gsub(/suffix\z/, '')
 str.gsub!(/suffix\z/, '')
-str.gsub(/suffix$/, '')
-str.gsub!(/suffix$/, '')
 
 str.sub(/suffix\z/, '')
 str.sub!(/suffix\z/, '')
-str.sub(/suffix$/, '')
-str.sub!(/suffix$/, '')
 
 # good
 str.delete_suffix('suffix')
 str.delete_suffix!('suffix')
 ----
+
+==== SafeMultiline: true (default)
+
+[source,ruby]
+----
+# good
+str.gsub(/suffix$/, '')
+str.gsub!(/suffix$/, '')
+str.sub(/suffix$/, '')
+str.sub!(/suffix$/, '')
+----
+
+==== SafeMultiline: false
+
+[source,ruby]
+----
+# bad
+str.gsub(/suffix$/, '')
+str.gsub!(/suffix$/, '')
+str.sub(/suffix$/, '')
+str.sub!(/suffix$/, '')
+----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| SafeMultiline
+| `true`
+| Boolean
+|===
 
 == Performance/Detect
 
@@ -482,11 +544,14 @@ str.end_with?(var1, var2)
 | Yes
 | Yes (Unsafe)
 | 0.36
-| 0.44
+| 1.6
 |===
 
-This cop identifies unnecessary use of a regex where `String#end_with?`
-would suffice.
+This cop identifies unnecessary use of a regex where `String#end_with?` would suffice.
+
+This cop has `SafeMultiline` configuration option that `true` by default because
+`end$` is unsafe as it will behave incompatible with `end_with?`
+for receiver is multiline string.
 
 === Examples
 
@@ -500,15 +565,34 @@ would suffice.
 'abc'.match(/bc\Z/)
 /bc\Z/.match('abc')
 
+# good
+'abc'.end_with?('bc')
+----
+
+==== SafeMultiline: true (default)
+
+[source,ruby]
+----
+# good
 'abc'.match?(/bc$/)
 /bc$/.match?('abc')
 'abc' =~ /bc$/
 /bc$/ =~ 'abc'
 'abc'.match(/bc$/)
 /bc$/.match('abc')
+----
 
-# good
-'abc'.end_with?('bc')
+==== SafeMultiline: false
+
+[source,ruby]
+----
+# bad
+'abc'.match?(/bc$/)
+/bc$/.match?('abc')
+'abc' =~ /bc$/
+/bc$/ =~ 'abc'
+'abc'.match(/bc$/)
+/bc$/.match('abc')
 ----
 
 === Configurable attributes
@@ -518,6 +602,10 @@ would suffice.
 
 | AutoCorrect
 | `false`
+| Boolean
+
+| SafeMultiline
+| `true`
 | Boolean
 |===
 
@@ -1057,11 +1145,14 @@ have been assigned to an array or a hash.
 | Yes
 | Yes (Unsafe)
 | 0.36
-| 0.44
+| 1.6
 |===
 
-This cop identifies unnecessary use of a regex where
-`String#start_with?` would suffice.
+This cop identifies unnecessary use of a regex where `String#start_with?` would suffice.
+
+This cop has `SafeMultiline` configuration option that `true` by default because
+`^start` is unsafe as it will behave incompatible with `start_with?`
+for receiver is multiline string.
 
 === Examples
 
@@ -1075,15 +1166,34 @@ This cop identifies unnecessary use of a regex where
 'abc'.match(/\Aab/)
 /\Aab/.match('abc')
 
+# good
+'abc'.start_with?('ab')
+----
+
+==== SafeMultiline: true (default)
+
+[source,ruby]
+----
+# good
 'abc'.match?(/^ab/)
 /^ab/.match?('abc')
 'abc' =~ /^ab/
 /^ab/ =~ 'abc'
 'abc'.match(/^ab/)
 /^ab/.match('abc')
+----
 
-# good
-'abc'.start_with?('ab')
+==== SafeMultiline: false
+
+[source,ruby]
+----
+# bad
+'abc'.match?(/^ab/)
+/^ab/.match?('abc')
+'abc' =~ /^ab/
+/^ab/ =~ 'abc'
+'abc'.match(/^ab/)
+/^ab/.match('abc')
 ----
 
 === Configurable attributes
@@ -1093,6 +1203,10 @@ This cop identifies unnecessary use of a regex where
 
 | AutoCorrect
 | `false`
+| Boolean
+
+| SafeMultiline
+| `true`
 | Boolean
 |===
 

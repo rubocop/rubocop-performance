@@ -3,6 +3,9 @@
 RSpec.describe RuboCop::Cop::Performance::DeletePrefix, :config do
   subject(:cop) { described_class.new(config) }
 
+  let(:cop_config) { { 'SafeMultiline' => safe_multiline } }
+  let(:safe_multiline) { true }
+
   context 'TargetRubyVersion <= 2.4', :ruby24 do
     it "does not register an offense when using `gsub(/\Aprefix/, '')`" do
       expect_no_offenses(<<~RUBY)
@@ -77,48 +80,80 @@ RSpec.describe RuboCop::Cop::Performance::DeletePrefix, :config do
     end
 
     context 'when using `^` as starting pattern' do
-      it 'registers an offense and corrects when using `gsub`' do
-        expect_offense(<<~RUBY)
-          str.gsub(/^prefix/, '')
-              ^^^^ Use `delete_prefix` instead of `gsub`.
-        RUBY
+      context 'when `SafeMultiline: true`' do
+        let(:safe_multiline) { true }
 
-        expect_correction(<<~RUBY)
-          str.delete_prefix('prefix')
-        RUBY
+        it 'does not register an offense and corrects when using `gsub`' do
+          expect_no_offenses(<<~RUBY)
+            str.gsub(/^prefix/, '')
+          RUBY
+        end
+
+        it 'does not register an offense and corrects when using `gsub!`' do
+          expect_no_offenses(<<~RUBY)
+            str.gsub!(/^prefix/, '')
+          RUBY
+        end
+
+        it 'does not register an offense and corrects when using `sub`' do
+          expect_no_offenses(<<~RUBY)
+            str.sub(/^prefix/, '')
+          RUBY
+        end
+
+        it 'does not register an offense and corrects when using `sub!`' do
+          expect_no_offenses(<<~RUBY)
+            str.sub!(/^prefix/, '')
+          RUBY
+        end
       end
 
-      it 'registers an offense and corrects when using `gsub!`' do
-        expect_offense(<<~RUBY)
-          str.gsub!(/^prefix/, '')
-              ^^^^^ Use `delete_prefix!` instead of `gsub!`.
-        RUBY
+      context 'when `SafeMultiline: false`' do
+        let(:safe_multiline) { false }
 
-        expect_correction(<<~RUBY)
-          str.delete_prefix!('prefix')
-        RUBY
-      end
+        it 'registers an offense and corrects when using `gsub`' do
+          expect_offense(<<~RUBY)
+            str.gsub(/^prefix/, '')
+                ^^^^ Use `delete_prefix` instead of `gsub`.
+          RUBY
 
-      it 'registers an offense and corrects when using `sub`' do
-        expect_offense(<<~RUBY)
-          str.sub(/^prefix/, '')
-              ^^^ Use `delete_prefix` instead of `sub`.
-        RUBY
+          expect_correction(<<~RUBY)
+            str.delete_prefix('prefix')
+          RUBY
+        end
 
-        expect_correction(<<~RUBY)
-          str.delete_prefix('prefix')
-        RUBY
-      end
+        it 'registers an offense and corrects when using `gsub!`' do
+          expect_offense(<<~RUBY)
+            str.gsub!(/^prefix/, '')
+                ^^^^^ Use `delete_prefix!` instead of `gsub!`.
+          RUBY
 
-      it 'registers an offense and corrects when using `sub!`' do
-        expect_offense(<<~RUBY)
-          str.sub!(/^prefix/, '')
-              ^^^^ Use `delete_prefix!` instead of `sub!`.
-        RUBY
+          expect_correction(<<~RUBY)
+            str.delete_prefix!('prefix')
+          RUBY
+        end
 
-        expect_correction(<<~RUBY)
-          str.delete_prefix!('prefix')
-        RUBY
+        it 'registers an offense and corrects when using `sub`' do
+          expect_offense(<<~RUBY)
+            str.sub(/^prefix/, '')
+                ^^^ Use `delete_prefix` instead of `sub`.
+          RUBY
+
+          expect_correction(<<~RUBY)
+            str.delete_prefix('prefix')
+          RUBY
+        end
+
+        it 'registers an offense and corrects when using `sub!`' do
+          expect_offense(<<~RUBY)
+            str.sub!(/^prefix/, '')
+                ^^^^ Use `delete_prefix!` instead of `sub!`.
+          RUBY
+
+          expect_correction(<<~RUBY)
+            str.delete_prefix!('prefix')
+          RUBY
+        end
       end
     end
 
