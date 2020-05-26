@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#115](https://github.com/rubocop-hq/rubocop-performance/issues/115): Support `String#sub` and `String#sub!` methods for `Performance/DeletePrefix` and `Performance/DeleteSuffix` cops. ([@fatkodima][])
+
 ### Bug fixes
 
 * [#111](https://github.com/rubocop-hq/rubocop-performance/issues/111): Fix an error for `Performance/DeletePrefix` and `Performance/DeleteSuffix` cops when using autocorrection with RuboCop 0.81 or lower. ([@koic][])
@@ -101,3 +105,4 @@
 [@joe-sharp]: https://github.com/joe-sharp
 [@dischorde]: https://github.com/dischorde
 [@siegfault]: https://github.com/siegfault
+[@fatkodima]: https://github.com/fatkodima

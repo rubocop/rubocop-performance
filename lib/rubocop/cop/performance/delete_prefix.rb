@@ -5,7 +5,7 @@ module RuboCop
     module Performance
       # In Ruby 2.5, `String#delete_prefix` has been added.
       #
-      # This cop identifies places where `gsub(/\Aprefix/, '')`
+      # This cop identifies places where `gsub(/\Aprefix/, '')` and `sub(/\Aprefix/, '')`
       # can be replaced by `delete_prefix('prefix')`.
       #
       # The `delete_prefix('prefix')` method is faster than
@@ -18,6 +18,11 @@ module RuboCop
       #   str.gsub!(/\Aprefix/, '')
       #   str.gsub(/^prefix/, '')
       #   str.gsub!(/^prefix/, '')
+      #
+      #   str.sub(/\Aprefix/, '')
+      #   str.sub!(/\Aprefix/, '')
+      #   str.sub(/^prefix/, '')
+      #   str.sub!(/^prefix/, '')
       #
       #   # good
       #   str.delete_prefix('prefix')
@@ -33,15 +38,17 @@ module RuboCop
 
         PREFERRED_METHODS = {
           gsub: :delete_prefix,
-          gsub!: :delete_prefix!
+          gsub!: :delete_prefix!,
+          sub: :delete_prefix,
+          sub!: :delete_prefix!
         }.freeze
 
-        def_node_matcher :gsub_method?, <<~PATTERN
-          (send $!nil? ${:gsub :gsub!} (regexp (str $#literal_at_start?) (regopt)) (str $_))
+        def_node_matcher :delete_prefix_candidate?, <<~PATTERN
+          (send $!nil? ${:gsub :gsub! :sub :sub!} (regexp (str $#literal_at_start?) (regopt)) (str $_))
         PATTERN
 
         def on_send(node)
-          gsub_method?(node) do |_, bad_method, _, replace_string|
+          delete_prefix_candidate?(node) do |_, bad_method, _, replace_string|
             return unless replace_string.blank?
 
             good_method = PREFERRED_METHODS[bad_method]
@@ -53,7 +60,7 @@ module RuboCop
         end
 
         def autocorrect(node)
-          gsub_method?(node) do |receiver, bad_method, regexp_str, _|
+          delete_prefix_candidate?(node) do |receiver, bad_method, regexp_str, _|
             lambda do |corrector|
               good_method = PREFERRED_METHODS[bad_method]
               regexp_str = drop_start_metacharacter(regexp_str)

@@ -267,7 +267,7 @@ Enabled | Yes | Yes  | 1.6 | -
 
 In Ruby 2.5, `String#delete_prefix` has been added.
 
-This cop identifies places where `gsub(/\Aprefix/, '')`
+This cop identifies places where `gsub(/\Aprefix/, '')` and `sub(/\Aprefix/, '')`
 can be replaced by `delete_prefix('prefix')`.
 
 The `delete_prefix('prefix')` method is faster than
@@ -281,6 +281,11 @@ str.gsub(/\Aprefix/, '')
 str.gsub!(/\Aprefix/, '')
 str.gsub(/^prefix/, '')
 str.gsub!(/^prefix/, '')
+
+str.sub(/\Aprefix/, '')
+str.sub!(/\Aprefix/, '')
+str.sub(/^prefix/, '')
+str.sub!(/^prefix/, '')
 
 # good
 str.delete_prefix('prefix')
@@ -299,7 +304,7 @@ Enabled | Yes | Yes  | 1.6 | -
 
 In Ruby 2.5, `String#delete_suffix` has been added.
 
-This cop identifies places where `gsub(/suffix\z/, '')`
+This cop identifies places where `gsub(/suffix\z/, '')` and `sub(/suffix\z/, '')`
 can be replaced by `delete_suffix('suffix')`.
 
 The `delete_suffix('suffix')` method is faster than
@@ -313,6 +318,11 @@ str.gsub(/suffix\z/, '')
 str.gsub!(/suffix\z/, '')
 str.gsub(/suffix$/, '')
 str.gsub!(/suffix$/, '')
+
+str.sub(/suffix\z/, '')
+str.sub!(/suffix\z/, '')
+str.sub(/suffix$/, '')
+str.sub!(/suffix$/, '')
 
 # good
 str.delete_suffix('suffix')
