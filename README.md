@@ -74,7 +74,7 @@ Performance/Size:
 
 ## Documentation
 
-You can read a lot more about RuboCop Performance in its [official docs](https://docs.rubocop.org/projects/performance/).
+You can read a lot more about RuboCop Performance in its [official docs](https://docs.rubocop.org/rubocop-performance/index.html).
 
 ## Contributing
 
