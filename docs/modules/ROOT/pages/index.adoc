@@ -1,0 +1,3 @@
+= RuboCop Performance
+
+Performance optimization analysis for your projects, as an extension to https://github.com/rubocop-hq/rubocop[RuboCop].

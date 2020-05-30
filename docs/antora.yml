@@ -1,0 +1,5 @@
+name: rubocop-performance
+title: RuboCop Performance
+version: master
+nav:
+  - modules/ROOT/nav.adoc
