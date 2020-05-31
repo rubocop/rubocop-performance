@@ -2,9 +2,7 @@
 
 == Performance/BindCall
 
-!!! Note
-
- Required Ruby version: 2.7
+NOTE: Required Ruby version: 2.7
 
 |===
 | Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
@@ -18,11 +16,11 @@
 
 In Ruby 2.7, `UnboundMethod#bind_call` has been added.
 
-This cop identifies places where `+bind(obj).call(args, ...)+`
-can be replaced by `+bind_call(obj, args, ...)+`.
+This cop identifies places where `bind(obj).call(args, ...)`
+can be replaced by `bind_call(obj, args, ...)`.
 
-The `+bind_call(obj, args, ...)+` method is faster than
-`+bind(obj).call(args, ...)+`.
+The `bind_call(obj, args, ...)` method is faster than
+`bind(obj).call(args, ...)`.
 
 === Examples
 
@@ -152,7 +150,7 @@ end
 
 | Enabled
 | No
-| Yes
+| Yes (Unsafe)
 | 0.36
 | -
 |===
@@ -180,7 +178,7 @@ str.casecmp('ABC').zero?
 
 === References
 
-* https://github.com/JuanitoFatas/fast-ruby#stringcasecmp-vs-stringdowncase---code[https://github.com/JuanitoFatas/fast-ruby#stringcasecmp-vs-stringdowncase--code]
+* https://github.com/JuanitoFatas/fast-ruby#stringcasecmp-vs-stringdowncase---code
 
 == Performance/ChainArrayAllocation
 
@@ -234,7 +232,7 @@ array
 | -
 |===
 
-This cop identifies places where `+sort { |a, b| a.foo <=> b.foo }+`
+This cop identifies places where `sort { |a, b| a.foo <=> b.foo }`
 can be replaced by `sort_by(&:foo)`.
 This cop also checks `max` and `min` methods.
 
@@ -279,14 +277,14 @@ passed to the `count` call.
 `ActiveRecord` will ignore the block that is passed to `count`.
 Other methods, such as `select`, will convert the association to an
 array and then run the block on the array. A simple work around to
-make `count` work with a block is to call `+to_a.count {...}+`.
+make `count` work with a block is to call `to_a.count {...}`.
 
 Example:
   `Model.where(id: [1, 2, 3]).select { |m| m.method == true }.size`
 
-becomes:
+  becomes:
 
-`Model.where(id: [1, 2, 3]).to_a.count { |m| m.method == true }`
+  `Model.where(id: [1, 2, 3]).to_a.count { |m| m.method == true }`
 
 === Examples
 
@@ -312,9 +310,7 @@ Model.select(:value).count
 
 == Performance/DeletePrefix
 
-!!! Note
-
- Required Ruby version: 2.5
+NOTE: Required Ruby version: 2.5
 
 |===
 | Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
@@ -356,9 +352,7 @@ str.delete_prefix!('prefix')
 
 == Performance/DeleteSuffix
 
-!!! Note
-
- Required Ruby version: 2.5
+NOTE: Required Ruby version: 2.5
 
 |===
 | Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
@@ -638,7 +632,7 @@ This cop is used to identify usages of
 
 | Enabled
 | No
-| Yes
+| Yes (Unsafe)
 | 0.56
 | -
 |===
@@ -731,7 +725,7 @@ end
 
 | Enabled
 | No
-| Yes
+| Yes (Unsafe)
 | 0.36
 | -
 |===
