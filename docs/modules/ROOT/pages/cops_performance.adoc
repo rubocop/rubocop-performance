@@ -1,5 +1,35 @@
 = Performance
 
+== Performance/AncestorsInclude
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Enabled
+| Yes
+| Yes
+| 1.7
+| -
+|===
+
+This cop is used to identify usages of `ancestors.include?` and
+change them to use `<=` instead.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+A.ancestors.include?(B)
+
+# good
+A <= B
+----
+
+=== References
+
+* https://github.com/JuanitoFatas/fast-ruby#ancestorsinclude-vs--code
+
 == Performance/BindCall
 
 NOTE: Required Ruby version: 2.7

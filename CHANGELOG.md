@@ -4,6 +4,7 @@
 
 ### New features
 
+* [#123](https://github.com/rubocop-hq/rubocop-performance/pull/123): Add new `Performance/AncestorsInclude` cop. ([@fatkodima][])
 * [#125](https://github.com/rubocop-hq/rubocop-performance/pull/125): Support `Range#member?` method for `Performance/RangeInclude` cop. ([@fatkodima][])
 
 ## 1.6.1 (2020-06-05)
