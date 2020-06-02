@@ -274,7 +274,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
     end
 
     it 'moves multiple splat condition to the end of the when conditions' do
-      new_source = autocorrect_source_with_loop(<<~RUBY)
+      new_source = autocorrect_source(<<~RUBY)
         case foo
         when *cond1
           bar
@@ -299,7 +299,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
 
     it 'moves multiple out of order splat condition to the end ' \
        'of the when conditions' do
-      new_source = autocorrect_source_with_loop(<<~RUBY)
+      new_source = autocorrect_source(<<~RUBY)
         case foo
         when *cond1
           bar
