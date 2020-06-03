@@ -4,6 +4,7 @@
 
 ### New features
 
+* [#124](https://github.com/rubocop-hq/rubocop-performance/pull/124): Add new `Performance/Squeeze` cop. ([@fatkodima][])
 * [#129](https://github.com/rubocop-hq/rubocop-performance/pull/129): Add new `Performance/BigDecimalWithNumericArgument` cop. ([@fatkodima][])
 * [#130](https://github.com/rubocop-hq/rubocop-performance/pull/130): Add new `Performance/SortReverse` cop. ([@fatkodima][])
 * [#81](https://github.com/rubocop-hq/rubocop-performance/issues/81): Add new `Performance/StringInclude` cop. ([@fatkodima][])

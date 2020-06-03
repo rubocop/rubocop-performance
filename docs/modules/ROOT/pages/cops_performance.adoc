@@ -1223,6 +1223,40 @@ array.sort { |a, b| b <=> a }
 array.sort.reverse
 ----
 
+== Performance/Squeeze
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Enabled
+| Yes
+| Yes
+| 1.7
+| -
+|===
+
+This cop identifies places where `gsub(/a+/, 'a')` and `gsub!(/a+/, 'a')`
+can be replaced by `squeeze('a')` and `squeeze!('a')`.
+
+The `squeeze('a')` method is faster than `gsub(/a+/, 'a')`.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+str.gsub(/a+/, 'a')
+str.gsub!(/a+/, 'a')
+
+# good
+str.squeeze('a')
+str.squeeze!('a')
+----
+
+=== References
+
+* https://github.com/JuanitoFatas/fast-ruby#remove-extra-spaces-or-other-contiguous-characters-code
+
 == Performance/StartWith
 
 |===
