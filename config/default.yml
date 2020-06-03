@@ -135,10 +135,11 @@ Performance/OpenStruct:
   Safe: false
 
 Performance/RangeInclude:
-  Description: 'Use `Range#cover?` instead of `Range#include?`.'
+  Description: 'Use `Range#cover?` instead of `Range#include?` (or `Range#member?`).'
   Reference: 'https://github.com/JuanitoFatas/fast-ruby#cover-vs-include-code'
   Enabled: true
   VersionAdded: '0.36'
+  VersionChanged: '1.7'
   Safe: false
 
 Performance/RedundantBlockCall:

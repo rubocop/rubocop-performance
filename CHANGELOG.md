@@ -4,6 +4,8 @@
 
 ### New features
 
+* [#125](https://github.com/rubocop-hq/rubocop-performance/pull/125): Support `Range#member?` method for `Performance/RangeInclude` cop. ([@fatkodima][])
+
 * [#115](https://github.com/rubocop-hq/rubocop-performance/issues/115): Support `String#sub` and `String#sub!` methods for `Performance/DeletePrefix` and `Performance/DeleteSuffix` cops. ([@fatkodima][])
 
 ### Bug fixes
