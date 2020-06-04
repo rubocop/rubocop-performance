@@ -22,6 +22,7 @@
 * xref:cops_performance.adoc#performanceopenstruct[Performance/OpenStruct]
 * xref:cops_performance.adoc#performancerangeinclude[Performance/RangeInclude]
 * xref:cops_performance.adoc#performanceredundantblockcall[Performance/RedundantBlockCall]
+* xref:cops_performance.adoc#performanceredundantfetchblock[Performance/RedundantFetchBlock]
 * xref:cops_performance.adoc#performanceredundantmatch[Performance/RedundantMatch]
 * xref:cops_performance.adoc#performanceredundantmerge[Performance/RedundantMerge]
 * xref:cops_performance.adoc#performanceredundantsortblock[Performance/RedundantSortBlock]

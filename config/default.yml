@@ -162,6 +162,18 @@ Performance/RedundantBlockCall:
   Enabled: true
   VersionAdded: '0.36'
 
+Performance/RedundantFetchBlock:
+  Description: >-
+                  Use `fetch(key, value)` instead of `fetch(key) { value }`
+                  when value has Numeric, Rational, Complex, Symbol or String type, `false`, `true`, `nil` or is a constant.
+  Reference: 'https://github.com/JuanitoFatas/fast-ruby#hashfetch-with-argument-vs-hashfetch--block-code'
+  Enabled: true
+  VersionAdded: '1.7'
+  SafeForConstants: false
+  # If enabled, this cop will autocorrect usages of
+  # `fetch` being called with block returning a constant.
+  # This can be dangerous since constants will not be defined at that moment.
+
 Performance/RedundantMatch:
   Description: >-
                   Use `=~` instead of `String#match` or `Regexp#match` in a context where the
