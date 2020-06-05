@@ -3,8 +3,11 @@
 module RuboCop
   module Cop
     module Performance
-      # This cop identifies unnecessary use of a regex where `String#end_with?`
-      # would suffice.
+      # This cop identifies unnecessary use of a regex where `String#end_with?` would suffice.
+      #
+      # This cop has `SafeMultiline` configuration option that `true` by default because
+      # `end$` is unsafe as it will behave incompatible with `end_with?`
+      # for receiver is multiline string.
       #
       # @example
       #   # bad
@@ -15,6 +18,12 @@ module RuboCop
       #   'abc'.match(/bc\Z/)
       #   /bc\Z/.match('abc')
       #
+      #   # good
+      #   'abc'.end_with?('bc')
+      #
+      # @example SafeMultiline: true (default)
+      #
+      #   # good
       #   'abc'.match?(/bc$/)
       #   /bc$/.match?('abc')
       #   'abc' =~ /bc$/
@@ -22,8 +31,16 @@ module RuboCop
       #   'abc'.match(/bc$/)
       #   /bc$/.match('abc')
       #
-      #   # good
-      #   'abc'.end_with?('bc')
+      # @example SafeMultiline: false
+      #
+      #   # bad
+      #   'abc'.match?(/bc$/)
+      #   /bc$/.match?('abc')
+      #   'abc' =~ /bc$/
+      #   /bc$/ =~ 'abc'
+      #   'abc'.match(/bc$/)
+      #   /bc$/.match('abc')
+      #
       class EndWith < Cop
         include RegexpMetacharacter
 

@@ -58,11 +58,13 @@ Performance/Count:
 Performance/DeletePrefix:
   Description: 'Use `delete_prefix` instead of `gsub`.'
   Enabled: true
+  SafeMultiline: true
   VersionAdded: '1.6'
 
 Performance/DeleteSuffix:
   Description: 'Use `delete_suffix` instead of `gsub`.'
   Enabled: true
+  SafeMultiline: true
   VersionAdded: '1.6'
 
 Performance/Detect:
@@ -99,8 +101,9 @@ Performance/EndWith:
   SafeAutoCorrect: false
   AutoCorrect: false
   Enabled: true
+  SafeMultiline: true
   VersionAdded: '0.36'
-  VersionChanged: '0.44'
+  VersionChanged: '1.6'
 
 Performance/FixedSize:
   Description: 'Do not compute the size of statically sized objects except in constants.'
@@ -193,8 +196,9 @@ Performance/StartWith:
   SafeAutoCorrect: false
   AutoCorrect: false
   Enabled: true
+  SafeMultiline: true
   VersionAdded: '0.36'
-  VersionChanged: '0.44'
+  VersionChanged: '1.6'
 
 Performance/StringReplacement:
   Description: >-

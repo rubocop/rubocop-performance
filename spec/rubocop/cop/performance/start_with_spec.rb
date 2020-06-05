@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Performance::StartWith do
-  subject(:cop) { described_class.new }
+RSpec.describe RuboCop::Cop::Performance::StartWith, :config do
+  subject(:cop) { described_class.new(config) }
+
+  let(:cop_config) { { 'SafeMultiline' => safe_multiline } }
 
   shared_examples 'different match methods' do |method|
     it "autocorrects str#{method} /\\Aabc/" do
@@ -109,11 +111,25 @@ RSpec.describe RuboCop::Cop::Performance::StartWith do
     end
   end
 
-  include_examples('different match methods', '.match?')
-  include_examples('different match methods', ' =~')
-  include_examples('different match methods', '.match')
+  context 'when `SafeMultiline: false`' do
+    let(:safe_multiline) { false }
 
-  it 'allows match without a receiver' do
-    expect_no_offenses('expect(subject.spin).to match(/\A\n/)')
+    include_examples('different match methods', '.match?')
+    include_examples('different match methods', ' =~')
+    include_examples('different match methods', '.match')
+
+    it 'allows match without a receiver' do
+      expect_no_offenses('expect(subject.spin).to match(/\A\n/)')
+    end
+  end
+
+  context 'when `SafeMultiline: true`' do
+    let(:safe_multiline) { true }
+
+    it 'does not register an offense when using `^` as starting pattern' do
+      expect_no_offenses(<<~RUBY)
+        'abc'.match?(/^ab/)
+      RUBY
+    end
   end
 end
