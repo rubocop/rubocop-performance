@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 1.6.1 (2020-06-05)
+
 ### New features
 
 * [#115](https://github.com/rubocop-hq/rubocop-performance/issues/115): Support `String#sub` and `String#sub!` methods for `Performance/DeletePrefix` and `Performance/DeleteSuffix` cops. ([@fatkodima][])
