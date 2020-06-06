@@ -1245,6 +1245,37 @@ for receiver is multiline string.
 
 * https://github.com/JuanitoFatas/fast-ruby#stringmatch-vs-stringstart_withstringend_with-code-start-code-end
 
+== Performance/StringInclude
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Enabled
+| Yes
+| Yes
+| 1.7
+| -
+|===
+
+This cop identifies unnecessary use of a regex where
+`String#include?` would suffice.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+'abc'.match?(/ab/)
+/ab/.match?('abc')
+'abc' =~ /ab/
+/ab/ =~ 'abc'
+'abc'.match(/ab/)
+/ab/.match('abc')
+
+# good
+'abc'.include?('ab')
+----
+
 == Performance/StringReplacement
 
 |===

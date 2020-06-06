@@ -27,6 +27,7 @@
 * xref:cops_performance.adoc#performancereverseeach[Performance/ReverseEach]
 * xref:cops_performance.adoc#performancesize[Performance/Size]
 * xref:cops_performance.adoc#performancestartwith[Performance/StartWith]
+* xref:cops_performance.adoc#performancestringinclude[Performance/StringInclude]
 * xref:cops_performance.adoc#performancestringreplacement[Performance/StringReplacement]
 * xref:cops_performance.adoc#performancetimesmap[Performance/TimesMap]
 * xref:cops_performance.adoc#performanceunfreezestring[Performance/UnfreezeString]
