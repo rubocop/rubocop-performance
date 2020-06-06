@@ -4,6 +4,7 @@
 
 ### New features
 
+* [#129](https://github.com/rubocop-hq/rubocop-performance/pull/129): Add new `Performance/BigDecimalWithNumericArgument` cop. ([@fatkodima][])
 * [#130](https://github.com/rubocop-hq/rubocop-performance/pull/130): Add new `Performance/SortReverse` cop. ([@fatkodima][])
 * [#81](https://github.com/rubocop-hq/rubocop-performance/issues/81): Add new `Performance/StringInclude` cop. ([@fatkodima][])
 * [#123](https://github.com/rubocop-hq/rubocop-performance/pull/123): Add new `Performance/AncestorsInclude` cop. ([@fatkodima][])

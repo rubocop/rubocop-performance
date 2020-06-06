@@ -3,6 +3,7 @@
 = Department xref:cops_performance.adoc[Performance]
 
 * xref:cops_performance.adoc#performanceancestorsinclude[Performance/AncestorsInclude]
+* xref:cops_performance.adoc#performancebigdecimalwithnumericargument[Performance/BigDecimalWithNumericArgument]
 * xref:cops_performance.adoc#performancebindcall[Performance/BindCall]
 * xref:cops_performance.adoc#performancecaller[Performance/Caller]
 * xref:cops_performance.adoc#performancecasewhensplat[Performance/CaseWhenSplat]
