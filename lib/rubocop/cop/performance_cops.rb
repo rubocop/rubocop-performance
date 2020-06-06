@@ -2,6 +2,7 @@
 
 require_relative 'mixin/regexp_metacharacter'
 
+require_relative 'performance/ancestors_include'
 require_relative 'performance/bind_call'
 require_relative 'performance/caller'
 require_relative 'performance/case_when_splat'

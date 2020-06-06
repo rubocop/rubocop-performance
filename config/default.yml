@@ -1,5 +1,11 @@
 # This is the default configuration file.
 
+Performance/AncestorsInclude:
+  Description: 'Use `A <= B` instead of `A.ancestors.include?(B)`.'
+  Reference: 'https://github.com/JuanitoFatas/fast-ruby#ancestorsinclude-vs--code'
+  Enabled: true
+  VersionAdded: '1.7'
+
 Performance/BindCall:
   Description: 'Use `bind_call(obj, args, ...)` instead of `bind(obj).call(args, ...)`.'
   Enabled: true
