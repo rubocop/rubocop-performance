@@ -35,6 +35,13 @@ RSpec.describe RuboCop::Cop::Performance::Size do
       RUBY
     end
 
+    it 'registers an offense when calling count on Array()' do
+      expect_offense(<<~RUBY)
+        Array(1..5).count
+                    ^^^^^ Use `size` instead of `count`.
+      RUBY
+    end
+
     it 'does not register an offense when calling size' do
       expect_no_offenses('[1, 2, 3].size')
     end
@@ -72,6 +79,12 @@ RSpec.describe RuboCop::Cop::Performance::Size do
 
       expect(new_source).to eq('Array[*1..5].size')
     end
+
+    it 'corrects count to size on Array()' do
+      new_source = autocorrect_source('Array(1..5).count')
+
+      expect(new_source).to eq('Array(1..5).size')
+    end
   end
 
   describe 'on hash' do
@@ -92,6 +105,13 @@ RSpec.describe RuboCop::Cop::Performance::Size do
     it 'registers an offense when calling count on Hash[]' do
       expect_offense(<<~RUBY)
         Hash[*('a'..'z')].count
+                          ^^^^^ Use `size` instead of `count`.
+      RUBY
+    end
+
+    it 'registers an offense when calling count on Hash()' do
+      expect_offense(<<~RUBY)
+        Hash(key: :value).count
                           ^^^^^ Use `size` instead of `count`.
       RUBY
     end
@@ -132,6 +152,12 @@ RSpec.describe RuboCop::Cop::Performance::Size do
       new_source = autocorrect_source("Hash[*('a'..'z')].count")
 
       expect(new_source).to eq("Hash[*('a'..'z')].size")
+    end
+
+    it 'corrects count to size on Hash()' do
+      new_source = autocorrect_source('Hash(key: :value).count')
+
+      expect(new_source).to eq('Hash(key: :value).size')
     end
   end
 end
