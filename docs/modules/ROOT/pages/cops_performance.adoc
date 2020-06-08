@@ -1035,6 +1035,32 @@ hash[:b] = 2
 
 * https://github.com/JuanitoFatas/fast-ruby#hashmerge-vs-hash-code
 
+== Performance/RedundantSortBlock
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Enabled
+| Yes
+| Yes
+| 1.7
+| -
+|===
+
+This cop identifies places where `sort { |a, b| a <=> b }`
+can be replaced with `sort`.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+array.sort { |a, b| a <=> b }
+
+# good
+array.sort
+----
+
 == Performance/RegexpMatch
 
 |===

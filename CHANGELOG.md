@@ -4,6 +4,7 @@
 
 ### New features
 
+* [#132](https://github.com/rubocop-hq/rubocop-performance/issues/132): Add new `Performance/RedundantSortBlock` cop. ([@fatkodima][])
 * [#125](https://github.com/rubocop-hq/rubocop-performance/pull/125): Support `Array()` and `Hash()` methods for `Performance/Size` cop. ([@fatkodima][])
 * [#124](https://github.com/rubocop-hq/rubocop-performance/pull/124): Add new `Performance/Squeeze` cop. ([@fatkodima][])
 * [#129](https://github.com/rubocop-hq/rubocop-performance/pull/129): Add new `Performance/BigDecimalWithNumericArgument` cop. ([@fatkodima][])
