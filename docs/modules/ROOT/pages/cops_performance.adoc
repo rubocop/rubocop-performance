@@ -1167,6 +1167,32 @@ have been assigned to an array or a hash.
 
 * https://github.com/JuanitoFatas/fast-ruby#arraylength-vs-arraysize-vs-arraycount-code
 
+== Performance/SortReverse
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Enabled
+| Yes
+| Yes
+| 1.7
+| -
+|===
+
+This cop identifies places where `sort { |a, b| b <=> a }`
+can be replaced by a faster `sort.reverse`.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+array.sort { |a, b| b <=> a }
+
+# good
+array.sort.reverse
+----
+
 == Performance/StartWith
 
 |===
