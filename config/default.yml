@@ -6,6 +6,11 @@ Performance/AncestorsInclude:
   Enabled: true
   VersionAdded: '1.7'
 
+Performance/BigDecimalWithNumericArgument:
+  Description: 'Convert numeric argument to string before passing to BigDecimal.'
+  Enabled: true
+  VersionAdded: '1.7'
+
 Performance/BindCall:
   Description: 'Use `bind_call(obj, args, ...)` instead of `bind(obj).call(args, ...)`.'
   Enabled: true

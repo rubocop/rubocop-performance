@@ -30,6 +30,36 @@ A <= B
 
 * https://github.com/JuanitoFatas/fast-ruby#ancestorsinclude-vs--code
 
+== Performance/BigDecimalWithNumericArgument
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Enabled
+| Yes
+| Yes
+| 1.7
+| -
+|===
+
+This cop identifies places where numeric argument to BigDecimal should be
+converted to string. Initializing from String is faster
+than from Numeric for BigDecimal.
+
+BigDecimal(1, 2)
+BigDecimal(1.2, 3, exception: true)
+
+  # good
+BigDecimal('1', 2)
+BigDecimal('1.2', 3, exception: true)
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+----
+
 == Performance/BindCall
 
 NOTE: Required Ruby version: 2.7
