@@ -26,50 +26,34 @@ module RuboCop
       class Size < Cop
         MSG = 'Use `size` instead of `count`.'
 
+        def_node_matcher :array?, <<~PATTERN
+          {
+            [!nil? array_type?]
+            (send _ :to_a)
+            (send (const nil? :Array) :[] _)
+          }
+        PATTERN
+
+        def_node_matcher :hash?, <<~PATTERN
+          {
+            [!nil? hash_type?]
+            (send _ :to_h)
+            (send (const nil? :Hash) :[] _)
+          }
+        PATTERN
+
+        def_node_matcher :count?, <<~PATTERN
+          (send {#array? #hash?} :count)
+        PATTERN
+
         def on_send(node)
-          return unless eligible_node?(node)
+          return if node.parent&.block_type? || !count?(node)
 
           add_offense(node, location: :selector)
         end
 
         def autocorrect(node)
           ->(corrector) { corrector.replace(node.loc.selector, 'size') }
-        end
-
-        private
-
-        def eligible_node?(node)
-          return false unless node.method?(:count) && !node.arguments?
-
-          eligible_receiver?(node.receiver) && !allowed_parent?(node.parent)
-        end
-
-        def eligible_receiver?(node)
-          return false unless node
-
-          array?(node) || hash?(node)
-        end
-
-        def allowed_parent?(node)
-          node&.block_type?
-        end
-
-        def array?(node)
-          return true if node.array_type?
-          return false unless node.send_type?
-
-          _, constant = *node.receiver
-
-          constant == :Array || node.method?(:to_a)
-        end
-
-        def hash?(node)
-          return true if node.hash_type?
-          return false unless node.send_type?
-
-          _, constant = *node.receiver
-
-          constant == :Hash || node.method?(:to_h)
         end
       end
     end
