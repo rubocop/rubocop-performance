@@ -1560,6 +1560,40 @@ This cop identifies places where `gsub` can be replaced by
 
 * https://github.com/JuanitoFatas/fast-ruby#stringgsub-vs-stringtr-code
 
+== Performance/Sum
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Pending
+| Yes
+| Yes
+| 1.7
+| -
+|===
+
+This cop identifies places where custom code finding the sum of elements
+in some Enumerable object can be replaced by `Enumerable#sum` method.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+[1, 2, 3].inject(:+)
+[1, 2, 3].reduce(10, :+)
+[1, 2, 3].reduce { |acc, elem| acc + elem }
+
+# good
+[1, 2, 3].sum
+[1, 2, 3].sum(10)
+[1, 2, 3].sum
+----
+
+=== References
+
+* https://blog.bigbinary.com/2016/11/02/ruby-2-4-introduces-enumerable-sum.html
+
 == Performance/TimesMap
 
 |===

@@ -258,6 +258,12 @@ Performance/StringReplacement:
   Enabled: true
   VersionAdded: '0.33'
 
+Performance/Sum:
+  Description: 'Use `sum` instead of a custom array summation.'
+  Reference: 'https://blog.bigbinary.com/2016/11/02/ruby-2-4-introduces-enumerable-sum.html'
+  Enabled: 'pending'
+  VersionAdded: '1.7'
+
 Performance/TimesMap:
   Description: 'Checks for .times.map calls.'
   AutoCorrect: false
