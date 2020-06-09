@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'mixin/regexp_metacharacter'
+require_relative 'mixin/sort_block'
 
 require_relative 'performance/ancestors_include'
 require_relative 'performance/big_decimal_with_numeric_argument'
@@ -23,6 +24,7 @@ require_relative 'performance/range_include'
 require_relative 'performance/redundant_block_call'
 require_relative 'performance/redundant_match'
 require_relative 'performance/redundant_merge'
+require_relative 'performance/redundant_sort_block'
 require_relative 'performance/regexp_match'
 require_relative 'performance/reverse_each'
 require_relative 'performance/size'

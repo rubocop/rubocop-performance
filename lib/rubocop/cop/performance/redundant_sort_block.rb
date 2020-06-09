@@ -3,24 +3,24 @@
 module RuboCop
   module Cop
     module Performance
-      # This cop identifies places where `sort { |a, b| b <=> a }`
-      # can be replaced by a faster `sort.reverse`.
+      # This cop identifies places where `sort { |a, b| a <=> b }`
+      # can be replaced with `sort`.
       #
       # @example
       #   # bad
-      #   array.sort { |a, b| b <=> a }
+      #   array.sort { |a, b| a <=> b }
       #
       #   # good
-      #   array.sort.reverse
+      #   array.sort
       #
-      class SortReverse < Cop
+      class RedundantSortBlock < Cop
         include SortBlock
 
-        MSG = 'Use `sort.reverse` instead of `%<bad_method>s`.'
+        MSG = 'Use `sort` instead of `%<bad_method>s`.'
 
         def on_block(node)
           sort_with_block?(node) do |send, var_a, var_b, body|
-            replaceable_body?(body, var_b, var_a) do
+            replaceable_body?(body, var_a, var_b) do
               range = sort_range(send, node)
 
               add_offense(
@@ -36,8 +36,7 @@ module RuboCop
           sort_with_block?(node) do |send, _var_a, _var_b, _body|
             lambda do |corrector|
               range = sort_range(send, node)
-              replacement = 'sort.reverse'
-              corrector.replace(range, replacement)
+              corrector.replace(range, 'sort')
             end
           end
         end
@@ -45,7 +44,7 @@ module RuboCop
         private
 
         def message(var_a, var_b)
-          bad_method = "sort { |#{var_a}, #{var_b}| #{var_b} <=> #{var_a} }"
+          bad_method = "sort { |#{var_a}, #{var_b}| #{var_a} <=> #{var_b} }"
           format(MSG, bad_method: bad_method)
         end
       end
