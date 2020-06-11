@@ -9,6 +9,7 @@
 * xref:cops_performance.adoc#performancecasewhensplat[Performance/CaseWhenSplat]
 * xref:cops_performance.adoc#performancecasecmp[Performance/Casecmp]
 * xref:cops_performance.adoc#performancechainarrayallocation[Performance/ChainArrayAllocation]
+* xref:cops_performance.adoc#performancecollectionliteralinloop[Performance/CollectionLiteralInLoop]
 * xref:cops_performance.adoc#performancecomparewithblock[Performance/CompareWithBlock]
 * xref:cops_performance.adoc#performancecount[Performance/Count]
 * xref:cops_performance.adoc#performancedeleteprefix[Performance/DeletePrefix]

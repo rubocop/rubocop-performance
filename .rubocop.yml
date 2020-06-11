@@ -88,6 +88,10 @@ Performance/Caller:
 Performance/ChainArrayAllocation:
   Enabled: false
 
+Performance/CollectionLiteralInLoop:
+  Exclude:
+    - 'spec/**/*.rb'
+
 RSpec/PredicateMatcher:
   EnforcedStyle: explicit
 
