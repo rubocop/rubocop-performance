@@ -1181,6 +1181,34 @@ change them to use `reverse_each` instead.
 
 * https://github.com/JuanitoFatas/fast-ruby#enumerablereverseeach-vs-enumerablereverse_each-code
 
+== Performance/ReverseFirst
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Enabled
+| Yes
+| Yes
+| 1.7
+| -
+|===
+
+This cop identifies places where `reverse.first(n)` and `reverse.first`
+can be replaced by `last(n).reverse` and `last`.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+array.reverse.first(5)
+array.reverse.first
+
+# good
+array.last(5).reverse
+array.last
+----
+
 == Performance/Size
 
 |===

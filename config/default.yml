@@ -196,6 +196,11 @@ Performance/ReverseEach:
   Enabled: true
   VersionAdded: '0.30'
 
+Performance/ReverseFirst:
+  Description: 'Use `last(n).reverse` instead of `reverse.first(n)`.'
+  Enabled: true
+  VersionAdded: '1.7'
+
 Performance/Size:
   Description: >-
                   Use `size` instead of `count` for counting
