@@ -1101,6 +1101,58 @@ array.sort { |a, b| a <=> b }
 array.sort
 ----
 
+== Performance/RedundantStringChars
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Enabled
+| Yes
+| Yes
+| 1.7
+| -
+|===
+
+This cop checks for redundant `String#chars`.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+str.chars[0..2]
+str.chars.slice(0..2)
+
+# good
+str[0..2].chars
+
+# bad
+str.chars.first
+str.chars.first(2)
+str.chars.last
+str.chars.last(2)
+
+# good
+str[0]
+str[0...2].chars
+str[-1]
+str[-2..-1].chars
+
+# bad
+str.chars.take(2)
+str.chars.drop(2)
+str.chars.length
+str.chars.size
+str.chars.empty?
+
+# good
+str[0...2].chars
+str[2..-1].chars
+str.length
+str.size
+str.empty?
+----
+
 == Performance/RegexpMatch
 
 |===

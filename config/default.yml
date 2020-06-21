@@ -188,6 +188,11 @@ Performance/RedundantSortBlock:
   Enabled: true
   VersionAdded: '1.7'
 
+Performance/RedundantStringChars:
+  Description: 'Checks for redundant `String#chars`.'
+  Enabled: true
+  VersionAdded: '1.7'
+
 Performance/RegexpMatch:
   Description: >-
                   Use `match?` instead of `Regexp#match`, `String#match`, `Symbol#match`,
