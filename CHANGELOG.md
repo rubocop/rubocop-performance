@@ -4,6 +4,7 @@
 
 ### New features
 
+* [#127](https://github.com/rubocop-hq/rubocop-performance/pull/127): Add new `Performance/IoReadlines` cop. ([@fatkodima][])
 * [#128](https://github.com/rubocop-hq/rubocop-performance/pull/128): Add new `Performance/ReverseFirst` cop. ([@fatkodima][])
 * [#132](https://github.com/rubocop-hq/rubocop-performance/issues/132): Add new `Performance/RedundantSortBlock` cop. ([@fatkodima][])
 * [#125](https://github.com/rubocop-hq/rubocop-performance/pull/125): Support `Array()` and `Hash()` methods for `Performance/Size` cop. ([@fatkodima][])

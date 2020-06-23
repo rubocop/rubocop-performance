@@ -826,6 +826,46 @@ h = { a: 1, b: 2 }; h.value?(nil)
 
 * https://github.com/JuanitoFatas/fast-ruby#hashkey-instead-of-hashkeysinclude-code
 
+== Performance/IoReadlines
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Disabled
+| Yes
+| Yes
+| 1.7
+| -
+|===
+
+This cop identifies places where inefficient `readlines` method
+can be replaced by `each_line` to avoid fully loading file content into memory.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+File.readlines('testfile').each { |l| puts l }
+IO.readlines('testfile', chomp: true).each { |l| puts l }
+
+conn.readlines(10).map { |l| l.size }
+file.readlines.find { |l| l.start_with?('#') }
+file.readlines.each { |l| puts l }
+
+# good
+File.open('testfile', 'r').each_line { |l| puts l }
+IO.open('testfile').each_line(chomp: true) { |l| puts l }
+
+conn.each_line(10).map { |l| l.size }
+file.each_line.find { |l| l.start_with?('#') }
+file.each_line { |l| puts l }
+----
+
+=== References
+
+* https://docs.gitlab.com/ee/development/performance.html#reading-from-files-and-other-data-sources
+
 == Performance/OpenStruct
 
 |===
