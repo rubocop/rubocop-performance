@@ -24,22 +24,26 @@ RSpec.describe RuboCop::Cop::Performance::ChainArrayAllocation, :config do
   end
 
   describe 'Methods that require an argument' do
-    it 'first' do
+    it 'does not register an offense for `first.uniq`' do
       # Yes I know this is not valid Ruby
-      inspect_source('[1, 2, 3, 4].first.uniq')
-      expect(cop.messages.empty?).to be(true)
+      expect_no_offenses(<<~RUBY)
+        [1, 2, 3, 4].first.uniq
+      RUBY
+    end
 
-      inspect_source('[1, 2, 3, 4].first(10).uniq')
-      expect(cop.messages.empty?).to be(false)
-      expect(cop.messages)
-        .to eq([generate_message('first', 'uniq')])
-      expect(cop.highlights).to eq(['.uniq'])
+    it 'registers an offense for `first(10).uniq`' do
+      expect_offense(<<~RUBY)
+        [1, 2, 3, 4].first(10).uniq
+                              ^^^^^ Use unchained `first!` and `uniq!` (followed by `return array` if required) instead of chaining `first...uniq`.
+      RUBY
+    end
 
-      inspect_source('[1, 2, 3, 4].first(variable).uniq')
-      expect(cop.messages.empty?).to be(false)
-      expect(cop.messages)
-        .to eq([generate_message('first', 'uniq')])
-      expect(cop.highlights).to eq(['.uniq'])
+    it 'registers an offense for `first(variable).uniq`' do
+      expect_offense(<<~RUBY)
+        variable = 42
+        [1, 2, 3, 4].first(variable).uniq
+                                    ^^^^^ Use unchained `first!` and `uniq!` (followed by `return array` if required) instead of chaining `first...uniq`.
+      RUBY
     end
   end
 
