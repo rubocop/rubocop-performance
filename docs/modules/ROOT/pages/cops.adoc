@@ -26,6 +26,7 @@
 * xref:cops_performance.adoc#performanceredundantmatch[Performance/RedundantMatch]
 * xref:cops_performance.adoc#performanceredundantmerge[Performance/RedundantMerge]
 * xref:cops_performance.adoc#performanceredundantsortblock[Performance/RedundantSortBlock]
+* xref:cops_performance.adoc#performanceredundantstringchars[Performance/RedundantStringChars]
 * xref:cops_performance.adoc#performanceregexpmatch[Performance/RegexpMatch]
 * xref:cops_performance.adoc#performancereverseeach[Performance/ReverseEach]
 * xref:cops_performance.adoc#performancereversefirst[Performance/ReverseFirst]
