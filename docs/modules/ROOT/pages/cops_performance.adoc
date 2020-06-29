@@ -5,7 +5,7 @@
 |===
 | Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 
-| Enabled
+| Pending
 | Yes
 | Yes
 | 1.7
@@ -35,7 +35,7 @@ A <= B
 |===
 | Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 
-| Enabled
+| Pending
 | Yes
 | Yes
 | 1.7
@@ -1080,7 +1080,7 @@ hash[:b] = 2
 |===
 | Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 
-| Enabled
+| Pending
 | Yes
 | Yes
 | 1.7
@@ -1106,7 +1106,7 @@ array.sort
 |===
 | Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 
-| Enabled
+| Pending
 | Yes
 | Yes
 | 1.7
@@ -1278,7 +1278,7 @@ change them to use `reverse_each` instead.
 |===
 | Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 
-| Enabled
+| Pending
 | Yes
 | Yes
 | 1.7
@@ -1360,7 +1360,7 @@ Hash(key: :value).size
 |===
 | Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 
-| Enabled
+| Pending
 | Yes
 | Yes
 | 1.7
@@ -1386,7 +1386,7 @@ array.sort.reverse
 |===
 | Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 
-| Enabled
+| Pending
 | Yes
 | Yes
 | 1.7
@@ -1498,7 +1498,7 @@ for receiver is multiline string.
 |===
 | Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 
-| Enabled
+| Pending
 | Yes
 | Yes
 | 1.7

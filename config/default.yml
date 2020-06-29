@@ -3,12 +3,12 @@
 Performance/AncestorsInclude:
   Description: 'Use `A <= B` instead of `A.ancestors.include?(B)`.'
   Reference: 'https://github.com/JuanitoFatas/fast-ruby#ancestorsinclude-vs--code'
-  Enabled: true
+  Enabled: 'pending'
   VersionAdded: '1.7'
 
 Performance/BigDecimalWithNumericArgument:
   Description: 'Convert numeric argument to string before passing to BigDecimal.'
-  Enabled: true
+  Enabled: 'pending'
   VersionAdded: '1.7'
 
 Performance/BindCall:
@@ -185,12 +185,12 @@ Performance/RedundantMerge:
 
 Performance/RedundantSortBlock:
   Description: 'Use `sort` instead of `sort { |a, b| a <=> b }`.'
-  Enabled: true
+  Enabled: 'pending'
   VersionAdded: '1.7'
 
 Performance/RedundantStringChars:
   Description: 'Checks for redundant `String#chars`.'
-  Enabled: true
+  Enabled: 'pending'
   VersionAdded: '1.7'
 
 Performance/RegexpMatch:
@@ -209,7 +209,7 @@ Performance/ReverseEach:
 
 Performance/ReverseFirst:
   Description: 'Use `last(n).reverse` instead of `reverse.first(n)`.'
-  Enabled: true
+  Enabled: 'pending'
   VersionAdded: '1.7'
 
 Performance/Size:
@@ -222,13 +222,13 @@ Performance/Size:
 
 Performance/SortReverse:
   Description: 'Use `sort.reverse` instead of `sort { |a, b| b <=> a }`.'
-  Enabled: true
+  Enabled: 'pending'
   VersionAdded: '1.7'
 
 Performance/Squeeze:
   Description: "Use `squeeze('a')` instead of `gsub(/a+/, 'a')`."
   Reference: 'https://github.com/JuanitoFatas/fast-ruby#remove-extra-spaces-or-other-contiguous-characters-code'
-  Enabled: true
+  Enabled: 'pending'
   VersionAdded: '1.7'
 
 Performance/StartWith:
@@ -246,7 +246,7 @@ Performance/StartWith:
 
 Performance/StringInclude:
   Description: 'Use `String#include?` instead of a regex match with literal-only pattern.'
-  Enabled: true
+  Enabled: 'pending'
   VersionAdded: '1.7'
 
 Performance/StringReplacement:
