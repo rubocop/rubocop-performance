@@ -35,6 +35,17 @@ namespace :cut_release do
     end
   end
 
+  def update_antora_yml(new_version)
+    antora_metadata = File.read('docs/antora.yml')
+
+    File.open('docs/antora.yml', 'w') do |f|
+      f << antora_metadata.sub(
+        'version: master',
+        "version: #{new_version}"
+      )
+    end
+  end
+
   def new_version_changes
     changelog = File.read('CHANGELOG.md')
     _, _, new_changes, _older_changes = changelog.split(/^## .*$/, 4)
@@ -54,6 +65,7 @@ namespace :cut_release do
 
     add_header_to_changelog(new_version)
     create_release_notes(new_version)
+    update_antora_yml(new_version)
 
     puts "Changed version from #{old_version} to #{new_version}."
   end
