@@ -10,8 +10,8 @@ RSpec.describe RuboCop::Cop::Performance::StringInclude do
     end
 
     it "autocorrects /abc/#{method} str" do
-      new_source = autocorrect_source("/abc/#{method} str")
-      expect(new_source).to eq "str.include?('abc')"
+      new_source = autocorrect_source("/abc/#{method} 'str'")
+      expect(new_source).to eq "'str'.include?('abc')"
     end
 
     # escapes like "\n"
@@ -24,8 +24,8 @@ RSpec.describe RuboCop::Cop::Performance::StringInclude do
       end
 
       it "autocorrects /\\#{str}#{method} str/" do
-        new_source = autocorrect_source("/\\#{str}/#{method} str")
-        expect(new_source).to eq %{str.include?("\\#{str}")}
+        new_source = autocorrect_source("/\\#{str}/#{method} 'str'")
+        expect(new_source).to eq %{'str'.include?("\\#{str}")}
       end
     end
 
@@ -37,8 +37,8 @@ RSpec.describe RuboCop::Cop::Performance::StringInclude do
       end
 
       it "autocorrects /\\#{str}/#{method} str" do
-        new_source = autocorrect_source("/\\#{str}/#{method} str")
-        expect(new_source).to eq "str.include?('#{str}')"
+        new_source = autocorrect_source("/\\#{str}/#{method} 'str'")
+        expect(new_source).to eq "'str'.include?('#{str}')"
       end
 
       it "doesn't register an error for str#{method} /prefix#{str}/" do
@@ -69,8 +69,8 @@ RSpec.describe RuboCop::Cop::Performance::StringInclude do
       end
 
       it "autocorrects /\\#{str}#{method} str/" do
-        new_source = autocorrect_source("/\\#{str}/#{method} str")
-        expect(new_source).to eq "str.include?('#{str}')"
+        new_source = autocorrect_source("/\\#{str}/#{method} 'str'")
+        expect(new_source).to eq "'str'.include?('#{str}')"
       end
     end
 
@@ -80,7 +80,7 @@ RSpec.describe RuboCop::Cop::Performance::StringInclude do
     end
 
     it "formats the error message correctly for /abc/#{method} str" do
-      inspect_source("/abc/#{method} str")
+      inspect_source("/abc/#{method} 'str'")
       expect(cop.messages).to eq(['Use `String#include?` instead of a regex match with literal-only pattern.'])
     end
 
@@ -90,8 +90,8 @@ RSpec.describe RuboCop::Cop::Performance::StringInclude do
     end
 
     it "autocorrects /\\\\/#{method} str" do
-      new_source = autocorrect_source("/\\\\/#{method} str")
-      expect(new_source).to eq("str.include?('\\\\')")
+      new_source = autocorrect_source("/\\\\/#{method} 'str'")
+      expect(new_source).to eq("'str'.include?('\\\\')")
     end
   end
 
@@ -101,5 +101,12 @@ RSpec.describe RuboCop::Cop::Performance::StringInclude do
 
   it 'allows match without a receiver' do
     expect_no_offenses('expect(subject.spin).to match(/\A\n/)')
+  end
+
+  # Symbol object does not have `include?` method.
+  # A variable possible to be a symbol object, so if `match?` argument is
+  # a variable, accept it.
+  it 'allows argument of `match?` is not a string literal' do
+    expect_no_offenses('/ /.match?(content_as_symbol)')
   end
 end
