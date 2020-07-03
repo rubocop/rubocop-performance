@@ -22,7 +22,7 @@ module RuboCop
 
         def_node_matcher :redundant_regex?, <<~PATTERN
           {(send $!nil? {:match :=~ :match?} (regexp (str $#literal?) (regopt)))
-           (send (regexp (str $#literal?) (regopt)) {:match :match?} $_)
+           (send (regexp (str $#literal?) (regopt)) {:match :match?} $str)
            (match-with-lvasgn (regexp (str $#literal?) (regopt)) $_)}
         PATTERN
 
