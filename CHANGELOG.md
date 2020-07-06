@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 1.7.0 (2020-07-07)
+
 ### New features
 
 * [#141](https://github.com/rubocop-hq/rubocop-performance/pull/141): Add new `Performance/RedundantStringChars` cop. ([@fatkodima][])
