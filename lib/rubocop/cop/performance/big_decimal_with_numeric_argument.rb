@@ -8,14 +8,13 @@ module RuboCop
       # than from Numeric for BigDecimal.
       #
       # @example
-      #
       #   # bad
-      # BigDecimal(1, 2)
-      # BigDecimal(1.2, 3, exception: true)
+      #   BigDecimal(1, 2)
+      #   BigDecimal(1.2, 3, exception: true)
       #
       #   # good
-      # BigDecimal('1', 2)
-      # BigDecimal('1.2', 3, exception: true)
+      #   BigDecimal('1', 2)
+      #   BigDecimal('1.2', 3, exception: true)
       #
       class BigDecimalWithNumericArgument < Cop
         MSG = 'Convert numeric argument to string before passing to `BigDecimal`.'
