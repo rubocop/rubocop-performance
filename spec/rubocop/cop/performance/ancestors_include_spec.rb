@@ -14,6 +14,17 @@ RSpec.describe RuboCop::Cop::Performance::AncestorsInclude do
     RUBY
   end
 
+  it 'registers an offense and corrects when using `ancestors.include?` without receiver' do
+    expect_offense(<<~RUBY)
+      ancestors.include?(Klass)
+      ^^^^^^^^^^^^^^^^^^ Use `<=` instead of `ancestors.include?`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      self <= Klass
+    RUBY
+  end
+
   it 'does not register an offense when using `<=`' do
     expect_no_offenses(<<~RUBY)
       Class <= Kernel

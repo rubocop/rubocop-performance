@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#147](https://github.com/rubocop-hq/rubocop-performance/issues/147): Fix an error for `Performance/AncestorsInclude` when using `ancestors.include?` without receiver. ([@koic][])
+
 ### Changes
 
 * [#149](https://github.com/rubocop-hq/rubocop-performance/pull/149): Mark `Performance/AncestorsInclude` as unsafe. ([@eugeneius][])
