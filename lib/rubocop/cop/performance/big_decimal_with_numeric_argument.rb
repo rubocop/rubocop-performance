@@ -25,6 +25,8 @@ module RuboCop
 
         def on_send(node)
           big_decimal_with_numeric_argument?(node) do |numeric|
+            next if numeric.float_type? && specifies_precision?(node)
+
             add_offense(node, location: numeric.source_range)
           end
         end
@@ -35,6 +37,12 @@ module RuboCop
               corrector.wrap(numeric, "'", "'")
             end
           end
+        end
+
+        private
+
+        def specifies_precision?(node)
+          node.arguments.size > 1 && !node.arguments[1].hash_type?
         end
       end
     end

@@ -5,6 +5,7 @@
 ### Bug fixes
 
 * [#147](https://github.com/rubocop-hq/rubocop-performance/issues/147): Fix an error for `Performance/AncestorsInclude` when using `ancestors.include?` without receiver. ([@koic][])
+* [#150](https://github.com/rubocop-hq/rubocop-performance/pull/150): Fix an incorrect autocorrect for `Performance/BigDecimalWithNumericArgument` when a precision is specified. ([@eugeneius][])
 
 ### Changes
 
