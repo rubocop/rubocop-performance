@@ -4,6 +4,7 @@ Performance/AncestorsInclude:
   Description: 'Use `A <= B` instead of `A.ancestors.include?(B)`.'
   Reference: 'https://github.com/JuanitoFatas/fast-ruby#ancestorsinclude-vs--code'
   Enabled: 'pending'
+  Safe: false
   VersionAdded: '1.7'
 
 Performance/BigDecimalWithNumericArgument:

@@ -6,8 +6,8 @@
 | Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 
 | Pending
-| Yes
-| Yes
+| No
+| Yes (Unsafe)
 | 1.7
 | -
 |===
