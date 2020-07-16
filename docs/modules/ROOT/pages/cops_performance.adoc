@@ -1499,13 +1499,15 @@ for receiver is multiline string.
 
 | Pending
 | Yes
-| Yes
+| Yes (Unsafe)
 | 1.7
 | -
 |===
 
 This cop identifies unnecessary use of a regex where
 `String#include?` would suffice.
+
+This cop's offenses are not safe to auto-correct if a receiver is nil.
 
 === Examples
 
@@ -1522,6 +1524,16 @@ This cop identifies unnecessary use of a regex where
 # good
 'abc'.include?('ab')
 ----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| AutoCorrect
+| `false`
+| Boolean
+|===
 
 == Performance/StringReplacement
 

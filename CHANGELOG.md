@@ -10,6 +10,7 @@
 ### Changes
 
 * [#149](https://github.com/rubocop-hq/rubocop-performance/pull/149): Mark `Performance/AncestorsInclude` as unsafe. ([@eugeneius][])
+* [#145](https://github.com/rubocop-hq/rubocop-performance/issues/145): Mark `Performance/StringInclude` as `SafeAutocorrect: false` and disable autocorrect by default. ([@koic][])
 
 ## 1.7.0 (2020-07-07)
 
