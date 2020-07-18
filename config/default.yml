@@ -49,6 +49,13 @@ Performance/ChainArrayAllocation:
   Enabled: false
   VersionAdded: '0.59'
 
+Performance/CollectionLiteralInLoop:
+  Description: 'Extract Array and Hash literals outside of loops into local variables or constants.'
+  Enabled: true
+  VersionAdded: '1.7'
+  # Min number of elements to consider an offense
+  MinSize: 1
+
 Performance/CompareWithBlock:
   Description: 'Use `sort_by(&:foo)` instead of `sort { |a, b| a.foo <=> b.foo }`.'
   Enabled: true
