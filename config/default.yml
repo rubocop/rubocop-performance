@@ -52,7 +52,7 @@ Performance/ChainArrayAllocation:
 Performance/CollectionLiteralInLoop:
   Description: 'Extract Array and Hash literals outside of loops into local variables or constants.'
   Enabled: true
-  VersionAdded: '1.7'
+  VersionAdded: '1.8'
   # Min number of elements to consider an offense
   MinSize: 1
 
@@ -272,7 +272,7 @@ Performance/Sum:
   Description: 'Use `sum` instead of a custom array summation.'
   Reference: 'https://blog.bigbinary.com/2016/11/02/ruby-2-4-introduces-enumerable-sum.html'
   Enabled: 'pending'
-  VersionAdded: '1.7'
+  VersionAdded: '1.8'
 
 Performance/TimesMap:
   Description: 'Checks for .times.map calls.'

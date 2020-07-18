@@ -287,7 +287,7 @@ array
 | Enabled
 | Yes
 | No
-| 1.7
+| 1.8
 | -
 |===
 
@@ -1631,7 +1631,7 @@ This cop identifies places where `gsub` can be replaced by
 | Pending
 | Yes
 | Yes
-| 1.7
+| 1.8
 | -
 |===
 
