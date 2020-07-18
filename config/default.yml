@@ -3,12 +3,13 @@
 Performance/AncestorsInclude:
   Description: 'Use `A <= B` instead of `A.ancestors.include?(B)`.'
   Reference: 'https://github.com/JuanitoFatas/fast-ruby#ancestorsinclude-vs--code'
-  Enabled: true
+  Enabled: 'pending'
+  Safe: false
   VersionAdded: '1.7'
 
 Performance/BigDecimalWithNumericArgument:
   Description: 'Convert numeric argument to string before passing to BigDecimal.'
-  Enabled: true
+  Enabled: 'pending'
   VersionAdded: '1.7'
 
 Performance/BindCall:
@@ -149,6 +150,12 @@ Performance/InefficientHashSearch:
   VersionAdded: '0.56'
   Safe: false
 
+Performance/IoReadlines:
+  Description: 'Use `IO.each_line` (`IO#each_line`) instead of `IO.readlines` (`IO#readlines`).'
+  Reference: 'https://docs.gitlab.com/ee/development/performance.html#reading-from-files-and-other-data-sources'
+  Enabled: false
+  VersionAdded: '1.7'
+
 Performance/OpenStruct:
   Description: 'Use `Struct` instead of `OpenStruct`.'
   Enabled: false
@@ -186,7 +193,12 @@ Performance/RedundantMerge:
 
 Performance/RedundantSortBlock:
   Description: 'Use `sort` instead of `sort { |a, b| a <=> b }`.'
-  Enabled: true
+  Enabled: 'pending'
+  VersionAdded: '1.7'
+
+Performance/RedundantStringChars:
+  Description: 'Checks for redundant `String#chars`.'
+  Enabled: 'pending'
   VersionAdded: '1.7'
 
 Performance/RegexpMatch:
@@ -205,7 +217,7 @@ Performance/ReverseEach:
 
 Performance/ReverseFirst:
   Description: 'Use `last(n).reverse` instead of `reverse.first(n)`.'
-  Enabled: true
+  Enabled: 'pending'
   VersionAdded: '1.7'
 
 Performance/Size:
@@ -218,13 +230,13 @@ Performance/Size:
 
 Performance/SortReverse:
   Description: 'Use `sort.reverse` instead of `sort { |a, b| b <=> a }`.'
-  Enabled: true
+  Enabled: 'pending'
   VersionAdded: '1.7'
 
 Performance/Squeeze:
   Description: "Use `squeeze('a')` instead of `gsub(/a+/, 'a')`."
   Reference: 'https://github.com/JuanitoFatas/fast-ruby#remove-extra-spaces-or-other-contiguous-characters-code'
-  Enabled: true
+  Enabled: 'pending'
   VersionAdded: '1.7'
 
 Performance/StartWith:
@@ -242,7 +254,9 @@ Performance/StartWith:
 
 Performance/StringInclude:
   Description: 'Use `String#include?` instead of a regex match with literal-only pattern.'
-  Enabled: true
+  Enabled: 'pending'
+  AutoCorrect: false
+  SafeAutoCorrect: false
   VersionAdded: '1.7'
 
 Performance/StringReplacement:
@@ -253,6 +267,12 @@ Performance/StringReplacement:
   Reference: 'https://github.com/JuanitoFatas/fast-ruby#stringgsub-vs-stringtr-code'
   Enabled: true
   VersionAdded: '0.33'
+
+Performance/Sum:
+  Description: 'Use `sum` instead of a custom array summation.'
+  Reference: 'https://blog.bigbinary.com/2016/11/02/ruby-2-4-introduces-enumerable-sum.html'
+  Enabled: 'pending'
+  VersionAdded: '1.7'
 
 Performance/TimesMap:
   Description: 'Checks for .times.map calls.'

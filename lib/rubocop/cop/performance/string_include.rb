@@ -6,6 +6,8 @@ module RuboCop
       # This cop identifies unnecessary use of a regex where
       # `String#include?` would suffice.
       #
+      # This cop's offenses are not safe to auto-correct if a receiver is nil.
+      #
       # @example
       #   # bad
       #   'abc'.match?(/ab/)
@@ -22,7 +24,7 @@ module RuboCop
 
         def_node_matcher :redundant_regex?, <<~PATTERN
           {(send $!nil? {:match :=~ :match?} (regexp (str $#literal?) (regopt)))
-           (send (regexp (str $#literal?) (regopt)) {:match :match?} $_)
+           (send (regexp (str $#literal?) (regopt)) {:match :match?} $str)
            (match-with-lvasgn (regexp (str $#literal?) (regopt)) $_)}
         PATTERN
 

@@ -35,7 +35,9 @@ module RuboCop
         def autocorrect(node)
           ancestors_include_candidate?(node) do |subclass, superclass|
             lambda do |corrector|
-              corrector.replace(node, "#{subclass.source} <= #{superclass.source}")
+              subclass_source = subclass ? subclass.source : 'self'
+
+              corrector.replace(node, "#{subclass_source} <= #{superclass.source}")
             end
           end
         end
