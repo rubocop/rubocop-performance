@@ -2,6 +2,11 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#140](https://github.com/rubocop-hq/rubocop-performance/pull/140): Add new `Performance/CollectionLiteralInLoop` cop. ([@fatkodima][])
+* [#137](https://github.com/rubocop-hq/rubocop-performance/pull/137): Add new `Performance/Sum` cop. ([@fatkodima][])
+
 ## 1.7.1 (2020-07-18)
 
 ### Bug fixes
@@ -18,8 +23,6 @@
 
 ### New features
 
-* [#140](https://github.com/rubocop-hq/rubocop-performance/pull/140): Add new `Performance/CollectionLiteralInLoop` cop. ([@fatkodima][])
-* [#137](https://github.com/rubocop-hq/rubocop-performance/pull/137): Add new `Performance/Sum` cop. ([@fatkodima][])
 * [#141](https://github.com/rubocop-hq/rubocop-performance/pull/141): Add new `Performance/RedundantStringChars` cop. ([@fatkodima][])
 * [#127](https://github.com/rubocop-hq/rubocop-performance/pull/127): Add new `Performance/IoReadlines` cop. ([@fatkodima][])
 * [#128](https://github.com/rubocop-hq/rubocop-performance/pull/128): Add new `Performance/ReverseFirst` cop. ([@fatkodima][])
