@@ -41,8 +41,8 @@ module RuboCop
             regex_str = interpret_string_escapes(regex_str)
 
             lambda do |corrector|
-              new_source = receiver.source + '.include?(' +
-                           to_string_literal(regex_str) + ')'
+              new_source = "#{receiver.source}.include?(#{to_string_literal(regex_str)})"
+
               corrector.replace(node.source_range, new_source)
             end
           end

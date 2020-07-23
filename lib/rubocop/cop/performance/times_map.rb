@@ -52,7 +52,7 @@ module RuboCop
 
         def message(map_or_collect, count)
           template = if count.literal?
-                       MESSAGE + '.'
+                       "#{MESSAGE}."
                      else
                        "#{MESSAGE} #{MESSAGE_ONLY_IF}."
                      end

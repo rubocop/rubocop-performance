@@ -45,8 +45,7 @@ module RuboCop
           # register an offense in that case
           return unless node.first_argument.regexp_type?
 
-          new_source =
-            node.receiver.source + ' =~ ' + node.first_argument.source
+          new_source = "#{node.receiver.source} =~ #{node.first_argument.source}"
 
           ->(corrector) { corrector.replace(node.source_range, new_source) }
         end
