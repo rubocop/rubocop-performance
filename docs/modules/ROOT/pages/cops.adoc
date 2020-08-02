@@ -1,3 +1,13 @@
+= Cops
+
+In RuboCop lingo the various checks performed on the code are called cops.
+Each cop is responsible for detecting one particular offense.
+RuboCop Performance has only one Performance department.
+
+== Performance
+
+Performance cops optimization analysis for your projects.
+
 // START_COP_LIST
 
 === Department xref:cops_performance.adoc[Performance]
