@@ -4,114 +4,170 @@ RSpec.describe RuboCop::Cop::Performance::Casecmp do
   subject(:cop) { described_class.new }
 
   shared_examples 'selectors' do |selector|
-    it "autocorrects str.#{selector} ==" do
-      new_source = autocorrect_source("str.#{selector} == 'string'")
-      expect(new_source).to eq "str.casecmp('string').zero?"
+    it "registers an offense and corrects str.#{selector} ==" do
+      expect_offense(<<~RUBY, selector: selector)
+        str.#{selector} == 'string'
+        ^^^^^{selector}^^^^^^^^^^^^ Use `str.casecmp('string').zero?` instead of `str.#{selector} == 'string'`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        str.casecmp('string').zero?
+      RUBY
     end
 
-    it "autocorrects str.#{selector} == with parens around arg" do
-      new_source = autocorrect_source("str.#{selector} == ('string')")
-      expect(new_source).to eq "str.casecmp('string').zero?"
+    it "registers an offense and corrects str.#{selector} == with parens around arg" do
+      expect_offense(<<~RUBY, selector: selector)
+        str.#{selector} == ('string')
+        ^^^^^{selector}^^^^^^^^^^^^^^ Use `str.casecmp('string').zero?` instead of `str.#{selector} == ('string')`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        str.casecmp('string').zero?
+      RUBY
     end
 
-    it "autocorrects str.#{selector} !=" do
-      new_source = autocorrect_source("str.#{selector} != 'string'")
-      expect(new_source).to eq "!str.casecmp('string').zero?"
+    it "registers an offense and corrects str.#{selector} !=" do
+      expect_offense(<<~RUBY, selector: selector)
+        str.#{selector} != 'string'
+        ^^^^^{selector}^^^^^^^^^^^^ Use `str.casecmp('string').zero?` instead of `str.#{selector} != 'string'`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        !str.casecmp('string').zero?
+      RUBY
     end
 
-    it "autocorrects str.#{selector} != with parens around arg" do
-      new_source = autocorrect_source("str.#{selector} != ('string')")
-      expect(new_source).to eq "!str.casecmp('string').zero?"
+    it "registers an offense and corrects str.#{selector} != with parens around arg" do
+      expect_offense(<<~RUBY, selector: selector)
+        str.#{selector} != ('string')
+        ^^^^^{selector}^^^^^^^^^^^^^^ Use `str.casecmp('string').zero?` instead of `str.#{selector} != ('string')`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        !str.casecmp('string').zero?
+      RUBY
     end
 
-    it "autocorrects str.#{selector}.eql? without parens" do
-      new_source = autocorrect_source("str.#{selector}.eql? 'string'")
-      expect(new_source).to eq "str.casecmp('string').zero?"
+    it "registers an offense and corrects str.#{selector}.eql? without parens" do
+      expect_offense(<<~RUBY, selector: selector)
+        str.#{selector}.eql? 'string'
+        ^^^^^{selector}^^^^^^^^^^^^^^ Use `str.casecmp('string').zero?` instead of `str.#{selector}.eql? 'string'`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        str.casecmp('string').zero?
+      RUBY
     end
 
-    it "autocorrects str.#{selector}.eql? with parens" do
-      new_source = autocorrect_source("str.#{selector}.eql?('string')")
-      expect(new_source).to eq "str.casecmp('string').zero?"
+    it "registers an offense and corrects str.#{selector}.eql? with parens" do
+      expect_offense(<<~RUBY, selector: selector)
+        str.#{selector}.eql?('string')
+        ^^^^^{selector}^^^^^^^^^^^^^^^ Use `str.casecmp('string').zero?` instead of `str.#{selector}.eql?('string')`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        str.casecmp('string').zero?
+      RUBY
     end
 
-    it "autocorrects str.#{selector}.eql? with parens and funny spacing" do
-      new_source = autocorrect_source("str.#{selector}.eql? ( 'string' )")
-      expect(new_source).to eq "str.casecmp( 'string' ).zero?"
+    it "registers an offense and corrects str.#{selector}.eql? with parens and funny spacing" do
+      expect_offense(<<~RUBY, selector: selector)
+        str.#{selector}.eql? ( 'string' )
+        ^^^^^{selector}^^^^^^^^^^^^^^^^^^ Use `str.casecmp( 'string' ).zero?` instead of `str.#{selector}.eql? ( 'string' )`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        str.casecmp( 'string' ).zero?
+      RUBY
     end
 
-    it "autocorrects == str.#{selector}" do
-      new_source = autocorrect_source("'string' == str.#{selector}")
-      expect(new_source).to eq "str.casecmp('string').zero?"
+    it "registers an offense and corrects == str.#{selector}" do
+      expect_offense(<<~RUBY, selector: selector)
+        'string' == str.#{selector}
+        ^^^^^^^^^^^^^^^^^{selector} Use `str.casecmp('string').zero?` instead of `'string' == str.#{selector}`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        str.casecmp('string').zero?
+      RUBY
     end
 
-    it "autocorrects string with parens == str.#{selector}" do
-      new_source = autocorrect_source("('string') == str.#{selector}")
-      expect(new_source).to eq "str.casecmp('string').zero?"
+    it "registers an offense and corrects string with parens == str.#{selector}" do
+      expect_offense(<<~RUBY, selector: selector)
+        ('string') == str.#{selector}
+        ^^^^^^^^^^^^^^^^^^^{selector} Use `str.casecmp('string').zero?` instead of `('string') == str.#{selector}`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        str.casecmp('string').zero?
+      RUBY
     end
 
-    it "autocorrects string != str.#{selector}" do
-      new_source = autocorrect_source("'string' != str.#{selector}")
-      expect(new_source).to eq "!str.casecmp('string').zero?"
+    it "registers an offense and corrects string != str.#{selector}" do
+      expect_offense(<<~RUBY, selector: selector)
+        'string' != str.#{selector}
+        ^^^^^^^^^^^^^^^^^{selector} Use `str.casecmp('string').zero?` instead of `'string' != str.#{selector}`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        !str.casecmp('string').zero?
+      RUBY
     end
 
-    it 'autocorrects string with parens and funny spacing ' \
+    it 'registers an offense and corrects string with parens and funny spacing ' \
        "eql? str.#{selector}" do
-      new_source = autocorrect_source("( 'string' ).eql? str.#{selector}")
-      expect(new_source).to eq "str.casecmp( 'string' ).zero?"
+      expect_offense(<<~RUBY, selector: selector)
+        ( 'string' ).eql? str.#{selector}
+        ^^^^^^^^^^^^^^^^^^^^^^^{selector} Use `str.casecmp( 'string' ).zero?` instead of `( 'string' ).eql? str.#{selector}`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        str.casecmp( 'string' ).zero?
+      RUBY
     end
 
-    it "autocorrects string.eql? str.#{selector} without parens " do
-      new_source = autocorrect_source("'string'.eql? str.#{selector}")
-      expect(new_source).to eq "str.casecmp('string').zero?"
+    it "registers an offense and corrects string.eql? str.#{selector} without parens " do
+      expect_offense(<<~RUBY, selector: selector)
+        'string'.eql? str.#{selector}
+        ^^^^^^^^^^^^^^^^^^^{selector} Use `str.casecmp('string').zero?` instead of `'string'.eql? str.#{selector}`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        str.casecmp('string').zero?
+      RUBY
     end
 
-    it "autocorrects string.eql? str.#{selector} with parens " do
-      new_source = autocorrect_source("'string'.eql?(str.#{selector})")
-      expect(new_source).to eq "str.casecmp('string').zero?"
+    it "registers an offense and corrects string.eql? str.#{selector} with parens " do
+      expect_offense(<<~RUBY, selector: selector)
+        'string'.eql?(str.#{selector})
+        ^^^^^^^^^^^^^^^^^^^{selector}^ Use `str.casecmp('string').zero?` instead of `'string'.eql?(str.#{selector})`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        str.casecmp('string').zero?
+      RUBY
     end
 
-    it "autocorrects obj.#{selector} == str.#{selector}" do
-      new_source = autocorrect_source("obj.#{selector} == str.#{selector}")
-      expect(new_source).to eq 'obj.casecmp(str).zero?'
+    it "registers an offense and corrects obj.#{selector} == str.#{selector}" do
+      expect_offense(<<~RUBY, selector: selector)
+        obj.#{selector} == str.#{selector}
+        ^^^^^{selector}^^^^^^^^^{selector} Use `obj.casecmp(str).zero?` instead of `obj.#{selector} == str.#{selector}`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        obj.casecmp(str).zero?
+      RUBY
     end
 
-    it "autocorrects obj.#{selector} eql? str.#{selector}" do
-      new_source = autocorrect_source("obj.#{selector}.eql? str.#{selector}")
-      expect(new_source).to eq 'obj.casecmp(str).zero?'
-    end
+    it "registers an offense and corrects obj.#{selector} eql? str.#{selector}" do
+      expect_offense(<<~RUBY, selector: selector)
+        obj.#{selector}.eql? str.#{selector}
+        ^^^^^{selector}^^^^^^^^^^^{selector} Use `obj.casecmp(str).zero?` instead of `obj.#{selector}.eql? str.#{selector}`.
+      RUBY
 
-    it "formats the error message correctly for str.#{selector} ==" do
-      inspect_source("str.#{selector} == 'string'")
-      expect(cop.highlights).to eq(["str.#{selector} == 'string'"])
-      expect(cop.messages).to eq(
-        [
-          "Use `str.casecmp('string').zero?` instead of " \
-          "`str.#{selector} == 'string'`."
-        ]
-      )
-    end
-
-    it "formats the error message correctly for == str.#{selector}" do
-      inspect_source("'string' == str.#{selector}")
-      expect(cop.highlights).to eq(["'string' == str.#{selector}"])
-      expect(cop.messages).to eq(
-        [
-          "Use `str.casecmp('string').zero?` instead of " \
-          "`'string' == str.#{selector}`."
-        ]
-      )
-    end
-
-    it 'formats the error message correctly for ' \
-       "obj.#{selector} == str.#{selector}" do
-      inspect_source("obj.#{selector} == str.#{selector}")
-      expect(cop.highlights).to eq(["obj.#{selector} == str.#{selector}"])
-      expect(cop.messages).to eq(
-        [
-          'Use `obj.casecmp(str).zero?` instead of ' \
-          "`obj.#{selector} == str.#{selector}`."
-        ]
-      )
+      expect_correction(<<~RUBY)
+        obj.casecmp(str).zero?
+      RUBY
     end
 
     it "doesn't report an offense for variable == str.#{selector}" do

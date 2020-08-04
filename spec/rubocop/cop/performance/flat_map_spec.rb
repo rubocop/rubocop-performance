@@ -4,28 +4,37 @@ RSpec.describe RuboCop::Cop::Performance::FlatMap, :config do
   subject(:cop) { described_class.new(config) }
 
   shared_examples 'map_and_collect' do |method, flatten|
-    it "registers an offense when calling #{method}...#{flatten}(1)" do
-      inspect_source("[1, 2, 3, 4].#{method} { |e| [e, e] }.#{flatten}(1)")
+    it "registers an offense and corrects when calling #{method}...#{flatten}(1)" do
+      expect_offense(<<~RUBY, method: method, flatten: flatten)
+        [1, 2, 3, 4].#{method} { |e| [e, e] }.#{flatten}(1)
+                     ^{method}^^^^^^^^^^^^^^^^^{flatten}^^^ Use `flat_map` instead of `#{method}...#{flatten}`.
+      RUBY
 
-      expect(cop.messages)
-        .to eq(["Use `flat_map` instead of `#{method}...#{flatten}`."])
-      expect(cop.highlights).to eq(["#{method} { |e| [e, e] }.#{flatten}(1)"])
+      expect_correction(<<~RUBY)
+        [1, 2, 3, 4].flat_map { |e| [e, e] }
+      RUBY
     end
 
-    it "registers an offense when calling #{method}(&:foo).#{flatten}(1)" do
-      inspect_source("[1, 2, 3, 4].#{method}(&:foo).#{flatten}(1)")
+    it "registers an offense and corrects when calling #{method}(&:foo).#{flatten}(1)" do
+      expect_offense(<<~RUBY, method: method, flatten: flatten)
+        [1, 2, 3, 4].#{method}(&:foo).#{flatten}(1)
+                     ^{method}^^^^^^^^^{flatten}^^^ Use `flat_map` instead of `#{method}...#{flatten}`.
+      RUBY
 
-      expect(cop.messages)
-        .to eq(["Use `flat_map` instead of `#{method}...#{flatten}`."])
-      expect(cop.highlights).to eq(["#{method}(&:foo).#{flatten}(1)"])
+      expect_correction(<<~RUBY)
+        [1, 2, 3, 4].flat_map(&:foo)
+      RUBY
     end
 
-    it "registers an offense when calling #{method}(&foo).#{flatten}(1)" do
-      inspect_source("[1, 2, 3, 4].#{method}(&foo).#{flatten}(1)")
+    it "registers an offense and corrects when calling #{method}(&foo).#{flatten}(1)" do
+      expect_offense(<<~RUBY, method: method, flatten: flatten)
+        [1, 2, 3, 4].#{method}(&foo).#{flatten}(1)
+                     ^{method}^^^^^^^^{flatten}^^^ Use `flat_map` instead of `#{method}...#{flatten}`.
+      RUBY
 
-      expect(cop.messages)
-        .to eq(["Use `flat_map` instead of `#{method}...#{flatten}`."])
-      expect(cop.highlights).to eq(["#{method}(&foo).#{flatten}(1)"])
+      expect_correction(<<~RUBY)
+        [1, 2, 3, 4].flat_map(&foo)
+      RUBY
     end
 
     it "does not register an offense when calling #{method}...#{flatten} " \
@@ -35,27 +44,6 @@ RSpec.describe RuboCop::Cop::Performance::FlatMap, :config do
 
     it "does not register an offense when calling #{method}!...#{flatten}" do
       expect_no_offenses("[1, 2, 3, 4].#{method}! { |e| [e, e] }.#{flatten}")
-    end
-
-    it "corrects #{method}..#{flatten}(1) to flat_map" do
-      source = "[1, 2].#{method} { |e| [e, e] }.#{flatten}(1)"
-      new_source = autocorrect_source(source)
-
-      expect(new_source).to eq('[1, 2].flat_map { |e| [e, e] }')
-    end
-
-    it "corrects #{method}(&:foo).#{flatten} to flat_map" do
-      source = "[1, 2].#{method}(&:foo).#{flatten}(1)"
-      new_source = autocorrect_source(source)
-
-      expect(new_source).to eq('[1, 2].flat_map(&:foo)')
-    end
-
-    it "corrects #{method}(&foo).#{flatten} to flat_map" do
-      source = "[1, 2].#{method}(&:foo).#{flatten}(1)"
-      new_source = autocorrect_source(source)
-
-      expect(new_source).to eq('[1, 2].flat_map(&:foo)')
     end
   end
 
@@ -94,20 +82,12 @@ RSpec.describe RuboCop::Cop::Performance::FlatMap, :config do
 
     shared_examples 'flatten_with_params_enabled' do |method, flatten|
       it "registers an offense when calling #{method}...#{flatten}" do
-        inspect_source("[1, 2, 3, 4].map { |e| [e, e] }.#{flatten}")
+        expect_offense(<<~RUBY, method: method, flatten: flatten)
+          [1, 2, 3, 4].#{method} { |e| [e, e] }.#{flatten}
+                       ^{method}^^^^^^^^^^^^^^^^^{flatten} Use `flat_map` instead of `#{method}...#{flatten}`. Beware, `flat_map` only flattens 1 level and `flatten` can be used to flatten multiple levels.
+        RUBY
 
-        expect(cop.messages)
-          .to eq(["Use `flat_map` instead of `map...#{flatten}`. " \
-               'Beware, `flat_map` only flattens 1 level and `flatten` ' \
-               'can be used to flatten multiple levels.'])
-        expect(cop.highlights).to eq(["map { |e| [e, e] }.#{flatten}"])
-      end
-
-      it "will not correct #{method}..#{flatten} to flat_map" do
-        source = "[1, 2].map { |e| [e, e] }.#{flatten}"
-        new_source = autocorrect_source(source)
-
-        expect(new_source).to eq("[1, 2].map { |e| [e, e] }.#{flatten}")
+        expect_no_corrections
       end
     end
 

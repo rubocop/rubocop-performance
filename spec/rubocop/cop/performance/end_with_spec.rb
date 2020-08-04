@@ -6,56 +6,116 @@ RSpec.describe RuboCop::Cop::Performance::EndWith, :config do
   let(:cop_config) { { 'SafeMultiline' => safe_multiline } }
 
   shared_examples 'different match methods' do |method|
-    it "autocorrects str#{method} /abc\\z/" do
-      new_source = autocorrect_source("str#{method} /abc\\z/")
-      expect(new_source).to eq "str.end_with?('abc')"
+    it "registers an offense and corrects str#{method} /abc\\z/" do
+      expect_offense(<<~RUBY, method: method)
+        str#{method} /abc\\z/
+        ^^^^{method}^^^^^^^^ Use `String#end_with?` instead of a regex match anchored to the end of the string.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        str.end_with?('abc')
+      RUBY
     end
 
-    it "autocorrects /abc\\z/#{method} str" do
-      new_source = autocorrect_source("/abc\\z/#{method} str")
-      expect(new_source).to eq "str.end_with?('abc')"
+    it "registers an offense and corrects /abc\\z/#{method} str" do
+      expect_offense(<<~RUBY, method: method)
+        /abc\\z/#{method} str
+        ^^^^^^^^{method}^^^^ Use `String#end_with?` instead of a regex match anchored to the end of the string.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        str.end_with?('abc')
+      RUBY
     end
 
-    it "autocorrects str#{method} /abc$/" do
-      new_source = autocorrect_source("str#{method} /abc$/")
-      expect(new_source).to eq "str.end_with?('abc')"
+    it "registers an offense and corrects str#{method} /abc$/" do
+      expect_offense(<<~RUBY, method: method)
+        str#{method} /abc$/
+        ^^^^{method}^^^^^^^ Use `String#end_with?` instead of a regex match anchored to the end of the string.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        str.end_with?('abc')
+      RUBY
     end
 
-    it "autocorrects /abc$/#{method} str" do
-      new_source = autocorrect_source("/abc$/#{method} str")
-      expect(new_source).to eq "str.end_with?('abc')"
+    it "registers an offense and corrects /abc$/#{method} str" do
+      expect_offense(<<~RUBY, method: method)
+        /abc$/#{method} str
+        ^^^^^^{method}^^^^^ Use `String#end_with?` instead of a regex match anchored to the end of the string.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        str.end_with?('abc')
+      RUBY
     end
 
-    it "autocorrects str#{method} /\\n\\z/" do
-      new_source = autocorrect_source("str#{method} /\\n\\z/")
-      expect(new_source).to eq 'str.end_with?("\n")'
+    it "registers an offense and corrects str#{method} /\\n\\z/" do
+      expect_offense(<<~RUBY, method: method)
+        str#{method} /\\n\\z/
+        ^^^^{method}^^^^^^^ Use `String#end_with?` instead of a regex match anchored to the end of the string.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        str.end_with?("\\n")
+      RUBY
     end
 
-    it "autocorrects /\\n\\z/#{method} str" do
-      new_source = autocorrect_source("/\\n\\z/#{method} str")
-      expect(new_source).to eq 'str.end_with?("\n")'
+    it "registers an offense and corrects /\\n\\z/#{method} str" do
+      expect_offense(<<~RUBY, method: method)
+        /\\n\\z/#{method} str
+        ^^^^^^^{method}^^^^ Use `String#end_with?` instead of a regex match anchored to the end of the string.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        str.end_with?("\\n")
+      RUBY
     end
 
-    it "autocorrects str#{method} /\\t\\z/" do
-      new_source = autocorrect_source("str#{method} /\\t\\z/")
-      expect(new_source).to eq 'str.end_with?("\t")'
+    it "registers an offense and corrects str#{method} /\\t\\z/" do
+      expect_offense(<<~RUBY, method: method)
+        str#{method} /\\t\\z/
+        ^^^^{method}^^^^^^^ Use `String#end_with?` instead of a regex match anchored to the end of the string.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        str.end_with?("\\t")
+      RUBY
     end
 
-    it "autocorrects /\\t\\z/#{method} str" do
-      new_source = autocorrect_source("/\\t\\z/#{method} str")
-      expect(new_source).to eq 'str.end_with?("\t")'
+    it "registers an offense and corrects /\\t\\z/#{method} str" do
+      expect_offense(<<~RUBY, method: method)
+        /\\t\\z/#{method} str
+        ^^^^^^^{method}^^^^ Use `String#end_with?` instead of a regex match anchored to the end of the string.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        str.end_with?("\\t")
+      RUBY
     end
 
     # regexp metacharacters
     %w[. $ ^ |].each do |str|
-      it "autocorrects str#{method} /\\#{str}\\z/" do
-        new_source = autocorrect_source("str#{method} /\\#{str}\\z/")
-        expect(new_source).to eq "str.end_with?('#{str}')"
+      it "registers an offense and corrects str#{method} /\\#{str}\\z/" do
+        expect_offense(<<~RUBY, method: method, str: str)
+          str#{method} /\\#{str}\\z/
+          ^^^^{method}^^^^{str}^^^ Use `String#end_with?` instead of a regex match anchored to the end of the string.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          str.end_with?('#{str}')
+        RUBY
       end
 
-      it "autocorrects /\\#{str}\\z/#{method} str" do
-        new_source = autocorrect_source("/\\#{str}\\z/#{method} str")
-        expect(new_source).to eq "str.end_with?('#{str}')"
+      it "registers an offense and corrects /\\#{str}\\z/#{method} str" do
+        expect_offense(<<~RUBY, method: method, str: str)
+          /\\#{str}\\z/#{method} str
+          ^^^{str}^^^^{method}^^^^ Use `String#end_with?` instead of a regex match anchored to the end of the string.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          str.end_with?('#{str}')
+        RUBY
       end
 
       it "doesn't register an error for str#{method} /#{str}\\z/" do
@@ -71,14 +131,26 @@ RSpec.describe RuboCop::Cop::Performance::EndWith, :config do
     # note that "\b" is a literal backspace char in a double-quoted string...
     # but in a regex, it's an anchor on a word boundary
     %w[a e f r t v].each do |str|
-      it "autocorrects str#{method} /\\#{str}\\z/" do
-        new_source = autocorrect_source("str#{method} /\\#{str}\\z/")
-        expect(new_source).to eq %{str.end_with?("\\#{str}")}
+      it "registers an offense and corrects str#{method} /\\#{str}\\z/" do
+        expect_offense(<<~RUBY, method: method, str: str)
+          str#{method} /\\#{str}\\z/
+          ^^^^{method}^^^^{str}^^^ Use `String#end_with?` instead of a regex match anchored to the end of the string.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          str.end_with?("\\#{str}")
+        RUBY
       end
 
-      it "autocorrects /\\#{str}\\z/#{method} str" do
-        new_source = autocorrect_source("/\\#{str}\\z/#{method} str")
-        expect(new_source).to eq %{str.end_with?("\\#{str}")}
+      it "registers an offense and corrects /\\#{str}\\z/#{method} str" do
+        expect_offense(<<~RUBY, method: method, str: str)
+          /\\#{str}\\z/#{method} str
+          ^^^{str}^^^^{method}^^^^ Use `String#end_with?` instead of a regex match anchored to the end of the string.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          str.end_with?("\\#{str}")
+        RUBY
       end
     end
 
@@ -95,39 +167,49 @@ RSpec.describe RuboCop::Cop::Performance::EndWith, :config do
 
     # characters with no special meaning whatsoever
     %w[i j l m o q y].each do |str|
-      it "autocorrects str#{method} /\\#{str}\\z/" do
-        new_source = autocorrect_source("str#{method} /\\#{str}\\z/")
-        expect(new_source).to eq "str.end_with?('#{str}')"
+      it "registers an offense and corrects str#{method} /\\#{str}\\z/" do
+        expect_offense(<<~RUBY, method: method, str: str)
+          str#{method} /\\#{str}\\z/
+          ^^^^{method}^^^^{str}^^^ Use `String#end_with?` instead of a regex match anchored to the end of the string.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          str.end_with?('#{str}')
+        RUBY
       end
 
-      it "autocorrects /\\#{str}\\z/#{method} str" do
-        new_source = autocorrect_source("/\\#{str}\\z/#{method} str")
-        expect(new_source).to eq "str.end_with?('#{str}')"
+      it "registers an offense and corrects /\\#{str}\\z/#{method} str" do
+        expect_offense(<<~RUBY, method: method, str: str)
+          /\\#{str}\\z/#{method} str
+          ^^^{str}^^^^{method}^^^^ Use `String#end_with?` instead of a regex match anchored to the end of the string.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          str.end_with?('#{str}')
+        RUBY
       end
     end
 
-    it "formats the error message correctly for str#{method} /abc\\z/" do
-      inspect_source("str#{method} /abc\\z/")
-      expect(cop.messages).to eq(['Use `String#end_with?` instead of a ' \
-                                  'regex match anchored to the end of ' \
-                                  'the string.'])
+    it "registers an offense and corrects str#{method} /\\\\\\z/" do
+      expect_offense(<<~RUBY, method: method)
+        str#{method} /\\\\\\z/
+        ^^^^{method}^^^^^^^ Use `String#end_with?` instead of a regex match anchored to the end of the string.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        str.end_with?('\\\\')
+      RUBY
     end
 
-    it "formats the error message correctly for /abc\\z/#{method} str" do
-      inspect_source("/abc\\z/#{method} str")
-      expect(cop.messages).to eq(['Use `String#end_with?` instead of a ' \
-                                  'regex match anchored to the end of ' \
-                                  'the string.'])
-    end
+    it "registers an offense and corrects /\\\\\\z/#{method} str" do
+      expect_offense(<<~RUBY, method: method)
+        /\\\\\\z/#{method} str
+        ^^^^^^^{method}^^^^ Use `String#end_with?` instead of a regex match anchored to the end of the string.
+      RUBY
 
-    it "autocorrects str#{method} /\\\\\\z/" do
-      new_source = autocorrect_source("str#{method} /\\\\\\z/")
-      expect(new_source).to eq("str.end_with?('\\\\')")
-    end
-
-    it "autocorrects /\\\\\\z/#{method} str" do
-      new_source = autocorrect_source("/\\\\\\z/#{method} str")
-      expect(new_source).to eq("str.end_with?('\\\\')")
+      expect_correction(<<~RUBY)
+        str.end_with?('\\\\')
+      RUBY
     end
   end
 

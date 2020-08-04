@@ -9,65 +9,62 @@ RSpec.describe RuboCop::Cop::Performance::FixedSize do
 
   shared_examples 'common functionality' do |method|
     context 'strings' do
-      it "registers an offense when calling #{method} on a single quoted " \
-         'string' do
-        inspect_source("'a'.#{method}")
-
-        expect(cop.messages).to eq([message])
+      it "registers an offense when calling #{method} on a single quoted string" do
+        expect_offense(<<~RUBY, method: method)
+          'a'.#{method}
+          ^^^^^{method} Do not compute the size of statically sized objects.
+        RUBY
       end
 
-      it "registers an offense when calling #{method} on a double quoted " \
-         'string' do
-        inspect_source("\"a\".#{method}")
-
-        expect(cop.messages).to eq([message])
+      it "registers an offense when calling #{method} on a double quoted string" do
+        expect_offense(<<~RUBY, method: method)
+          "a".#{method}
+          ^^^^^{method} Do not compute the size of statically sized objects.
+        RUBY
       end
 
       it "registers an offense when calling #{method} on a %q string" do
-        inspect_source("%q(a).#{method}")
-
-        expect(cop.messages).to eq([message])
+        expect_offense(<<~RUBY, method: method)
+          %q(a).#{method}
+          ^^^^^^^{method} Do not compute the size of statically sized objects.
+        RUBY
       end
 
       it "registers an offense when calling #{method} on a %Q string" do
-        inspect_source("%Q(a).#{method}")
-
-        expect(cop.messages).to eq([message])
+        expect_offense(<<~RUBY, method: method)
+          %Q(a).#{method}
+          ^^^^^^^{method} Do not compute the size of statically sized objects.
+        RUBY
       end
 
       it "registers an offense when calling #{method} on a % string" do
-        inspect_source("%(a).#{method}")
-
-        expect(cop.messages).to eq([message])
+        expect_offense(<<~RUBY, method: method)
+          %(a).#{method}
+          ^^^^^^{method} Do not compute the size of statically sized objects.
+        RUBY
       end
 
-      it "accepts calling #{method} on a double quoted string that " \
-         'contains interpolation' do
+      it "accepts calling #{method} on a double quoted string that contains interpolation" do
         expect_no_offenses("\"\#{foo}\".#{method}")
       end
 
-      it "accepts calling #{method} on a %Q string that contains " \
-         'interpolation' do
+      it "accepts calling #{method} on a %Q string that contains interpolation" do
         expect_no_offenses("\%Q(\#{foo}).#{method}")
       end
 
-      it "accepts calling #{method} on a % string that contains " \
-         'interpolation' do
+      it "accepts calling #{method} on a % string that contains interpolation" do
         expect_no_offenses("\%(\#{foo}).#{method}")
       end
 
-      it "accepts calling #{method} on a single quoted string that " \
-         'is assigned to a constant' do
+      it "accepts calling #{method} on a single quoted string that is assigned to a constant" do
         expect_no_offenses("CONST = 'a'.#{method}")
       end
 
-      it "accepts calling #{method} on a double quoted string that " \
-         'is assigned to a constant' do
+      it "accepts calling #{method} on a double quoted string that is assigned to a constant" do
         expect_no_offenses("CONST = \"a\".#{method}")
       end
 
-      it "accepts calling #{method} on a %q string that is assigned to " \
-         'a constant' do
+      it "accepts calling #{method} on a %q string that is assigned to a constant" do
         expect_no_offenses("CONST = %q(a).#{method}")
       end
 
@@ -86,15 +83,17 @@ RSpec.describe RuboCop::Cop::Performance::FixedSize do
 
     context 'symbols' do
       it "registers an offense when calling #{method} on a symbol" do
-        inspect_source(":foo.#{method}")
-
-        expect(cop.messages).to eq([message])
+        expect_offense(<<~RUBY, method: method)
+          :foo.#{method}
+          ^^^^^^{method} Do not compute the size of statically sized objects.
+        RUBY
       end
 
       it "registers an offense when calling #{method} on a quoted symbol" do
-        inspect_source(":'foo-bar'.#{method}")
-
-        expect(cop.messages).to eq([message])
+        expect_offense(<<~RUBY, method: method)
+          :'foo-bar'.#{method}
+          ^^^^^^^^^^^^{method} Do not compute the size of statically sized objects.
+        RUBY
       end
 
       it "accepts calling #{method} on an interpolated quoted symbol" do
@@ -102,38 +101,40 @@ RSpec.describe RuboCop::Cop::Performance::FixedSize do
       end
 
       it "registers an offense when calling #{method} on %s" do
-        inspect_source("%s(foo-bar).#{method}")
-
-        expect(cop.messages).to eq([message])
+        expect_offense(<<~RUBY, method: method)
+          %s(foo-bar).#{method}
+          ^^^^^^^^^^^^^{method} Do not compute the size of statically sized objects.
+        RUBY
       end
 
-      it "accepts calling #{method} on a symbol that is assigned " \
-         'to a constant' do
+      it "accepts calling #{method} on a symbol that is assigned to a constant" do
         expect_no_offenses("CONST = :foo.#{method}")
       end
     end
 
     context 'arrays' do
       it "registers an offense when calling #{method} on an array using []" do
-        inspect_source("[1, 2, foo].#{method}")
-
-        expect(cop.messages).to eq([message])
+        expect_offense(<<~RUBY, method: method)
+          [1, 2, foo].#{method}
+          ^^^^^^^^^^^^^{method} Do not compute the size of statically sized objects.
+        RUBY
       end
 
       it "registers an offense when calling #{method} on an array using %w" do
-        inspect_source("%w(1, 2, foo).#{method}")
-
-        expect(cop.messages).to eq([message])
+        expect_offense(<<~RUBY, method: method)
+          %w(1, 2, foo).#{method}
+          ^^^^^^^^^^^^^^^{method} Do not compute the size of statically sized objects.
+        RUBY
       end
 
       it "registers an offense when calling #{method} on an array using %W" do
-        inspect_source("%W(1, 2, foo).#{method}")
-
-        expect(cop.messages).to eq([message])
+        expect_offense(<<~RUBY, method: method)
+          %W(1, 2, foo).#{method}
+          ^^^^^^^^^^^^^^^{method} Do not compute the size of statically sized objects.
+        RUBY
       end
 
-      it "accepts calling #{method} on an array using [] that contains " \
-         'a splat' do
+      it "accepts calling #{method} on an array using [] that contains a splat" do
         expect_no_offenses("[1, 2, *foo].#{method}")
       end
 
@@ -144,17 +145,17 @@ RSpec.describe RuboCop::Cop::Performance::FixedSize do
         RUBY
       end
 
-      it "accepts calling #{method} on an array that is assigned " \
-         'to a constant' do
+      it "accepts calling #{method} on an array that is assigned to a constant" do
         expect_no_offenses("CONST = [1, 2, 3].#{method}")
       end
     end
 
     context 'hashes' do
       it "registers an offense when calling #{method} on a hash using {}" do
-        inspect_source("{a: 1, b: 2}.#{method}")
-
-        expect(cop.messages).to eq([message])
+        expect_offense(<<~RUBY, method: method)
+          {a: 1, b: 2}.#{method}
+          ^^^^^^^^^^^^^^{method} Do not compute the size of statically sized objects.
+        RUBY
       end
 
       it "accepts calling #{method} on a hash set to a variable" do
@@ -189,9 +190,10 @@ RSpec.describe RuboCop::Cop::Performance::FixedSize do
     end
 
     it 'registers an offense when calling count with a string' do
-      inspect_source("#{variable}.count('o')")
-
-      expect(cop.messages).to eq([message])
+      expect_offense(<<~RUBY, variable: variable)
+        #{variable}.count('o')
+        ^{variable}^^^^^^^^^^^ Do not compute the size of statically sized objects.
+      RUBY
     end
 
     it 'accepts calling count with a block' do

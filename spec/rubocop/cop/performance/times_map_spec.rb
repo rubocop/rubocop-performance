@@ -3,72 +3,60 @@
 RSpec.describe RuboCop::Cop::Performance::TimesMap do
   subject(:cop) { described_class.new }
 
-  before do
-    inspect_source(source)
-  end
-
   shared_examples 'map_or_collect' do |method|
     context ".times.#{method}" do
       context 'with a block' do
-        let(:source) { "4.times.#{method} { |i| i.to_s }" }
+        it 'registers an offense and corrects' do
+          expect_offense(<<~RUBY, method: method)
+            4.times.#{method} { |i| i.to_s }
+            ^^^^^^^^^{method}^^^^^^^^^^^^^^^ Use `Array.new(4)` with a block instead of `.times.#{method}`.
+          RUBY
 
-        it 'registers an offense' do
-          expect(cop.offenses.size).to eq(1)
-          expect(cop.offenses.first.message).to eq(
-            "Use `Array.new(4)` with a block instead of `.times.#{method}`."
-          )
-          expect(cop.highlights).to eq(["4.times.#{method} { |i| i.to_s }"])
-        end
-
-        it 'auto-corrects' do
-          corrected = autocorrect_source(source)
-          expect(corrected).to eq('Array.new(4) { |i| i.to_s }')
+          expect_correction(<<~RUBY)
+            Array.new(4) { |i| i.to_s }
+          RUBY
         end
       end
 
       context 'for non-literal receiver' do
-        let(:source) { "n.times.#{method} { |i| i.to_s }" }
-
         it 'registers an offense' do
-          expect(cop.offenses.size).to eq(1)
-          expect(cop.offenses.first.message).to eq(
-            "Use `Array.new(n)` with a block instead of `.times.#{method}` " \
-            'only if `n` is always 0 or more.'
-          )
-          expect(cop.highlights).to eq(["n.times.#{method} { |i| i.to_s }"])
+          expect_offense(<<~RUBY, method: method)
+            n.times.#{method} { |i| i.to_s }
+            ^^^^^^^^^{method}^^^^^^^^^^^^^^^ Use `Array.new(n)` with a block instead of `.times.#{method}` only if `n` is always 0 or more.
+          RUBY
+
+          expect_correction(<<~RUBY)
+            Array.new(n) { |i| i.to_s }
+          RUBY
         end
       end
 
       context 'with an explicitly passed block' do
-        let(:source) { "4.times.#{method}(&method(:foo))" }
+        it 'registers an offense and corrects' do
+          expect_offense(<<~RUBY, method: method)
+            4.times.#{method}(&method(:foo))
+            ^^^^^^^^^{method}^^^^^^^^^^^^^^^ Use `Array.new(4)` with a block instead of `.times.#{method}`.
+          RUBY
 
-        it 'registers an offense' do
-          expect(cop.offenses.size).to eq(1)
-          expect(cop.offenses.first.message).to eq(
-            "Use `Array.new(4)` with a block instead of `.times.#{method}`."
-          )
-          expect(cop.highlights).to eq(["4.times.#{method}(&method(:foo))"])
-        end
-
-        it 'auto-corrects' do
-          corrected = autocorrect_source(source)
-          expect(corrected).to eq('Array.new(4, &method(:foo))')
+          expect_correction(<<~RUBY)
+            Array.new(4, &method(:foo))
+          RUBY
         end
       end
 
       context 'without a block' do
-        let(:source) { "4.times.#{method}" }
-
         it "doesn't register an offense" do
-          expect(cop.offenses.empty?).to be(true)
+          expect_no_offenses(<<~RUBY)
+            4.times.#{method}
+          RUBY
         end
       end
 
       context 'called on nothing' do
-        let(:source) { "times.#{method} { |i| i.to_s }" }
-
         it "doesn't register an offense" do
-          expect(cop.offenses.empty?).to be(true)
+          expect_no_offenses(<<~RUBY)
+            times.#{method} { |i| i.to_s }
+          RUBY
         end
       end
     end
