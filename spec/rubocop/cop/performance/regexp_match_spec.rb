@@ -5,9 +5,9 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
 
   shared_examples 'offense' do |name, code, correction|
     it "registers an offense for #{name}" do
-      inspect_source(code)
+      offenses = inspect_source(code)
 
-      expect(cop.offenses.size).to eq(1)
+      expect(offenses.size).to eq(1)
     end
 
     it "corrects #{name}" do

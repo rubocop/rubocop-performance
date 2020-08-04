@@ -108,13 +108,17 @@ RSpec.describe RuboCop::Cop::Performance::StringReplacement do
       %w[a b c ' " % ! = < > # & ; : ` ~ 1 2 3 - _ , \r \\\\ \y \u1234
          \x65].each do |str|
         it "registers an offense when replacing #{str} with a literal" do
-          inspect_source("'abc'.gsub(/#{str}/, 'a')")
-          expect(cop.messages).to eq(['Use `tr` instead of `gsub`.'])
+          expect_offense(<<~RUBY, str: str)
+            'abc'.gsub(/#{str}/, 'a')
+                  ^^^^^^^{str}^^^^^^^ Use `tr` instead of `gsub`.
+          RUBY
         end
 
         it "registers an offense when deleting #{str}" do
-          inspect_source("'abc'.gsub(/#{str}/, '')")
-          expect(cop.messages).to eq(['Use `delete` instead of `gsub`.'])
+          expect_offense(<<~RUBY, str: str)
+            'abc'.gsub(/#{str}/, '')
+                  ^^^^^^^{str}^^^^^^ Use `delete` instead of `gsub`.
+          RUBY
         end
       end
 
@@ -124,9 +128,10 @@ RSpec.describe RuboCop::Cop::Performance::StringReplacement do
       end
 
       it 'registers an offense when escape characters in regex' do
-        inspect_source(%('abc'.gsub(/\n/, ',')))
-
-        expect(cop.messages).to eq(['Use `tr` instead of `gsub`.'])
+        expect_offense(<<~RUBY)
+          'abc'.gsub(/\\n/, ',')
+                ^^^^^^^^^^^^^^^ Use `tr` instead of `gsub`.
+        RUBY
       end
 
       it 'registers an offense when using %r notation' do
@@ -261,18 +266,6 @@ RSpec.describe RuboCop::Cop::Performance::StringReplacement do
       'abc'.gsub!('a', '')
             ^^^^^^^^^^^^^^ Use `delete!` instead of `gsub!`.
     RUBY
-  end
-
-  it 'registers an offense when using escape characters in the replacement' do
-    inspect_source("'abc'.gsub('a', '\n')")
-
-    expect(cop.messages).to eq(['Use `tr` instead of `gsub`.'])
-  end
-
-  it 'registers an offense when using escape characters in the pattern' do
-    inspect_source("'abc'.gsub('\n', ',')")
-
-    expect(cop.messages).to eq(['Use `tr` instead of `gsub`.'])
   end
 
   context 'auto-correct' do

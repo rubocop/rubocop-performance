@@ -7,6 +7,10 @@
 * [#140](https://github.com/rubocop-hq/rubocop-performance/pull/140): Add new `Performance/CollectionLiteralInLoop` cop. ([@fatkodima][])
 * [#137](https://github.com/rubocop-hq/rubocop-performance/pull/137): Add new `Performance/Sum` cop. ([@fatkodima][])
 
+### Changes
+
+* [#154](https://github.com/rubocop-hq/rubocop-performance/pull/154): Require RuboCop 0.87 or higher. ([@koic][])
+
 ## 1.7.1 (2020-07-18)
 
 ### Bug fixes

@@ -15,24 +15,15 @@ RSpec.describe RuboCop::Cop::Performance::DoubleStartEndWith do
     context 'two #start_with? calls' do
       context 'with the same receiver' do
         context 'all parameters of the second call are pure' do
-          let(:source) { 'x.start_with?(a, b) || x.start_with?("c", D)' }
+          it 'registers an offense and corrects' do
+            expect_offense(<<~RUBY)
+              x.start_with?(a, b) || x.start_with?("c", D)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `x.start_with?(a, b, "c", D)` instead of `x.start_with?(a, b) || x.start_with?("c", D)`.
+            RUBY
 
-          it 'registers an offense' do
-            inspect_source(source)
-            expect(cop.offenses.size).to eq(1)
-            expect(cop.offenses.first.message).to eq(
-              'Use `x.start_with?(a, b, "c", D)` instead of ' \
-              '`x.start_with?(a, b) || x.start_with?("c", D)`.'
-            )
-            expect(cop.highlights).to eq(
-              ['x.start_with?(a, b) || x.start_with?("c", D)']
-            )
-          end
-
-          it 'corrects to a single start_with?' do
-            new_source = autocorrect_source(source)
-
-            expect(new_source).to eq('x.start_with?(a, b, "c", D)')
+            expect_correction(<<~RUBY)
+              x.start_with?(a, b, "c", D)
+            RUBY
           end
         end
 
@@ -53,24 +44,15 @@ RSpec.describe RuboCop::Cop::Performance::DoubleStartEndWith do
     context 'two #end_with? calls' do
       context 'with the same receiver' do
         context 'all parameters of the second call are pure' do
-          let(:source) { 'x.end_with?(a, b) || x.end_with?("c", D)' }
+          it 'registers an offense and corrects' do
+            expect_offense(<<~RUBY)
+              x.end_with?(a, b) || x.end_with?("c", D)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `x.end_with?(a, b, "c", D)` instead of `x.end_with?(a, b) || x.end_with?("c", D)`.
+            RUBY
 
-          it 'registers an offense' do
-            inspect_source(source)
-            expect(cop.offenses.size).to eq(1)
-            expect(cop.offenses.first.message).to eq(
-              'Use `x.end_with?(a, b, "c", D)` instead of ' \
-              '`x.end_with?(a, b) || x.end_with?("c", D)`.'
-            )
-            expect(cop.highlights).to eq(
-              ['x.end_with?(a, b) || x.end_with?("c", D)']
-            )
-          end
-
-          it 'corrects to a single end_with?' do
-            new_source = autocorrect_source(source)
-
-            expect(new_source).to eq('x.end_with?(a, b, "c", D)')
+            expect_correction(<<~RUBY)
+              x.end_with?(a, b, "c", D)
+            RUBY
           end
         end
 
@@ -119,22 +101,15 @@ RSpec.describe RuboCop::Cop::Performance::DoubleStartEndWith do
     context 'two #start_with? calls' do
       context 'with the same receiver' do
         context 'all parameters of the second call are pure' do
-          let(:source) { 'x.start_with?(a, b) || x.start_with?("c", D)' }
+          it 'registers an offense and corrects' do
+            expect_offense(<<~RUBY)
+              x.start_with?(a, b) || x.start_with?("c", D)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `x.start_with?(a, b, "c", D)` instead of `x.start_with?(a, b) || x.start_with?("c", D)`.
+            RUBY
 
-          it 'registers an offense' do
-            inspect_source(source)
-            expect(cop.offenses.size).to eq(1)
-            expect(cop.offenses.first.message)
-              .to eq('Use `x.start_with?(a, b, "c", D)` instead of ' \
-            '`x.start_with?(a, b) || x.start_with?("c", D)`.')
-            expect(cop.highlights)
-              .to eq(['x.start_with?(a, b) || x.start_with?("c", D)'])
-          end
-
-          it 'corrects to a single start_with?' do
-            new_source = autocorrect_source(source)
-
-            expect(new_source).to eq('x.start_with?(a, b, "c", D)')
+            expect_correction(<<~RUBY)
+              x.start_with?(a, b, "c", D)
+            RUBY
           end
         end
       end
@@ -143,22 +118,15 @@ RSpec.describe RuboCop::Cop::Performance::DoubleStartEndWith do
     context 'two #end_with? calls' do
       context 'with the same receiver' do
         context 'all parameters of the second call are pure' do
-          let(:source) { 'x.end_with?(a, b) || x.end_with?("c", D)' }
+          it 'registers an offense and corrects' do
+            expect_offense(<<~RUBY)
+              x.end_with?(a, b) || x.end_with?("c", D)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `x.end_with?(a, b, "c", D)` instead of `x.end_with?(a, b) || x.end_with?("c", D)`.
+            RUBY
 
-          it 'registers an offense' do
-            inspect_source(source)
-            expect(cop.offenses.size).to eq(1)
-            expect(cop.offenses.first.message)
-              .to eq('Use `x.end_with?(a, b, "c", D)` instead of ' \
-            '`x.end_with?(a, b) || x.end_with?("c", D)`.')
-            expect(cop.highlights)
-              .to eq(['x.end_with?(a, b) || x.end_with?("c", D)'])
-          end
-
-          it 'corrects to a single end_with?' do
-            new_source = autocorrect_source(source)
-
-            expect(new_source).to eq('x.end_with?(a, b, "c", D)')
+            expect_correction(<<~RUBY)
+              x.end_with?(a, b, "c", D)
+            RUBY
           end
         end
       end
@@ -167,24 +135,15 @@ RSpec.describe RuboCop::Cop::Performance::DoubleStartEndWith do
     context 'two #starts_with? calls' do
       context 'with the same receiver' do
         context 'all parameters of the second call are pure' do
-          let(:source) { 'x.starts_with?(a, b) || x.starts_with?("c", D)' }
+          it 'registers an offense and corrects' do
+            expect_offense(<<~RUBY)
+              x.starts_with?(a, b) || x.starts_with?("c", D)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `x.starts_with?(a, b, "c", D)` instead of `x.starts_with?(a, b) || x.starts_with?("c", D)`.
+            RUBY
 
-          it 'registers an offense' do
-            inspect_source(source)
-            expect(cop.offenses.size).to eq(1)
-            expect(cop.offenses.first.message).to eq(
-              'Use `x.starts_with?(a, b, "c", D)` instead of ' \
-              '`x.starts_with?(a, b) || x.starts_with?("c", D)`.'
-            )
-            expect(cop.highlights).to eq(
-              ['x.starts_with?(a, b) || x.starts_with?("c", D)']
-            )
-          end
-
-          it 'corrects to a single starts_with?' do
-            new_source = autocorrect_source(source)
-
-            expect(new_source).to eq('x.starts_with?(a, b, "c", D)')
+            expect_correction(<<~RUBY)
+              x.starts_with?(a, b, "c", D)
+            RUBY
           end
         end
 
@@ -207,24 +166,15 @@ RSpec.describe RuboCop::Cop::Performance::DoubleStartEndWith do
     context 'two #ends_with? calls' do
       context 'with the same receiver' do
         context 'all parameters of the second call are pure' do
-          let(:source) { 'x.ends_with?(a, b) || x.ends_with?("c", D)' }
+          it 'registers an offense and corrects' do
+            expect_offense(<<~RUBY)
+              x.ends_with?(a, b) || x.ends_with?("c", D)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `x.ends_with?(a, b, "c", D)` instead of `x.ends_with?(a, b) || x.ends_with?("c", D)`.
+            RUBY
 
-          it 'registers an offense' do
-            inspect_source(source)
-            expect(cop.offenses.size).to eq(1)
-            expect(cop.offenses.first.message).to eq(
-              'Use `x.ends_with?(a, b, "c", D)` instead of ' \
-              '`x.ends_with?(a, b) || x.ends_with?("c", D)`.'
-            )
-            expect(cop.highlights).to eq(
-              ['x.ends_with?(a, b) || x.ends_with?("c", D)']
-            )
-          end
-
-          it 'corrects to a single ends_with?' do
-            new_source = autocorrect_source(source)
-
-            expect(new_source).to eq('x.ends_with?(a, b, "c", D)')
+            expect_correction(<<~RUBY)
+              x.ends_with?(a, b, "c", D)
+            RUBY
           end
         end
 

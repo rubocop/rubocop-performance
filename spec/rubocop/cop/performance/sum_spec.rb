@@ -5,53 +5,51 @@ RSpec.describe RuboCop::Cop::Performance::Sum do
 
   %i[inject reduce].each do |method|
     it "registers an offense and corrects when using `array.#{method}(10, :+)`" do
-      source = "array.#{method}(10, :+)"
-      inspect_source(source)
+      expect_offense(<<~RUBY, method: method)
+        array.#{method}(10, :+)
+              ^{method}^^^^^^^^ Use `sum(10)` instead of `#{method}(10, :+)`.
+      RUBY
 
-      expect(cop.offenses.size).to eq(1)
-      expect(cop.highlights).to eq(["#{method}(10, :+)"])
-
-      new_source = autocorrect_source(source)
-      expect(new_source).to eq('array.sum(10)')
+      expect_correction(<<~RUBY)
+        array.sum(10)
+      RUBY
     end
 
     it "registers an offense and corrects when using `array.#{method}(10) { |acc, elem| acc + elem }`" do
-      source = "array.#{method}(10) { |acc, elem| acc + elem }"
-      inspect_source(source)
+      expect_offense(<<~RUBY, method: method)
+        array.#{method}(10) { |acc, elem| acc + elem }
+              ^{method}^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `sum(10)` instead of `#{method}(10) { |acc, elem| acc + elem }`.
+      RUBY
 
-      expect(cop.offenses.size).to eq(1)
-      expect(cop.highlights).to eq(["#{method}(10) { |acc, elem| acc + elem }"])
-
-      new_source = autocorrect_source(source)
-      expect(new_source).to eq('array.sum(10)')
+      expect_correction(<<~RUBY)
+        array.sum(10)
+      RUBY
     end
 
     it "registers an offense and corrects when using `array.#{method}(10) { |acc, elem| elem + acc }`" do
-      source = "array.#{method}(10) { |acc, elem| elem + acc }"
-      inspect_source(source)
+      expect_offense(<<~RUBY, method: method)
+        array.#{method}(10) { |acc, elem| elem + acc }
+              ^{method}^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `sum(10)` instead of `#{method}(10) { |acc, elem| elem + acc }`.
+      RUBY
 
-      expect(cop.offenses.size).to eq(1)
-      expect(cop.highlights).to eq(["#{method}(10) { |acc, elem| elem + acc }"])
-
-      new_source = autocorrect_source(source)
-      expect(new_source).to eq('array.sum(10)')
+      expect_correction(<<~RUBY)
+        array.sum(10)
+      RUBY
     end
 
     it 'does not autocorrect when initial value is not provided' do
-      source = "array.#{method}(:+)"
-      inspect_source(source)
+      expect_offense(<<~RUBY, method: method)
+        array.#{method}(:+)
+              ^{method}^^^^ Use `sum` instead of `#{method}(:+)`.
+      RUBY
 
-      expect(cop.offenses.size).to eq(1)
-      expect(cop.highlights).to eq(["#{method}(:+)"])
-
-      new_source = autocorrect_source(source)
-      expect(new_source).to eq(source)
+      expect_no_corrections
     end
 
     it 'does not register an offense when block does not implement summation' do
-      source = "array.#{method} { |acc, elem| elem * 2 }"
-      inspect_source(source)
-      expect(cop.offenses.size).to eq(0)
+      expect_no_offenses(<<~RUBY)
+        array.#{method} { |acc, elem| elem * 2 }
+      RUBY
     end
 
     it 'does not register an offense when using `sum`' do

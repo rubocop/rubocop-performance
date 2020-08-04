@@ -6,108 +6,166 @@ RSpec.describe RuboCop::Cop::Performance::StartWith, :config do
   let(:cop_config) { { 'SafeMultiline' => safe_multiline } }
 
   shared_examples 'different match methods' do |method|
-    it "autocorrects str#{method} /\\Aabc/" do
-      new_source = autocorrect_source("str#{method} /\\Aabc/")
-      expect(new_source).to eq "str.start_with?('abc')"
+    it "registers an offense and corrects str#{method} /\\Aabc/" do
+      expect_offense(<<~RUBY, method: method)
+        str#{method} /\\Aabc/
+        ^^^^{method}^^^^^^^^ Use `String#start_with?` instead of a regex match anchored to the beginning of the string.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        str.start_with?('abc')
+      RUBY
     end
 
-    it "autocorrects /\\Aabc/#{method} str" do
-      new_source = autocorrect_source("/\\Aabc/#{method} str")
-      expect(new_source).to eq "str.start_with?('abc')"
+    it "registers an offense and corrects /\\Aabc/#{method} str" do
+      expect_offense(<<~RUBY, method: method)
+        /\\Aabc/#{method} str
+        ^^^^^^^^^^{method}^^ Use `String#start_with?` instead of a regex match anchored to the beginning of the string.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        str.start_with?('abc')
+      RUBY
     end
 
-    it "autocorrects str#{method} /^abc/" do
-      new_source = autocorrect_source("str#{method} /^abc/")
-      expect(new_source).to eq "str.start_with?('abc')"
+    it "registers an offense and corrects str#{method} /^abc/" do
+      expect_offense(<<~RUBY, method: method)
+        str#{method} /^abc/
+        ^^^^{method}^^^^^^^ Use `String#start_with?` instead of a regex match anchored to the beginning of the string.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        str.start_with?('abc')
+      RUBY
     end
 
-    it "autocorrects /^abc/#{method} str" do
-      new_source = autocorrect_source("/^abc/#{method} str")
-      expect(new_source).to eq "str.start_with?('abc')"
+    it "registers an offense and corrects /^abc/#{method} str" do
+      expect_offense(<<~RUBY, method: method)
+        /^abc/#{method} str
+        ^^^^{method}^^^^^^^ Use `String#start_with?` instead of a regex match anchored to the beginning of the string.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        str.start_with?('abc')
+      RUBY
     end
 
     # escapes like "\n"
     # note that "\b" is a literal backspace char in a double-quoted string...
     # but in a regex, it's an anchor on a word boundary
     %w[a e f r t v].each do |str|
-      it "autocorrects str#{method} /\\A\\#{str}/" do
-        new_source = autocorrect_source("str#{method} /\\A\\#{str}/")
-        expect(new_source).to eq %{str.start_with?("\\#{str}")}
+      it "registers an offense and corrects str#{method} /\\A\\#{str}/" do
+        expect_offense(<<~RUBY, method: method, str: str)
+          str#{method} /\\A\\#{str}/
+          ^^^^{method}^^^^^^{str}^ Use `String#start_with?` instead of a regex match anchored to the beginning of the string.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          str.start_with?("\\#{str}")
+        RUBY
       end
 
-      it "autocorrects /\\A\\#{str}#{method} str/" do
-        new_source = autocorrect_source("/\\A\\#{str}/#{method} str")
-        expect(new_source).to eq %{str.start_with?("\\#{str}")}
+      it "registers an offense and corrects /\\A\\#{str}#{method} str/" do
+        expect_offense(<<~RUBY, method: method, str: str)
+          /\\A\\#{str}/#{method} str
+          ^^^^^{str}^^{method}^^^^ Use `String#start_with?` instead of a regex match anchored to the beginning of the string.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          str.start_with?("\\#{str}")
+        RUBY
       end
     end
 
     # regexp metacharacters
     %w[. * ? $ ^ |].each do |str|
-      it "autocorrects str#{method} /\\A\\#{str}/" do
-        new_source = autocorrect_source("str#{method} /\\A\\#{str}/")
-        expect(new_source).to eq "str.start_with?('#{str}')"
+      it "registers an offense and corrects str#{method} /\\A\\#{str}/" do
+        expect_offense(<<~RUBY, method: method, str: str)
+          str#{method} /\\A\\#{str}/
+          ^^^^{method}^^^^^^{str}^ Use `String#start_with?` instead of a regex match anchored to the beginning of the string.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          str.start_with?('#{str}')
+        RUBY
       end
 
-      it "autocorrects /\\A\\#{str}/#{method} str" do
-        new_source = autocorrect_source("/\\A\\#{str}/#{method} str")
-        expect(new_source).to eq "str.start_with?('#{str}')"
+      it "registers an offense and corrects /\\A\\#{str}/#{method} str" do
+        expect_offense(<<~RUBY, method: method, str: str)
+          /\\A\\#{str}/#{method} str
+          ^^^^^{str}^^{method}^^^^ Use `String#start_with?` instead of a regex match anchored to the beginning of the string.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          str.start_with?('#{str}')
+        RUBY
       end
 
-      it "doesn't register an error for str#{method} /\\A#{str}/" do
+      it "doesn't register an offense for str#{method} /\\A#{str}/" do
         expect_no_offenses("str#{method} /\\A#{str}/")
       end
 
-      it "doesn't register an error for /\\A#{str}/#{method} str" do
+      it "doesn't register an offense for /\\A#{str}/#{method} str" do
         expect_no_offenses("/\\A#{str}/#{method} str")
       end
     end
 
     # character classes, anchors
     %w[w W s S d D A Z z G b B h H R X S].each do |str|
-      it "doesn't register an error for str#{method} /\\A\\#{str}/" do
+      it "doesn't register an offense for str#{method} /\\A\\#{str}/" do
         expect_no_offenses("str#{method} /\\A\\#{str}/")
       end
 
-      it "doesn't register an error for /\\A\\#{str}/#{method} str" do
+      it "doesn't register an offense for /\\A\\#{str}/#{method} str" do
         expect_no_offenses("/\\A\\#{str}/#{method} str")
       end
     end
 
     # characters with no special meaning whatsoever
     %w[i j l m o q y].each do |str|
-      it "autocorrects str#{method} /\\A\\#{str}/" do
-        new_source = autocorrect_source("str#{method} /\\A\\#{str}/")
-        expect(new_source).to eq "str.start_with?('#{str}')"
+      it "registers an offense and corrects str#{method} /\\A\\#{str}/" do
+        expect_offense(<<~RUBY, method: method, str: str)
+          str#{method} /\\A\\#{str}/
+          ^^^^{method}^^^^^^{str}^ Use `String#start_with?` instead of a regex match anchored to the beginning of the string.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          str.start_with?('#{str}')
+        RUBY
       end
 
-      it "autocorrects /\\A\\#{str}#{method} str/" do
-        new_source = autocorrect_source("/\\A\\#{str}/#{method} str")
-        expect(new_source).to eq "str.start_with?('#{str}')"
+      it "registers an offense and corrects /\\A\\#{str}#{method} str/" do
+        expect_offense(<<~RUBY, method: method, str: str)
+          /\\A\\#{str}/#{method} str
+          ^^^^^{str}^^{method}^^^^ Use `String#start_with?` instead of a regex match anchored to the beginning of the string.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          str.start_with?('#{str}')
+        RUBY
       end
     end
 
-    it "formats the error message correctly for str#{method} /\\Aabc/" do
-      inspect_source("str#{method} /\\Aabc/")
-      expect(cop.messages).to eq(['Use `String#start_with?` instead of a ' \
-                                  'regex match anchored to the beginning of ' \
-                                  'the string.'])
+    it "registers an offense and corrects str#{method} /\\A\\\\/" do
+      expect_offense(<<~RUBY, method: method)
+        str#{method} /\\A\\\\/
+        ^^^^{method}^^^^^^^ Use `String#start_with?` instead of a regex match anchored to the beginning of the string.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        str.start_with?('\\\\')
+      RUBY
     end
 
-    it "formats the error message correctly for /\\Aabc/#{method} str" do
-      inspect_source("/\\Aabc/#{method} str")
-      expect(cop.messages).to eq(['Use `String#start_with?` instead of a ' \
-                                  'regex match anchored to the beginning of ' \
-                                  'the string.'])
-    end
+    it "registers an offense and corrects /\\A\\\\/#{method} str" do
+      expect_offense(<<~RUBY, method: method)
+        /\\A\\\\/#{method} str
+        ^^^^^^^{method}^^^^ Use `String#start_with?` instead of a regex match anchored to the beginning of the string.
+      RUBY
 
-    it "autocorrects str#{method} /\\A\\\\/" do
-      new_source = autocorrect_source("str#{method} /\\A\\\\/")
-      expect(new_source).to eq("str.start_with?('\\\\')")
-    end
-
-    it "autocorrects /\\A\\\\/#{method} str" do
-      new_source = autocorrect_source("/\\A\\\\/#{method} str")
-      expect(new_source).to eq("str.start_with?('\\\\')")
+      expect_correction(<<~RUBY)
+        str.start_with?('\\\\')
+      RUBY
     end
   end
 

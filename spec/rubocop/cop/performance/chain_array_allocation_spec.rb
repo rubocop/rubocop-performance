@@ -11,11 +11,10 @@ RSpec.describe RuboCop::Cop::Performance::ChainArrayAllocation, :config do
 
   shared_examples 'map_and_flat' do |method, method_two|
     it "registers an offense when calling #{method}...#{method_two}" do
-      inspect_source("[1, 2, 3, 4].#{method} { |e| [e, e] }.#{method_two}")
-
-      expect(cop.messages)
-        .to eq([generate_message(method, method_two)])
-      expect(cop.highlights).to eq([".#{method_two}"])
+      expect_offense(<<~RUBY, method: method, method_two: method_two)
+        [1, 2, 3, 4].#{method} { |e| [e, e] }.#{method_two}
+                     _{method}               ^^{method_two} #{generate_message(method, method_two)}
+      RUBY
     end
   end
 
@@ -50,11 +49,14 @@ RSpec.describe RuboCop::Cop::Performance::ChainArrayAllocation, :config do
   describe 'methods that only return an array with no block' do
     it 'zip' do
       # Yes I know this is not valid Ruby
-      inspect_source('[1, 2, 3, 4].zip {|f| }.uniq')
-      expect(cop.messages.empty?).to be(true)
+      expect_no_offenses(<<~RUBY)
+        [1, 2, 3, 4].zip {|f| }.uniq
+      RUBY
 
-      inspect_source('[1, 2, 3, 4].zip.uniq')
-      expect(cop.messages.empty?).to be(false)
+      expect_offense(<<~RUBY)
+        [1, 2, 3, 4].zip {|f| }.zip.uniq
+                                   ^^^^^ Use unchained `zip!` and `uniq!` (followed by `return array` if required) instead of chaining `zip...uniq`.
+      RUBY
     end
   end
 end
