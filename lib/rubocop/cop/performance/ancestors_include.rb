@@ -13,8 +13,9 @@ module RuboCop
       #   # good
       #   A <= B
       #
-      class AncestorsInclude < Cop
+      class AncestorsInclude < Base
         include RangeHelp
+        extend AutoCorrector
 
         MSG = 'Use `<=` instead of `ancestors.include?`.'
 
@@ -23,22 +24,16 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          return unless ancestors_include_candidate?(node)
+          return unless (subclass, superclass = ancestors_include_candidate?(node))
 
           location_of_ancestors = node.children[0].loc.selector.begin_pos
           end_location = node.loc.selector.end_pos
           range = range_between(location_of_ancestors, end_location)
 
-          add_offense(node, location: range)
-        end
+          add_offense(range) do |corrector|
+            subclass_source = subclass ? subclass.source : 'self'
 
-        def autocorrect(node)
-          ancestors_include_candidate?(node) do |subclass, superclass|
-            lambda do |corrector|
-              subclass_source = subclass ? subclass.source : 'self'
-
-              corrector.replace(node, "#{subclass_source} <= #{superclass.source}")
-            end
+            corrector.replace(node, "#{subclass_source} <= #{superclass.source}")
           end
         end
       end

@@ -39,8 +39,9 @@ module RuboCop
       #   str.size
       #   str.empty?
       #
-      class RedundantStringChars < Cop
+      class RedundantStringChars < Base
         include RangeHelp
+        extend AutoCorrector
 
         MSG = 'Use `%<good_method>s` instead of `%<bad_method>s`.'
         REPLACEABLE_METHODS = %i[[] slice first last take drop length size empty?].freeze
@@ -50,21 +51,16 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          redundant_chars_call?(node) do |receiver, method, args|
-            range = offense_range(receiver, node)
-            message = build_message(method, args)
-            add_offense(node, location: range, message: message)
-          end
-        end
+          return unless (receiver, method, args = redundant_chars_call?(node))
 
-        def autocorrect(node)
-          redundant_chars_call?(node) do |receiver, method, args|
+          range = offense_range(receiver, node)
+          message = build_message(method, args)
+
+          add_offense(range, message: message) do |corrector|
             range = correction_range(receiver, node)
             replacement = build_good_method(method, args)
 
-            lambda do |corrector|
-              corrector.replace(range, replacement)
-            end
+            corrector.replace(range, replacement)
           end
         end
 

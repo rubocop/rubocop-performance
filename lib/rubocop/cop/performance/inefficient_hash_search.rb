@@ -36,7 +36,9 @@ module RuboCop
       #   { a: 1, b: 2 }.has_value?('garbage')
       #   h = { a: 1, b: 2 }; h.value?(nil)
       #
-      class InefficientHashSearch < Cop
+      class InefficientHashSearch < Base
+        extend AutoCorrector
+
         def_node_matcher :inefficient_include?, <<~PATTERN
           (send (send $_ {:keys :values}) :include? _)
         PATTERN
@@ -45,19 +47,16 @@ module RuboCop
           inefficient_include?(node) do |receiver|
             return if receiver.nil?
 
-            add_offense(node)
-          end
-        end
-
-        def autocorrect(node)
-          lambda do |corrector|
-            # Replace `keys.include?` or `values.include?` with the appropriate
-            # `key?`/`value?` method.
-            corrector.replace(
-              node.loc.expression,
-              "#{autocorrect_hash_expression(node)}."\
-              "#{autocorrect_method(node)}(#{autocorrect_argument(node)})"
-            )
+            message = message(node)
+            add_offense(node, message: message) do |corrector|
+              # Replace `keys.include?` or `values.include?` with the appropriate
+              # `key?`/`value?` method.
+              corrector.replace(
+                node.loc.expression,
+                "#{autocorrect_hash_expression(node)}."\
+                "#{autocorrect_method(node)}(#{autocorrect_argument(node)})"
+              )
+            end
           end
         end
 

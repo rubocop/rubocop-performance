@@ -23,7 +23,7 @@ module RuboCop
       #   # good
       #   +'something'
       #   +''
-      class UnfreezeString < Cop
+      class UnfreezeString < Base
         MSG = 'Use unary plus to get an unfrozen string literal.'
 
         def_node_matcher :dup_string?, <<~PATTERN

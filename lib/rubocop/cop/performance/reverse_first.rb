@@ -16,8 +16,9 @@ module RuboCop
       #   array.last(5).reverse
       #   array.last
       #
-      class ReverseFirst < Cop
+      class ReverseFirst < Base
         include RangeHelp
+        extend AutoCorrector
 
         MSG = 'Use `%<good_method>s` instead of `%<bad_method>s`.'
 
@@ -30,16 +31,9 @@ module RuboCop
             range = correction_range(receiver, node)
             message = build_message(node)
 
-            add_offense(node, location: range, message: message)
-          end
-        end
+            add_offense(range, message: message) do |corrector|
+              replacement = build_good_method(node)
 
-        def autocorrect(node)
-          reverse_first_candidate?(node) do |receiver|
-            range = correction_range(receiver, node)
-            replacement = build_good_method(node)
-
-            lambda do |corrector|
               corrector.replace(range, replacement)
             end
           end

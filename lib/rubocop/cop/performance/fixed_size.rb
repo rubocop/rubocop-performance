@@ -45,7 +45,7 @@ module RuboCop
       #   waldo = { a: corge, b: grault }
       #   waldo.size
       #
-      class FixedSize < Cop
+      class FixedSize < Base
         MSG = 'Do not compute the size of statically sized objects.'
 
         def_node_matcher :counter, <<~MATCHER

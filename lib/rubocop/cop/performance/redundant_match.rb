@@ -17,7 +17,9 @@ module RuboCop
       #   # good
       #   method(str =~ /regex/)
       #   return value unless regex =~ 'str'
-      class RedundantMatch < Cop
+      class RedundantMatch < Base
+        extend AutoCorrector
+
         MSG = 'Use `=~` in places where the `MatchData` returned by ' \
               '`#match` will not be used.'
 
@@ -37,17 +39,21 @@ module RuboCop
                         (!node.value_used? || only_truthiness_matters?(node)) &&
                         !(node.parent && node.parent.block_type?)
 
-          add_offense(node)
+          add_offense(node) do |corrector|
+            autocorrect(corrector, node)
+          end
         end
 
-        def autocorrect(node)
+        private
+
+        def autocorrect(corrector, node)
           # Regexp#match can take a second argument, but this cop doesn't
           # register an offense in that case
           return unless node.first_argument.regexp_type?
 
           new_source = "#{node.receiver.source} =~ #{node.first_argument.source}"
 
-          ->(corrector) { corrector.replace(node.source_range, new_source) }
+          corrector.replace(node.source_range, new_source)
         end
       end
     end

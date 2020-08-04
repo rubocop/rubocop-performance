@@ -35,7 +35,9 @@ module RuboCop
       #   [1, 2, 3].count { |e| e > 2 }
       # TODO: Add advanced detection of variables that could
       # have been assigned to an array or a hash.
-      class Size < Cop
+      class Size < Base
+        extend AutoCorrector
+
         MSG = 'Use `size` instead of `count`.'
 
         def_node_matcher :array?, <<~PATTERN
@@ -63,11 +65,9 @@ module RuboCop
         def on_send(node)
           return if node.parent&.block_type? || !count?(node)
 
-          add_offense(node, location: :selector)
-        end
-
-        def autocorrect(node)
-          ->(corrector) { corrector.replace(node.loc.selector, 'size') }
+          add_offense(node.loc.selector) do |corrector|
+            corrector.replace(node.loc.selector, 'size')
+          end
         end
       end
     end

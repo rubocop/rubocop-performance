@@ -14,8 +14,9 @@ module RuboCop
       #   [1, 2, 3, 4].flat_map { |e| [e, e] }
       #   [1, 2, 3, 4].map { |e| [e, e] }.flatten
       #   [1, 2, 3, 4].collect { |e| [e, e] }.flatten
-      class FlatMap < Cop
+      class FlatMap < Base
         include RangeHelp
+        extend AutoCorrector
 
         MSG = 'Use `flat_map` instead of `%<method>s...%<flatten>s`.'
         FLATTEN_MULTIPLE_LEVELS = ' Beware, `flat_map` only flattens 1 level ' \
@@ -44,25 +45,11 @@ module RuboCop
           end
         end
 
-        def autocorrect(node)
-          map_node, _first_method, _flatten, params = flat_map_candidate?(node)
-          flatten_level, = *params.first
-
-          return unless flatten_level
-
-          range = range_between(node.loc.dot.begin_pos,
-                                node.source_range.end_pos)
-
-          lambda do |corrector|
-            corrector.remove(range)
-            corrector.replace(map_node.loc.selector, 'flat_map')
-          end
-        end
-
         private
 
         def offense_for_levels(node, map_node, first_method, flatten)
           message = MSG + FLATTEN_MULTIPLE_LEVELS
+
           register_offense(node, map_node, first_method, flatten, message)
         end
 
@@ -71,13 +58,24 @@ module RuboCop
         end
 
         def register_offense(node, map_node, first_method, flatten, message)
-          range = range_between(map_node.loc.selector.begin_pos,
-                                node.loc.expression.end_pos)
+          range = range_between(map_node.loc.selector.begin_pos, node.loc.expression.end_pos)
+          message = format(message, method: first_method, flatten: flatten)
 
-          add_offense(node,
-                      location: range,
-                      message: format(message, method: first_method,
-                                               flatten: flatten))
+          add_offense(range, message: message) do |corrector|
+            autocorrect(corrector, node)
+          end
+        end
+
+        def autocorrect(corrector, node)
+          map_node, _first_method, _flatten, params = flat_map_candidate?(node)
+          flatten_level, = *params.first
+
+          return unless flatten_level
+
+          range = range_between(node.loc.dot.begin_pos, node.source_range.end_pos)
+
+          corrector.remove(range)
+          corrector.replace(map_node.loc.selector, 'flat_map')
         end
       end
     end

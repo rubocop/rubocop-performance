@@ -72,7 +72,9 @@ module RuboCop
       #       do_something($~)
       #     end
       #   end
-      class RegexpMatch < Cop
+      class RegexpMatch < Base
+        extend AutoCorrector
+
         # Constants are included in this list because it is unlikely that
         # someone will store `nil` as a constant and then use it for comparison
         TYPES_IMPLEMENTING_MATCH = %i[const regexp str sym].freeze
@@ -141,27 +143,28 @@ module RuboCop
           end
         end
 
-        def autocorrect(node)
-          lambda do |corrector|
-            if match_method?(node) || match_with_int_arg_method?(node)
-              corrector.replace(node.loc.selector, 'match?')
-            elsif match_operator?(node) || match_threequals?(node)
-              recv, oper, arg = *node
-              correct_operator(corrector, recv, arg, oper)
-            elsif match_with_lvasgn?(node)
-              recv, arg = *node
-              correct_operator(corrector, recv, arg)
-            end
-          end
-        end
-
         private
 
         def check_condition(cond)
           match_node?(cond) do
             return if last_match_used?(cond)
 
-            add_offense(cond)
+            message = message(cond)
+            add_offense(cond, message: message) do |corrector|
+              autocorrect(corrector, cond)
+            end
+          end
+        end
+
+        def autocorrect(corrector, node)
+          if match_method?(node) || match_with_int_arg_method?(node)
+            corrector.replace(node.loc.selector, 'match?')
+          elsif match_operator?(node) || match_threequals?(node)
+            recv, oper, arg = *node
+            correct_operator(corrector, recv, arg, oper)
+          elsif match_with_lvasgn?(node)
+            recv, arg = *node
+            correct_operator(corrector, recv, arg)
           end
         end
 
@@ -231,10 +234,7 @@ module RuboCop
 
         def scope_root(node)
           node.each_ancestor.find do |ancestor|
-            ancestor.def_type? ||
-              ancestor.defs_type? ||
-              ancestor.class_type? ||
-              ancestor.module_type?
+            ancestor.def_type? || ancestor.defs_type? || ancestor.class_type? || ancestor.module_type?
           end
         end
 

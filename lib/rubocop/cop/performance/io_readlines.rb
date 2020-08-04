@@ -24,8 +24,9 @@ module RuboCop
       #   file.each_line.find { |l| l.start_with?('#') }
       #   file.each_line { |l| puts l }
       #
-      class IoReadlines < Cop
+      class IoReadlines < Base
         include RangeHelp
+        extend AutoCorrector
 
         MSG = 'Use `%<good>s` instead of `%<bad>s`.'
         ENUMERABLE_METHODS = (Enumerable.instance_methods + [:each]).freeze
@@ -39,34 +40,16 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          readlines_on_class?(node) do |enumerable_call, readlines_call|
-            offense(node, enumerable_call, readlines_call)
-          end
+          return unless (captured_values = readlines_on_class?(node) || readlines_on_instance?(node))
 
-          readlines_on_instance?(node) do |enumerable_call, readlines_call, _|
-            offense(node, enumerable_call, readlines_call)
-          end
-        end
+          enumerable_call, readlines_call, receiver = *captured_values
 
-        def autocorrect(node)
-          readlines_on_instance?(node) do |enumerable_call, readlines_call, receiver|
-            # We cannot safely correct `.readlines` method called on IO/File classes
-            # due to its signature and we are not sure with implicit receiver
-            # if it is called in the context of some instance or mentioned class.
-            return if receiver.nil?
+          range = offense_range(enumerable_call, readlines_call)
+          good_method = build_good_method(enumerable_call)
+          bad_method = build_bad_method(enumerable_call)
 
-            lambda do |corrector|
-              range = correction_range(enumerable_call, readlines_call)
-
-              if readlines_call.arguments?
-                call_args = build_call_args(readlines_call.arguments)
-                replacement = "each_line(#{call_args})"
-              else
-                replacement = 'each_line'
-              end
-
-              corrector.replace(range, replacement)
-            end
+          add_offense(range, message: format(MSG, good: good_method, bad: bad_method)) do |corrector|
+            autocorrect(corrector, enumerable_call, readlines_call, receiver)
           end
         end
 
@@ -76,16 +59,22 @@ module RuboCop
           ENUMERABLE_METHODS.include?(node.to_sym)
         end
 
-        def offense(node, enumerable_call, readlines_call)
-          range = offense_range(enumerable_call, readlines_call)
-          good_method = build_good_method(enumerable_call)
-          bad_method = build_bad_method(enumerable_call)
+        def autocorrect(corrector, enumerable_call, readlines_call, receiver)
+          # We cannot safely correct `.readlines` method called on IO/File classes
+          # due to its signature and we are not sure with implicit receiver
+          # if it is called in the context of some instance or mentioned class.
+          return if receiver.nil?
 
-          add_offense(
-            node,
-            location: range,
-            message: format(MSG, good: good_method, bad: bad_method)
-          )
+          range = correction_range(enumerable_call, readlines_call)
+
+          if readlines_call.arguments?
+            call_args = build_call_args(readlines_call.arguments)
+            replacement = "each_line(#{call_args})"
+          else
+            replacement = 'each_line'
+          end
+
+          corrector.replace(range, replacement)
         end
 
         def offense_range(enumerable_call, readlines_call)

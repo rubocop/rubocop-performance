@@ -18,8 +18,9 @@ module RuboCop
       #   'abc'.gsub(/a+/, 'd')
       #   'abc'.tr('b', 'd')
       #   'a b c'.delete(' ')
-      class StringReplacement < Cop
+      class StringReplacement < Base
         include RangeHelp
+        extend AutoCorrector
 
         MSG = 'Use `%<prefer>s` instead of `%<current>s`.'
         DETERMINISTIC_REGEX = /\A(?:#{LITERAL_REGEX})+\Z/.freeze
@@ -42,33 +43,37 @@ module RuboCop
           end
         end
 
-        def autocorrect(node)
+        private
+
+        def offense(node, first_param, second_param)
+          first_source, = first_source(first_param)
+          first_source = interpret_string_escapes(first_source) unless first_param.str_type?
+          second_source, = *second_param
+          message = message(node, first_source, second_source)
+
+          add_offense(range(node), message: message) do |corrector|
+            autocorrect(corrector, node)
+          end
+        end
+
+        def autocorrect(corrector, node)
           _string, _method, first_param, second_param = *node
           first_source, = first_source(first_param)
           second_source, = *second_param
 
           first_source = interpret_string_escapes(first_source) unless first_param.str_type?
 
-          replacement_method =
-            replacement_method(node, first_source, second_source)
-
-          replace_method(node, first_source, second_source, first_param,
-                         replacement_method)
+          replace_method(corrector, node, first_source, second_source, first_param)
         end
 
-        def replace_method(node, first, second, first_param, replacement)
-          lambda do |corrector|
-            corrector.replace(node.loc.selector, replacement)
-            unless first_param.str_type?
-              corrector.replace(first_param.source_range,
-                                to_string_literal(first))
-            end
+        def replace_method(corrector, node, first_source, second_source, first_param)
+          replacement_method = replacement_method(node, first_source, second_source)
 
-            remove_second_param(corrector, node, first_param) if second.empty? && first.length == 1
-          end
+          corrector.replace(node.loc.selector, replacement_method)
+          corrector.replace(first_param.source_range, to_string_literal(first_source)) unless first_param.str_type?
+
+          remove_second_param(corrector, node, first_param) if second_source.empty? && first_source.length == 1
         end
-
-        private
 
         def accept_second_param?(second_param)
           second_source, = *second_param
@@ -90,15 +95,6 @@ module RuboCop
           end
 
           first_source.length != 1
-        end
-
-        def offense(node, first_param, second_param)
-          first_source, = first_source(first_param)
-          first_source = interpret_string_escapes(first_source) unless first_param.str_type?
-          second_source, = *second_param
-          message = message(node, first_source, second_source)
-
-          add_offense(node, location: range(node), message: message)
         end
 
         def first_source(first_param)

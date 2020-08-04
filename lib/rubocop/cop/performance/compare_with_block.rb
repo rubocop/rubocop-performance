@@ -23,8 +23,9 @@ module RuboCop
       #   array.max_by(&:foo)
       #   array.min_by(&:foo)
       #   array.sort_by { |a| a[:foo] }
-      class CompareWithBlock < Cop
+      class CompareWithBlock < Base
         include RangeHelp
+        extend AutoCorrector
 
         MSG = 'Use `%<compare_method>s_by%<instead>s` instead of ' \
               '`%<compare_method>s { |%<var_a>s, %<var_b>s| %<str_a>s ' \
@@ -51,27 +52,15 @@ module RuboCop
 
               range = compare_range(send, node)
 
-              add_offense(
-                node,
-                location: range,
-                message: message(send, method, var_a, var_b, args_a)
-              )
-            end
-          end
-        end
-
-        def autocorrect(node)
-          lambda do |corrector|
-            send, var_a, var_b, body = compare?(node)
-            method, arg, = replaceable_body?(body, var_a, var_b)
-            replacement =
-              if method == :[]
-                "#{send.method_name}_by { |a| a[#{arg.first.source}] }"
-              else
-                "#{send.method_name}_by(&:#{method})"
+              add_offense(range, message: message(send, method, var_a, var_b, args_a)) do |corrector|
+                replacement = if method == :[]
+                                "#{send.method_name}_by { |a| a[#{args_a.first.source}] }"
+                              else
+                                "#{send.method_name}_by(&:#{method})"
+                              end
+                corrector.replace(range, replacement)
               end
-            corrector.replace(compare_range(send, node),
-                              replacement)
+            end
           end
         end
 

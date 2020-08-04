@@ -17,38 +17,33 @@ module RuboCop
       #   str.start_with?("a", Some::CONST)
       #   str.start_with?("a", "b", "c")
       #   str.end_with?(var1, var2)
-      class DoubleStartEndWith < Cop
+      class DoubleStartEndWith < Base
+        extend AutoCorrector
+
         MSG = 'Use `%<receiver>s.%<method>s(%<combined_args>s)` ' \
               'instead of `%<original_code>s`.'
 
         def on_or(node)
-          receiver,
-          method,
-          first_call_args,
-          second_call_args = process_source(node)
+          receiver, method, first_call_args, second_call_args = process_source(node)
 
           return unless receiver && second_call_args.all?(&:pure?)
 
           combined_args = combine_args(first_call_args, second_call_args)
 
-          add_offense_for_double_call(node, receiver, method, combined_args)
-        end
-
-        def autocorrect(node)
-          _receiver, _method,
-          first_call_args, second_call_args = process_source(node)
-
-          combined_args = combine_args(first_call_args, second_call_args)
-          first_argument = first_call_args.first.loc.expression
-          last_argument = second_call_args.last.loc.expression
-          range = first_argument.join(last_argument)
-
-          lambda do |corrector|
-            corrector.replace(range, combined_args)
+          add_offense(node, message: message(node, receiver, method, combined_args)) do |corrector|
+            autocorrect(corrector, first_call_args, second_call_args, combined_args)
           end
         end
 
         private
+
+        def autocorrect(corrector, first_call_args, second_call_args, combined_args)
+          first_argument = first_call_args.first.loc.expression
+          last_argument = second_call_args.last.loc.expression
+          range = first_argument.join(last_argument)
+
+          corrector.replace(range, combined_args)
+        end
 
         def process_source(node)
           if check_for_active_support_aliases?
@@ -58,17 +53,14 @@ module RuboCop
           end
         end
 
-        def combine_args(first_call_args, second_call_args)
-          (first_call_args + second_call_args).map(&:source).join(', ')
+        def message(node, receiver, method, combined_args)
+          format(
+            MSG, receiver: receiver.source, method: method, combined_args: combined_args, original_code: node.source
+          )
         end
 
-        def add_offense_for_double_call(node, receiver, method, combined_args)
-          msg = format(MSG, receiver: receiver.source,
-                            method: method,
-                            combined_args: combined_args,
-                            original_code: node.source)
-
-          add_offense(node, message: msg)
+        def combine_args(first_call_args, second_call_args)
+          (first_call_args + second_call_args).map(&:source).join(', ')
         end
 
         def check_for_active_support_aliases?

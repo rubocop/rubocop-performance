@@ -24,7 +24,9 @@ module RuboCop
       #   # the desired result:
       #
       #   ('a'..'z').cover?('yellow') # => true
-      class RangeInclude < Cop
+      class RangeInclude < Base
+        extend AutoCorrector
+
         MSG = 'Use `Range#cover?` instead of `Range#%<bad_method>s`.'
 
         # TODO: If we traced out assignments of variables to their uses, we
@@ -39,12 +41,11 @@ module RuboCop
         def on_send(node)
           range_include(node) do |bad_method|
             message = format(MSG, bad_method: bad_method)
-            add_offense(node, location: :selector, message: message)
-          end
-        end
 
-        def autocorrect(node)
-          ->(corrector) { corrector.replace(node.loc.selector, 'cover?') }
+            add_offense(node.loc.selector, message: message) do |corrector|
+              corrector.replace(node.loc.selector, 'cover?')
+            end
+          end
         end
       end
     end

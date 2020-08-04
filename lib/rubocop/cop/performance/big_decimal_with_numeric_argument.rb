@@ -16,7 +16,9 @@ module RuboCop
       #   BigDecimal('1', 2)
       #   BigDecimal('1.2', 3, exception: true)
       #
-      class BigDecimalWithNumericArgument < Cop
+      class BigDecimalWithNumericArgument < Base
+        extend AutoCorrector
+
         MSG = 'Convert numeric argument to string before passing to `BigDecimal`.'
 
         def_node_matcher :big_decimal_with_numeric_argument?, <<~PATTERN
@@ -24,18 +26,11 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          big_decimal_with_numeric_argument?(node) do |numeric|
-            next if numeric.float_type? && specifies_precision?(node)
+          return unless (numeric = big_decimal_with_numeric_argument?(node))
+          return if numeric.float_type? && specifies_precision?(node)
 
-            add_offense(node, location: numeric.source_range)
-          end
-        end
-
-        def autocorrect(node)
-          big_decimal_with_numeric_argument?(node) do |numeric|
-            lambda do |corrector|
-              corrector.wrap(numeric, "'", "'")
-            end
+          add_offense(numeric.source_range) do |corrector|
+            corrector.wrap(numeric, "'", "'")
           end
         end
 

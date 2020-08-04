@@ -19,7 +19,9 @@ module RuboCop
       #   # good
       #   str.casecmp('ABC').zero?
       #   'abc'.casecmp(str).zero?
-      class Casecmp < Cop
+      class Casecmp < Base
+        extend AutoCorrector
+
         MSG = 'Use `%<good>s` instead of `%<bad>s`.'
         CASE_METHODS = %i[downcase upcase].freeze
 
@@ -48,21 +50,13 @@ module RuboCop
           return unless downcase_eq(node) || eq_downcase(node)
           return unless (parts = take_method_apart(node))
 
-          _, _, arg, variable = parts
+          _receiver, method, arg, variable = parts
           good_method = build_good_method(arg, variable)
 
-          add_offense(
-            node,
-            message: format(MSG, good: good_method, bad: node.source)
-          )
-        end
-
-        def autocorrect(node)
-          return unless (parts = take_method_apart(node))
-
-          receiver, method, arg, variable = parts
-
-          correction(node, receiver, method, arg, variable)
+          message = format(MSG, good: good_method, bad: node.source)
+          add_offense(node, message: message) do |corrector|
+            correction(corrector, node, method, arg, variable)
+          end
         end
 
         private
@@ -84,14 +78,12 @@ module RuboCop
           [receiver, method, arg, variable]
         end
 
-        def correction(node, _receiver, method, arg, variable)
-          lambda do |corrector|
-            corrector.insert_before(node.loc.expression, '!') if method == :!=
+        def correction(corrector, node, method, arg, variable)
+          corrector.insert_before(node.loc.expression, '!') if method == :!=
 
-            replacement = build_good_method(arg, variable)
+          replacement = build_good_method(arg, variable)
 
-            corrector.replace(node.loc.expression, replacement)
-          end
+          corrector.replace(node.loc.expression, replacement)
         end
 
         def build_good_method(arg, variable)

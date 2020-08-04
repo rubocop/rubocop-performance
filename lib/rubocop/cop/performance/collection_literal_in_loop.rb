@@ -31,7 +31,7 @@ module RuboCop
       #     ADMIN_ROLES.include?(user.role)
       #   end
       #
-      class CollectionLiteralInLoop < Cop
+      class CollectionLiteralInLoop < Base
         MSG = 'Avoid immutable %<literal_class>s literals in loops. '\
           'It is better to extract it into a local variable or a constant.'
 
