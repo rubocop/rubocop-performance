@@ -19,8 +19,9 @@ module RuboCop
       #   # good
       #   umethod.bind_call(obj, foo, bar)
       #
-      class BindCall < Cop
+      class BindCall < Base
         include RangeHelp
+        extend AutoCorrector
         extend TargetRubyVersion
 
         minimum_target_ruby_version 2.7
@@ -37,28 +38,17 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          bind_with_call_method?(node) do |receiver, bind_arg, call_args_node|
-            range = correction_range(receiver, node)
-
-            call_args = build_call_args(call_args_node)
-
-            message = message(bind_arg.source, call_args)
-
-            add_offense(node, location: range, message: message)
-          end
-        end
-
-        def autocorrect(node)
-          receiver, bind_arg, call_args_node = bind_with_call_method?(node)
+          return unless (receiver, bind_arg, call_args_node = bind_with_call_method?(node))
 
           range = correction_range(receiver, node)
-
           call_args = build_call_args(call_args_node)
-          call_args = ", #{call_args}" unless call_args.empty?
+          message = message(bind_arg.source, call_args)
 
-          replacement_method = "bind_call(#{bind_arg.source}#{call_args})"
+          add_offense(range, message: message) do |corrector|
+            call_args = ", #{call_args}" unless call_args.empty?
 
-          lambda do |corrector|
+            replacement_method = "bind_call(#{bind_arg.source}#{call_args})"
+
             corrector.replace(range, replacement_method)
           end
         end

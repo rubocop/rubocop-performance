@@ -20,7 +20,7 @@ module RuboCop
       #   array.flatten!
       #   array.map! { |x| x.downcase }
       #   array
-      class ChainArrayAllocation < Cop
+      class ChainArrayAllocation < Base
         include RangeHelp
 
         # These methods return a new array but only sometimes. They must be
@@ -61,15 +61,9 @@ module RuboCop
 
         def on_send(node)
           flat_map_candidate?(node) do |fm, sm, _|
-            range = range_between(
-              node.loc.dot.begin_pos,
-              node.source_range.end_pos
-            )
-            add_offense(
-              node,
-              location: range,
-              message: format(MSG, method: fm, second_method: sm)
-            )
+            range = range_between(node.loc.dot.begin_pos, node.source_range.end_pos)
+
+            add_offense(range, message: format(MSG, method: fm, second_method: sm))
           end
         end
       end

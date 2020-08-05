@@ -13,8 +13,9 @@ module RuboCop
       #   # good
       #   array.sort.reverse
       #
-      class SortReverse < Cop
+      class SortReverse < Base
         include SortBlock
+        extend AutoCorrector
 
         MSG = 'Use `sort.reverse` instead of `%<bad_method>s`.'
 
@@ -23,21 +24,11 @@ module RuboCop
             replaceable_body?(body, var_b, var_a) do
               range = sort_range(send, node)
 
-              add_offense(
-                node,
-                location: range,
-                message: message(var_a, var_b)
-              )
-            end
-          end
-        end
+              add_offense(range, message: message(var_a, var_b)) do |corrector|
+                replacement = 'sort.reverse'
 
-        def autocorrect(node)
-          sort_with_block?(node) do |send, _var_a, _var_b, _body|
-            lambda do |corrector|
-              range = sort_range(send, node)
-              replacement = 'sort.reverse'
-              corrector.replace(range, replacement)
+                corrector.replace(range, replacement)
+              end
             end
           end
         end

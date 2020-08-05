@@ -17,7 +17,9 @@ module RuboCop
       #   Array.new(9) do |i|
       #     i.to_s
       #   end
-      class TimesMap < Cop
+      class TimesMap < Base
+        extend AutoCorrector
+
         MESSAGE = 'Use `Array.new(%<count>s)` with a block ' \
                   'instead of `.times.%<map_or_collect>s`'
         MESSAGE_ONLY_IF = 'only if `%<count>s` is always 0 or more'
@@ -30,23 +32,16 @@ module RuboCop
           check(node)
         end
 
-        def autocorrect(node)
-          map_or_collect, count = times_map_call(node)
-
-          replacement =
-            "Array.new(#{count.source}" \
-            "#{map_or_collect.arguments.map { |arg| ", #{arg.source}" }.join})"
-
-          lambda do |corrector|
-            corrector.replace(map_or_collect.loc.expression, replacement)
-          end
-        end
-
         private
 
         def check(node)
           times_map_call(node) do |map_or_collect, count|
-            add_offense(node, message: message(map_or_collect, count))
+            add_offense(node, message: message(map_or_collect, count)) do |corrector|
+              replacement = "Array.new(#{count.source}" \
+                            "#{map_or_collect.arguments.map { |arg| ", #{arg.source}" }.join})"
+
+              corrector.replace(map_or_collect.loc.expression, replacement)
+            end
           end
         end
 
@@ -56,9 +51,7 @@ module RuboCop
                      else
                        "#{MESSAGE} #{MESSAGE_ONLY_IF}."
                      end
-          format(template,
-                 count: count.source,
-                 map_or_collect: map_or_collect.method_name)
+          format(template, count: count.source, map_or_collect: map_or_collect.method_name)
         end
 
         def_node_matcher :times_map_call, <<~PATTERN

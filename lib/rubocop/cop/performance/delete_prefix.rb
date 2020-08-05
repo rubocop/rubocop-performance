@@ -43,9 +43,10 @@ module RuboCop
       #   str.sub(/^prefix/, '')
       #   str.sub!(/^prefix/, '')
       #
-      class DeletePrefix < Cop
-        extend TargetRubyVersion
+      class DeletePrefix < Base
         include RegexpMetacharacter
+        extend AutoCorrector
+        extend TargetRubyVersion
 
         minimum_target_ruby_version 2.5
 
@@ -63,31 +64,21 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          delete_prefix_candidate?(node) do |_, bad_method, _, replace_string|
-            return unless replace_string.blank?
+          return unless (receiver, bad_method, regexp_str, replace_string = delete_prefix_candidate?(node))
+          return unless replace_string.blank?
 
-            good_method = PREFERRED_METHODS[bad_method]
+          good_method = PREFERRED_METHODS[bad_method]
 
-            message = format(MSG, current: bad_method, prefer: good_method)
+          message = format(MSG, current: bad_method, prefer: good_method)
 
-            add_offense(node, location: :selector, message: message)
-          end
-        end
+          add_offense(node.loc.selector, message: message) do |corrector|
+            regexp_str = drop_start_metacharacter(regexp_str)
+            regexp_str = interpret_string_escapes(regexp_str)
+            string_literal = to_string_literal(regexp_str)
 
-        def autocorrect(node)
-          delete_prefix_candidate?(node) do |receiver, bad_method, regexp_str, _|
-            lambda do |corrector|
-              good_method = PREFERRED_METHODS[bad_method]
-              regexp_str = drop_start_metacharacter(regexp_str)
-              regexp_str = interpret_string_escapes(regexp_str)
-              string_literal = to_string_literal(regexp_str)
+            new_code = "#{receiver.source}.#{good_method}(#{string_literal})"
 
-              new_code = "#{receiver.source}.#{good_method}(#{string_literal})"
-
-              # TODO: `source_range` is no longer required when RuboCop 0.81 or lower support will be dropped.
-              # https://github.com/rubocop-hq/rubocop/commit/82eb350d2cba16
-              corrector.replace(node.source_range, new_code)
-            end
+            corrector.replace(node, new_code)
           end
         end
       end

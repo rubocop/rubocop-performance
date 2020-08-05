@@ -24,7 +24,9 @@ module RuboCop
       #   # good
       #   hash[:a] = 1
       #   hash[:b] = 2
-      class RedundantMerge < Cop
+      class RedundantMerge < Base
+        extend AutoCorrector
+
         AREF_ASGN = '%<receiver>s[%<key>s] = %<value>s'
         MSG = 'Use `%<prefer>s` instead of `%<current>s`.'
 
@@ -44,18 +46,17 @@ module RuboCop
 
         def on_send(node)
           each_redundant_merge(node) do |redundant_merge_node|
-            add_offense(redundant_merge_node)
-          end
-        end
+            message = message(node)
+            add_offense(redundant_merge_node, message: message) do |corrector|
+              redundant_merge_candidate(node) do |receiver, pairs|
+                new_source = to_assignments(receiver, pairs).join("\n")
 
-        def autocorrect(node)
-          redundant_merge_candidate(node) do |receiver, pairs|
-            new_source = to_assignments(receiver, pairs).join("\n")
-
-            if node.parent && pairs.size > 1
-              correct_multiple_elements(node, node.parent, new_source)
-            else
-              correct_single_element(node, new_source)
+                if node.parent && pairs.size > 1
+                  correct_multiple_elements(corrector, node, node.parent, new_source)
+                else
+                  correct_single_element(corrector, node, new_source)
+                end
+              end
             end
           end
         end
@@ -98,7 +99,7 @@ module RuboCop
             !EachWithObjectInspector.new(node, receiver).value_used?
         end
 
-        def correct_multiple_elements(node, parent, new_source)
+        def correct_multiple_elements(corrector, node, parent, new_source)
           if modifier_flow_control?(parent)
             new_source = rewrite_with_modifier(node, parent, new_source)
             node = parent
@@ -107,11 +108,11 @@ module RuboCop
             new_source.gsub!(/\n/, padding)
           end
 
-          ->(corrector) { corrector.replace(node.source_range, new_source) }
+          corrector.replace(node.source_range, new_source)
         end
 
-        def correct_single_element(node, new_source)
-          ->(corrector) { corrector.replace(node.source_range, new_source) }
+        def correct_single_element(corrector, node, new_source)
+          corrector.replace(node.source_range, new_source)
         end
 
         def to_assignments(receiver, pairs)

@@ -22,7 +22,9 @@ module RuboCop
       # `ActiveRecord` does not implement a `detect` method and `find` has its
       # own meaning. Correcting ActiveRecord methods with this cop should be
       # considered unsafe.
-      class Detect < Cop
+      class Detect < Base
+        extend AutoCorrector
+
         MSG = 'Use `%<prefer>s` instead of ' \
               '`%<first_method>s.%<second_method>s`.'
         REVERSE_MSG = 'Use `reverse.%<prefer>s` instead of ' \
@@ -47,25 +49,6 @@ module RuboCop
           end
         end
 
-        def autocorrect(node)
-          receiver, first_method = *node
-
-          replacement = if first_method == :last
-                          "reverse.#{preferred_method}"
-                        else
-                          preferred_method
-                        end
-
-          first_range = receiver.source_range.end.join(node.loc.selector)
-
-          receiver, _args, _body = *receiver if receiver.block_type?
-
-          lambda do |corrector|
-            corrector.remove(first_range)
-            corrector.replace(receiver.loc.selector, replacement)
-          end
-        end
-
         private
 
         def accept_first_call?(receiver, body)
@@ -86,12 +69,30 @@ module RuboCop
                                               first_method: first_method,
                                               second_method: second_method)
 
-          add_offense(node, location: range, message: formatted_message)
+          add_offense(range, message: formatted_message) do |corrector|
+            autocorrect(corrector, node)
+          end
+        end
+
+        def autocorrect(corrector, node)
+          receiver, first_method = *node
+
+          replacement = if first_method == :last
+                          "reverse.#{preferred_method}"
+                        else
+                          preferred_method
+                        end
+
+          first_range = receiver.source_range.end.join(node.loc.selector)
+
+          receiver, _args, _body = *receiver if receiver.block_type?
+
+          corrector.remove(first_range)
+          corrector.replace(receiver.loc.selector, replacement)
         end
 
         def preferred_method
-          config.for_cop('Style/CollectionMethods') \
-            ['PreferredMethods']['detect'] || 'detect'
+          config.for_cop('Style/CollectionMethods')['PreferredMethods']['detect'] || 'detect'
         end
 
         def lazy?(node)

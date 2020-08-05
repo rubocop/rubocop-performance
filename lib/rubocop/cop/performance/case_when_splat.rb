@@ -53,9 +53,10 @@ module RuboCop
       #   when 5
       #     baz
       #   end
-      class CaseWhenSplat < Cop
+      class CaseWhenSplat < Base
         include Alignment
         include RangeHelp
+        extend AutoCorrector
 
         MSG = 'Reordering `when` conditions with a splat to the end ' \
           'of the `when` branches can improve performance.'
@@ -66,24 +67,30 @@ module RuboCop
           when_conditions = case_node.when_branches.flat_map(&:conditions)
 
           splat_offenses(when_conditions).reverse_each do |condition|
-            range = condition.parent.loc.keyword.join(condition.source_range)
+            next if ignored_node?(condition.parent)
+
+            ignore_node(condition.parent)
             variable, = *condition
             message = variable.array_type? ? ARRAY_MSG : MSG
-            add_offense(condition.parent, location: range, message: message)
-          end
-        end
-
-        def autocorrect(when_node)
-          lambda do |corrector|
-            if needs_reorder?(when_node)
-              reorder_condition(corrector, when_node)
-            else
-              inline_fix_branch(corrector, when_node)
+            add_offense(range(condition), message: message) do |corrector|
+              autocorrect(corrector, condition.parent)
             end
           end
         end
 
         private
+
+        def autocorrect(corrector, when_node)
+          if needs_reorder?(when_node)
+            reorder_condition(corrector, when_node)
+          else
+            inline_fix_branch(corrector, when_node)
+          end
+        end
+
+        def range(node)
+          node.parent.loc.keyword.join(node.source_range)
+        end
 
         def replacement(conditions)
           reordered = conditions.partition(&:splat_type?).reverse

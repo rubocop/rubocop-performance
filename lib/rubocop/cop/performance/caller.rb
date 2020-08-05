@@ -18,7 +18,7 @@ module RuboCop
       #   caller(1..1).first
       #   caller_locations(2..2).first
       #   caller_locations(1..1).first
-      class Caller < Cop
+      class Caller < Base
         MSG_BRACE = 'Use `%<method>s(%<n>d..%<n>d).first`' \
                     ' instead of `%<method>s[%<m>d]`.'
         MSG_FIRST = 'Use `%<method>s(%<n>d..%<n>d).first`' \
@@ -41,7 +41,8 @@ module RuboCop
         def on_send(node)
           return unless caller_with_scope_method?(node)
 
-          add_offense(node)
+          message = message(node)
+          add_offense(node, message: message)
         end
 
         private

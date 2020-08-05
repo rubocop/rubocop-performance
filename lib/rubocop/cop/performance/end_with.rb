@@ -41,8 +41,9 @@ module RuboCop
       #   'abc'.match(/bc$/)
       #   /bc$/.match('abc')
       #
-      class EndWith < Cop
+      class EndWith < Base
         include RegexpMetacharacter
+        extend AutoCorrector
 
         MSG = 'Use `String#end_with?` instead of a regex match anchored to ' \
               'the end of the string.'
@@ -54,25 +55,19 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          return unless redundant_regex?(node)
+          return unless (receiver, regex_str = redundant_regex?(node))
 
-          add_offense(node)
-        end
-        alias on_match_with_lvasgn on_send
-
-        def autocorrect(node)
-          redundant_regex?(node) do |receiver, regex_str|
+          add_offense(node) do |corrector|
             receiver, regex_str = regex_str, receiver if receiver.is_a?(String)
             regex_str = drop_end_metacharacter(regex_str)
             regex_str = interpret_string_escapes(regex_str)
 
-            lambda do |corrector|
-              new_source = "#{receiver.source}.end_with?(#{to_string_literal(regex_str)})"
+            new_source = "#{receiver.source}.end_with?(#{to_string_literal(regex_str)})"
 
-              corrector.replace(node.source_range, new_source)
-            end
+            corrector.replace(node.source_range, new_source)
           end
         end
+        alias on_match_with_lvasgn on_send
       end
     end
   end

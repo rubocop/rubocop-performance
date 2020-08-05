@@ -22,7 +22,9 @@ module RuboCop
       #   def another
       #     yield 1, 2, 3
       #   end
-      class RedundantBlockCall < Cop
+      class RedundantBlockCall < Base
+        extend AutoCorrector
+
         MSG = 'Use `yield` instead of `%<argname>s.call`.'
         YIELD = 'yield'
         OPEN_PAREN = '('
@@ -47,13 +49,17 @@ module RuboCop
             next unless body
 
             calls_to_report(argname, body).each do |blockcall|
-              add_offense(blockcall, message: format(MSG, argname: argname))
+              add_offense(blockcall, message: format(MSG, argname: argname)) do |corrector|
+                autocorrect(corrector, blockcall)
+              end
             end
           end
         end
 
+        private
+
         # offenses are registered on the `block.call` nodes
-        def autocorrect(node)
+        def autocorrect(corrector, node)
           _receiver, _method, *args = *node
           new_source = String.new(YIELD)
           unless args.empty?
@@ -67,10 +73,9 @@ module RuboCop
           end
 
           new_source << CLOSE_PAREN if parentheses?(node) && !args.empty?
-          ->(corrector) { corrector.replace(node.source_range, new_source) }
-        end
 
-        private
+          corrector.replace(node.source_range, new_source)
+        end
 
         def calls_to_report(argname, body)
           return [] if blockarg_assigned?(body, argname)

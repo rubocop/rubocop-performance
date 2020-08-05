@@ -37,8 +37,9 @@ module RuboCop
       #   becomes:
       #
       #   `Model.where(id: [1, 2, 3]).to_a.count { |m| m.method == true }`
-      class Count < Cop
+      class Count < Base
         include RangeHelp
+        extend AutoCorrector
 
         MSG = 'Use `count` instead of `%<selector>s...%<counter>s`.'
 
@@ -57,28 +58,24 @@ module RuboCop
               selector_node.loc.selector.begin_pos
             end
 
-            add_offense(node,
-                        location: range,
-                        message: format(MSG, selector: selector,
-                                             counter: counter))
+            add_offense(range, message: format(MSG, selector: selector, counter: counter)) do |corrector|
+              autocorrect(corrector, node, selector_node, selector)
+            end
           end
         end
 
-        def autocorrect(node)
-          selector_node, selector, _counter = count_candidate?(node)
+        private
+
+        def autocorrect(corrector, node, selector_node, selector)
           selector_loc = selector_node.loc.selector
 
           return if selector == :reject
 
           range = source_starting_at(node) { |n| n.loc.dot.begin_pos }
 
-          lambda do |corrector|
-            corrector.remove(range)
-            corrector.replace(selector_loc, 'count')
-          end
+          corrector.remove(range)
+          corrector.replace(selector_loc, 'count')
         end
-
-        private
 
         def eligible_node?(node)
           !(node.parent && node.parent.block_type?)

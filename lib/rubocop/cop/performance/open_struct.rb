@@ -27,7 +27,7 @@ module RuboCop
       #     end
       #   end
       #
-      class OpenStruct < Cop
+      class OpenStruct < Base
         MSG = 'Consider using `Struct` over `OpenStruct` ' \
               'to optimize the performance.'
 
@@ -37,7 +37,7 @@ module RuboCop
 
         def on_send(node)
           open_struct(node) do
-            add_offense(node, location: :selector)
+            add_offense(node.loc.selector)
           end
         end
       end

@@ -13,29 +13,19 @@ module RuboCop
       #   # good
       #   array.sort
       #
-      class RedundantSortBlock < Cop
+      class RedundantSortBlock < Base
         include SortBlock
+        extend AutoCorrector
 
         MSG = 'Use `sort` instead of `%<bad_method>s`.'
 
         def on_block(node)
-          sort_with_block?(node) do |send, var_a, var_b, body|
-            replaceable_body?(body, var_a, var_b) do
-              range = sort_range(send, node)
+          return unless (send, var_a, var_b, body = sort_with_block?(node))
 
-              add_offense(
-                node,
-                location: range,
-                message: message(var_a, var_b)
-              )
-            end
-          end
-        end
+          replaceable_body?(body, var_a, var_b) do
+            range = sort_range(send, node)
 
-        def autocorrect(node)
-          sort_with_block?(node) do |send, _var_a, _var_b, _body|
-            lambda do |corrector|
-              range = sort_range(send, node)
+            add_offense(range, message: message(var_a, var_b)) do |corrector|
               corrector.replace(range, 'sort')
             end
           end

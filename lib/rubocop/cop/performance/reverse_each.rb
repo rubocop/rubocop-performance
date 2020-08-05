@@ -12,8 +12,9 @@ module RuboCop
       #
       #   # good
       #   [].reverse_each
-      class ReverseEach < Cop
+      class ReverseEach < Base
         include RangeHelp
+        extend AutoCorrector
 
         MSG = 'Use `reverse_each` instead of `reverse.each`.'
         UNDERSCORE = '_'
@@ -29,13 +30,16 @@ module RuboCop
 
             range = range_between(location_of_reverse, end_location)
 
-            add_offense(node, location: range)
+            add_offense(range) do |corrector|
+              corrector.replace(replacement_range(node), UNDERSCORE)
+            end
           end
         end
 
-        def autocorrect(node)
-          range = range_between(node.loc.dot.begin_pos, node.loc.selector.begin_pos)
-          ->(corrector) { corrector.replace(range, UNDERSCORE) }
+        private
+
+        def replacement_range(node)
+          range_between(node.loc.dot.begin_pos, node.loc.selector.begin_pos)
         end
       end
     end

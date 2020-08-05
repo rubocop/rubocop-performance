@@ -17,8 +17,9 @@ module RuboCop
       #   [1, 2, 3].sum(10)
       #   [1, 2, 3].sum
       #
-      class Sum < Cop
+      class Sum < Base
         include RangeHelp
+        extend AutoCorrector
 
         MSG = 'Use `%<good_method>s` instead of `%<bad_method>s`.'
 
@@ -43,7 +44,9 @@ module RuboCop
             range = sum_method_range(node)
             message = build_method_message(method, init)
 
-            add_offense(node, location: range, message: message)
+            add_offense(range, message: message) do |corrector|
+              autocorrect(corrector, init, range)
+            end
           end
         end
 
@@ -53,31 +56,22 @@ module RuboCop
               range = sum_block_range(send, node)
               message = build_block_message(send, init, var_acc, var_elem, body)
 
-              add_offense(node, location: range, message: message)
+              add_offense(range, message: message) do |corrector|
+                autocorrect(corrector, init, range)
+              end
             end
           end
         end
 
-        def autocorrect(node)
-          if (matches = sum_candidate?(node))
-            _, init = *matches
-            range = sum_method_range(node)
-          elsif (matches = sum_with_block_candidate?(node))
-            send, init, = matches
-            range = sum_block_range(send, node)
-          else
-            return
-          end
+        private
 
+        def autocorrect(corrector, init, range)
           return if init.empty?
 
-          lambda do |corrector|
-            replacement = build_good_method(init)
-            corrector.replace(range, replacement)
-          end
-        end
+          replacement = build_good_method(init)
 
-        private
+          corrector.replace(range, replacement)
+        end
 
         def sum_method_range(node)
           range_between(node.loc.selector.begin_pos, node.loc.end.end_pos)
