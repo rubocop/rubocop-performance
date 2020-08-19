@@ -9,6 +9,7 @@
 
 ### Changes
 
+* [#157](https://github.com/rubocop-hq/rubocop-performance/pull/157): Extend `Performance/Detect` cop with check for `filter` method and `Performance/Count` cop with checks for `find_all` and `filter` methods. ([@fatkodima][])
 * [#154](https://github.com/rubocop-hq/rubocop-performance/pull/154): Require RuboCop 0.87 or higher. ([@koic][])
 
 ## 1.7.1 (2020-07-18)

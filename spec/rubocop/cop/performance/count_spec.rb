@@ -106,6 +106,8 @@ RSpec.describe RuboCop::Cop::Performance::Count do
   end
 
   it_behaves_like('selectors', 'select')
+  it_behaves_like('selectors', 'find_all')
+  it_behaves_like('selectors', 'filter')
   it_behaves_like('selectors', 'reject')
 
   context 'Active Record select' do
