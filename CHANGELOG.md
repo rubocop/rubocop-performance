@@ -7,6 +7,10 @@
 * [#140](https://github.com/rubocop-hq/rubocop-performance/pull/140): Add new `Performance/CollectionLiteralInLoop` cop. ([@fatkodima][])
 * [#137](https://github.com/rubocop-hq/rubocop-performance/pull/137): Add new `Performance/Sum` cop. ([@fatkodima][])
 
+### Bug fixes
+
+* [#159](https://github.com/rubocop-hq/rubocop-performance/pull/159): Fix a false positive for `Performance/AncestorsInclude` when receiver is a variable. ([@koic][])
+
 ### Changes
 
 * [#154](https://github.com/rubocop-hq/rubocop-performance/pull/154): Require RuboCop 0.87 or higher. ([@koic][])

@@ -25,6 +25,12 @@ RSpec.describe RuboCop::Cop::Performance::AncestorsInclude do
     RUBY
   end
 
+  it 'does not register an offense when receiver is not a consntant' do
+    expect_no_offenses(<<~RUBY)
+      expect(object_one.ancestors.include?(object_two)).to eq(true)
+    RUBY
+  end
+
   it 'does not register an offense when using `<=`' do
     expect_no_offenses(<<~RUBY)
       Class <= Kernel
