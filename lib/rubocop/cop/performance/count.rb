@@ -4,7 +4,7 @@ module RuboCop
   module Cop
     module Performance
       # This cop is used to identify usages of `count` on an `Enumerable` that
-      # follow calls to `select` or `reject`. Querying logic can instead be
+      # follow calls to `select`, `find_all`, `filter` or `reject`. Querying logic can instead be
       # passed to the `count` call.
       #
       # @example
@@ -45,8 +45,8 @@ module RuboCop
 
         def_node_matcher :count_candidate?, <<~PATTERN
           {
-            (send (block $(send _ ${:select :reject}) ...) ${:count :length :size})
-            (send $(send _ ${:select :reject} (:block_pass _)) ${:count :length :size})
+            (send (block $(send _ ${:select :filter :find_all :reject}) ...) ${:count :length :size})
+            (send $(send _ ${:select :filter :find_all :reject} (:block_pass _)) ${:count :length :size})
           }
         PATTERN
 

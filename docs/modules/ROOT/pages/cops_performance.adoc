@@ -377,11 +377,11 @@ array.sort_by { |a| a[:foo] }
 | Yes
 | Yes (Unsafe)
 | 0.31
-| 1.5
+| 1.8
 |===
 
 This cop is used to identify usages of `count` on an `Enumerable` that
-follow calls to `select` or `reject`. Querying logic can instead be
+follow calls to `select`, `find_all`, `filter` or `reject`. Querying logic can instead be
 passed to the `count` call.
 
 `ActiveRecord` compatibility:
@@ -574,11 +574,11 @@ str.sub!(/suffix$/, '')
 | Yes
 | Yes (Unsafe)
 | 0.30
-| 1.5
+| 1.8
 |===
 
 This cop is used to identify usages of
-`select.first`, `select.last`, `find_all.first`, and `find_all.last`
+`select.first`, `select.last`, `find_all.first`, `find_all.last`, `filter.first`, and `filter.last`
 and change them to use `detect` instead.
 
 `ActiveRecord` compatibility:
@@ -595,6 +595,8 @@ considered unsafe.
 [].select { |item| true }.last
 [].find_all { |item| true }.first
 [].find_all { |item| true }.last
+[].filter { |item| true }.first
+[].filter { |item| true }.last
 
 # good
 [].detect { |item| true }

@@ -4,7 +4,7 @@ module RuboCop
   module Cop
     module Performance
       # This cop is used to identify usages of
-      # `select.first`, `select.last`, `find_all.first`, and `find_all.last`
+      # `select.first`, `select.last`, `find_all.first`, `find_all.last`, `filter.first`, and `filter.last`
       # and change them to use `detect` instead.
       #
       # @example
@@ -13,6 +13,8 @@ module RuboCop
       #   [].select { |item| true }.last
       #   [].find_all { |item| true }.first
       #   [].find_all { |item| true }.last
+      #   [].filter { |item| true }.first
+      #   [].filter { |item| true }.last
       #
       #   # good
       #   [].detect { |item| true }
@@ -32,8 +34,8 @@ module RuboCop
 
         def_node_matcher :detect_candidate?, <<~PATTERN
           {
-            (send $(block (send _ {:select :find_all}) ...) ${:first :last} $...)
-            (send $(send _ {:select :find_all} ...) ${:first :last} $...)
+            (send $(block (send _ {:select :find_all :filter}) ...) ${:first :last} $...)
+            (send $(send _ {:select :find_all :filter} ...) ${:first :last} $...)
           }
         PATTERN
 
