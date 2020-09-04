@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 1.8.0 (2020-09-04)
+
 ### New features
 
 * [#140](https://github.com/rubocop-hq/rubocop-performance/pull/140): Add new `Performance/CollectionLiteralInLoop` cop. ([@fatkodima][])
