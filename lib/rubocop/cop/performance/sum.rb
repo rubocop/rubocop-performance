@@ -98,7 +98,7 @@ module RuboCop
 
           unless init.empty?
             init = init.first
-            good_method += "(#{init.source})" if init.source.to_i != 0
+            good_method += "(#{init.source})" unless init.int_type? && init.value.zero?
           end
           good_method
         end

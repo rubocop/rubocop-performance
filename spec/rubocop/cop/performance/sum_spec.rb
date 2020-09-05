@@ -37,6 +37,39 @@ RSpec.describe RuboCop::Cop::Performance::Sum do
       RUBY
     end
 
+    it "registers an offense and corrects when using `array.#{method}(0, :+)`" do
+      expect_offense(<<~RUBY, method: method)
+        array.#{method}(0, :+)
+              ^{method}^^^^^^^ Use `sum` instead of `#{method}(0, :+)`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        array.sum
+      RUBY
+    end
+
+    it "registers an offense and corrects when using `array.#{method}(0.0, :+)`" do
+      expect_offense(<<~RUBY, method: method)
+        array.#{method}(0.0, :+)
+              ^{method}^^^^^^^^^ Use `sum(0.0)` instead of `#{method}(0.0, :+)`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        array.sum(0.0)
+      RUBY
+    end
+
+    it "registers an offense and corrects when using `array.#{method}(init, :+)`" do
+      expect_offense(<<~RUBY, method: method)
+        array.#{method}(init, :+)
+              ^{method}^^^^^^^^^^ Use `sum(init)` instead of `#{method}(init, :+)`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        array.sum(init)
+      RUBY
+    end
+
     it 'does not autocorrect when initial value is not provided' do
       expect_offense(<<~RUBY, method: method)
         array.#{method}(:+)

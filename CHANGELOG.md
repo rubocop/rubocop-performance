@@ -5,6 +5,7 @@
 ### Bug fixes
 
 * [#164](https://github.com/rubocop-hq/rubocop-performance/pull/164): Fix an error for `Performance/CollectionLiteralInLoop` when a method from `Enumerable` is called with no receiver. ([@eugeneius][])
+* [#165](https://github.com/rubocop-hq/rubocop-performance/issues/165): Fix a false positive for `Performance/Sum` when using initial value argument is a variable. ([@koic][])
 
 ## 1.8.0 (2020-09-04)
 
