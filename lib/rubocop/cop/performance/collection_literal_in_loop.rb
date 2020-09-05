@@ -115,7 +115,7 @@ module RuboCop
 
         def node_within_enumerable_loop?(node, ancestor)
           enumerable_loop?(ancestor) do |receiver|
-            receiver != node && !receiver.descendants.include?(node)
+            receiver != node && !receiver&.descendants&.include?(node)
           end
         end
 

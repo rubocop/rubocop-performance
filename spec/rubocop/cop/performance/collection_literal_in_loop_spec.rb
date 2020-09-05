@@ -145,6 +145,15 @@ RSpec.describe RuboCop::Cop::Performance::CollectionLiteralInLoop, :config do
         end
       RUBY
     end
+
+    it 'registers an offense when the method is called with no receiver' do
+      expect_offense(<<~RUBY)
+        all? do |e|
+          [1, 2, 3].include?(e)
+          ^^^^^^^^^ Avoid immutable Array literals in loops. It is better to extract it into a local variable or a constant.
+        end
+      RUBY
+    end
   end
 
   context 'when not inside loop' do
