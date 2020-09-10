@@ -3,8 +3,8 @@
 module RuboCop
   module Cop
     module Performance
-      # This cop is used to identify usages of
-      # `select.first`, `select.last`, `find_all.first`, `find_all.last`, `filter.first`, and `filter.last`
+      # This cop is used to identify usages of `first`, `last`, `[0]` or `[-1]`
+      # chained to `select`, `find_all`, or `find_all`
       # and change them to use `detect` instead.
       #
       # @example
@@ -15,6 +15,8 @@ module RuboCop
       #   [].find_all { |item| true }.last
       #   [].filter { |item| true }.first
       #   [].filter { |item| true }.last
+      #   [].filter { |item| true }[0]
+      #   [].filter { |item| true }[-1]
       #
       #   # good
       #   [].detect { |item| true }
@@ -27,27 +29,40 @@ module RuboCop
       class Detect < Base
         extend AutoCorrector
 
+        CANDIDATE_METHODS = Set[:select, :find_all, :filter].freeze
+
         MSG = 'Use `%<prefer>s` instead of ' \
               '`%<first_method>s.%<second_method>s`.'
         REVERSE_MSG = 'Use `reverse.%<prefer>s` instead of ' \
                       '`%<first_method>s.%<second_method>s`.'
+        INDEX_MSG = 'Use `%<prefer>s` instead of ' \
+              '`%<first_method>s[%<index>i]`.'
+        INDEX_REVERSE_MSG = 'Use `reverse.%<prefer>s` instead of ' \
+              '`%<first_method>s[%<index>i]`.'
 
         def_node_matcher :detect_candidate?, <<~PATTERN
           {
-            (send $(block (send _ {:select :find_all :filter}) ...) ${:first :last} $...)
-            (send $(send _ {:select :find_all :filter} ...) ${:first :last} $...)
+            (send $(block (send _ %CANDIDATE_METHODS) ...) ${:first :last} $...)
+            (send $(block (send _ %CANDIDATE_METHODS) ...) $:[] (int ${0 -1}))
+            (send $(send _ %CANDIDATE_METHODS ...) ${:first :last} $...)
+            (send $(send _ %CANDIDATE_METHODS ...) $:[] (int ${0 -1}))
           }
         PATTERN
 
         def on_send(node)
           detect_candidate?(node) do |receiver, second_method, args|
+            if second_method == :[]
+              index = args
+              args = {}
+            end
+
             return unless args.empty?
             return unless receiver
 
             receiver, _args, body = *receiver if receiver.block_type?
             return if accept_first_call?(receiver, body)
 
-            register_offense(node, receiver, second_method)
+            register_offense(node, receiver, second_method, index)
           end
         end
 
@@ -62,28 +77,31 @@ module RuboCop
           lazy?(caller)
         end
 
-        def register_offense(node, receiver, second_method)
+        def register_offense(node, receiver, second_method, index)
           _caller, first_method, _args = *receiver
           range = receiver.loc.selector.join(node.loc.selector)
 
-          message = second_method == :last ? REVERSE_MSG : MSG
+          message = message_for_method(second_method, index)
           formatted_message = format(message, prefer: preferred_method,
                                               first_method: first_method,
-                                              second_method: second_method)
+                                              second_method: second_method,
+                                              index: index)
 
           add_offense(range, message: formatted_message) do |corrector|
-            autocorrect(corrector, node)
+            autocorrect(corrector, node, replacement(second_method, index))
           end
         end
 
-        def autocorrect(corrector, node)
-          receiver, first_method = *node
+        def replacement(method, index)
+          if method == :last || method == :[] && index == -1
+            "reverse.#{preferred_method}"
+          else
+            preferred_method
+          end
+        end
 
-          replacement = if first_method == :last
-                          "reverse.#{preferred_method}"
-                        else
-                          preferred_method
-                        end
+        def autocorrect(corrector, node, replacement)
+          receiver, _first_method = *node
 
           first_range = receiver.source_range.end.join(node.loc.selector)
 
@@ -91,6 +109,17 @@ module RuboCop
 
           corrector.remove(first_range)
           corrector.replace(receiver.loc.selector, replacement)
+        end
+
+        def message_for_method(method, index)
+          case method
+          when :[]
+            index == -1 ? INDEX_REVERSE_MSG : INDEX_MSG
+          when :last
+            REVERSE_MSG
+          else
+            MSG
+          end
         end
 
         def preferred_method
