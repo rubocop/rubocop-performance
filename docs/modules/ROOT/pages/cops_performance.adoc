@@ -577,8 +577,8 @@ str.sub!(/suffix$/, '')
 | 1.8
 |===
 
-This cop is used to identify usages of
-`select.first`, `select.last`, `find_all.first`, `find_all.last`, `filter.first`, and `filter.last`
+This cop is used to identify usages of `first`, `last`, `[0]` or `[-1]`
+chained to `select`, `find_all`, or `find_all`
 and change them to use `detect` instead.
 
 `ActiveRecord` compatibility:
@@ -597,6 +597,8 @@ considered unsafe.
 [].find_all { |item| true }.last
 [].filter { |item| true }.first
 [].filter { |item| true }.last
+[].filter { |item| true }[0]
+[].filter { |item| true }[-1]
 
 # good
 [].detect { |item| true }

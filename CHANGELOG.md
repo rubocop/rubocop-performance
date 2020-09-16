@@ -7,6 +7,10 @@
 * [#164](https://github.com/rubocop-hq/rubocop-performance/pull/164): Fix an error for `Performance/CollectionLiteralInLoop` when a method from `Enumerable` is called with no receiver. ([@eugeneius][])
 * [#165](https://github.com/rubocop-hq/rubocop-performance/issues/165): Fix a false positive for `Performance/Sum` when using initial value argument is a variable. ([@koic][])
 
+### Changes
+
+* [#163](https://github.com/rubocop-hq/rubocop-performance/pull/163): Change `Performance/Detect` to also detect offenses when index 0 or -1 is used instead (ie. `detect{ ... }[0]`). ([@dvandersluis][])
+
 ## 1.8.0 (2020-09-04)
 
 ### New features
@@ -162,3 +166,4 @@
 [@dischorde]: https://github.com/dischorde
 [@siegfault]: https://github.com/siegfault
 [@fatkodima]: https://github.com/fatkodima
+[@dvandersluis]: https://github.com/dvandersluis

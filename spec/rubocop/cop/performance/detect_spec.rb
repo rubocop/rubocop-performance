@@ -101,6 +101,28 @@ RSpec.describe RuboCop::Cop::Performance::Detect do
       RUBY
     end
 
+    it "registers an offense with #{method} short syntax and [0]" do
+      expect_offense(<<~RUBY, method: method)
+        [1, 2, 3].#{method}(&:even?)[0]
+                  ^{method}^^^^^^^^^^^^ Use `detect` instead of `#{method}[0]`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        [1, 2, 3].detect(&:even?)
+      RUBY
+    end
+
+    it "registers an offense with #{method} short syntax and [0]" do
+      expect_offense(<<~RUBY, method: method)
+        [1, 2, 3].#{method}(&:even?)[-1]
+                  ^{method}^^^^^^^^^^^^^ Use `reverse.detect` instead of `#{method}[-1]`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        [1, 2, 3].reverse.detect(&:even?)
+      RUBY
+    end
+
     it "registers an offense when #{method} is called on `lazy` without receiver" do
       expect_offense(<<~RUBY, method: method)
         lazy.#{method}(&:even?).first
@@ -109,6 +131,28 @@ RSpec.describe RuboCop::Cop::Performance::Detect do
 
       expect_correction(<<~RUBY)
         lazy.detect(&:even?)
+      RUBY
+    end
+
+    it "registers an offense and corrects when [0] is called on #{method}" do
+      expect_offense(<<~RUBY, method: method)
+        [1, 2, 3].#{method} { |i| i % 2 == 0 }[0]
+                  ^{method}^^^^^^^^^^^^^^^^^^^^^^ Use `detect` instead of `#{method}[0]`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        [1, 2, 3].detect { |i| i % 2 == 0 }
+      RUBY
+    end
+
+    it "registers an offense and corrects when [-1] is called on #{method}" do
+      expect_offense(<<~RUBY, method: method)
+        [1, 2, 3].#{method} { |i| i % 2 == 0 }[-1]
+                  ^{method}^^^^^^^^^^^^^^^^^^^^^^^ Use `reverse.detect` instead of `#{method}[-1]`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        [1, 2, 3].reverse.detect { |i| i % 2 == 0 }
       RUBY
     end
 
