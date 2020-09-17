@@ -10,6 +10,7 @@ module RuboCop
       #   # bad
       #   [1, 2, 3].inject(:+)
       #   [1, 2, 3].reduce(10, :+)
+      #   [1, 2, 3].inject(&:+)
       #   [1, 2, 3].reduce { |acc, elem| acc + elem }
       #
       #   # good
@@ -24,7 +25,7 @@ module RuboCop
         MSG = 'Use `%<good_method>s` instead of `%<bad_method>s`.'
 
         def_node_matcher :sum_candidate?, <<~PATTERN
-          (send _ ${:inject :reduce} $_init ? (sym :+))
+          (send _ ${:inject :reduce} $_init ? ${(sym :+) (block_pass (sym :+))})
         PATTERN
 
         def_node_matcher :sum_with_block_candidate?, <<~PATTERN
@@ -40,9 +41,9 @@ module RuboCop
         alias elem_plus_acc? acc_plus_elem?
 
         def on_send(node)
-          sum_candidate?(node) do |method, init|
+          sum_candidate?(node) do |method, init, operation|
             range = sum_method_range(node)
-            message = build_method_message(method, init)
+            message = build_method_message(method, init, operation)
 
             add_offense(range, message: message) do |corrector|
               autocorrect(corrector, init, range)
@@ -81,9 +82,9 @@ module RuboCop
           range_between(send.loc.selector.begin_pos, node.loc.end.end_pos)
         end
 
-        def build_method_message(method, init)
+        def build_method_message(method, init, operation)
           good_method = build_good_method(init)
-          bad_method = build_method_bad_method(init, method)
+          bad_method = build_method_bad_method(init, method, operation)
           format(MSG, good_method: good_method, bad_method: bad_method)
         end
 
@@ -103,13 +104,17 @@ module RuboCop
           good_method
         end
 
-        def build_method_bad_method(init, method)
+        def build_method_bad_method(init, method, operation)
           bad_method = "#{method}("
           unless init.empty?
             init = init.first
             bad_method += "#{init.source}, "
           end
-          bad_method += ':+)'
+          bad_method += if operation.block_pass_type?
+                          '&:+)'
+                        else
+                          ':+)'
+                        end
           bad_method
         end
 

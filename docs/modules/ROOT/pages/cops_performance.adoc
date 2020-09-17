@@ -1649,6 +1649,7 @@ in some Enumerable object can be replaced by `Enumerable#sum` method.
 # bad
 [1, 2, 3].inject(:+)
 [1, 2, 3].reduce(10, :+)
+[1, 2, 3].inject(&:+)
 [1, 2, 3].reduce { |acc, elem| acc + elem }
 
 # good

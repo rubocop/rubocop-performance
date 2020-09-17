@@ -10,6 +10,7 @@
 ### Changes
 
 * [#163](https://github.com/rubocop-hq/rubocop-performance/pull/163): Change `Performance/Detect` to also detect offenses when index 0 or -1 is used instead (ie. `detect{ ... }[0]`). ([@dvandersluis][])
+* [#168](https://github.com/rubocop-hq/rubocop-performance/pull/168): Extend `Performance/Sum` to register an offense for `inject(&:+)`. ([@eugeneius][])
 
 ## 1.8.0 (2020-09-04)
 
