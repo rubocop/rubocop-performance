@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 1.8.1 (2020-09-19)
+
 ### Bug fixes
 
 * [#164](https://github.com/rubocop-hq/rubocop-performance/pull/164): Fix an error for `Performance/CollectionLiteralInLoop` when a method from `Enumerable` is called with no receiver. ([@eugeneius][])
