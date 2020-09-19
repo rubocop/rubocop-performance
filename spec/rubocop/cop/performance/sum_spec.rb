@@ -111,4 +111,51 @@ RSpec.describe RuboCop::Cop::Performance::Sum do
       RUBY
     end
   end
+
+  %i[map collect].each do |method|
+    it "registers an offense and corrects when using `array.#{method} { |elem| elem ** 2 }.sum`" do
+      expect_offense(<<~RUBY, method: method)
+        array.%{method} { |elem| elem ** 2 }.sum
+              ^{method}^^^^^^^^^^^^^^^^^^^^^^^^^ Use `sum { ... }` instead of `%{method} { ... }.sum`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        array.sum { |elem| elem ** 2 }
+      RUBY
+    end
+
+    it "registers an offense and corrects when using `array.#{method}(&:count).sum`" do
+      expect_offense(<<~RUBY, method: method)
+        array.%{method}(&:count).sum
+              ^{method}^^^^^^^^^^^^^ Use `sum { ... }` instead of `%{method} { ... }.sum`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        array.sum(&:count)
+      RUBY
+    end
+
+    it "registers an offense and corrects when using `array.#{method}(&:count).sum(10)`" do
+      expect_offense(<<~RUBY, method: method)
+        array.%{method} { |elem| elem ** 2 }.sum(10)
+              ^{method}^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `sum(10) { ... }` instead of `%{method} { ... }.sum(10)`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        array.sum(10) { |elem| elem ** 2 }
+      RUBY
+    end
+
+    it "does not register an offense when using `array.#{method}(&:count).sum { |elem| elem ** 2 }`" do
+      expect_no_offenses(<<~RUBY)
+        array.#{method}(&:count).sum { |elem| elem ** 2 }
+      RUBY
+    end
+
+    it "does not register an offense when using `array.#{method}(&:count).sum(&:count)`" do
+      expect_no_offenses(<<~RUBY)
+        array.#{method}(&:count).sum(&:count)
+      RUBY
+    end
+  end
 end

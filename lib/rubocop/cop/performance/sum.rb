@@ -12,11 +12,12 @@ module RuboCop
       #   [1, 2, 3].reduce(10, :+)
       #   [1, 2, 3].inject(&:+)
       #   [1, 2, 3].reduce { |acc, elem| acc + elem }
+      #   [1, 2, 3].map { |elem| elem ** 2 }.sum
       #
       #   # good
       #   [1, 2, 3].sum
       #   [1, 2, 3].sum(10)
-      #   [1, 2, 3].sum
+      #   [1, 2, 3].sum { |elem| elem ** 2 }
       #
       class Sum < Base
         include RangeHelp
@@ -26,6 +27,15 @@ module RuboCop
 
         def_node_matcher :sum_candidate?, <<~PATTERN
           (send _ ${:inject :reduce} $_init ? ${(sym :+) (block_pass (sym :+))})
+        PATTERN
+
+        def_node_matcher :sum_map_candidate?, <<~PATTERN
+          (send
+            {
+              (block $(send _ {:map :collect}) ...)
+              $(send _ {:map :collect} (block_pass _))
+            }
+          :sum $_init ?)
         PATTERN
 
         def_node_matcher :sum_with_block_candidate?, <<~PATTERN
@@ -47,6 +57,16 @@ module RuboCop
 
             add_offense(range, message: message) do |corrector|
               autocorrect(corrector, init, range)
+            end
+          end
+
+          sum_map_candidate?(node) do |map, init|
+            next if node.block_literal? || node.block_argument?
+
+            message = build_sum_map_message(map.method_name, init)
+
+            add_offense(sum_map_range(map, node), message: message) do |corrector|
+              autocorrect_sum_map(corrector, node, map, init)
             end
           end
         end
@@ -74,8 +94,22 @@ module RuboCop
           corrector.replace(range, replacement)
         end
 
+        def autocorrect_sum_map(corrector, sum, map, init)
+          sum_range = sum.receiver.source_range.end.join(sum.source_range.end)
+          map_range = map.loc.selector
+
+          replacement = build_good_method(init)
+
+          corrector.remove(sum_range)
+          corrector.replace(map_range, replacement)
+        end
+
         def sum_method_range(node)
           range_between(node.loc.selector.begin_pos, node.loc.end.end_pos)
+        end
+
+        def sum_map_range(map, sum)
+          range_between(map.loc.selector.begin_pos, sum.source_range.end.end_pos)
         end
 
         def sum_block_range(send, node)
@@ -85,6 +119,13 @@ module RuboCop
         def build_method_message(method, init, operation)
           good_method = build_good_method(init)
           bad_method = build_method_bad_method(init, method, operation)
+          format(MSG, good_method: good_method, bad_method: bad_method)
+        end
+
+        def build_sum_map_message(method, init)
+          sum_method = build_good_method(init)
+          good_method = "#{sum_method} { ... }"
+          bad_method = "#{method} { ... }.#{sum_method}"
           format(MSG, good_method: good_method, bad_method: bad_method)
         end
 
