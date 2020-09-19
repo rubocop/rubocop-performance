@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### Changes
+
+* [#170](https://github.com/rubocop-hq/rubocop-performance/pull/170): Extend `Performance/Sum` to register an offense for `map { ... }.sum`. ([@eugeneius][])
+
 ## 1.8.1 (2020-09-19)
 
 ### Bug fixes
