@@ -13,11 +13,13 @@ module RuboCop
       #   [1, 2, 3].inject(&:+)
       #   [1, 2, 3].reduce { |acc, elem| acc + elem }
       #   [1, 2, 3].map { |elem| elem ** 2 }.sum
+      #   [1, 2, 3].collect(&:count).sum(10)
       #
       #   # good
       #   [1, 2, 3].sum
       #   [1, 2, 3].sum(10)
       #   [1, 2, 3].sum { |elem| elem ** 2 }
+      #   [1, 2, 3].sum(10, &:count)
       #
       class Sum < Base
         include RangeHelp
@@ -95,13 +97,14 @@ module RuboCop
         end
 
         def autocorrect_sum_map(corrector, sum, map, init)
-          sum_range = sum.receiver.source_range.end.join(sum.source_range.end)
-          map_range = map.loc.selector
+          sum_range = method_call_with_args_range(sum)
+          map_range = method_call_with_args_range(map)
 
-          replacement = build_good_method(init)
+          block_pass = map.last_argument if map.last_argument&.block_pass_type?
+          replacement = build_good_method(init, block_pass)
 
           corrector.remove(sum_range)
-          corrector.replace(map_range, replacement)
+          corrector.replace(map_range, ".#{replacement}")
         end
 
         def sum_method_range(node)
@@ -135,13 +138,16 @@ module RuboCop
           format(MSG, good_method: good_method, bad_method: bad_method)
         end
 
-        def build_good_method(init)
+        def build_good_method(init, block_pass = nil)
           good_method = 'sum'
 
+          args = []
           unless init.empty?
             init = init.first
-            good_method += "(#{init.source})" unless init.int_type? && init.value.zero?
+            args << init.source unless init.int_type? && init.value.zero?
           end
+          args << block_pass.source if block_pass
+          good_method += "(#{args.join(', ')})" unless args.empty?
           good_method
         end
 
@@ -168,6 +174,10 @@ module RuboCop
           end
           bad_method += " { |#{var_acc}, #{var_elem}| #{body.source} }"
           bad_method
+        end
+
+        def method_call_with_args_range(node)
+          node.receiver.source_range.end.join(node.source_range.end)
         end
       end
     end
