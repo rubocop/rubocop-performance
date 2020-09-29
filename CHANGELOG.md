@@ -7,6 +7,7 @@
 * [#173](https://github.com/rubocop-hq/rubocop-performance/pull/173): Add new `Performance/BlockGivenWithExplicitBlock` cop. ([@fatkodima][])
 * [#136](https://github.com/rubocop-hq/rubocop-performance/issues/136): Add new `Performance/MethodObjectAsBlock` cop. ([@fatkodima][])
 * [#151](https://github.com/rubocop-hq/rubocop-performance/issues/151): Add new `Performance/ConstantRegexp` cop. ([@fatkodima][])
+* [#175](https://github.com/rubocop-hq/rubocop-performance/pull/175): Add new `Performance/ArraySemiInfiniteRangeSlice` cop. ([@fatkodima][])
 
 ### Changes
 

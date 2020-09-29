@@ -7,6 +7,11 @@ Performance/AncestorsInclude:
   Safe: false
   VersionAdded: '1.7'
 
+Performance/ArraySemiInfiniteRangeSlice:
+  Description: 'Identifies places where slicing arrays with semi-infinite ranges can be replaced by `Array#take` and `Array#drop`.'
+  Enabled: pending
+  VersionAdded: '1.9'
+
 Performance/BigDecimalWithNumericArgument:
   Description: 'Convert numeric argument to string before passing to BigDecimal.'
   Enabled: 'pending'
