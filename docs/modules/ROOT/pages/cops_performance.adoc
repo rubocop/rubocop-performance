@@ -998,6 +998,39 @@ file.each_line { |l| puts l }
 
 * https://docs.gitlab.com/ee/development/performance.html#reading-from-files-and-other-data-sources
 
+== Performance/MethodObjectAsBlock
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Pending
+| Yes
+| No
+| 1.9
+| -
+|===
+
+This cop identifies places where methods are converted to blocks, with the
+use of `&method`, and passed as arguments to method calls.
+It is faster to replace those with explicit blocks, calling those methods inside.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+array.map(&method(:do_something))
+[1, 2, 3].each(&out.method(:puts))
+
+# good
+array.map { |x| do_something(x) }
+[1, 2, 3].each { |x| out.puts(x) }
+----
+
+=== References
+
+* https://github.com/JuanitoFatas/fast-ruby#normal-way-to-apply-method-vs-method-code
+
 == Performance/OpenStruct
 
 |===

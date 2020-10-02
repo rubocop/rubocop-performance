@@ -164,6 +164,12 @@ Performance/IoReadlines:
   Enabled: false
   VersionAdded: '1.7'
 
+Performance/MethodObjectAsBlock:
+  Description: 'Use block explicitly instead of block-passing a method object.'
+  Reference: 'https://github.com/JuanitoFatas/fast-ruby#normal-way-to-apply-method-vs-method-code'
+  Enabled: pending
+  VersionAdded: '1.9'
+
 Performance/OpenStruct:
   Description: 'Use `Struct` instead of `OpenStruct`.'
   Enabled: false
