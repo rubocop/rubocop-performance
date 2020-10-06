@@ -25,7 +25,9 @@ Gem::Specification.new do |s|
     'homepage_uri' => 'https://docs.rubocop.org/rubocop-performance/',
     'changelog_uri' => 'https://github.com/rubocop-hq/rubocop-performance/blob/master/CHANGELOG.md',
     'source_code_uri' => 'https://github.com/rubocop-hq/rubocop-performance/',
-    'documentation_uri' => 'https://docs.rubocop.org/rubocop-performance/',
+    # rubocop:disable Layout/LineLength
+    'documentation_uri' => "https://docs.rubocop.org/rubocop-performance/#{RuboCop::Performance::Version.document_version}/",
+    # rubocop:enable Layout/LineLength
     'bug_tracker_uri' => 'https://github.com/rubocop-hq/rubocop-performance/issues'
   }
 

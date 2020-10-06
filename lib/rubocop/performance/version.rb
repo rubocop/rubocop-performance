@@ -2,8 +2,13 @@
 
 module RuboCop
   module Performance
+    # This module holds the RuboCop Performance version information.
     module Version
       STRING = '1.8.1'
+
+      def self.document_version
+        STRING.match('\d+\.\d+').to_s
+      end
     end
   end
 end
