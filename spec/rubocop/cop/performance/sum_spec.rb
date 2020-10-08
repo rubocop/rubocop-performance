@@ -73,7 +73,7 @@ RSpec.describe RuboCop::Cop::Performance::Sum do
     it 'does not autocorrect `:+` when initial value is not provided' do
       expect_offense(<<~RUBY, method: method)
         array.#{method}(:+)
-              ^{method}^^^^ Use `sum` instead of `#{method}(:+)`.
+              ^{method}^^^^ Use `sum` instead of `#{method}(:+)`, unless calling `#{method}(:+)` on an empty array.
       RUBY
 
       expect_no_corrections
@@ -93,10 +93,26 @@ RSpec.describe RuboCop::Cop::Performance::Sum do
     it 'does not autocorrect `&:+` when initial value is not provided' do
       expect_offense(<<~RUBY, method: method)
         array.#{method}(&:+)
-              ^{method}^^^^^ Use `sum` instead of `#{method}(&:+)`.
+              ^{method}^^^^^ Use `sum` instead of `#{method}(&:+)`, unless calling `#{method}(&:+)` on an empty array.
       RUBY
 
       expect_no_corrections
+    end
+
+    # ideally it would autocorrect to `[1, 2, 3].sum`
+    it 'registers an offense but does not autocorrect on array literals' do
+      expect_offense(<<~RUBY, method: method)
+        [1, 2, 3].#{method}(:+)
+                  ^{method}^^^^ Use `sum` instead of `#{method}(:+)`.
+      RUBY
+
+      expect_no_corrections
+    end
+
+    it 'does not register an offense when the array is empty' do
+      expect_no_offenses(<<~RUBY, method: method)
+        [].#{method}(:+)
+      RUBY
     end
 
     it 'does not register an offense when block does not implement summation' do

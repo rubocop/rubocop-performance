@@ -5,6 +5,7 @@
 ### Changes
 
 * [#170](https://github.com/rubocop-hq/rubocop-performance/pull/170): Extend `Performance/Sum` to register an offense for `map { ... }.sum`. ([@eugeneius][])
+* [#179](https://github.com/rubocop-hq/rubocop-performance/pull/179): Change `Performance/Sum` to warn about empty arrays, and not register an offense on empty array literals. ([@ghiculescu][])
 
 ## 1.8.1 (2020-09-19)
 
@@ -174,3 +175,4 @@
 [@siegfault]: https://github.com/siegfault
 [@fatkodima]: https://github.com/fatkodima
 [@dvandersluis]: https://github.com/dvandersluis
+[@ghiculescu]: https://github.com/ghiculescu

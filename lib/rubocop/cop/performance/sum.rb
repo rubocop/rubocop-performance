@@ -26,6 +26,8 @@ module RuboCop
         extend AutoCorrector
 
         MSG = 'Use `%<good_method>s` instead of `%<bad_method>s`.'
+        MSG_IF_NO_INIT_VALUE =
+          'Use `%<good_method>s` instead of `%<bad_method>s`, unless calling `%<bad_method>s` on an empty array.'
 
         def_node_matcher :sum_candidate?, <<~PATTERN
           (send _ ${:inject :reduce} $_init ? ${(sym :+) (block_pass (sym :+))})
@@ -53,24 +55,10 @@ module RuboCop
         alias elem_plus_acc? acc_plus_elem?
 
         def on_send(node)
-          sum_candidate?(node) do |method, init, operation|
-            range = sum_method_range(node)
-            message = build_method_message(method, init, operation)
+          return if empty_array_literal?(node)
 
-            add_offense(range, message: message) do |corrector|
-              autocorrect(corrector, init, range)
-            end
-          end
-
-          sum_map_candidate?(node) do |map, init|
-            next if node.block_literal? || node.block_argument?
-
-            message = build_sum_map_message(map.method_name, init)
-
-            add_offense(sum_map_range(map, node), message: message) do |corrector|
-              autocorrect_sum_map(corrector, node, map, init)
-            end
-          end
+          handle_sum_candidate(node)
+          handle_sum_map_candidate(node)
         end
 
         def on_block(node)
@@ -87,6 +75,39 @@ module RuboCop
         end
 
         private
+
+        def handle_sum_candidate(node)
+          sum_candidate?(node) do |method, init, operation|
+            range = sum_method_range(node)
+            message = build_method_message(node, method, init, operation)
+
+            add_offense(range, message: message) do |corrector|
+              autocorrect(corrector, init, range)
+            end
+          end
+        end
+
+        def handle_sum_map_candidate(node)
+          sum_map_candidate?(node) do |map, init|
+            next if node.block_literal? || node.block_argument?
+
+            message = build_sum_map_message(map.method_name, init)
+
+            add_offense(sum_map_range(map, node), message: message) do |corrector|
+              autocorrect_sum_map(corrector, node, map, init)
+            end
+          end
+        end
+
+        def empty_array_literal?(node)
+          receiver = node.children.first
+          array_literal?(node) && receiver && receiver.children.empty?
+        end
+
+        def array_literal?(node)
+          receiver = node.children.first
+          receiver&.literal? && receiver&.array_type?
+        end
 
         def autocorrect(corrector, init, range)
           return if init.empty?
@@ -119,10 +140,15 @@ module RuboCop
           range_between(send.loc.selector.begin_pos, node.loc.end.end_pos)
         end
 
-        def build_method_message(method, init, operation)
+        def build_method_message(node, method, init, operation)
           good_method = build_good_method(init)
           bad_method = build_method_bad_method(init, method, operation)
-          format(MSG, good_method: good_method, bad_method: bad_method)
+          msg = if init.empty? && !array_literal?(node)
+                  MSG_IF_NO_INIT_VALUE
+                else
+                  MSG
+                end
+          format(msg, good_method: good_method, bad_method: bad_method)
         end
 
         def build_sum_map_message(method, init)
