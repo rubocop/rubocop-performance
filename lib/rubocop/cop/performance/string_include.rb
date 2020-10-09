@@ -23,6 +23,7 @@ module RuboCop
         extend AutoCorrector
 
         MSG = 'Use `String#include?` instead of a regex match with literal-only pattern.'
+        RESTRICT_ON_SEND = %i[match =~ match?].freeze
 
         def_node_matcher :redundant_regex?, <<~PATTERN
           {(send $!nil? {:match :=~ :match?} (regexp (str $#literal?) (regopt)))

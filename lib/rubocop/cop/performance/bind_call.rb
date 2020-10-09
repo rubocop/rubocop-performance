@@ -28,6 +28,7 @@ module RuboCop
 
         MSG = 'Use `bind_call(%<bind_arg>s%<comma>s%<call_args>s)` ' \
               'instead of `bind(%<bind_arg>s).call(%<call_args>s)`.'
+        RESTRICT_ON_SEND = %i[call].freeze
 
         def_node_matcher :bind_with_call_method?, <<~PATTERN
           (send

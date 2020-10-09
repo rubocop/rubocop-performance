@@ -23,6 +23,7 @@ module RuboCop
                     ' instead of `%<method>s[%<m>d]`.'
         MSG_FIRST = 'Use `%<method>s(%<n>d..%<n>d).first`' \
                     ' instead of `%<method>s.first`.'
+        RESTRICT_ON_SEND = %i[first []].freeze
 
         def_node_matcher :slow_caller?, <<~PATTERN
           {

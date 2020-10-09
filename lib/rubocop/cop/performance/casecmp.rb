@@ -23,6 +23,7 @@ module RuboCop
         extend AutoCorrector
 
         MSG = 'Use `%<good>s` instead of `%<bad>s`.'
+        RESTRICT_ON_SEND = %i[== eql? !=].freeze
         CASE_METHODS = %i[downcase upcase].freeze
 
         def_node_matcher :downcase_eq, <<~PATTERN

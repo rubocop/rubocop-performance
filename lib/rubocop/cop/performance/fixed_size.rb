@@ -47,6 +47,7 @@ module RuboCop
       #
       class FixedSize < Base
         MSG = 'Do not compute the size of statically sized objects.'
+        RESTRICT_ON_SEND = %i[count length size].freeze
 
         def_node_matcher :counter, <<~MATCHER
           (send ${array hash str sym} {:count :length :size} $...)

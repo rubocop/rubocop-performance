@@ -39,6 +39,7 @@ module RuboCop
               '`%<first_method>s[%<index>i]`.'
         INDEX_REVERSE_MSG = 'Use `reverse.%<prefer>s` instead of ' \
               '`%<first_method>s[%<index>i]`.'
+        RESTRICT_ON_SEND = %i[first last []].freeze
 
         def_node_matcher :detect_candidate?, <<~PATTERN
           {

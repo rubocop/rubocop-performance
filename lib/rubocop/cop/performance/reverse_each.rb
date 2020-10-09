@@ -17,6 +17,7 @@ module RuboCop
         extend AutoCorrector
 
         MSG = 'Use `reverse_each` instead of `reverse.each`.'
+        RESTRICT_ON_SEND = %i[each].freeze
         UNDERSCORE = '_'
 
         def_node_matcher :reverse_each?, <<~MATCHER

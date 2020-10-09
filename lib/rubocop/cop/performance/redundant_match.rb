@@ -22,6 +22,7 @@ module RuboCop
 
         MSG = 'Use `=~` in places where the `MatchData` returned by ' \
               '`#match` will not be used.'
+        RESTRICT_ON_SEND = %i[match].freeze
 
         # 'match' is a fairly generic name, so we don't flag it unless we see
         # a string or regexp literal on one side or the other

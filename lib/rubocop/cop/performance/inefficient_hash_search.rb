@@ -39,6 +39,8 @@ module RuboCop
       class InefficientHashSearch < Base
         extend AutoCorrector
 
+        RESTRICT_ON_SEND = %i[include?].freeze
+
         def_node_matcher :inefficient_include?, <<~PATTERN
           (send (send $_ {:keys :values}) :include? _)
         PATTERN

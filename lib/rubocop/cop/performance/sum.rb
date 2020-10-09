@@ -28,6 +28,7 @@ module RuboCop
         MSG = 'Use `%<good_method>s` instead of `%<bad_method>s`.'
         MSG_IF_NO_INIT_VALUE =
           'Use `%<good_method>s` instead of `%<bad_method>s`, unless calling `%<bad_method>s` on an empty array.'
+        RESTRICT_ON_SEND = %i[inject reduce sum].freeze
 
         def_node_matcher :sum_candidate?, <<~PATTERN
           (send _ ${:inject :reduce} $_init ? ${(sym :+) (block_pass (sym :+))})

@@ -39,6 +39,7 @@ module RuboCop
         extend AutoCorrector
 
         MSG = 'Use `size` instead of `count`.'
+        RESTRICT_ON_SEND = %i[count].freeze
 
         def_node_matcher :array?, <<~PATTERN
           {

@@ -21,6 +21,7 @@ module RuboCop
         extend AutoCorrector
 
         MSG = 'Use `%<good_method>s` instead of `%<bad_method>s`.'
+        RESTRICT_ON_SEND = %i[first].freeze
 
         def_node_matcher :reverse_first_candidate?, <<~PATTERN
           (send $(send _ :reverse) :first (int _)?)

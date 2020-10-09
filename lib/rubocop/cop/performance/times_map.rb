@@ -23,6 +23,7 @@ module RuboCop
         MESSAGE = 'Use `Array.new(%<count>s)` with a block ' \
                   'instead of `.times.%<map_or_collect>s`'
         MESSAGE_ONLY_IF = 'only if `%<count>s` is always 0 or more'
+        RESTRICT_ON_SEND = %i[map collect].freeze
 
         def on_send(node)
           check(node)

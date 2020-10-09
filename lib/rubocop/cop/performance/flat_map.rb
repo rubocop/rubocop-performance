@@ -19,6 +19,7 @@ module RuboCop
         extend AutoCorrector
 
         MSG = 'Use `flat_map` instead of `%<method>s...%<flatten>s`.'
+        RESTRICT_ON_SEND = %i[flatten flatten!].freeze
         FLATTEN_MULTIPLE_LEVELS = ' Beware, `flat_map` only flattens 1 level ' \
                                   'and `flatten` can be used to flatten ' \
                                   'multiple levels.'

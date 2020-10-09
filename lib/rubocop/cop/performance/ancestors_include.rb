@@ -18,6 +18,7 @@ module RuboCop
         extend AutoCorrector
 
         MSG = 'Use `<=` instead of `ancestors.include?`.'
+        RESTRICT_ON_SEND = %i[include?].freeze
 
         def_node_matcher :ancestors_include_candidate?, <<~PATTERN
           (send (send $_subclass :ancestors) :include? $_superclass)

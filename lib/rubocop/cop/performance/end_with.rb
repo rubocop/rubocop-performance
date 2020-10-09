@@ -47,6 +47,7 @@ module RuboCop
 
         MSG = 'Use `String#end_with?` instead of a regex match anchored to ' \
               'the end of the string.'
+        RESTRICT_ON_SEND = %i[match =~ match?].freeze
 
         def_node_matcher :redundant_regex?, <<~PATTERN
           {(send $!nil? {:match :=~ :match?} (regexp (str $#literal_at_end?) (regopt)))
