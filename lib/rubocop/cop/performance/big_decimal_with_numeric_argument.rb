@@ -20,6 +20,7 @@ module RuboCop
         extend AutoCorrector
 
         MSG = 'Convert numeric argument to string before passing to `BigDecimal`.'
+        RESTRICT_ON_SEND = %i[BigDecimal].freeze
 
         def_node_matcher :big_decimal_with_numeric_argument?, <<~PATTERN
           (send nil? :BigDecimal $numeric_type? ...)

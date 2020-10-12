@@ -42,6 +42,7 @@ module RuboCop
         extend AutoCorrector
 
         MSG = 'Use `count` instead of `%<selector>s...%<counter>s`.'
+        RESTRICT_ON_SEND = %i[count length size].freeze
 
         def_node_matcher :count_candidate?, <<~PATTERN
           {

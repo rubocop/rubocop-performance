@@ -29,6 +29,7 @@ module RuboCop
 
         AREF_ASGN = '%<receiver>s[%<key>s] = %<value>s'
         MSG = 'Use `%<prefer>s` instead of `%<current>s`.'
+        RESTRICT_ON_SEND = %i[merge!].freeze
 
         WITH_MODIFIER_CORRECTION = <<~RUBY
           %<keyword>s %<condition>s

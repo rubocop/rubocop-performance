@@ -28,6 +28,7 @@ module RuboCop
         extend AutoCorrector
 
         MSG = 'Use `Range#cover?` instead of `Range#%<bad_method>s`.'
+        RESTRICT_ON_SEND = %i[include? member?].freeze
 
         # TODO: If we traced out assignments of variables to their uses, we
         # might pick up on a few more instances of this issue

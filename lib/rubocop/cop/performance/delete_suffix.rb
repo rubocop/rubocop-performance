@@ -51,6 +51,7 @@ module RuboCop
         minimum_target_ruby_version 2.5
 
         MSG = 'Use `%<prefer>s` instead of `%<current>s`.'
+        RESTRICT_ON_SEND = %i[gsub gsub! sub sub!].freeze
 
         PREFERRED_METHODS = {
           gsub: :delete_suffix,

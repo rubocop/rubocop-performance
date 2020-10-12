@@ -25,6 +25,7 @@ module RuboCop
       #   +''
       class UnfreezeString < Base
         MSG = 'Use unary plus to get an unfrozen string literal.'
+        RESTRICT_ON_SEND = %i[dup new].freeze
 
         def_node_matcher :dup_string?, <<~PATTERN
           (send {str dstr} :dup)

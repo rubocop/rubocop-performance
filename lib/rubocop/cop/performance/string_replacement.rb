@@ -23,6 +23,7 @@ module RuboCop
         extend AutoCorrector
 
         MSG = 'Use `%<prefer>s` instead of `%<current>s`.'
+        RESTRICT_ON_SEND = %i[gsub gsub!].freeze
         DETERMINISTIC_REGEX = /\A(?:#{LITERAL_REGEX})+\Z/.freeze
         DELETE = 'delete'
         TR = 'tr'

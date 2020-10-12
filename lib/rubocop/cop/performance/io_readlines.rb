@@ -29,14 +29,14 @@ module RuboCop
         extend AutoCorrector
 
         MSG = 'Use `%<good>s` instead of `%<bad>s`.'
-        ENUMERABLE_METHODS = (Enumerable.instance_methods + [:each]).freeze
+        RESTRICT_ON_SEND = (Enumerable.instance_methods + [:each]).freeze
 
         def_node_matcher :readlines_on_class?, <<~PATTERN
-          $(send $(send (const nil? {:IO :File}) :readlines ...) #enumerable_method?)
+          $(send $(send (const nil? {:IO :File}) :readlines ...) _)
         PATTERN
 
         def_node_matcher :readlines_on_instance?, <<~PATTERN
-          $(send $(send ${nil? !const_type?} :readlines ...) #enumerable_method? ...)
+          $(send $(send ${nil? !const_type?} :readlines ...) _ ...)
         PATTERN
 
         def on_send(node)
@@ -54,10 +54,6 @@ module RuboCop
         end
 
         private
-
-        def enumerable_method?(node)
-          ENUMERABLE_METHODS.include?(node.to_sym)
-        end
 
         def autocorrect(corrector, enumerable_call, readlines_call, receiver)
           # We cannot safely correct `.readlines` method called on IO/File classes

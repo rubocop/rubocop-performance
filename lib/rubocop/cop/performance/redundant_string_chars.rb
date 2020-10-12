@@ -44,10 +44,10 @@ module RuboCop
         extend AutoCorrector
 
         MSG = 'Use `%<good_method>s` instead of `%<bad_method>s`.'
-        REPLACEABLE_METHODS = %i[[] slice first last take drop length size empty?].freeze
+        RESTRICT_ON_SEND = %i[[] slice first last take drop length size empty?].freeze
 
         def_node_matcher :redundant_chars_call?, <<~PATTERN
-          (send $(send _ :chars) $#replaceable_method? $...)
+          (send $(send _ :chars) $_ $...)
         PATTERN
 
         def on_send(node)
@@ -65,10 +65,6 @@ module RuboCop
         end
 
         private
-
-        def replaceable_method?(method_name)
-          REPLACEABLE_METHODS.include?(method_name)
-        end
 
         def offense_range(receiver, node)
           range_between(receiver.loc.selector.begin_pos, node.loc.expression.end_pos)

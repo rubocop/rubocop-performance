@@ -22,6 +22,7 @@ module RuboCop
         extend AutoCorrector
 
         MSG = 'Use `%<prefer>s` instead of `%<current>s`.'
+        RESTRICT_ON_SEND = %i[gsub gsub!].freeze
 
         PREFERRED_METHODS = {
           gsub: :squeeze,
