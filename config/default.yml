@@ -51,7 +51,7 @@ Performance/ChainArrayAllocation:
 
 Performance/CollectionLiteralInLoop:
   Description: 'Extract Array and Hash literals outside of loops into local variables or constants.'
-  Enabled: true
+  Enabled: 'pending'
   VersionAdded: '1.8'
   # Min number of elements to consider an offense
   MinSize: 1

@@ -284,7 +284,7 @@ array
 |===
 | Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 
-| Enabled
+| Pending
 | Yes
 | No
 | 1.8
