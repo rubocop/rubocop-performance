@@ -48,6 +48,7 @@ Performance cops optimization analysis for your projects.
 * xref:cops_performance.adoc#performanceregexpmatch[Performance/RegexpMatch]
 * xref:cops_performance.adoc#performancereverseeach[Performance/ReverseEach]
 * xref:cops_performance.adoc#performancereversefirst[Performance/ReverseFirst]
+* xref:cops_performance.adoc#performanceselectmap[Performance/SelectMap]
 * xref:cops_performance.adoc#performancesize[Performance/Size]
 * xref:cops_performance.adoc#performancesortreverse[Performance/SortReverse]
 * xref:cops_performance.adoc#performancesqueeze[Performance/Squeeze]
