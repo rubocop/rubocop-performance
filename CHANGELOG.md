@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#173](https://github.com/rubocop-hq/rubocop-performance/pull/173): Add new `Performance/BlockGivenWithExplicitBlock` cop. ([@fatkodima][])
+
 ### Changes
 
 * [#181](https://github.com/rubocop-hq/rubocop-performance/pull/181): Change default configuration for `Performance/CollectionLiteralInLoop` to `Enabled: 'pending'`. ([@ghiculescu][])

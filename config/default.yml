@@ -17,6 +17,11 @@ Performance/BindCall:
   Enabled: true
   VersionAdded: '1.6'
 
+Performance/BlockGivenWithExplicitBlock:
+  Description: 'Check block argument explicitly instead of using `block_given?`.'
+  Enabled: pending
+  VersionAdded: '1.9'
+
 Performance/Caller:
   Description: >-
              Use `caller(n..n)` instead of `caller`.

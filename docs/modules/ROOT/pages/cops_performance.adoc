@@ -93,6 +93,43 @@ umethod.bind(obj).(foo, bar)
 umethod.bind_call(obj, foo, bar)
 ----
 
+== Performance/BlockGivenWithExplicitBlock
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Pending
+| Yes
+| Yes
+| 1.9
+| -
+|===
+
+This cop identifies unnecessary use of a `block_given?` where explicit check
+of block argument would suffice.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+def method(&block)
+  do_something if block_given?
+end
+
+# good
+def method(&block)
+  do_something if block
+end
+
+# good - block is reassigned
+def method(&block)
+  block ||= -> { do_something }
+  warn "Using default ..." unless block_given?
+  # ...
+end
+----
+
 == Performance/Caller
 
 |===
