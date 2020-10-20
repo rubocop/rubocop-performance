@@ -4,8 +4,8 @@ module RuboCop
   module Cop
     module Performance
       # This cop is used to identify usages of `first`, `last`, `[0]` or `[-1]`
-      # chained to `select`, `find_all`, or `find_all`
-      # and change them to use `detect` instead.
+      # chained to `select`, `find_all` or `filter` and change them to use
+      # `detect` instead.
       #
       # @example
       #   # bad
