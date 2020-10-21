@@ -6,6 +6,7 @@
 
 * [#173](https://github.com/rubocop-hq/rubocop-performance/pull/173): Add new `Performance/BlockGivenWithExplicitBlock` cop. ([@fatkodima][])
 * [#151](https://github.com/rubocop-hq/rubocop-performance/issues/151): Add new `Performance/ConstantRegexp` cop. ([@fatkodima][])
+* [#184](https://github.com/rubocop-hq/rubocop-performance/pull/184): Extend `Performance/ReverseEach` to register an offense for `reverse.each_with_index`. ([@olliebennett][])
 
 ### Changes
 
@@ -183,3 +184,4 @@
 [@fatkodima]: https://github.com/fatkodima
 [@dvandersluis]: https://github.com/dvandersluis
 [@ghiculescu]: https://github.com/ghiculescu
+[@olliebennett]: https://github.com/olliebennett
