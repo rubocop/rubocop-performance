@@ -66,6 +66,11 @@ Performance/CompareWithBlock:
   Enabled: true
   VersionAdded: '0.46'
 
+Performance/ConstantRegexp:
+  Description: 'Finds regular expressions with dynamic components that are all constants.'
+  Enabled: pending
+  VersionAdded: '1.9'
+
 Performance/Count:
   Description: >-
                   Use `count` instead of `{select,find_all,filter,reject}...{size,count,length}`.

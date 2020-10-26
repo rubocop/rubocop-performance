@@ -59,7 +59,7 @@ module RuboCop
         private
 
         def repeating_literal?(regex_str)
-          regex_str.match?(/\A(?:#{Util::LITERAL_REGEX})\+\z/)
+          regex_str.match?(/\A(?:#{Util::LITERAL_REGEX})\+\z/o)
         end
       end
     end
