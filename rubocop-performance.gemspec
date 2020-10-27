@@ -7,7 +7,14 @@ Gem::Specification.new do |s|
   s.name = 'rubocop-performance'
   s.version = RuboCop::Performance::Version::STRING
   s.platform = Gem::Platform::RUBY
+
+  # Using EOL Ruby versions is (gem, application) users choice
+  # (of course, not recommended).
+  # We will support them for one year after EOL for migration.
+  # Ruby 2.4 support will end at March 31, 2021:
+  # https://www.ruby-lang.org/en/news/2020/04/05/support-of-ruby-2-4-has-ended/
   s.required_ruby_version = '>= 2.4.0'
+
   s.authors = ['Bozhidar Batsov', 'Jonas Arvidsson', 'Yuji Nakayama']
   s.description = <<~DESCRIPTION
     A collection of RuboCop cops to check for performance optimizations
@@ -31,7 +38,7 @@ Gem::Specification.new do |s|
     'bug_tracker_uri' => 'https://github.com/rubocop-hq/rubocop-performance/issues'
   }
 
-  s.add_runtime_dependency('rubocop', '>= 0.90.0')
-  s.add_runtime_dependency('rubocop-ast', '>= 0.4.0')
-  s.add_development_dependency('simplecov')
+  s.add_runtime_dependency('rubocop', '~> 0.93.1')
+  s.add_development_dependency('rubocop-rspec', '~> 1.44')
+  s.add_development_dependency('simplecov', '~> 0.18.0')
 end

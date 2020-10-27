@@ -6,7 +6,7 @@ RSpec.describe RuboCop::Cop::Performance::DeletePrefix, :config do
   let(:cop_config) { { 'SafeMultiline' => safe_multiline } }
   let(:safe_multiline) { true }
 
-  context 'TargetRubyVersion <= 2.4', :ruby24 do
+  context 'when TargetRubyVersion <= 2.4', :ruby24 do
     it "does not register an offense when using `gsub(/\Aprefix/, '')`" do
       expect_no_offenses(<<~RUBY)
         str.gsub(/\\Aprefix/, '')
@@ -32,7 +32,7 @@ RSpec.describe RuboCop::Cop::Performance::DeletePrefix, :config do
     end
   end
 
-  context 'TargetRubyVersion >= 2.5', :ruby25 do
+  context 'when TargetRubyVersion >= 2.5', :ruby25 do
     context 'when using `\A` as starting pattern' do
       it "registers an offense and corrects when `gsub(/\Aprefix/, '')`" do
         expect_offense(<<~RUBY)

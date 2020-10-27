@@ -6,7 +6,7 @@ RSpec.describe RuboCop::Cop::Performance::DeleteSuffix, :config do
   let(:cop_config) { { 'SafeMultiline' => safe_multiline } }
   let(:safe_multiline) { true }
 
-  context 'TargetRubyVersion <= 2.4', :ruby24 do
+  context 'when TargetRubyVersion <= 2.4', :ruby24 do
     it "does not register an offense when using `gsub(/suffix\z/, '')`" do
       expect_no_offenses(<<~RUBY)
         str.gsub(/suffix\\z/, '')
@@ -32,7 +32,7 @@ RSpec.describe RuboCop::Cop::Performance::DeleteSuffix, :config do
     end
   end
 
-  context 'TargetRubyVersion >= 2.5', :ruby25 do
+  context 'when TargetRubyVersion >= 2.5', :ruby25 do
     context 'when using `\z` as ending pattern' do
       it "registers an offense and corrects when `gsub(/suffix\z/, '')`" do
         expect_offense(<<~RUBY)

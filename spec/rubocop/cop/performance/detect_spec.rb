@@ -112,7 +112,7 @@ RSpec.describe RuboCop::Cop::Performance::Detect do
       RUBY
     end
 
-    it "registers an offense with #{method} short syntax and [0]" do
+    it "registers an offense with #{method} short syntax and [-1]" do
       expect_offense(<<~RUBY, method: method)
         [1, 2, 3].#{method}(&:even?)[-1]
                   ^{method}^^^^^^^^^^^^^ Use `reverse.detect` instead of `#{method}[-1]`.

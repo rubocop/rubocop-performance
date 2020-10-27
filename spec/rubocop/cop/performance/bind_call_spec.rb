@@ -7,7 +7,7 @@ RSpec.describe RuboCop::Cop::Performance::BindCall, :config do
   # https://github.com/rubocop-hq/rubocop/pull/7605
   let(:ruby_version) { 2.7 }
 
-  context 'TargetRubyVersion <= 2.6', :ruby26 do
+  context 'when TargetRubyVersion <= 2.6', :ruby26 do
     it 'does not register an offense when using `bind(obj).call(args, ...)`' do
       expect_no_offenses(<<~RUBY)
         umethod.bind(obj).call(foo, bar)
@@ -15,7 +15,7 @@ RSpec.describe RuboCop::Cop::Performance::BindCall, :config do
     end
   end
 
-  context 'TargetRubyVersion >= 2.7', :ruby27 do
+  context 'when TargetRubyVersion >= 2.7', :ruby27 do
     it 'registers an offense when using `bind(obj).call(args, ...)`' do
       expect_offense(<<~RUBY)
         umethod.bind(obj).call(foo, bar)

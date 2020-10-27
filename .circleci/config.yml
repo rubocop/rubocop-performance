@@ -38,6 +38,7 @@ workflows:
   build:
     jobs:
       - documentation-checks
+      # Check minimal required Ruby version in `gemspec` file before changes
       - rake_default:
           name: Ruby 2.4
           image: circleci/ruby:2.4
