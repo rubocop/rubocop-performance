@@ -80,11 +80,11 @@ module RuboCop
         def calls_to_report(argname, body)
           return [] if blockarg_assigned?(body, argname)
 
-          calls = to_enum(:blockarg_calls, body, argname)
+          blockarg_calls(body, argname).map do |call|
+            return [] if args_include_block_pass?(call)
 
-          return [] if calls.any? { |call| args_include_block_pass?(call) }
-
-          calls
+            call
+          end
         end
 
         def args_include_block_pass?(blockcall)
