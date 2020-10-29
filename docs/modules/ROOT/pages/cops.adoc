@@ -33,6 +33,7 @@ Performance cops optimization analysis for your projects.
 * xref:cops_performance.adoc#performanceflatmap[Performance/FlatMap]
 * xref:cops_performance.adoc#performanceinefficienthashsearch[Performance/InefficientHashSearch]
 * xref:cops_performance.adoc#performanceioreadlines[Performance/IoReadlines]
+* xref:cops_performance.adoc#performancemethodobjectasblock[Performance/MethodObjectAsBlock]
 * xref:cops_performance.adoc#performanceopenstruct[Performance/OpenStruct]
 * xref:cops_performance.adoc#performancerangeinclude[Performance/RangeInclude]
 * xref:cops_performance.adoc#performanceredundantblockcall[Performance/RedundantBlockCall]
