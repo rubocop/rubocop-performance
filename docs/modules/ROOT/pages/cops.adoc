@@ -13,6 +13,7 @@ Performance cops optimization analysis for your projects.
 === Department xref:cops_performance.adoc[Performance]
 
 * xref:cops_performance.adoc#performanceancestorsinclude[Performance/AncestorsInclude]
+* xref:cops_performance.adoc#performancearraysemiinfiniterangeslice[Performance/ArraySemiInfiniteRangeSlice]
 * xref:cops_performance.adoc#performancebigdecimalwithnumericargument[Performance/BigDecimalWithNumericArgument]
 * xref:cops_performance.adoc#performancebindcall[Performance/BindCall]
 * xref:cops_performance.adoc#performanceblockgivenwithexplicitblock[Performance/BlockGivenWithExplicitBlock]

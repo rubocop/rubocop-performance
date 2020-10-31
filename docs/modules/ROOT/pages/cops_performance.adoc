@@ -30,6 +30,42 @@ A <= B
 
 * https://github.com/JuanitoFatas/fast-ruby#ancestorsinclude-vs--code
 
+== Performance/ArraySemiInfiniteRangeSlice
+
+NOTE: Required Ruby version: 2.7
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Pending
+| Yes
+| Yes
+| 1.9
+| -
+|===
+
+This cop identifies places where slicing arrays with semi-infinite ranges
+can be replaced by `Array#take` and `Array#drop`.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+# array[..2]
+# array[...2]
+# array[2..]
+# array[2...]
+# array.slice(..2)
+
+# good
+array.take(3)
+array.take(2)
+array.drop(2)
+array.drop(2)
+array.take(3)
+----
+
 == Performance/BigDecimalWithNumericArgument
 
 |===
