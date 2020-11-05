@@ -33,5 +33,4 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency('rubocop', '>= 0.90.0')
   s.add_runtime_dependency('rubocop-ast', '>= 0.4.0')
-  s.add_development_dependency('simplecov')
 end
