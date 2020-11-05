@@ -76,6 +76,14 @@ Performance/Size:
 
 You can read a lot more about RuboCop Performance in its [official docs](https://docs.rubocop.org/rubocop-performance/).
 
+## Compatibility
+
+RuboCop Performance complies with the RuboCop core compatibility.
+
+See the [compatibility documentation](https://docs.rubocop.org/rubocop/compatibility.html) for further details.
+
+**Note:** Performance cops are all MRI focused and are highly dependent of the version of MRI you're using.
+
 ## Contributing
 
 Checkout the [contribution guidelines](CONTRIBUTING.md).
