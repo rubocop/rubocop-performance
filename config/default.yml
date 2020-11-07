@@ -215,6 +215,11 @@ Performance/RedundantSortBlock:
   Enabled: 'pending'
   VersionAdded: '1.7'
 
+Performance/RedundantSplitRegexpArgument:
+  Description: 'This cop identifies places where `split` argument can be replaced from a deterministic regexp to a string.'
+  Enabled: pending
+  VersionAdded: '1.10'
+
 Performance/RedundantStringChars:
   Description: 'Checks for redundant `String#chars`.'
   Enabled: 'pending'
