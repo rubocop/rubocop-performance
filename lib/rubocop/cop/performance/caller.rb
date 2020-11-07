@@ -19,10 +19,9 @@ module RuboCop
       #   caller_locations(2..2).first
       #   caller_locations(1..1).first
       class Caller < Base
-        MSG_BRACE = 'Use `%<method>s(%<n>d..%<n>d).first`' \
-                    ' instead of `%<method>s[%<m>d]`.'
-        MSG_FIRST = 'Use `%<method>s(%<n>d..%<n>d).first`' \
-                    ' instead of `%<method>s.first`.'
+        extend AutoCorrector
+
+        MSG = 'Use `%<preferred_method>s` instead of `%<current_method>s`.'
         RESTRICT_ON_SEND = %i[first []].freeze
 
         def_node_matcher :slow_caller?, <<~PATTERN
@@ -42,25 +41,23 @@ module RuboCop
         def on_send(node)
           return unless caller_with_scope_method?(node)
 
-          message = message(node)
-          add_offense(node, message: message)
-        end
-
-        private
-
-        def message(node)
           method_name = node.receiver.method_name
           caller_arg = node.receiver.first_argument
           n = caller_arg ? int_value(caller_arg) : 1
-
           if node.method?(:[])
             m = int_value(node.first_argument)
             n += m
-            format(MSG_BRACE, n: n, m: m, method: method_name)
-          else
-            format(MSG_FIRST, n: n, method: method_name)
+          end
+
+          preferred_method = "#{method_name}(#{n}..#{n}).first"
+
+          message = format(MSG, preferred_method: preferred_method, current_method: node.source)
+          add_offense(node, message: message) do |corrector|
+            corrector.replace(node, preferred_method)
           end
         end
+
+        private
 
         def int_value(node)
           node.children[0]
