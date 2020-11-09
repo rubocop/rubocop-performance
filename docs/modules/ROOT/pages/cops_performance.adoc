@@ -173,9 +173,9 @@ end
 
 | Enabled
 | Yes
-| No
+| Yes
 | 0.49
-| -
+| 1.9
 |===
 
 This cop identifies places where `caller[n]`
