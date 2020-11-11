@@ -18,7 +18,7 @@ RSpec.describe RuboCop::Cop::Performance::IoReadlines do
   end
 
   it 'registers an offense when using `IO.readlines` followed by `#each` method' do
-    # Note: `each_line` in message, not `each_line.each`
+    # NOTE: `each_line` in message, not `each_line.each`
     expect_offense(<<~RUBY)
       IO.readlines('testfile').each { |l| puts l }
          ^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `each_line` instead of `readlines.each`.
@@ -43,7 +43,7 @@ RSpec.describe RuboCop::Cop::Performance::IoReadlines do
   end
 
   it 'registers an offense and corrects when using `#readlines` on an instance followed by `#each` method' do
-    # Note: `each_line` in message, not `each_line.each`
+    # NOTE: `each_line` in message, not `each_line.each`
     expect_offense(<<~RUBY)
       file.readlines(10).each { |l| puts l }
            ^^^^^^^^^^^^^^^^^^ Use `each_line` instead of `readlines.each`.
