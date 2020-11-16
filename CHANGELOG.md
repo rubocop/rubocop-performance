@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 1.9.0 (2020-11-17)
+
 ### New features
 
 * [#173](https://github.com/rubocop-hq/rubocop-performance/pull/173): Add new `Performance/BlockGivenWithExplicitBlock` cop. ([@fatkodima][])
