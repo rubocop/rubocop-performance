@@ -3,21 +3,29 @@
 RSpec.describe RuboCop::Cop::Performance::UnfreezeString, :config do
   subject(:cop) { described_class.new(config) }
 
-  it 'registers an offense for an empty string with `.dup`' do
+  it 'registers an offense and corrects for an empty string with `.dup`' do
     expect_offense(<<~RUBY)
       "".dup
       ^^^^^^ Use unary plus to get an unfrozen string literal.
     RUBY
+
+    expect_correction(<<~RUBY)
+      +""
+    RUBY
   end
 
-  it 'registers an offense for a string with `.dup`' do
+  it 'registers an offense and corrects for a string with `.dup`' do
     expect_offense(<<~RUBY)
       "foo".dup
       ^^^^^^^^^ Use unary plus to get an unfrozen string literal.
     RUBY
+
+    expect_correction(<<~RUBY)
+      +"foo"
+    RUBY
   end
 
-  it 'registers an offense for a heredoc with `.dup`' do
+  it 'registers an offense and corrects for a heredoc with `.dup`' do
     expect_offense(<<~RUBY)
       <<TEXT.dup
       ^^^^^^^^^^ Use unary plus to get an unfrozen string literal.
@@ -25,34 +33,57 @@ RSpec.describe RuboCop::Cop::Performance::UnfreezeString, :config do
         bar
       TEXT
     RUBY
+
+    expect_correction(<<~RUBY)
+      +<<TEXT
+        foo
+        bar
+      TEXT
+    RUBY
   end
 
-  it 'registers an offense for a string that contains a string' \
+  it 'registers an offense and corrects for a string that contains a string' \
      'interpolation with `.dup`' do
     expect_offense(<<~'RUBY')
       "foo#{bar}baz".dup
       ^^^^^^^^^^^^^^^^^^ Use unary plus to get an unfrozen string literal.
     RUBY
+
+    expect_correction(<<~'RUBY')
+      +"foo#{bar}baz"
+    RUBY
   end
 
-  it 'registers an offense for `String.new`' do
+  it 'registers an offense and corrects for `String.new`' do
     expect_offense(<<~RUBY)
       String.new
       ^^^^^^^^^^ Use unary plus to get an unfrozen string literal.
     RUBY
+
+    expect_correction(<<~RUBY)
+      +''
+    RUBY
   end
 
-  it 'registers an offense for `String.new` with an empty string' do
+  it 'registers an offense and corrects for `String.new` with an empty string' do
     expect_offense(<<~RUBY)
       String.new('')
       ^^^^^^^^^^^^^^ Use unary plus to get an unfrozen string literal.
     RUBY
+
+    expect_correction(<<~RUBY)
+      +''
+    RUBY
   end
 
-  it 'registers an offense for `String.new` with a string' do
+  it 'registers an offense and corrects for `String.new` with a string' do
     expect_offense(<<~RUBY)
       String.new('foo')
       ^^^^^^^^^^^^^^^^^ Use unary plus to get an unfrozen string literal.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      +'foo'
     RUBY
   end
 

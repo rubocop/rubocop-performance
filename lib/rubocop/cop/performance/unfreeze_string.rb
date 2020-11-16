@@ -10,6 +10,7 @@ module RuboCop
       # NOTE: `String.new` (without operator) is not exactly the same as `+''`.
       # These differ in encoding. `String.new.encoding` is always `ASCII-8BIT`.
       # However, `(+'').encoding` is the same as script encoding(e.g. `UTF-8`).
+      # Therefore, auto-correction is unsafe.
       # So, if you expect `ASCII-8BIT` encoding, disable this cop.
       #
       # @example
@@ -24,6 +25,8 @@ module RuboCop
       #   +'something'
       #   +''
       class UnfreezeString < Base
+        extend AutoCorrector
+
         MSG = 'Use unary plus to get an unfrozen string literal.'
         RESTRICT_ON_SEND = %i[dup new].freeze
 
@@ -39,7 +42,21 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          add_offense(node) if dup_string?(node) || string_new?(node)
+          return unless dup_string?(node) || string_new?(node)
+
+          add_offense(node) do |corrector|
+            corrector.replace(node, "+#{string_value(node)}")
+          end
+        end
+
+        private
+
+        def string_value(node)
+          if node.receiver.source == 'String' && node.method?(:new)
+            node.arguments.empty? ? "''" : node.first_argument.source
+          else
+            node.receiver.source
+          end
         end
       end
     end

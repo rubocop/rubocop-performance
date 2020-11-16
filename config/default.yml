@@ -305,7 +305,9 @@ Performance/TimesMap:
 Performance/UnfreezeString:
   Description: 'Use unary plus to get an unfrozen string literal.'
   Enabled: true
+  SafeAutoCorrect: false
   VersionAdded: '0.50'
+  VersionChanged: '1.9'
 
 Performance/UriDefaultParser:
   Description: 'Use `URI::DEFAULT_PARSER` instead of `URI::Parser.new`.'
