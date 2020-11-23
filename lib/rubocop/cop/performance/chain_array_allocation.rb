@@ -29,38 +29,40 @@ module RuboCop
         #   [1,2].first    # => 1
         #   [1,2].first(1) # => [1]
         #
-        RETURN_NEW_ARRAY_WHEN_ARGS = ':first :last :pop :sample :shift '
+        RETURN_NEW_ARRAY_WHEN_ARGS = %i[first last pop sample shift].to_set.freeze
 
         # These methods return a new array only when called without a block.
-        RETURNS_NEW_ARRAY_WHEN_NO_BLOCK = ':zip :product '
+        RETURNS_NEW_ARRAY_WHEN_NO_BLOCK = %i[zip product].to_set.freeze
 
         # These methods ALWAYS return a new array
         # after they're called it's safe to mutate the the resulting array
-        ALWAYS_RETURNS_NEW_ARRAY = ':* :+ :- :collect :compact :drop '\
-                                   ':drop_while :flatten :map :reject ' \
-                                   ':reverse :rotate :select :shuffle :sort ' \
-                                   ':take :take_while :transpose :uniq ' \
-                                   ':values_at :| '
+        ALWAYS_RETURNS_NEW_ARRAY = %i[* + - collect compact drop
+                                      drop_while flatten map reject
+                                      reverse rotate select shuffle sort
+                                      take take_while transpose uniq
+                                      values_at |].to_set.freeze
 
         # These methods have a mutation alternative. For example :collect
         # can be called as :collect!
-        HAS_MUTATION_ALTERNATIVE = ':collect :compact :flatten :map :reject '\
-                                   ':reverse :rotate :select :shuffle :sort '\
-                                   ':uniq '
-        MSG = 'Use unchained `%<method>s!` and `%<second_method>s!` '\
+        HAS_MUTATION_ALTERNATIVE = %i[collect compact flatten map reject
+                                      reverse rotate select shuffle sort uniq].to_set.freeze
+
+        RETURNS_NEW_ARRAY = (ALWAYS_RETURNS_NEW_ARRAY + RETURNS_NEW_ARRAY_WHEN_NO_BLOCK).freeze
+
+        MSG = 'Use unchained `%<method>s` and `%<second_method>s!` '\
               '(followed by `return array` if required) instead of chaining '\
               '`%<method>s...%<second_method>s`.'
 
-        def_node_matcher :flat_map_candidate?, <<~PATTERN
-          {
-            (send (send _ ${#{RETURN_NEW_ARRAY_WHEN_ARGS}} {int lvar ivar cvar gvar}) ${#{HAS_MUTATION_ALTERNATIVE}} $...)
-            (send (block (send _ ${#{ALWAYS_RETURNS_NEW_ARRAY} }) ...) ${#{HAS_MUTATION_ALTERNATIVE}} $...)
-            (send (send _ ${#{ALWAYS_RETURNS_NEW_ARRAY + RETURNS_NEW_ARRAY_WHEN_NO_BLOCK}} ...) ${#{HAS_MUTATION_ALTERNATIVE}} $...)
-          }
+        def_node_matcher :chain_array_allocation?, <<~PATTERN
+          (send {
+            (send _ $%RETURN_NEW_ARRAY_WHEN_ARGS {int lvar ivar cvar gvar})
+            (block (send _ $%ALWAYS_RETURNS_NEW_ARRAY) ...)
+            (send _ $%RETURNS_NEW_ARRAY ...)
+          } $%HAS_MUTATION_ALTERNATIVE ...)
         PATTERN
 
         def on_send(node)
-          flat_map_candidate?(node) do |fm, sm, _|
+          chain_array_allocation?(node) do |fm, sm|
             range = range_between(node.loc.dot.begin_pos, node.source_range.end_pos)
 
             add_offense(range, message: format(MSG, method: fm, second_method: sm))
