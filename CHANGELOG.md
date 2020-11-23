@@ -6,6 +6,10 @@
 
 * [#185](https://github.com/rubocop-hq/rubocop-performance/issues/185): Fix incorrect replacement recommendation for `Performance/ChainArrayAllocation`. ([@fatkodima][])
 
+### Changes
+
+* [#197](https://github.com/rubocop-hq/rubocop-performance/issues/197): Disable `Performance/ArraySemiInfiniteRangeSlice` cop. ([@tejasbubane][])
+
 ## 1.9.0 (2020-11-17)
 
 ### New features

@@ -9,7 +9,11 @@ Performance/AncestorsInclude:
 
 Performance/ArraySemiInfiniteRangeSlice:
   Description: 'Identifies places where slicing arrays with semi-infinite ranges can be replaced by `Array#take` and `Array#drop`.'
-  Enabled: pending
+  # This cop was created due to a mistake in microbenchmark.
+  # Refer https://github.com/rubocop-hq/rubocop-performance/pull/175#issuecomment-731892717
+  Enabled: false
+  # Unsafe for string slices because strings do not have `#take` and `#drop` methods.
+  Safe: false
   VersionAdded: '1.9'
 
 Performance/BigDecimalWithNumericArgument:
