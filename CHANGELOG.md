@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 1.9.1 (2020-11-28)
+
 ### Bug fixes
 
 * [#185](https://github.com/rubocop-hq/rubocop-performance/issues/185): Fix incorrect replacement recommendation for `Performance/ChainArrayAllocation`. ([@fatkodima][])
