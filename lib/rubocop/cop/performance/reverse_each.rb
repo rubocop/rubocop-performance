@@ -18,29 +18,25 @@ module RuboCop
 
         MSG = 'Use `reverse_each` instead of `reverse.each`.'
         RESTRICT_ON_SEND = %i[each].freeze
-        UNDERSCORE = '_'
 
         def_node_matcher :reverse_each?, <<~MATCHER
-          (send $(send _ :reverse) :each)
+          (send (send _ :reverse) :each)
         MATCHER
 
         def on_send(node)
-          reverse_each?(node) do |receiver|
-            location_of_reverse = receiver.loc.selector.begin_pos
-            end_location = node.loc.selector.end_pos
-
-            range = range_between(location_of_reverse, end_location)
+          reverse_each?(node) do
+            range = offense_range(node)
 
             add_offense(range) do |corrector|
-              corrector.replace(replacement_range(node), UNDERSCORE)
+              corrector.replace(range, 'reverse_each')
             end
           end
         end
 
         private
 
-        def replacement_range(node)
-          range_between(node.loc.dot.begin_pos, node.loc.selector.begin_pos)
+        def offense_range(node)
+          range_between(node.children.first.loc.selector.begin_pos, node.loc.selector.end_pos)
         end
       end
     end

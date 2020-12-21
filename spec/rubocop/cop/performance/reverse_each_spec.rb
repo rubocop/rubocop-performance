@@ -87,24 +87,47 @@ RSpec.describe RuboCop::Cop::Performance::ReverseEach do
       RUBY
     end
 
-    it 'corrects a multi-line reverse_each' do
-      new_source = autocorrect_source(<<~RUBY)
+    it 'registers and corrects when using multi-line `reverse.each` with trailing dot' do
+      expect_offense(<<~RUBY)
         def arr
           [1, 2]
         end
 
         arr.
           reverse.
+          ^^^^^^^^ Use `reverse_each` instead of `reverse.each`.
           each { |e| puts e }
       RUBY
 
-      expect(new_source).to eq(<<~RUBY)
+      expect_correction(<<~RUBY)
         def arr
           [1, 2]
         end
 
         arr.
           reverse_each { |e| puts e }
+      RUBY
+    end
+
+    it 'registers and corrects when using multi-line `reverse.each` with leading dot' do
+      expect_offense(<<~RUBY)
+        def arr
+          [1, 2]
+        end
+
+        arr
+          .reverse
+           ^^^^^^^ Use `reverse_each` instead of `reverse.each`.
+          .each { |e| puts e }
+      RUBY
+
+      expect_correction(<<~RUBY)
+        def arr
+          [1, 2]
+        end
+
+        arr
+          .reverse_each { |e| puts e }
       RUBY
     end
   end
