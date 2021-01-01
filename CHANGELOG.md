@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 1.9.2 (2021-01-01)
+
 ### Bug fixes
 
 * [#201](https://github.com/rubocop-hq/rubocop-performance/pull/201): Fix an incorrect auto-correct for `Performance/ReverseEach` when using multi-line `reverse.each` with leading dot. ([@koic][])
