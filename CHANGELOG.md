@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### Changes
+
+* [#205](https://github.com/rubocop-hq/rubocop-performance/issues/205): Update `Performance/ConstantRegexp` to allow memoized regexps. ([@dvandersluis][])
+
 ## 1.9.2 (2021-01-01)
 
 ### Bug fixes

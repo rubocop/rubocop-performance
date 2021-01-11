@@ -80,6 +80,7 @@ Performance/ConstantRegexp:
   Description: 'Finds regular expressions with dynamic components that are all constants.'
   Enabled: pending
   VersionAdded: '1.9'
+  VersionChanged: <<next>>
 
 Performance/Count:
   Description: >-
