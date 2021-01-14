@@ -14,6 +14,7 @@
 ### Changes
 
 * [#205](https://github.com/rubocop-hq/rubocop-performance/issues/205): Update `Performance/ConstantRegexp` to allow memoized regexps. ([@dvandersluis][])
+* [#212](https://github.com/rubocop-hq/rubocop-performance/pull/212): Enable unsafe auto-correct for `Performance/StartWith` and `Performance/EndWith` cops by default. ([@koic][])
 
 ## 1.9.2 (2021-01-01)
 
