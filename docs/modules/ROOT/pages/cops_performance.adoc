@@ -453,7 +453,7 @@ array.sort_by { |a| a[:foo] }
 | Yes
 | Yes
 | 1.9
-| <<next>>
+| 1.10
 |===
 
 This cop finds regular expressions with dynamic components that are all constants.
