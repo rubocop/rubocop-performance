@@ -150,7 +150,9 @@ module RuboCop
           replacement = build_good_method(init, block_pass)
 
           corrector.remove(sum_range)
-          corrector.replace(map_range, ".#{replacement}")
+
+          dot = '.' if map.receiver
+          corrector.replace(map_range, "#{dot}#{replacement}")
         end
 
         def sum_method_range(node)
@@ -228,7 +230,11 @@ module RuboCop
         end
 
         def method_call_with_args_range(node)
-          node.receiver.source_range.end.join(node.source_range.end)
+          if (receiver = node.receiver)
+            receiver.source_range.end.join(node.source_range.end)
+          else
+            node.source_range
+          end
         end
       end
     end

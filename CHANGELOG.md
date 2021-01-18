@@ -6,6 +6,10 @@
 
 * [#190](https://github.com/rubocop-hq/rubocop-performance/pull/190): Add new `Performance/RedundantSplitRegexpArgument` cop. ([@mfbmina][])
 
+### Bug fixes
+
+* [#207](https://github.com/rubocop-hq/rubocop-performance/issues/207): Fix an error for `Performance/Sum` when using `map(&do_something).sum` without receiver. ([@koic][])
+
 ### Changes
 
 * [#205](https://github.com/rubocop-hq/rubocop-performance/issues/205): Update `Performance/ConstantRegexp` to allow memoized regexps. ([@dvandersluis][])
