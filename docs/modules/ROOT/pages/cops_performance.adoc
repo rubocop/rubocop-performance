@@ -1310,6 +1310,32 @@ array.sort { |a, b| a <=> b }
 array.sort
 ----
 
+== Performance/RedundantSplitRegexpArgument
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Pending
+| Yes
+| Yes
+| 1.10
+| -
+|===
+
+This cop identifies places where `split` argument can be replaced from
+a deterministic regexp to a string.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+'a,b,c'.split(/,/)
+
+# good
+'a,b,c'.split(',')
+----
+
 == Performance/RedundantStringChars
 
 |===
