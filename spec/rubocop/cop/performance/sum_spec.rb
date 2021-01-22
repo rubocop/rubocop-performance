@@ -190,6 +190,17 @@ RSpec.describe RuboCop::Cop::Performance::Sum, :config do
       RUBY
     end
 
+    it "registers an offense and corrects when using `#{method}(&:count).sum`" do
+      expect_offense(<<~RUBY, method: method)
+        %{method}(&:count).sum
+        ^{method}^^^^^^^^^^^^^ Use `sum { ... }` instead of `%{method} { ... }.sum`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        sum(&:count)
+      RUBY
+    end
+
     it "registers an offense and corrects when using `array.#{method}(&:count).sum(10)`" do
       expect_offense(<<~RUBY, method: method)
         array.%{method}(&:count).sum(10)
