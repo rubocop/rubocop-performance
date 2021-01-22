@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#190](https://github.com/rubocop-hq/rubocop-performance/pull/190): Add new `Performance/RedundantSplitRegexpArgument` cop. ([@mfbmina][])
+
 ### Changes
 
 * [#205](https://github.com/rubocop-hq/rubocop-performance/issues/205): Update `Performance/ConstantRegexp` to allow memoized regexps. ([@dvandersluis][])
@@ -26,7 +30,6 @@
 
 ### New features
 
-* [#190](https://github.com/rubocop-hq/rubocop-performance/pull/190): Add new `Performance/RedundantSplitRegexpArgument` cop. ([@mfbmina][])
 * [#173](https://github.com/rubocop-hq/rubocop-performance/pull/173): Add new `Performance/BlockGivenWithExplicitBlock` cop. ([@fatkodima][])
 * [#136](https://github.com/rubocop-hq/rubocop-performance/issues/136): Add new `Performance/MethodObjectAsBlock` cop. ([@fatkodima][])
 * [#151](https://github.com/rubocop-hq/rubocop-performance/issues/151): Add new `Performance/ConstantRegexp` cop. ([@fatkodima][])
@@ -211,3 +214,4 @@
 [@fatkodima]: https://github.com/fatkodima
 [@dvandersluis]: https://github.com/dvandersluis
 [@ghiculescu]: https://github.com/ghiculescu
+[@mfbmina]: https://github.com/mfbmina
