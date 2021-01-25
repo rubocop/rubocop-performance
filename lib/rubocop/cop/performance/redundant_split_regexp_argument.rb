@@ -18,7 +18,7 @@ module RuboCop
         MSG = 'Use string as argument instead of regexp.'
         RESTRICT_ON_SEND = %i[split].freeze
         DETERMINISTIC_REGEX = /\A(?:#{LITERAL_REGEX})+\Z/.freeze
-        STR_SPECIAL_CHARS = %w[\n \" \' \\ \t \b \f \r].freeze
+        STR_SPECIAL_CHARS = %w[\n \" \' \\\\ \t \b \f \r].freeze
 
         def_node_matcher :split_call_with_regexp?, <<~PATTERN
           {(send !nil? :split {regexp})}
@@ -40,10 +40,26 @@ module RuboCop
         end
 
         def autocorrect(corrector, node)
-          new_argument = node.first_argument.source[1..-2]
-          new_argument.delete!('\\') unless STR_SPECIAL_CHARS.include?(new_argument)
+          new_argument = replacement(node)
 
           corrector.replace(node.first_argument, "\"#{new_argument}\"")
+        end
+
+        def replacement(node)
+          regexp_content = node.first_argument.content
+          stack = []
+          chars = regexp_content.chars.each_with_object([]) do |char, strings|
+            if stack.empty? && char == '\\'
+              stack.push(char)
+            else
+              strings << "#{stack.pop}#{char}"
+            end
+          end
+          chars.map do |char|
+            char = char.dup
+            char.delete!('\\') unless STR_SPECIAL_CHARS.include?(char)
+            char
+          end.join
         end
       end
     end

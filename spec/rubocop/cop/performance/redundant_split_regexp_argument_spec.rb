@@ -37,6 +37,39 @@ RSpec.describe RuboCop::Cop::Performance::RedundantSplitRegexpArgument do
     RUBY
   end
 
+  it 'registers an offense when the method is split and corrects correctly consecutive special string chars' do
+    expect_offense(<<~RUBY)
+      "foo\\n\\nbar\\n\\nbaz\\n\\n".split(/\\n\\n/)
+                                    ^^^^^^ Use string as argument instead of regexp.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      "foo\\n\\nbar\\n\\nbaz\\n\\n".split("\\n\\n")
+    RUBY
+  end
+
+  it 'registers an offense when the method is split and corrects correctly consecutive backslash escape chars' do
+    expect_offense(<<~RUBY)
+      "foo\\\\\\.bar".split(/\\\\\\./)
+                         ^^^^^^ Use string as argument instead of regexp.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      "foo\\\\\\.bar".split("\\\\\.")
+    RUBY
+  end
+
+  it 'registers an offense when the method is split and corrects correctly complex special string chars' do
+    expect_offense(<<~RUBY)
+      "foo\\nbar\\nbaz\\n".split(/foo\\n\\.\\n/)
+                              ^^^^^^^^^^^ Use string as argument instead of regexp.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      "foo\\nbar\\nbaz\\n".split("foo\\n.\\n")
+    RUBY
+  end
+
   it 'registers an offense when the method is split' do
     expect_offense(<<~RUBY)
       'a,b,c'.split(/,/)
