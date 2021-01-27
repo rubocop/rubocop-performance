@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Performance::ReverseEach do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Performance::ReverseEach, :config do
   it 'registers an offense when each is called on reverse' do
     expect_offense(<<~RUBY)
       [1, 2, 3].reverse.each { |e| puts e }

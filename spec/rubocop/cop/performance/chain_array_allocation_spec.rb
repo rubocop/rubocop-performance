@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Performance::ChainArrayAllocation do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Performance::ChainArrayAllocation, :config do
   describe 'Methods that require an argument' do
     it 'does not register an offense for `first.uniq`' do
       # Yes I know this is not valid Ruby

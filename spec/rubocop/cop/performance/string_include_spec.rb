@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Performance::StringInclude do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Performance::StringInclude, :config do
   shared_examples 'different match methods' do |method|
     it "registers an offense and corrects str#{method} /abc/" do
       expect_offense(<<~RUBY, method: method)

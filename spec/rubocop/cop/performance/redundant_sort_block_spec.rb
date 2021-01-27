@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Performance::RedundantSortBlock do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Performance::RedundantSortBlock, :config do
   it 'registers an offense and corrects when sorting in direct order' do
     expect_offense(<<~RUBY)
       array.sort { |a, b| a <=> b }

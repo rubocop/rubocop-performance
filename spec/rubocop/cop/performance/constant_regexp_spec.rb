@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Performance::ConstantRegexp do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Performance::ConstantRegexp, :config do
   it 'registers an offense and corrects when regexp contains interpolated constant' do
     expect_offense(<<~RUBY)
       str.match?(/\A\#{CONST}/)

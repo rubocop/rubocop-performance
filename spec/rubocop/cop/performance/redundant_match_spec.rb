@@ -9,9 +9,7 @@
 #   method(str.match(/regex/))
 #   return regex.match('str')
 
-RSpec.describe RuboCop::Cop::Performance::RedundantMatch do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Performance::RedundantMatch, :config do
   it 'autocorrects .match in if condition' do
     new_source = autocorrect_source('something if str.match(/regex/)')
     expect(new_source).to eq 'something if str =~ /regex/'

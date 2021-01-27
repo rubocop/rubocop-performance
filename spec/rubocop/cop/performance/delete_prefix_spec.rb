@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Performance::DeletePrefix, :config do
-  subject(:cop) { described_class.new(config) }
-
   let(:cop_config) { { 'SafeMultiline' => safe_multiline } }
   let(:safe_multiline) { true }
 

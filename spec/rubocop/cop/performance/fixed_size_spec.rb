@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Performance::FixedSize do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Performance::FixedSize, :config do
   let(:message) do
     'Do not compute the size of statically sized objects.'
   end

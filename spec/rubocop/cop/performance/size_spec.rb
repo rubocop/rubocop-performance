@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Performance::Size do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Performance::Size, :config do
   it 'does not register an offense when calling count ' \
      'as a stand alone method' do
     expect_no_offenses('count(items)')

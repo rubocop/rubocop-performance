@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Performance::ReverseFirst do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Performance::ReverseFirst, :config do
   it 'registers an offense and corrects when using `#reverse.first(5)`' do
     expect_offense(<<~RUBY)
       array.reverse.first(5)

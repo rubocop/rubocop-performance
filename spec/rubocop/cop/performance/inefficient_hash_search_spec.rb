@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Performance::InefficientHashSearch do
-  subject(:cop) { described_class.new(config) }
-
+RSpec.describe RuboCop::Cop::Performance::InefficientHashSearch, :config do
   shared_examples 'correct behavior' do |expected|
     let(:expected_key_method) { expected == :short ? 'key?' : 'has_key?' }
     let(:expected_value_method) { expected == :short ? 'value?' : 'has_value?' }

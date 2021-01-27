@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Performance::FlatMap, :config do
-  subject(:cop) { described_class.new(config) }
-
   shared_examples 'map_and_collect' do |method, flatten|
     it "registers an offense and corrects when calling #{method}...#{flatten}(1)" do
       expect_offense(<<~RUBY, method: method, flatten: flatten)

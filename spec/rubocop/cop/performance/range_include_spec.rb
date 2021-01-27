@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Performance::RangeInclude do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Performance::RangeInclude, :config do
   %i[include? member?].each do |method|
     it "autocorrects (a..b).#{method} without parens" do
       new_source = autocorrect_source("(a..b).#{method} 1")

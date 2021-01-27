@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Performance::RedundantBlockCall do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Performance::RedundantBlockCall, :config do
   it 'autocorrects block.call without arguments' do
     new_source = autocorrect_source(<<~RUBY)
       def method(&block)

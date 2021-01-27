@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Performance::CompareWithBlock do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Performance::CompareWithBlock, :config do
   shared_examples 'compare with block' do |method|
     it "registers an offense and corrects for #{method}" do
       expect_offense(<<~RUBY, method: method)

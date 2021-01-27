@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Performance::OpenStruct do
-  subject(:cop) { described_class.new(config) }
-
+RSpec.describe RuboCop::Cop::Performance::OpenStruct, :config do
   let(:config) { RuboCop::Config.new }
 
   it 'registers an offense for OpenStruct.new' do

@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Performance::DoubleStartEndWith do
-  subject(:cop) { described_class.new(config) }
-
+RSpec.describe RuboCop::Cop::Performance::DoubleStartEndWith, :config do
   context 'IncludeActiveSupportAliases: false' do
     let(:config) do
       RuboCop::Config.new(

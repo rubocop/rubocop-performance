@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Performance::BigDecimalWithNumericArgument do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Performance::BigDecimalWithNumericArgument, :config do
   it 'registers an offense and corrects when using `BigDecimal` with integer' do
     expect_offense(<<~RUBY)
       BigDecimal(1)

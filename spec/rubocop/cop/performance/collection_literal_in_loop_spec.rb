@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Performance::CollectionLiteralInLoop, :config do
-  subject(:cop) { described_class.new(config) }
-
   let(:cop_config) do
     { 'MinSize' => 1 }
   end

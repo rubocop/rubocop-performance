@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Performance::Sum, :config do
-  subject(:cop) { described_class.new(config) }
-
   %i[inject reduce].each do |method|
     it "registers an offense and corrects when using `array.#{method}(10, :+)`" do
       expect_offense(<<~RUBY, method: method)

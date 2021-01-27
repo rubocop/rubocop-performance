@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Performance::Detect do
-  subject(:cop) { described_class.new(config) }
-
+RSpec.describe RuboCop::Cop::Performance::Detect, :config do
   let(:collection_method) { nil }
   let(:config) do
     RuboCop::Config.new(

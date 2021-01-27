@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Performance::BlockGivenWithExplicitBlock do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Performance::BlockGivenWithExplicitBlock, :config do
   it 'registers an offense and corrects when using `block_given?` in an instance method with block arg' do
     expect_offense(<<~RUBY)
       def method(x, &block)

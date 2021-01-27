@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Performance::StringReplacement do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Performance::StringReplacement, :config do
   it 'accepts methods other than gsub' do
     expect_no_offenses("'abc'.insert(2, 'a')")
   end

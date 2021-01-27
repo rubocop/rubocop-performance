@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Performance::RedundantSplitRegexpArgument do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Performance::RedundantSplitRegexpArgument, :config do
   it 'accepts methods other than split' do
     expect_no_offenses("'a,b,c'.insert(2, 'a')")
   end

@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Performance::Casecmp do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Performance::Casecmp, :config do
   shared_examples 'selectors' do |selector|
     it "registers an offense and corrects str.#{selector} ==" do
       expect_offense(<<~RUBY, selector: selector)

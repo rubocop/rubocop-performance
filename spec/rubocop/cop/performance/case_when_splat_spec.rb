@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat, :config do
   it 'allows case when without splat' do
     expect_no_offenses(<<~RUBY)
       case foo

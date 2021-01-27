@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Performance::TimesMap do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Performance::TimesMap, :config do
   shared_examples 'map_or_collect' do |method|
     context ".times.#{method}" do
       context 'with a block' do

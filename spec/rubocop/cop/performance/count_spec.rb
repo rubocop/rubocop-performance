@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Performance::Count do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Performance::Count, :config do
   shared_examples 'selectors' do |selector|
     it "registers an offense for using array.#{selector}...size" do
       expect_offense(<<~RUBY, selector: selector)

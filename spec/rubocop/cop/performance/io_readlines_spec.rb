@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Performance::IoReadlines do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Performance::IoReadlines, :config do
   it 'registers an offense when using `File.readlines` followed by Enumerable method' do
     expect_offense(<<~RUBY)
       File.readlines('testfile').map { |l| l.size }

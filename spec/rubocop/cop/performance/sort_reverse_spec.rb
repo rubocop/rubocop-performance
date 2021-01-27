@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Performance::SortReverse do
-  subject(:cop) { described_class.new(config) }
-
+RSpec.describe RuboCop::Cop::Performance::SortReverse, :config do
   let(:config) do
     # Suppress ChainArrayAllocation offences
     RuboCop::Config.new('Performance/ChainArrayAllocation' => { 'Enabled' => false })

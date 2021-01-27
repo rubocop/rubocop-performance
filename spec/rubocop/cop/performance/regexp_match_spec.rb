@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
-  subject(:cop) { described_class.new(config) }
-
   shared_examples 'offense' do |name, code, correction|
     it "registers an offense for #{name}" do
       offenses = inspect_source(code)

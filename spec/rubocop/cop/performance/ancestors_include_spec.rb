@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Performance::AncestorsInclude do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Performance::AncestorsInclude, :config do
   it 'registers an offense and corrects when using `ancestors.include?`' do
     expect_offense(<<~RUBY)
       Class.ancestors.include?(Kernel)
