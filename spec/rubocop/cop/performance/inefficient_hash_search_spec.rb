@@ -93,8 +93,6 @@ RSpec.describe RuboCop::Cop::Performance::InefficientHashSearch, :config do
   end
 
   context 'when config is empty' do
-    let(:config) { RuboCop::Config.new }
-
     it_behaves_like 'correct behavior', :short
   end
 
