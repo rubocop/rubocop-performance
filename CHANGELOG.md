@@ -9,6 +9,7 @@
 ### Bug fixes
 
 * [#207](https://github.com/rubocop-hq/rubocop-performance/issues/207): Fix an error for `Performance/Sum` when using `map(&do_something).sum` without receiver. ([@koic][])
+* [#210](https://github.com/rubocop-hq/rubocop-performance/pull/210): Fix a false negative for `Performance/BindCall` when receiver is not a method call. ([@koic][])
 
 ### Changes
 
