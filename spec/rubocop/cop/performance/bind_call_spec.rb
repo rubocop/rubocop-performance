@@ -25,6 +25,28 @@ RSpec.describe RuboCop::Cop::Performance::BindCall, :config do
       RUBY
     end
 
+    it 'registers an offense when using `Foo.do_something.bind(obj).call`' do
+      expect_offense(<<~RUBY)
+        Foo.do_something.bind(obj).call
+                         ^^^^^^^^^^^^^^ Use `bind_call(obj)` instead of `bind(obj).call()`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        Foo.do_something.bind_call(obj)
+      RUBY
+    end
+
+    it 'registers an offense when using `CONSTANT.bind(obj).call`' do
+      expect_offense(<<~RUBY)
+        CONSTANT.bind(obj).call
+                 ^^^^^^^^^^^^^^ Use `bind_call(obj)` instead of `bind(obj).call()`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        CONSTANT.bind_call(obj)
+      RUBY
+    end
+
     it 'registers an offense when using `bind(obj).()`' do
       expect_offense(<<~RUBY)
         umethod.bind(obj).()

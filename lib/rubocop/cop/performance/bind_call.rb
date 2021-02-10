@@ -33,7 +33,7 @@ module RuboCop
         def_node_matcher :bind_with_call_method?, <<~PATTERN
           (send
             $(send
-              (send nil? _) :bind
+              _ :bind
               $(...)) :call
             $...)
         PATTERN
@@ -64,7 +64,7 @@ module RuboCop
 
         def correction_range(receiver, node)
           location_of_bind = receiver.loc.selector.begin_pos
-          location_of_call = node.loc.end.end_pos
+          location_of_call = node.source_range.end.end_pos
 
           range_between(location_of_bind, location_of_call)
         end
