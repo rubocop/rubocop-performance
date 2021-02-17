@@ -5,6 +5,7 @@
 ### New features
 
 * [#190](https://github.com/rubocop-hq/rubocop-performance/pull/190): Add new `Performance/RedundantSplitRegexpArgument` cop. ([@mfbmina][])
+* [#213](https://github.com/rubocop-hq/rubocop-performance/pull/213): Add new `Performance/RedundantEqualityComparisonBlock` cop. ([@koic][])
 
 ### Bug fixes
 
