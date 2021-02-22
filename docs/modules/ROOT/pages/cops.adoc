@@ -38,6 +38,7 @@ Performance cops optimization analysis for your projects.
 * xref:cops_performance.adoc#performanceopenstruct[Performance/OpenStruct]
 * xref:cops_performance.adoc#performancerangeinclude[Performance/RangeInclude]
 * xref:cops_performance.adoc#performanceredundantblockcall[Performance/RedundantBlockCall]
+* xref:cops_performance.adoc#performanceredundantequalitycomparisonblock[Performance/RedundantEqualityComparisonBlock]
 * xref:cops_performance.adoc#performanceredundantmatch[Performance/RedundantMatch]
 * xref:cops_performance.adoc#performanceredundantmerge[Performance/RedundantMerge]
 * xref:cops_performance.adoc#performanceredundantsortblock[Performance/RedundantSortBlock]

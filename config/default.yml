@@ -200,6 +200,15 @@ Performance/RedundantBlockCall:
   Enabled: true
   VersionAdded: '0.36'
 
+Performance/RedundantEqualityComparisonBlock:
+  Description: >-
+                  Checks for uses `Enumerable#all?`, `Enumerable#any?`, `Enumerable#one?`,
+                  or `Enumerable#none?` are compared with `===` or similar methods in block.
+  Reference: 'https://github.com/rails/rails/pull/41363'
+  Enabled: pending
+  Safe: false
+  VersionAdded: '1.10'
+
 Performance/RedundantMatch:
   Description: >-
                   Use `=~` instead of `String#match` or `Regexp#match` in a context where the
