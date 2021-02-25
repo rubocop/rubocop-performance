@@ -1,5 +1,5 @@
 site_name: "Performance optimization analysis for your projects, as an extension to RuboCop."
-repo_url: https://github.com/rubocop-hq/rubocop-performance
+repo_url: https://github.com/rubocop/rubocop-performance
 edit_uri: edit/master/legacy-docs
 copyright: "Copyright &copy; 2012-2021 Bozhidar Batsov and RuboCop contributors"
 docs_dir: legacy-docs
