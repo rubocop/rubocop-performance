@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 1.10.0 (2021-03-01)
+
 ### New features
 
 * [#190](https://github.com/rubocop/rubocop-performance/pull/190): Add new `Performance/RedundantSplitRegexpArgument` cop. ([@mfbmina][])
