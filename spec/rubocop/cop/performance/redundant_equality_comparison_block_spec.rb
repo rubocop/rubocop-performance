@@ -65,6 +65,12 @@ RSpec.describe RuboCop::Cop::Performance::RedundantEqualityComparisonBlock, :con
       RUBY
     end
 
+    it 'does not register and corrects an offense when using multiple block arguments' do
+      expect_no_offenses(<<~RUBY)
+        items.all? { |key, _value| key == other }
+      RUBY
+    end
+
     it 'does not register and corrects an offense when using block argument is not used as it is' do
       expect_no_offenses(<<~RUBY)
         items.all? { |item| item.do_something == other }

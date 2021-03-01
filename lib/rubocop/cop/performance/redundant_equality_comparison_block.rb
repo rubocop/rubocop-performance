@@ -34,7 +34,7 @@ module RuboCop
         COMPARISON_METHODS = %i[== === is_a? kind_of?].freeze
 
         def on_block(node)
-          return unless TARGET_METHODS.include?(node.method_name)
+          return unless TARGET_METHODS.include?(node.method_name) && node.arguments.one?
 
           block_argument = node.arguments.first
           block_body = node.body
