@@ -32,6 +32,7 @@ module RuboCop
 
         TARGET_METHODS = %i[all? any? one? none?].freeze
         COMPARISON_METHODS = %i[== === is_a? kind_of?].freeze
+        IS_A_METHODS = %i[is_a? kind_of?].freeze
 
         def on_block(node)
           return unless TARGET_METHODS.include?(node.method_name) && node.arguments.one?
@@ -39,6 +40,7 @@ module RuboCop
           block_argument = node.arguments.first
           block_body = node.body
           return unless use_equality_comparison_block?(block_body)
+          return if same_block_argument_and_is_a_argument?(block_body, block_argument)
           return unless (new_argument = new_argument(block_argument, block_body))
 
           range = offense_range(node)
@@ -53,6 +55,12 @@ module RuboCop
 
         def use_equality_comparison_block?(block_body)
           block_body.send_type? && COMPARISON_METHODS.include?(block_body.method_name)
+        end
+
+        def same_block_argument_and_is_a_argument?(block_body, block_argument)
+          return false unless IS_A_METHODS.include?(block_body.method_name)
+
+          block_argument.source == block_body.first_argument.source
         end
 
         def new_argument(block_argument, block_body)
