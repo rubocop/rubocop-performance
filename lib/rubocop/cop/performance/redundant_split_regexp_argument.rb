@@ -21,32 +21,29 @@ module RuboCop
         STR_SPECIAL_CHARS = %w[\n \" \' \\\\ \t \b \f \r].freeze
 
         def_node_matcher :split_call_with_regexp?, <<~PATTERN
-          {(send !nil? :split {regexp})}
+          {(send !nil? :split $regexp)}
         PATTERN
 
         def on_send(node)
-          return unless split_call_with_regexp?(node)
-          return unless determinist_regexp?(node.first_argument)
+          return unless (regexp_node = split_call_with_regexp?(node))
+          return if regexp_node.ignore_case?
+          return unless determinist_regexp?(regexp_node)
 
-          add_offense(node.first_argument) do |corrector|
-            autocorrect(corrector, node)
+          add_offense(regexp_node) do |corrector|
+            new_argument = replacement(regexp_node)
+
+            corrector.replace(regexp_node, "\"#{new_argument}\"")
           end
         end
 
         private
 
-        def determinist_regexp?(first_argument)
-          DETERMINISTIC_REGEX.match?(first_argument.source)
+        def determinist_regexp?(regexp_node)
+          DETERMINISTIC_REGEX.match?(regexp_node.source)
         end
 
-        def autocorrect(corrector, node)
-          new_argument = replacement(node)
-
-          corrector.replace(node.first_argument, "\"#{new_argument}\"")
-        end
-
-        def replacement(node)
-          regexp_content = node.first_argument.content
+        def replacement(regexp_node)
+          regexp_content = regexp_node.content
           stack = []
           chars = regexp_content.chars.each_with_object([]) do |char, strings|
             if stack.empty? && char == '\\'

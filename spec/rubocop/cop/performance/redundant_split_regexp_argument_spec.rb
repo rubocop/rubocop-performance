@@ -13,6 +13,10 @@ RSpec.describe RuboCop::Cop::Performance::RedundantSplitRegexpArgument, :config 
     expect_no_offenses("'a,b,c'.split(/,+/)")
   end
 
+  it 'accepts when using split method with ignorecase regexp option' do
+    expect_no_offenses("'fooSplitbar'.split(/split/i)")
+  end
+
   it 'registers an offense when the method is split and correctly removes escaping characters' do
     expect_offense(<<~RUBY)
       'a,b,c'.split(/\\./)
