@@ -4,7 +4,7 @@
 
 ### Bug fixes
 
-* [#207](https://github.com/rubocop/rubocop-performance/issues/207): Fix a false positive for `Performance/RedundantEqualityComparisonBlock` when using multiple block arguments. ([@koic][])
+* [#214](https://github.com/rubocop/rubocop-performance/issues/214): Fix a false positive for `Performance/RedundantEqualityComparisonBlock` when using multiple block arguments. ([@koic][])
 
 ## 1.10.0 (2021-03-01)
 
