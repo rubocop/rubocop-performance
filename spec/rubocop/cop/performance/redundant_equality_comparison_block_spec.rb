@@ -71,6 +71,18 @@ RSpec.describe RuboCop::Cop::Performance::RedundantEqualityComparisonBlock, :con
       RUBY
     end
 
+    it 'does not register an offense when using block argument is used for an argument of `is_a`' do
+      expect_no_offenses(<<~RUBY)
+        klasses.all? { |klass| item.is_a?(klass) }
+      RUBY
+    end
+
+    it 'does not register an offense when using block argument is used for an argument of `kind_of?`' do
+      expect_no_offenses(<<~RUBY)
+        klasses.all? { |klass| item.kind_of?(klass) }
+      RUBY
+    end
+
     it 'does not register and corrects an offense when using block argument is not used as it is' do
       expect_no_offenses(<<~RUBY)
         items.all? { |item| item.do_something == other }
