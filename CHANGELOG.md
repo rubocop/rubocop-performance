@@ -5,6 +5,7 @@
 ### Bug fixes
 
 * [#214](https://github.com/rubocop/rubocop-performance/issues/214): Fix a false positive for `Performance/RedundantEqualityComparisonBlock` when using multiple block arguments. ([@koic][])
+* [#216](https://github.com/rubocop/rubocop-performance/issues/216): Fix a false positive for `Performance/RedundantSplitRegexpArgument` when using split method with ignore case regexp option. ([@koic][])
 
 ## 1.10.0 (2021-03-01)
 
