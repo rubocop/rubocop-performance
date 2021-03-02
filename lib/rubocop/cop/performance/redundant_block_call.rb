@@ -78,13 +78,19 @@ module RuboCop
         end
 
         def calls_to_report(argname, body)
-          return [] if blockarg_assigned?(body, argname)
+          return [] if blockarg_assigned?(body, argname) || shadowed_block_argument?(body, argname)
 
           blockarg_calls(body, argname).map do |call|
             return [] if args_include_block_pass?(call)
 
             call
           end
+        end
+
+        def shadowed_block_argument?(body, block_argument_of_method_signature)
+          return false unless body.block_type?
+
+          body.arguments.map(&:source).include?(block_argument_of_method_signature.to_s)
         end
 
         def args_include_block_pass?(blockcall)

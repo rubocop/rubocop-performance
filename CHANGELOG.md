@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#162](https://github.com/rubocop/rubocop-performance/issues/162): Fix a false positive for `Performance/RedundantBlockCall` when an optional block that is overridden by block variable. ([@koic][])
+
 ## 1.10.1 (2021-03-02)
 
 ### Bug fixes
