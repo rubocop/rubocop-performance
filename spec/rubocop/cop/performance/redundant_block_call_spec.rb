@@ -117,11 +117,40 @@ RSpec.describe RuboCop::Cop::Performance::RedundantBlockCall, :config do
     RUBY
   end
 
-  it 'accepts an optional block that is overridden' do
+  it 'accepts an optional block that is overridden by local variable' do
     expect_no_offenses(<<~RUBY)
       def method(&block)
         block = ->(i) { puts i }
         block.call(1)
+      end
+    RUBY
+  end
+
+  it 'accepts an optional block that is overridden by block variable' do
+    expect_no_offenses(<<~RUBY)
+      def method(&block)
+        ->(i) { puts i }.then do |block|
+          block.call(1)
+        end
+      end
+    RUBY
+  end
+
+  it 'registers an offense when an optional block that is not overridden by block variable' do
+    expect_offense(<<~RUBY)
+      def method(&block)
+        ->(i) { puts i }.then do |_block|
+          block.call(1)
+          ^^^^^^^^^^^^^ Use `yield` instead of `block.call`.
+        end
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      def method(&block)
+        ->(i) { puts i }.then do |_block|
+          yield(1)
+        end
       end
     RUBY
   end
