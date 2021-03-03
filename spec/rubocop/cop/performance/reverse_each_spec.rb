@@ -129,4 +129,46 @@ RSpec.describe RuboCop::Cop::Performance::ReverseEach, :config do
       RUBY
     end
   end
+
+  it 'does not register an offense when each is called on reverse and assign the result to lvar' do
+    expect_no_offenses(<<~RUBY)
+      ret = [1, 2, 3].reverse.each { |e| puts e }
+    RUBY
+  end
+
+  it 'does not register an offense when each is called on reverse and assign the result to ivar' do
+    expect_no_offenses(<<~RUBY)
+      @ret = [1, 2, 3].reverse.each { |e| puts e }
+    RUBY
+  end
+
+  it 'does not register an offense when each is called on reverse and assign the result to cvar' do
+    expect_no_offenses(<<~RUBY)
+      @@ret = [1, 2, 3].reverse.each { |e| puts e }
+    RUBY
+  end
+
+  it 'does not register an offense when each is called on reverse and assign the result to gvar' do
+    expect_no_offenses(<<~RUBY)
+      $ret = [1, 2, 3].reverse.each { |e| puts e }
+    RUBY
+  end
+
+  it 'does not register an offense when each is called on reverse and assign the result to constant' do
+    expect_no_offenses(<<~RUBY)
+      RET = [1, 2, 3].reverse.each { |e| puts e }
+    RUBY
+  end
+
+  it 'does not register an offense when each is called on reverse and using the result to method chain' do
+    expect_no_offenses(<<~RUBY)
+      [1, 2, 3].reverse.each { |e| puts e }.last
+    RUBY
+  end
+
+  it 'does not register an offense when each is called on reverse and returning the result' do
+    expect_no_offenses(<<~RUBY)
+      return [1, 2, 3].reverse.each { |e| puts e }
+    RUBY
+  end
 end

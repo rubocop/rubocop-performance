@@ -6,12 +6,20 @@ module RuboCop
       # This cop is used to identify usages of `reverse.each` and
       # change them to use `reverse_each` instead.
       #
+      # If the return value is used, it will not be detected because the result will be different.
+      #
+      # [source,ruby]
+      # ----
+      # [1, 2, 3].reverse.each {} #=> [3, 2, 1]
+      # [1, 2, 3].reverse_each {} #=> [1, 2, 3]
+      # ----
+      #
       # @example
       #   # bad
-      #   [].reverse.each
+      #   items.reverse.each
       #
       #   # good
-      #   [].reverse_each
+      #   items.reverse_each
       class ReverseEach < Base
         include RangeHelp
         extend AutoCorrector
@@ -24,6 +32,8 @@ module RuboCop
         MATCHER
 
         def on_send(node)
+          return if use_return_value?(node)
+
           reverse_each?(node) do
             range = offense_range(node)
 
@@ -34,6 +44,12 @@ module RuboCop
         end
 
         private
+
+        def use_return_value?(node)
+          !!node.ancestors.detect do |ancestor|
+            ancestor.assignment? || ancestor.send_type? || ancestor.return_type?
+          end
+        end
 
         def offense_range(node)
           range_between(node.children.first.loc.selector.begin_pos, node.loc.selector.end_pos)
