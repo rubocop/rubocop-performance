@@ -26,7 +26,7 @@ module RuboCop
 
         def on_send(node)
           return unless (regexp_node = split_call_with_regexp?(node))
-          return if regexp_node.ignore_case?
+          return if regexp_node.ignore_case? || regexp_node.content == ' '
           return unless determinist_regexp?(regexp_node)
 
           add_offense(regexp_node) do |corrector|
