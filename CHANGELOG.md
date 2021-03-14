@@ -6,6 +6,7 @@
 
 * [#162](https://github.com/rubocop/rubocop-performance/issues/162): Fix a false positive for `Performance/RedundantBlockCall` when an optional block that is overridden by block variable. ([@koic][])
 * [#36](https://github.com/rubocop/rubocop-performance/issues/36): Fix a false positive for `Performance/ReverseEach` when `each` is called on `reverse` and using the result value. ([@koic][])
+* [#224](https://github.com/rubocop/rubocop-performance/pull/224): Fix a false positive for `Style/RedundantEqualityComparisonBlock` when using one argument with comma separator in block argument. ([@koic][])
 
 ## 1.10.1 (2021-03-02)
 
