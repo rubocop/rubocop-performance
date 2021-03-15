@@ -59,13 +59,13 @@ RSpec.describe RuboCop::Cop::Performance::RedundantEqualityComparisonBlock, :con
       RUBY
     end
 
-    it 'does not register and corrects an offense when using `all?` without `===` comparison block' do
+    it 'does not register an offense when using `all?` without `===` comparison block' do
       expect_no_offenses(<<~RUBY)
         items.all?(other)
       RUBY
     end
 
-    it 'does not register and corrects an offense when using multiple block arguments' do
+    it 'does not register an offense when using multiple block arguments' do
       expect_no_offenses(<<~RUBY)
         items.all? { |key, _value| key == other }
       RUBY
@@ -83,13 +83,19 @@ RSpec.describe RuboCop::Cop::Performance::RedundantEqualityComparisonBlock, :con
       RUBY
     end
 
-    it 'does not register and corrects an offense when using block argument is not used as it is' do
+    it 'does not register an offense when using block argument is not used as it is' do
       expect_no_offenses(<<~RUBY)
         items.all? { |item| item.do_something == other }
       RUBY
     end
 
-    it 'does not register and corrects an offense when using not target methods with `===` comparison block' do
+    it 'does not register an offense when using one argument with comma separator in block argument' do
+      expect_no_offenses(<<~RUBY)
+        items.all? { |item,| item == other }
+      RUBY
+    end
+
+    it 'does not register an offense when using not target methods with `===` comparison block' do
       expect_no_offenses(<<~RUBY)
         items.do_something { |item| item == other }
       RUBY
