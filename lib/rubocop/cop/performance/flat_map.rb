@@ -3,7 +3,8 @@
 module RuboCop
   module Cop
     module Performance
-      # This cop is used to identify usages of
+      # This cop is used to identify usages of `map { ... }.flatten` and
+      # change them to use `flat_map { ... }` instead.
       #
       # @example
       #   # bad
