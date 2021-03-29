@@ -1039,6 +1039,45 @@ file.each_line { |l| puts l }
 
 * https://docs.gitlab.com/ee/development/performance.html#reading-from-files-and-other-data-sources
 
+== Performance/MapCompact
+
+NOTE: Required Ruby version: 2.7
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Pending
+| Yes
+| Yes (Unsafe)
+| 1.11
+| -
+|===
+
+In Ruby 2.7, `Enumerable#filter_map` has been added.
+
+This cop identifies places where `map { ... }.compact` can be replaced by `filter_map`.
+It is marked as unsafe auto-correction by default because `map { ... }.compact`
+that is not compatible with `filter_map`.
+
+[source,ruby]
+----
+[true, false, nil].compact              #=> [true, false]
+[true, false, nil].filter_map(&:itself) #=> [true]
+----
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+ary.map(&:foo).compact
+ary.collect(&:foo).compact
+
+# good
+ary.filter_map(&:foo)
+ary.map(&:foo).compact!
+----
+
 == Performance/MethodObjectAsBlock
 
 |===
