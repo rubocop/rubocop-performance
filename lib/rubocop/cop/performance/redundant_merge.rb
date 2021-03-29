@@ -8,6 +8,9 @@ module RuboCop
       # You can set the maximum number of key-value pairs to consider
       # an offense with `MaxKeyValuePairs`.
       #
+      # This cop is marked as unsafe because RuboCop cannot determine if the
+      # receiver of `merge!` is actually a hash or not.
+      #
       # @example
       #   # bad
       #   hash.merge!(a: 1)
