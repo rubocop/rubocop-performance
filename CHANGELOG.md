@@ -5,6 +5,7 @@
 ### Changes
 
 * [#228](https://github.com/rubocop/rubocop-performance/pull/228): Mark `Performance/RedundantMerge` as unsafe. ([@dvandersluis][])
+* [#232](https://github.com/rubocop/rubocop-performance/pull/232): Drop Ruby 2.4 support. ([@koic][])
 
 ## 1.10.2 (2021-03-23)
 
