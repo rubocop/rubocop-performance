@@ -63,6 +63,8 @@ module RuboCop
 
         def on_send(node)
           chain_array_allocation?(node) do |fm, sm|
+            return if node.each_descendant(:send).any? { |descendant| descendant.method?(:lazy) }
+
             range = range_between(node.loc.dot.begin_pos, node.source_range.end_pos)
 
             add_offense(range, message: format(MSG, method: fm, second_method: sm))

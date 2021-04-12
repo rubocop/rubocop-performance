@@ -38,4 +38,12 @@ RSpec.describe RuboCop::Cop::Performance::ChainArrayAllocation, :config do
       RUBY
     end
   end
+
+  describe 'when using `Enumerable#lazy`' do
+    it 'does not register an offense' do
+      expect_no_offenses(<<~RUBY)
+        some_array.lazy.map(&:some_obj_method).reject(&:nil?).first
+      RUBY
+    end
+  end
 end
