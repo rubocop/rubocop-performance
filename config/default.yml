@@ -174,6 +174,12 @@ Performance/IoReadlines:
   Enabled: false
   VersionAdded: '1.7'
 
+Performance/MapCompact:
+  Description: 'Use `filter_map` instead of `collection.map(&:do_something).compact`.'
+  Enabled: pending
+  SafeAutoCorrect: false
+  VersionAdded: '1.11'
+
 Performance/MethodObjectAsBlock:
   Description: 'Use block explicitly instead of block-passing a method object.'
   Reference: 'https://github.com/JuanitoFatas/fast-ruby#normal-way-to-apply-method-vs-method-code'

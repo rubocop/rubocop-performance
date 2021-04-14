@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#229](https://github.com/rubocop/rubocop-performance/pull/229): Add new `Add `Performance/MapCompact` cop` cop. ([@koic][])
+
 ### Changes
 
 * [#228](https://github.com/rubocop/rubocop-performance/pull/228): Mark `Performance/RedundantMerge` as unsafe. ([@dvandersluis][])
