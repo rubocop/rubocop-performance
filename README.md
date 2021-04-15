@@ -2,6 +2,7 @@
 
 [![Gem Version](https://badge.fury.io/rb/rubocop-performance.svg)](https://badge.fury.io/rb/rubocop-performance)
 [![CircleCI](https://circleci.com/gh/rubocop/rubocop-performance.svg?style=svg)](https://circleci.com/gh/rubocop/rubocop-performance)
+[![Discord](https://img.shields.io/badge/chat-on%20discord-7289da.svg?sanitize=true)](https://discord.gg/wJjWvGRDmm)
 
 Performance optimization analysis for your projects, as an extension to [RuboCop](https://github.com/rubocop/rubocop).
 
