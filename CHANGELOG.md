@@ -4,7 +4,7 @@
 
 ### New features
 
-* [#229](https://github.com/rubocop/rubocop-performance/pull/229): Add new `Add `Performance/MapCompact` cop` cop. ([@koic][])
+* [#229](https://github.com/rubocop/rubocop-performance/pull/229): Add new `Performance/MapCompact` cop. ([@koic][])
 
 ### Bug fixes
 
