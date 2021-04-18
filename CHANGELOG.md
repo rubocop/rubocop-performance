@@ -5,6 +5,7 @@
 ### New features
 
 * [#229](https://github.com/rubocop/rubocop-performance/pull/229): Add new `Performance/MapCompact` cop. ([@koic][])
+* [#178](https://github.com/rubocop/rubocop-performance/issues/178): Add new `Performance/SelectMap` cop. ([@koic][])
 
 ### Bug fixes
 

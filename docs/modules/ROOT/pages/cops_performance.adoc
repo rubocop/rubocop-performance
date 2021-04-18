@@ -1624,6 +1624,36 @@ array.last(5).reverse
 array.last
 ----
 
+== Performance/SelectMap
+
+NOTE: Required Ruby version: 2.7
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Disabled
+| Yes
+| No
+| 1.11
+| -
+|===
+
+In Ruby 2.7, `Enumerable#filter_map` has been added.
+
+This cop identifies places where `select.map` can be replaced by `filter_map`.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+ary.select(&:foo).map(&:bar)
+ary.filter(&:foo).map(&:bar)
+
+# good
+ary.filter_map { |o| o.bar if o.foo }
+----
+
 == Performance/Size
 
 |===

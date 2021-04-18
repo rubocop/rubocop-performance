@@ -266,6 +266,11 @@ Performance/ReverseFirst:
   Enabled: 'pending'
   VersionAdded: '1.7'
 
+Performance/SelectMap:
+  Description: 'Use `filter_map` instead of `ary.select(&:foo).map(&:bar)`.'
+  Enabled: false
+  VersionAdded: '1.11'
+
 Performance/Size:
   Description: >-
                   Use `size` instead of `count` for counting
