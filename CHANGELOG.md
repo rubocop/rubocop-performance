@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 1.11.0 (2021-04-22)
+
 ### New features
 
 * [#229](https://github.com/rubocop/rubocop-performance/pull/229): Add new `Performance/MapCompact` cop. ([@koic][])
