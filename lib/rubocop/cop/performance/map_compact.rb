@@ -56,7 +56,19 @@ module RuboCop
           add_offense(range) do |corrector|
             corrector.replace(map_node.loc.selector, 'filter_map')
             corrector.remove(compact_loc.dot)
-            corrector.remove(compact_loc.selector)
+            corrector.remove(compact_method_range(node))
+          end
+        end
+
+        private
+
+        def compact_method_range(compact_node)
+          compact_method_range = compact_node.loc.selector
+
+          if compact_node.multiline?
+            range_by_whole_lines(compact_method_range, include_final_newline: true)
+          else
+            compact_method_range
           end
         end
       end

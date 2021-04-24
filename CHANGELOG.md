@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#236](https://github.com/rubocop/rubocop-performance/issues/236): Fix an incorrect auto-correct for `Performance/MapCompact` when using multi-line leading dot method calls. ([@koic][])
+
 ## 1.11.0 (2021-04-22)
 
 ### New features
