@@ -86,6 +86,32 @@ RSpec.describe RuboCop::Cop::Performance::MapCompact, :config do
       RUBY
     end
 
+    it 'registers an offense when using `map { ... }.compact`' do
+      expect_offense(<<~RUBY)
+        collection.map { |item|
+                   ^^^^^^^^^^^^ Use `filter_map` instead.
+        }.compact
+      RUBY
+
+      expect_correction(<<~RUBY)
+        collection.filter_map { |item|
+        }
+      RUBY
+    end
+
+    it 'registers an offense when invoking a method after `map { ... }.compact`' do
+      expect_offense(<<~RUBY)
+        collection.map { |item|
+                   ^^^^^^^^^^^^ Use `filter_map` instead.
+        }.compact.do_something
+      RUBY
+
+      expect_correction(<<~RUBY)
+        collection.filter_map { |item|
+        }.do_something
+      RUBY
+    end
+
     it 'does not register an offense when using `collection.map(&:do_something).compact!`' do
       expect_no_offenses(<<~RUBY)
         collection.map(&:do_something).compact!

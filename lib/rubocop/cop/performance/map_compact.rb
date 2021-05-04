@@ -63,13 +63,19 @@ module RuboCop
         private
 
         def compact_method_range(compact_node)
+          chained_method = compact_node.parent
           compact_method_range = compact_node.loc.selector
 
-          if compact_node.multiline?
+          if compact_node.multiline? &&
+             chained_method && !invoke_method_after_map_compact_on_same_line?(compact_node, chained_method)
             range_by_whole_lines(compact_method_range, include_final_newline: true)
           else
             compact_method_range
           end
+        end
+
+        def invoke_method_after_map_compact_on_same_line?(compact_node, chained_method)
+          compact_node.loc.selector.line == chained_method.loc.selector.line
         end
       end
     end
