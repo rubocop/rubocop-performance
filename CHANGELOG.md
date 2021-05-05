@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 1.11.2 (2021-05-05)
+
 ### Bug fixes
 
 * [#238](https://github.com/rubocop/rubocop-performance/issues/238): Fix an incorrect auto-correct for `Performance/MapCompact` when invoking a method after `map { ... }.compact` on the same line. ([@koic][])
