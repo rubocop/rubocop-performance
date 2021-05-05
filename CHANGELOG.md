@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### Changes
+
+* [#240](https://github.com/rubocop/rubocop-performance/issues/240): Retire `Performance/Casecmp` cop. ([@parkerfinch][])
+
 ## 1.11.2 (2021-05-05)
 
 ### Bug fixes
@@ -271,3 +275,4 @@
 [@dvandersluis]: https://github.com/dvandersluis
 [@ghiculescu]: https://github.com/ghiculescu
 [@mfbmina]: https://github.com/mfbmina
+[@parkerfinch]: https://github.com/parkerfinch

@@ -52,7 +52,7 @@ Performance/Casecmp:
   Description: >-
              Use `casecmp` rather than `downcase ==`, `upcase ==`, `== downcase`, or `== upcase`..
   Reference: 'https://github.com/JuanitoFatas/fast-ruby#stringcasecmp-vs-stringdowncase---code'
-  Enabled: true
+  Enabled: false
   Safe: false
   VersionAdded: '0.36'
 
