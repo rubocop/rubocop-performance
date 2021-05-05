@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#242](https://github.com/rubocop/rubocop-performance/issues/242): Fix an error for `Performance/MapCompact` when using multiline `map { ... }.compact` and assigning to return value. ([@koic][])
+
 ## 1.11.2 (2021-05-05)
 
 ### Bug fixes
