@@ -136,6 +136,12 @@ RSpec.describe RuboCop::Cop::Performance::MapCompact, :config do
       RUBY
     end
 
+    it 'does not register an offense when using `collection.compact.map(&:do_something)`' do
+      expect_no_offenses(<<~RUBY)
+        collection.compact.map(&:do_something)
+      RUBY
+    end
+
     it 'does not register an offense when using `collection.not_map_method(&:do_something).compact`' do
       expect_no_offenses(<<~RUBY)
         collection.not_map_method(&:do_something).compact
