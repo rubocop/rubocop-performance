@@ -1076,6 +1076,7 @@ ary.collect(&:foo).compact
 # good
 ary.filter_map(&:foo)
 ary.map(&:foo).compact!
+ary.compact.map(&:foo)
 ----
 
 == Performance/MethodObjectAsBlock

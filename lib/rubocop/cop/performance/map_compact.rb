@@ -23,6 +23,7 @@ module RuboCop
       #   # good
       #   ary.filter_map(&:foo)
       #   ary.map(&:foo).compact!
+      #   ary.compact.map(&:foo)
       #
       class MapCompact < Base
         include RangeHelp
