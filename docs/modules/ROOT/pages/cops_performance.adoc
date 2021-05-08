@@ -548,16 +548,17 @@ NOTE: Required Ruby version: 2.5
 | Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 
 | Enabled
-| Yes
-| Yes
+| No
+| Yes (Unsafe)
 | 1.6
-| -
+| 1.12
 |===
 
 In Ruby 2.5, `String#delete_prefix` has been added.
 
 This cop identifies places where `gsub(/\Aprefix/, '')` and `sub(/\Aprefix/, '')`
 can be replaced by `delete_prefix('prefix')`.
+It is marked as unsafe by default because `Pathname` has `sub` but not `delete_prefix`.
 
 This cop has `SafeMultiline` configuration option that `true` by default because
 `^prefix` is unsafe as it will behave incompatible with `delete_prefix`
@@ -621,16 +622,17 @@ NOTE: Required Ruby version: 2.5
 | Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 
 | Enabled
-| Yes
-| Yes
+| No
+| Yes (Unsafe)
 | 1.6
-| -
+| 1.12
 |===
 
 In Ruby 2.5, `String#delete_suffix` has been added.
 
 This cop identifies places where `gsub(/suffix\z/, '')` and `sub(/suffix\z/, '')`
 can be replaced by `delete_suffix('suffix')`.
+It is marked as unsafe by default because `Pathname` has `sub` but not `delete_suffix`.
 
 This cop has `SafeMultiline` configuration option that `true` by default because
 `suffix$` is unsafe as it will behave incompatible with `delete_suffix?`
