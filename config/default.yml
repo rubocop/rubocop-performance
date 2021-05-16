@@ -96,14 +96,18 @@ Performance/Count:
 Performance/DeletePrefix:
   Description: 'Use `delete_prefix` instead of `gsub`.'
   Enabled: true
+  Safe: false
   SafeMultiline: true
   VersionAdded: '1.6'
+  VersionChanged: '1.12'
 
 Performance/DeleteSuffix:
   Description: 'Use `delete_suffix` instead of `gsub`.'
   Enabled: true
+  Safe: false
   SafeMultiline: true
   VersionAdded: '1.6'
+  VersionChanged: '1.12'
 
 Performance/Detect:
   Description: >-

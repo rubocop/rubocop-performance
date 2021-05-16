@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### Changes
+
+* [#245](https://github.com/rubocop/rubocop-performance/issues/245): Mark `Performance/DeletePrefix` and `Performance/DeleteSuffix` as unsafe. ([@koic][])
+
 ## 1.11.3 (2021-05-06)
 
 ### Bug fixes
