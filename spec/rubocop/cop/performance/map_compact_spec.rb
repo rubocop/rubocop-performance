@@ -73,6 +73,22 @@ RSpec.describe RuboCop::Cop::Performance::MapCompact, :config do
       RUBY
     end
 
+    it 'registers an offense when using `map.compact.first` with multi-line trailing dot method calls' do
+      expect_offense(<<~RUBY)
+        collection.
+          map { |item| item.do_something }.
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `filter_map` instead.
+          compact.
+          first
+      RUBY
+
+      expect_correction(<<~RUBY)
+        collection.
+          filter_map { |item| item.do_something }.
+          first
+      RUBY
+    end
+
     it 'registers an offense when using `map.compact.first` and there is a line break after `map.compact`' do
       expect_offense(<<~RUBY)
         collection.map { |item| item.do_something }.compact
