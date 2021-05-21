@@ -45,25 +45,15 @@ RSpec.describe RuboCop::Cop::Performance::RedundantStringChars, :config do
     RUBY
   end
 
-  it 'registers an offense and corrects when using `str.chars.last`' do
-    expect_offense(<<~RUBY)
+  it 'does not register an offense when using `str.chars.last`' do
+    expect_no_offenses(<<~RUBY)
       str.chars.last
-          ^^^^^^^^^^ Use `[-1]` instead of `chars.last`.
-    RUBY
-
-    expect_correction(<<~RUBY)
-      str[-1]
     RUBY
   end
 
-  it 'registers an offense and corrects when using `str.chars.last(2)`' do
-    expect_offense(<<~RUBY)
+  it 'does not register an offense when using `str.chars.last(2)`' do
+    expect_no_offenses(<<~RUBY)
       str.chars.last(2)
-          ^^^^^^^^^^^^^ Use `[-2..-1].chars` instead of `chars.last(2)`.
-    RUBY
-
-    expect_correction(<<~RUBY)
-      str[-2..-1].chars
     RUBY
   end
 
@@ -78,14 +68,9 @@ RSpec.describe RuboCop::Cop::Performance::RedundantStringChars, :config do
     RUBY
   end
 
-  it 'registers an offense and corrects when using `str.chars.drop(2)`' do
-    expect_offense(<<~RUBY)
+  it 'does not register an offense when using `str.chars.drop(2)`' do
+    expect_no_offenses(<<~RUBY)
       str.chars.drop(2)
-          ^^^^^^^^^^^^^ Use `[2..-1].chars` instead of `chars.drop(2)`.
-    RUBY
-
-    expect_correction(<<~RUBY)
-      str[2..-1].chars
     RUBY
   end
 
