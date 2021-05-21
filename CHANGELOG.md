@@ -5,6 +5,7 @@
 ### Changes
 
 * [#245](https://github.com/rubocop/rubocop-performance/issues/245): Mark `Performance/DeletePrefix` and `Performance/DeleteSuffix` as unsafe. ([@koic][])
+* [#249](https://github.com/rubocop/rubocop-performance/issues/249): Mark `Performance/RedundantStringChars` as unsafe. ([@tejasbubane][])
 
 ## 1.11.3 (2021-05-06)
 

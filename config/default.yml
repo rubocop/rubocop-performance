@@ -248,8 +248,10 @@ Performance/RedundantSplitRegexpArgument:
 
 Performance/RedundantStringChars:
   Description: 'Checks for redundant `String#chars`.'
+  Safe: false
   Enabled: 'pending'
   VersionAdded: '1.7'
+  VersionChanged: '1.12'
 
 Performance/RegexpMatch:
   Description: >-

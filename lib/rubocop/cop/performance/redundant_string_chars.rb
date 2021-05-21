@@ -4,6 +4,9 @@ module RuboCop
   module Cop
     module Performance
       # This cop checks for redundant `String#chars`.
+      # It is marked unsafe by default because suggested autocorrections like
+      # `str[-2..-1]` could return `nil` when `str` holds short values and
+      # `.chars` on that can raise error - resulting in unsafe behaviour.
       #
       # @example
       #   # bad

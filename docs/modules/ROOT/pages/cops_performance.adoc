@@ -1425,10 +1425,10 @@ a deterministic regexp to a string.
 | Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 
 | Pending
-| Yes
-| Yes
+| No
+| Yes (Unsafe)
 | 1.7
-| -
+| 1.12
 |===
 
 This cop checks for redundant `String#chars`.
