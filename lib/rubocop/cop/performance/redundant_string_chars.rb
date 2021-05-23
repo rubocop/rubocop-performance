@@ -16,35 +16,35 @@ module RuboCop
       #   # bad
       #   str.chars.first
       #   str.chars.first(2)
-      #   str.chars.last
-      #   str.chars.last(2)
       #
       #   # good
       #   str[0]
       #   str[0...2].chars
-      #   str[-1]
-      #   str[-2..-1].chars
       #
       #   # bad
       #   str.chars.take(2)
-      #   str.chars.drop(2)
       #   str.chars.length
       #   str.chars.size
       #   str.chars.empty?
       #
       #   # good
       #   str[0...2].chars
-      #   str[2..-1].chars
       #   str.length
       #   str.size
       #   str.empty?
+      #
+      #   # For example, if the receiver is a blank string, it will be incompatible.
+      #   # If a negative value is specified for the receiver, `nil` is returned.
+      #   str.chars.last    # Incompatible with `str[-1]`.
+      #   str.chars.last(2) # Incompatible with `str[-2..-1].chars`.
+      #   str.chars.drop(2) # Incompatible with `str[2..-1].chars`.
       #
       class RedundantStringChars < Base
         include RangeHelp
         extend AutoCorrector
 
         MSG = 'Use `%<good_method>s` instead of `%<bad_method>s`.'
-        RESTRICT_ON_SEND = %i[[] slice first last take drop length size empty?].freeze
+        RESTRICT_ON_SEND = %i[[] slice first take length size empty?].freeze
 
         def_node_matcher :redundant_chars_call?, <<~PATTERN
           (send $(send _ :chars) $_ $...)
@@ -80,7 +80,6 @@ module RuboCop
           format(MSG, good_method: good_method, bad_method: bad_method)
         end
 
-        # rubocop:disable Metrics/CyclomaticComplexity, Metrics/MethodLength
         def build_good_method(method, args)
           case method
           when :[], :slice
@@ -91,21 +90,12 @@ module RuboCop
             else
               '[0]'
             end
-          when :last
-            if args.any?
-              "[-#{args.first.source}..-1].chars"
-            else
-              '[-1]'
-            end
           when :take
             "[0...#{args.first.source}].chars"
-          when :drop
-            "[#{args.first.source}..-1].chars"
           else
             ".#{method}"
           end
         end
-        # rubocop:enable Metrics/CyclomaticComplexity, Metrics/MethodLength
 
         def build_bad_method(method, args)
           case method
