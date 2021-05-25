@@ -45,7 +45,10 @@ module RuboCop
           return unless dup_string?(node) || string_new?(node)
 
           add_offense(node) do |corrector|
-            corrector.replace(node, "+#{string_value(node)}")
+            string_value = "+#{string_value(node)}"
+            string_value = "(#{string_value})" if node.parent&.send_type?
+
+            corrector.replace(node, string_value)
           end
         end
 

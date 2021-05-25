@@ -6,6 +6,7 @@
 
 * [#247](https://github.com/rubocop/rubocop-performance/issues/247): Fix an incorrect auto-correct for `Performance/MapCompact` when using multi-line trailing dot method calls. ([@koic][])
 * [#249](https://github.com/rubocop/rubocop-performance/issues/249): Fix a false positive for `Performance/RedundantStringChars` when using `str.chars.last` and `str.chars.drop`. ([@koic][])
+* [#252](https://github.com/rubocop/rubocop-performance/issues/252): Fix an incorrect auto-correct for `Performance/UnfreezeString` when invoking a method after `String.new` with a string. ([@koic][])
 
 ### Changes
 
