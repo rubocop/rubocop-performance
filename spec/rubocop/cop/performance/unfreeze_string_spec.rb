@@ -85,6 +85,17 @@ RSpec.describe RuboCop::Cop::Performance::UnfreezeString, :config do
     RUBY
   end
 
+  it 'registers an offense and corrects when invoking a method after `String.new` with a string' do
+    expect_offense(<<~RUBY)
+      String.new('foo').force_encoding(Encoding::ASCII)
+      ^^^^^^^^^^^^^^^^^ Use unary plus to get an unfrozen string literal.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      (+'foo').force_encoding(Encoding::ASCII)
+    RUBY
+  end
+
   it 'accepts an empty string with unary plus operator' do
     expect_no_offenses(<<~RUBY)
       +""
