@@ -67,7 +67,7 @@ module RuboCop
 
         def on_send(node)
           return unless (receiver, bad_method, regexp_str, replace_string = delete_suffix_candidate?(node))
-          return unless replace_string.blank?
+          return unless replace_string.empty?
 
           good_method = PREFERRED_METHODS[bad_method]
 
