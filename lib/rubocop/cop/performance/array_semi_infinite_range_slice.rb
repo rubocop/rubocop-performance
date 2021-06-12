@@ -11,11 +11,11 @@ module RuboCop
       #
       # @example
       #   # bad
-      #   # array[..2]
-      #   # array[...2]
-      #   # array[2..]
-      #   # array[2...]
-      #   # array.slice(..2)
+      #   array[..2]
+      #   array[...2]
+      #   array[2..]
+      #   array[2...]
+      #   array.slice(..2)
       #
       #   # good
       #   array.take(3)

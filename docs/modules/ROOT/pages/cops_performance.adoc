@@ -55,11 +55,11 @@ This cop is also unsafe for string slices because strings do not have `#take` an
 [source,ruby]
 ----
 # bad
-# array[..2]
-# array[...2]
-# array[2..]
-# array[2...]
-# array.slice(..2)
+array[..2]
+array[...2]
+array[2..]
+array[2...]
+array.slice(..2)
 
 # good
 array.take(3)
