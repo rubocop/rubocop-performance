@@ -58,10 +58,8 @@ module RuboCop
         include RangeHelp
         extend AutoCorrector
 
-        MSG = 'Reordering `when` conditions with a splat to the end ' \
-          'of the `when` branches can improve performance.'
-        ARRAY_MSG = 'Pass the contents of array literals ' \
-          'directly to `when` conditions.'
+        MSG = 'Reordering `when` conditions with a splat to the end of the `when` branches can improve performance.'
+        ARRAY_MSG = 'Pass the contents of array literals directly to `when` conditions.'
 
         def on_case(case_node)
           when_conditions = case_node.when_branches.flat_map(&:conditions)
@@ -134,13 +132,11 @@ module RuboCop
         end
 
         def new_condition_with_then(node, new_condition)
-          "\n#{indent_for(node)}when " \
-          "#{new_condition} then #{node.body.source}"
+          "\n#{indent_for(node)}when #{new_condition} then #{node.body.source}"
         end
 
         def new_branch_without_then(node, new_condition)
-          "\n#{indent_for(node)}when #{new_condition}" \
-          "\n#{indent_for(node.body)}#{node.body.source}"
+          "\n#{indent_for(node)}when #{new_condition}\n#{indent_for(node.body)}#{node.body.source}"
         end
 
         def indent_for(node)

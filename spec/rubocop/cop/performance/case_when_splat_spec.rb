@@ -192,8 +192,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat, :config do
   end
 
   context 'autocorrect' do
-    it 'corrects a single when with splat expansion followed by ' \
-      'another value' do
+    it 'corrects a single when with splat expansion followed by another value' do
       source = <<~RUBY
         case foo
         when *Foo, Bar, Baz
@@ -209,8 +208,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat, :config do
       RUBY
     end
 
-    it 'corrects a when with splat expansion followed by another value ' \
-      'when there are multiple whens' do
+    it 'corrects a when with splat expansion followed by another value when there are multiple whens' do
       source = <<~RUBY
         case foo
         when *Foo, Bar
@@ -230,8 +228,8 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat, :config do
       RUBY
     end
 
-    it 'corrects a when with multiple out of order splat expansions ' \
-      'followed by other values when there are multiple whens' do
+    it 'corrects a when with multiple out of order splat expansions followed by other values ' \
+       'when there are multiple whens' do
       source = <<~RUBY
         case foo
         when *Foo, Bar, *Baz, Qux

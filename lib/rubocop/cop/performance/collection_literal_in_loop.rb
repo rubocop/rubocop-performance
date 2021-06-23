@@ -33,7 +33,7 @@ module RuboCop
       #
       class CollectionLiteralInLoop < Base
         MSG = 'Avoid immutable %<literal_class>s literals in loops. '\
-          'It is better to extract it into a local variable or a constant.'
+              'It is better to extract it into a local variable or a constant.'
 
         POST_CONDITION_LOOP_TYPES = %i[while_post until_post].freeze
         LOOP_TYPES = (POST_CONDITION_LOOP_TYPES + %i[while until for]).freeze

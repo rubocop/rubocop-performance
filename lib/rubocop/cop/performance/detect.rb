@@ -31,14 +31,10 @@ module RuboCop
 
         CANDIDATE_METHODS = Set[:select, :find_all, :filter].freeze
 
-        MSG = 'Use `%<prefer>s` instead of ' \
-              '`%<first_method>s.%<second_method>s`.'
-        REVERSE_MSG = 'Use `reverse.%<prefer>s` instead of ' \
-                      '`%<first_method>s.%<second_method>s`.'
-        INDEX_MSG = 'Use `%<prefer>s` instead of ' \
-              '`%<first_method>s[%<index>i]`.'
-        INDEX_REVERSE_MSG = 'Use `reverse.%<prefer>s` instead of ' \
-              '`%<first_method>s[%<index>i]`.'
+        MSG = 'Use `%<prefer>s` instead of `%<first_method>s.%<second_method>s`.'
+        REVERSE_MSG = 'Use `reverse.%<prefer>s` instead of `%<first_method>s.%<second_method>s`.'
+        INDEX_MSG = 'Use `%<prefer>s` instead of `%<first_method>s[%<index>i]`.'
+        INDEX_REVERSE_MSG = 'Use `reverse.%<prefer>s` instead of `%<first_method>s[%<index>i]`.'
         RESTRICT_ON_SEND = %i[first last []].freeze
 
         def_node_matcher :detect_candidate?, <<~PATTERN

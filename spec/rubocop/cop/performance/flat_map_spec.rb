@@ -35,8 +35,7 @@ RSpec.describe RuboCop::Cop::Performance::FlatMap, :config do
       RUBY
     end
 
-    it "does not register an offense when calling #{method}...#{flatten} " \
-      'with a number greater than 1' do
+    it "does not register an offense when calling #{method}...#{flatten} with a number greater than 1" do
       expect_no_offenses("[1, 2, 3, 4].#{method} { |e| [e, e] }.#{flatten}(3)")
     end
 
