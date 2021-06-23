@@ -18,6 +18,19 @@ AllCops:
 InternalAffairs/NodeMatcherDirective:
   Enabled: false
 
+Naming/InclusiveLanguage:
+  FlaggedTerms:
+    whitelist:
+      Suggestions:
+        - allowlist
+    blacklist:
+      Suggestions:
+        - denylist
+    master:
+      AllowedRegex:
+        - 'blob/master/'
+        - 'master \(unreleased\)'
+
 Naming/PredicateName:
   # Method define macros for dynamically generated method.
   MethodDefinitionMacros:
