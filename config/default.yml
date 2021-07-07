@@ -99,7 +99,7 @@ Performance/DeletePrefix:
   Safe: false
   SafeMultiline: true
   VersionAdded: '1.6'
-  VersionChanged: '1.12'
+  VersionChanged: '1.11'
 
 Performance/DeleteSuffix:
   Description: 'Use `delete_suffix` instead of `gsub`.'
@@ -107,7 +107,7 @@ Performance/DeleteSuffix:
   Safe: false
   SafeMultiline: true
   VersionAdded: '1.6'
-  VersionChanged: '1.12'
+  VersionChanged: '1.11'
 
 Performance/Detect:
   Description: >-

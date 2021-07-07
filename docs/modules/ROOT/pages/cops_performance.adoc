@@ -551,7 +551,7 @@ NOTE: Required Ruby version: 2.5
 | No
 | Yes (Unsafe)
 | 1.6
-| 1.12
+| 1.11
 |===
 
 In Ruby 2.5, `String#delete_prefix` has been added.
@@ -625,7 +625,7 @@ NOTE: Required Ruby version: 2.5
 | No
 | Yes (Unsafe)
 | 1.6
-| 1.12
+| 1.11
 |===
 
 In Ruby 2.5, `String#delete_suffix` has been added.
