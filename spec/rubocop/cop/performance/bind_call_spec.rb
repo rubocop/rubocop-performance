@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Performance::BindCall, :config do
-  # TODO: The following is no longer required when RuboCop 0.78 or lower support will be dropped.
-  # https://github.com/rubocop/rubocop/pull/7605
-  let(:ruby_version) { 2.7 }
-
   context 'TargetRubyVersion <= 2.6', :ruby26 do
     it 'does not register an offense when using `bind(obj).call(args, ...)`' do
       expect_no_offenses(<<~RUBY)
