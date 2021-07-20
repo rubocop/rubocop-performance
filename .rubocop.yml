@@ -18,6 +18,12 @@ AllCops:
 InternalAffairs/NodeMatcherDirective:
   Enabled: false
 
+Naming/InclusiveLanguage:
+  FlaggedTerms:
+    offence:
+      Suggestions:
+        - offense
+
 Naming/PredicateName:
   # Method define macros for dynamically generated method.
   MethodDefinitionMacros:

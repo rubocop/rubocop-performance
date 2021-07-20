@@ -2,7 +2,7 @@
 
 RSpec.describe RuboCop::Cop::Performance::SortReverse, :config do
   let(:config) do
-    # Suppress ChainArrayAllocation offences
+    # Suppress ChainArrayAllocation offenses
     RuboCop::Config.new('Performance/ChainArrayAllocation' => { 'Enabled' => false })
   end
 
