@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Performance::MapCompact, :config do
-  context 'TargetRubyVersion >= 2.7', :ruby27 do
+  context 'when TargetRubyVersion >= 2.7', :ruby27 do
     it 'registers an offense when using `collection.map(&:do_something).compact`' do
       expect_offense(<<~RUBY)
         collection.map(&:do_something).compact
@@ -184,7 +184,7 @@ RSpec.describe RuboCop::Cop::Performance::MapCompact, :config do
     end
   end
 
-  context 'TargetRubyVersion <= 2.6', :ruby26 do
+  context 'when TargetRubyVersion <= 2.6', :ruby26 do
     it 'does not register an offense when using `collection.map(&:do_something).compact`' do
       expect_no_offenses(<<~RUBY)
         collection.map(&:do_something).compact

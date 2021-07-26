@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Performance::SelectMap, :config do
-  context 'TargetRubyVersion >= 2.7', :ruby27 do
+  context 'when TargetRubyVersion >= 2.7', :ruby27 do
     it 'registers an offense when using `select(&:...).map(&:...)`' do
       expect_offense(<<~RUBY)
         ary.select(&:present?).map(&:to_i)
@@ -102,7 +102,7 @@ RSpec.describe RuboCop::Cop::Performance::SelectMap, :config do
     end
   end
 
-  context 'TargetRubyVersion <= 2.6', :ruby26 do
+  context 'when TargetRubyVersion <= 2.6', :ruby26 do
     it 'does not register an offense when using `select.map`' do
       expect_no_offenses(<<~RUBY)
         ary.select(&:present?).map(&:to_i)

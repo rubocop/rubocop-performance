@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Performance::ArraySemiInfiniteRangeSlice, :config do
-  context 'TargetRubyVersion >= 2.7', :ruby27 do
+  context 'when TargetRubyVersion >= 2.7', :ruby27 do
     it 'registers an offense and corrects when using `[]` with beginless range' do
       expect_offense(<<~RUBY)
         array[..2]
