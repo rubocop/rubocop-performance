@@ -106,4 +106,28 @@ RSpec.describe RuboCop::Cop::Performance::RedundantEqualityComparisonBlock, :con
       items.do_something { |item| item == other }
     RUBY
   end
+
+  it 'does not register an offense when using block argument is used for an argument of RHS operand' do
+    expect_no_offenses(<<~RUBY)
+      items.any? { |item| item == do_something(item) }
+    RUBY
+  end
+
+  it 'does not register an offense when using block argument is used for a argument of LHS operand' do
+    expect_no_offenses(<<~RUBY)
+      items.any? { |item| do_something(item) == item }
+    RUBY
+  end
+
+  it 'does not register an offense when using block argument is used for a nested argument of RHS operand' do
+    expect_no_offenses(<<~RUBY)
+      items.any? { |item| item == do_something[0..item] }
+    RUBY
+  end
+
+  it 'does not register an offense when using block argument is used for a nested argument of LHS operand' do
+    expect_no_offenses(<<~RUBY)
+      items.any? { |item| do_something[0..item] == item }
+    RUBY
+  end
 end
