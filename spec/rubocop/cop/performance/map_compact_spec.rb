@@ -128,6 +128,23 @@ RSpec.describe RuboCop::Cop::Performance::MapCompact, :config do
       RUBY
     end
 
+    it 'registers an offense when using multi-line `collection.map { ... }.compact` as a method argument' do
+      expect_offense(<<~RUBY)
+        do_something(
+          collection.map { |item|
+                     ^^^^^^^^^^^^ Use `filter_map` instead.
+          }.compact
+        )
+      RUBY
+
+      expect_correction(<<~RUBY)
+        do_something(
+          collection.filter_map { |item|
+          }
+        )
+      RUBY
+    end
+
     it 'registers an offense when using multiline `map { ... }.compact` and assigning to return value' do
       expect_offense(<<~RUBY)
         ret = collection.map do |item|
