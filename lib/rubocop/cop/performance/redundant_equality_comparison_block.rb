@@ -74,10 +74,25 @@ module RuboCop
 
         def new_argument(block_argument, block_body)
           if block_argument.source == block_body.receiver.source
-            block_body.first_argument.source
+            rhs = block_body.first_argument
+            return if use_block_argument_in_method_argument_of_operand?(block_argument, rhs)
+
+            rhs.source
           elsif block_argument.source == block_body.first_argument.source
-            block_body.receiver.source
+            lhs = block_body.receiver
+            return if use_block_argument_in_method_argument_of_operand?(block_argument, lhs)
+
+            lhs.source
           end
+        end
+
+        def use_block_argument_in_method_argument_of_operand?(block_argument, operand)
+          return false unless operand.send_type?
+
+          arguments = operand.arguments
+          arguments.inject(arguments.map(&:source)) do |operand_sources, argument|
+            operand_sources + argument.each_descendant(:lvar).map(&:source)
+          end.any?(block_argument.source)
         end
 
         def offense_range(node)
