@@ -4,7 +4,7 @@ module RuboCop
   module Performance
     # This module holds the RuboCop Performance version information.
     module Version
-      STRING = '1.11.4'
+      STRING = '1.11.5'
 
       def self.document_version
         STRING.match('\d+\.\d+').to_s

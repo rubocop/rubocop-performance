@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 1.11.5 (2021-08-18)
+
 ### Bug fixes
 
 * [#255](https://github.com/rubocop/rubocop-performance/issues/255): Fix a false positive for `Performance/RedundantEqualityComparisonBlock` when using block argument is used for an argument of operand. ([@koic][])
