@@ -47,9 +47,6 @@ module RuboCop
       class DeleteSuffix < Base
         include RegexpMetacharacter
         extend AutoCorrector
-        extend TargetRubyVersion
-
-        minimum_target_ruby_version 2.5
 
         MSG = 'Use `%<prefer>s` instead of `%<current>s`.'
         RESTRICT_ON_SEND = %i[gsub gsub! sub sub!].freeze

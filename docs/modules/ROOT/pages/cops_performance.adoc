@@ -542,8 +542,6 @@ Model.select(:value).count
 
 == Performance/DeletePrefix
 
-NOTE: Required Ruby version: 2.5
-
 |===
 | Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 
@@ -615,8 +613,6 @@ str.sub!(/^prefix/, '')
 |===
 
 == Performance/DeleteSuffix
-
-NOTE: Required Ruby version: 2.5
 
 |===
 | Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
@@ -1237,8 +1233,6 @@ end
 * https://github.com/JuanitoFatas/fast-ruby#proccall-and-block-arguments-vs-yieldcode
 
 == Performance/RedundantEqualityComparisonBlock
-
-NOTE: Required Ruby version: 2.5
 
 |===
 | Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged

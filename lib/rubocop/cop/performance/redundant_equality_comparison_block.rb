@@ -24,9 +24,6 @@ module RuboCop
       #
       class RedundantEqualityComparisonBlock < Base
         extend AutoCorrector
-        extend TargetRubyVersion
-
-        minimum_target_ruby_version 2.5
 
         MSG = 'Use `%<prefer>s` instead of block.'
 
