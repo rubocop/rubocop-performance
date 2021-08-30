@@ -90,7 +90,7 @@ module RuboCop
         end
 
         def replacement(method, index)
-          if method == :last || method == :[] && index == -1
+          if method == :last || (method == :[] && index == -1)
             "reverse.#{preferred_method}"
           else
             preferred_method

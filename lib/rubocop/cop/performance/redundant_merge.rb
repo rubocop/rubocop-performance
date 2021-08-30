@@ -91,7 +91,7 @@ module RuboCop
         end
 
         def non_redundant_pairs?(receiver, pairs)
-          pairs.size > 1 && !receiver.pure? || pairs.size > max_key_value_pairs
+          (pairs.size > 1 && !receiver.pure?) || pairs.size > max_key_value_pairs
         end
 
         def kwsplat_used?(pairs)
