@@ -236,9 +236,7 @@ RSpec.describe RuboCop::Cop::Performance::Count, :config do
                  ^^^^^^^^^^^^^^^^^^^^^^^^^ Use `count` instead of `reject...size`.
         RUBY
 
-        expect_correction(<<~RUBY)
-          [1, 2].reject { |e| e > 2 }.size
-        RUBY
+        expect_no_corrections
       end
 
       it 'reject...count' do
@@ -247,9 +245,7 @@ RSpec.describe RuboCop::Cop::Performance::Count, :config do
                  ^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `count` instead of `reject...count`.
         RUBY
 
-        expect_correction(<<~RUBY)
-          [1, 2].reject { |e| e > 2 }.count
-        RUBY
+        expect_no_corrections
       end
 
       it 'reject...length' do
@@ -258,9 +254,7 @@ RSpec.describe RuboCop::Cop::Performance::Count, :config do
                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `count` instead of `reject...length`.
         RUBY
 
-        expect_correction(<<~RUBY)
-          [1, 2].reject { |e| e > 2 }.length
-        RUBY
+        expect_no_corrections
       end
 
       it 'select...count when count has a block' do
