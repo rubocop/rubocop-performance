@@ -293,7 +293,7 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
         end
       RUBY2
 
-      include_examples 'offense', "#{name}, #{var} reference is overrided",
+      include_examples 'offense', "#{name}, #{var} reference is overridden",
                        <<-RUBY, <<-RUBY2
         if #{cond}
           do_something
