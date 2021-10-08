@@ -1848,7 +1848,7 @@ for receiver is multiline string.
 | Yes
 | Yes (Unsafe)
 | 1.7
-| -
+| 1.12
 |===
 
 This cop identifies unnecessary use of a regex where
@@ -1871,16 +1871,6 @@ This cop's offenses are not safe to auto-correct if a receiver is nil.
 # good
 'abc'.include?('ab')
 ----
-
-=== Configurable attributes
-
-|===
-| Name | Default value | Configurable values
-
-| AutoCorrect
-| `false`
-| Boolean
-|===
 
 == Performance/StringReplacement
 
