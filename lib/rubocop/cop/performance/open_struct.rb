@@ -11,6 +11,10 @@ module RuboCop
       # especially in case of single-threaded
       # applications with multiple `OpenStruct` instantiations.
       #
+      # @safety
+      #   This cop is unsafe because `OpenStruct.new` and `Struct.new`
+      #   are not equivalent.
+      #
       # @example
       #   # bad
       #   class MyClass

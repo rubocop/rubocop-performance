@@ -9,8 +9,9 @@ module RuboCop
       # By default, `Object#===` behaves the same as `Object#==`, but this
       # behavior is appropriately overridden in subclass. For example,
       # `Range#===` returns `true` when argument is within the range.
-      # Therefore, It is marked as unsafe by default because `===` and `==`
-      # do not always behave the same.
+      #
+      # @safety
+      #   This cop is unsafe because `===` and `==` do not always behave the same.
       #
       # @example
       #   # bad

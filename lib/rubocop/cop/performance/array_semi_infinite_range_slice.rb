@@ -7,7 +7,9 @@ module RuboCop
       # can be replaced by `Array#take` and `Array#drop`.
       # This cop was created due to a mistake in microbenchmark and hence is disabled by default.
       # Refer https://github.com/rubocop/rubocop-performance/pull/175#issuecomment-731892717
-      # This cop is also unsafe for string slices because strings do not have `#take` and `#drop` methods.
+      #
+      # @safety
+      #   This cop is unsafe for string slices because strings do not have `#take` and `#drop` methods.
       #
       # @example
       #   # bad

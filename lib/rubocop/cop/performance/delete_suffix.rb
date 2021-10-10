@@ -7,13 +7,15 @@ module RuboCop
       #
       # This cop identifies places where `gsub(/suffix\z/, '')` and `sub(/suffix\z/, '')`
       # can be replaced by `delete_suffix('suffix')`.
-      # It is marked as unsafe by default because `Pathname` has `sub` but not `delete_suffix`.
       #
       # This cop has `SafeMultiline` configuration option that `true` by default because
       # `suffix$` is unsafe as it will behave incompatible with `delete_suffix?`
       # for receiver is multiline string.
       #
       # The `delete_suffix('suffix')` method is faster than `gsub(/suffix\z/, '')`.
+      #
+      # @safety
+      #   This cop is unsafe because `Pathname` has `sub` but not `delete_suffix`.
       #
       # @example
       #

@@ -6,8 +6,10 @@ module RuboCop
       # In Ruby 2.7, `Enumerable#filter_map` has been added.
       #
       # This cop identifies places where `map { ... }.compact` can be replaced by `filter_map`.
-      # It is marked as unsafe auto-correction by default because `map { ... }.compact`
-      # that is not compatible with `filter_map`.
+      #
+      # @safety
+      #   This cop's autocorrection is unsafe because `map { ... }.compact` that is not
+      #   compatible with `filter_map`.
       #
       # [source,ruby]
       # ----
