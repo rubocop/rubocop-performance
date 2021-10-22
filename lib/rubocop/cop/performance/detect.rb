@@ -7,6 +7,11 @@ module RuboCop
       # chained to `select`, `find_all` or `filter` and change them to use
       # `detect` instead.
       #
+      # @safety
+      #   This cop is unsafe because is has known compatibility issues with `ActiveRecord` and other
+      #   frameworks. `ActiveRecord` does not implement a `detect` method and `find` has its own
+      #   meaning. Correcting `ActiveRecord` methods with this cop should be considered unsafe.
+      #
       # @example
       #   # bad
       #   [].select { |item| true }.first

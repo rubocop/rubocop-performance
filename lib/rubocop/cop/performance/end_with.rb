@@ -9,6 +9,11 @@ module RuboCop
       # `end$` is unsafe as it will behave incompatible with `end_with?`
       # for receiver is multiline string.
       #
+      # @safety
+      #   This will change to a new method call which isn't guaranteed to be on the
+      #   object. Switching these methods has to be done with knowledge of the types
+      #   of the variables which rubocop doesn't have.
+      #
       # @example
       #   # bad
       #   'abc'.match?(/bc\Z/)

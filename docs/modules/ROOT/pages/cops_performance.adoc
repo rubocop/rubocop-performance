@@ -15,6 +15,11 @@
 This cop is used to identify usages of `ancestors.include?` and
 change them to use `<=` instead.
 
+=== Safety
+
+This cop is unsafe because it can't tell whether the receiver is a class or an object.
+e.g. the false positive was for `Nokogiri::XML::Node#ancestors`.
+
 === Examples
 
 [source,ruby]
@@ -48,7 +53,10 @@ This cop identifies places where slicing arrays with semi-infinite ranges
 can be replaced by `Array#take` and `Array#drop`.
 This cop was created due to a mistake in microbenchmark and hence is disabled by default.
 Refer https://github.com/rubocop/rubocop-performance/pull/175#issuecomment-731892717
-This cop is also unsafe for string slices because strings do not have `#take` and `#drop` methods.
+
+=== Safety
+
+This cop is unsafe for string slices because strings do not have `#take` and `#drop` methods.
 
 === Examples
 
@@ -227,11 +235,14 @@ conditions can be true for any given condition. A likely scenario for
 this defining a higher level when condition to override a condition
 that is inside of the splat expansion.
 
-This is not a guaranteed performance improvement. If the data being
-processed by the `case` condition is normalized in a manner that favors
-hitting a condition in the splat expansion, it is possible that
-moving the splat condition to the end will use more memory,
+=== Safety
+
+This cop is not unsafe auto-correction because it is not a guaranteed
+performance improvement. If the data being processed by the `case` condition is
+normalized in a manner that favors hitting a condition in the splat expansion,
+it is possible that moving the splat condition to the end will use more memory,
 and run slightly slower.
+See for more details: https://github.com/rubocop/rubocop/pull/6163
 
 === Examples
 
@@ -292,6 +303,9 @@ end
 
 This cop identifies places where a case-insensitive string comparison
 can better be implemented using `casecmp`.
+
+=== Safety
+
 This cop is unsafe because `String#casecmp` and `String#casecmp?` behave
 differently when using Non-ASCII characters.
 
@@ -505,18 +519,28 @@ This cop is used to identify usages of `count` on an `Enumerable` that
 follow calls to `select`, `find_all`, `filter` or `reject`. Querying logic can instead be
 passed to the `count` call.
 
-`ActiveRecord` compatibility:
+=== Safety
+
+This cop is unsafe because it has known compatibility issues with `ActiveRecord` and other
+frameworks. ActiveRecord's `count` ignores the block that is passed to it.
 `ActiveRecord` will ignore the block that is passed to `count`.
 Other methods, such as `select`, will convert the association to an
 array and then run the block on the array. A simple work around to
 make `count` work with a block is to call `to_a.count {...}`.
 
-Example:
-  `Model.where(id: [1, 2, 3]).select { |m| m.method == true }.size`
+For example:
 
-  becomes:
+[source,ruby]
+----
+`Model.where(id: [1, 2, 3]).select { |m| m.method == true }.size`
+----
 
-  `Model.where(id: [1, 2, 3]).to_a.count { |m| m.method == true }`
+becomes:
+
+[source,ruby]
+----
+`Model.where(id: [1, 2, 3]).to_a.count { |m| m.method == true }`
+----
 
 === Examples
 
@@ -556,13 +580,16 @@ In Ruby 2.5, `String#delete_prefix` has been added.
 
 This cop identifies places where `gsub(/\Aprefix/, '')` and `sub(/\Aprefix/, '')`
 can be replaced by `delete_prefix('prefix')`.
-It is marked as unsafe by default because `Pathname` has `sub` but not `delete_prefix`.
 
 This cop has `SafeMultiline` configuration option that `true` by default because
 `^prefix` is unsafe as it will behave incompatible with `delete_prefix`
 for receiver is multiline string.
 
 The `delete_prefix('prefix')` method is faster than `gsub(/\Aprefix/, '')`.
+
+=== Safety
+
+This cop is unsafe because `Pathname` has `sub` but not `delete_prefix`.
 
 === Examples
 
@@ -628,13 +655,16 @@ In Ruby 2.5, `String#delete_suffix` has been added.
 
 This cop identifies places where `gsub(/suffix\z/, '')` and `sub(/suffix\z/, '')`
 can be replaced by `delete_suffix('suffix')`.
-It is marked as unsafe by default because `Pathname` has `sub` but not `delete_suffix`.
 
 This cop has `SafeMultiline` configuration option that `true` by default because
 `suffix$` is unsafe as it will behave incompatible with `delete_suffix?`
 for receiver is multiline string.
 
 The `delete_suffix('suffix')` method is faster than `gsub(/suffix\z/, '')`.
+
+=== Safety
+
+This cop is unsafe because `Pathname` has `sub` but not `delete_suffix`.
 
 === Examples
 
@@ -704,6 +734,12 @@ chained to `select`, `find_all` or `filter` and change them to use
 `ActiveRecord` does not implement a `detect` method and `find` has its
 own meaning. Correcting ActiveRecord methods with this cop should be
 considered unsafe.
+
+=== Safety
+
+This cop is unsafe because is has known compatibility issues with `ActiveRecord` and other
+frameworks. `ActiveRecord` does not implement a `detect` method and `find` has its own
+meaning. Correcting `ActiveRecord` methods with this cop should be considered unsafe.
 
 === Examples
 
@@ -786,6 +822,12 @@ This cop identifies unnecessary use of a regex where `String#end_with?` would su
 This cop has `SafeMultiline` configuration option that `true` by default because
 `end$` is unsafe as it will behave incompatible with `end_with?`
 for receiver is multiline string.
+
+=== Safety
+
+This will change to a new method call which isn't guaranteed to be on the
+object. Switching these methods has to be done with knowledge of the types
+of the variables which rubocop doesn't have.
 
 === Examples
 
@@ -968,6 +1010,10 @@ performs a faster O(1) search for the key.
 both perform an O(n) search through all of the values, calling `values`
 allocates a new array while using `value?` does not.
 
+=== Safety
+
+This cop is unsafe because it can't tell whether the receiver is a hash object.
+
 === Examples
 
 [source,ruby]
@@ -1054,14 +1100,17 @@ NOTE: Required Ruby version: 2.7
 In Ruby 2.7, `Enumerable#filter_map` has been added.
 
 This cop identifies places where `map { ... }.compact` can be replaced by `filter_map`.
-It is marked as unsafe auto-correction by default because `map { ... }.compact`
-that is not compatible with `filter_map`.
 
 [source,ruby]
 ----
 [true, false, nil].compact              #=> [true, false]
 [true, false, nil].filter_map(&:itself) #=> [true]
 ----
+
+=== Safety
+
+This cop's autocorrection is unsafe because `map { ... }.compact` that is not
+compatible with `filter_map`.
 
 === Examples
 
@@ -1130,6 +1179,11 @@ This could have an effect on performance,
 especially in case of single-threaded
 applications with multiple `OpenStruct` instantiations.
 
+=== Safety
+
+This cop is unsafe because `OpenStruct.new` and `Struct.new`
+are not equivalent.
+
 === Examples
 
 [source,ruby]
@@ -1168,8 +1222,10 @@ item in a `Range` to see if a specified item is there. In contrast,
 end points of the `Range`. In a great majority of cases, this is what
 is wanted.
 
-This cop is `Safe: false` by default because `Range#include?` (or `Range#member?`) and
-`Range#cover?` are not equivalent behaviour.
+=== Safety
+
+This cop is unsafe because `Range#include?` (or `Range#member?`) and `Range#cover?`
+are not equivalent behaviour.
 
 === Examples
 
@@ -1250,8 +1306,10 @@ and `Enumerable#none?` are compared with `===` or similar methods in block.
 By default, `Object#===` behaves the same as `Object#==`, but this
 behavior is appropriately overridden in subclass. For example,
 `Range#===` returns `true` when argument is within the range.
-Therefore, It is marked as unsafe by default because `===` and `==`
-do not always behave the same.
+
+=== Safety
+
+This cop is unsafe because `===` and `==` do not always behave the same.
 
 === Examples
 
@@ -1319,7 +1377,9 @@ This cop identifies places where `Hash#merge!` can be replaced by
 You can set the maximum number of key-value pairs to consider
 an offense with `MaxKeyValuePairs`.
 
-This cop is marked as unsafe because RuboCop cannot determine if the
+=== Safety
+
+This cop is unsafe because RuboCop cannot determine if the
 receiver of `merge!` is actually a hash or not.
 
 === Examples
@@ -1783,6 +1843,12 @@ This cop has `SafeMultiline` configuration option that `true` by default because
 `^start` is unsafe as it will behave incompatible with `start_with?`
 for receiver is multiline string.
 
+=== Safety
+
+This will change to a new method call which isn't guaranteed to be on the
+object. Switching these methods has to be done with knowledge of the types
+of the variables which rubocop doesn't have.
+
 === Examples
 
 [source,ruby]
@@ -1853,6 +1919,8 @@ for receiver is multiline string.
 
 This cop identifies unnecessary use of a regex where
 `String#include?` would suffice.
+
+=== Safety
 
 This cop's offenses are not safe to auto-correct if a receiver is nil.
 
@@ -1996,6 +2064,19 @@ This cop checks for .times.map calls.
 In most cases such calls can be replaced
 with an explicit array creation.
 
+=== Safety
+
+This cop's autocorrection is unsafe because `Integer#times` does nothing if receiver is 0
+or less. However, `Array.new` raises an error if argument is less than 0.
+
+For example:
+
+[source,ruby]
+----
+-1.times{}    # does nothing
+Array.new(-1) # ArgumentError: negative array size
+----
+
 === Examples
 
 [source,ruby]
@@ -2037,11 +2118,12 @@ In Ruby 2.3 or later, use unary plus operator to unfreeze a string
 literal instead of `String#dup` and `String.new`.
 Unary plus operator is faster than `String#dup`.
 
-NOTE: `String.new` (without operator) is not exactly the same as `+''`.
-These differ in encoding. `String.new.encoding` is always `ASCII-8BIT`.
-However, `(+'').encoding` is the same as script encoding(e.g. `UTF-8`).
-Therefore, auto-correction is unsafe.
-So, if you expect `ASCII-8BIT` encoding, disable this cop.
+=== Safety
+
+This cop's autocorrection is unsafe because `String.new` (without operator) is not
+exactly the same as `+''`. These differ in encoding. `String.new.encoding` is always
+`ASCII-8BIT`. However, `(+'').encoding` is the same as script encoding(e.g. `UTF-8`).
+if you expect `ASCII-8BIT` encoding, disable this cop.
 
 === Examples
 

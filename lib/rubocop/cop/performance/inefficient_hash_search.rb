@@ -15,6 +15,9 @@ module RuboCop
       # both perform an O(n) search through all of the values, calling `values`
       # allocates a new array while using `value?` does not.
       #
+      # @safety
+      #   This cop is unsafe because it can't tell whether the receiver is a hash object.
+      #
       # @example
       #   # bad
       #   { a: 1, b: 2 }.keys.include?(:a)
