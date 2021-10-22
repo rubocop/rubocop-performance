@@ -1,53 +1,62 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Performance::RedundantBlockCall, :config do
-  it 'autocorrects block.call without arguments' do
-    new_source = autocorrect_source(<<~RUBY)
+  it 'registers and autocorrects an offense when `block.call` without arguments' do
+    expect_offense(<<~RUBY)
       def method(&block)
         block.call
+        ^^^^^^^^^^ Use `yield` instead of `block.call`.
       end
     RUBY
-    expect(new_source).to eq(<<~RUBY)
+
+    expect_correction(<<~RUBY)
       def method(&block)
         yield
       end
     RUBY
   end
 
-  it 'autocorrects block.call with empty parentheses' do
-    new_source = autocorrect_source(<<~RUBY)
+  it 'registers and autocorrects an offense when `block.call` with empty parentheses' do
+    expect_offense(<<~RUBY)
       def method(&block)
         block.call()
+        ^^^^^^^^^^^^ Use `yield` instead of `block.call`.
       end
     RUBY
-    expect(new_source).to eq(<<~RUBY)
+
+    expect_correction(<<~RUBY)
       def method(&block)
         yield
       end
     RUBY
   end
 
-  it 'autocorrects block.call with arguments' do
-    new_source = autocorrect_source(<<~RUBY)
+  it 'registers and autocorrects an offense when `block.call` with arguments' do
+    expect_offense(<<~RUBY)
       def method(&block)
         block.call 1, 2
+        ^^^^^^^^^^^^^^^ Use `yield` instead of `block.call`.
       end
     RUBY
-    expect(new_source).to eq(<<~RUBY)
+
+    expect_correction(<<~RUBY)
       def method(&block)
         yield 1, 2
       end
     RUBY
   end
 
-  it 'autocorrects multiple occurrences of block.call with arguments' do
-    new_source = autocorrect_source(<<~RUBY)
+  it 'registers and autocorrects an offense when  multiple occurrences of `block.call` with arguments' do
+    expect_offense(<<~RUBY)
       def method(&block)
         block.call 1
+        ^^^^^^^^^^^^ Use `yield` instead of `block.call`.
         block.call 2
+        ^^^^^^^^^^^^ Use `yield` instead of `block.call`.
       end
     RUBY
-    expect(new_source).to eq(<<~RUBY)
+
+    expect_correction(<<~RUBY)
       def method(&block)
         yield 1
         yield 2
@@ -55,13 +64,15 @@ RSpec.describe RuboCop::Cop::Performance::RedundantBlockCall, :config do
     RUBY
   end
 
-  it 'autocorrects even when block arg has a different name' do
-    new_source = autocorrect_source(<<~RUBY)
+  it 'registers and autocorrects when even when block arg has a different name' do
+    expect_offense(<<~RUBY)
       def method(&func)
         func.call
+        ^^^^^^^^^ Use `yield` instead of `func.call`.
       end
     RUBY
-    expect(new_source).to eq(<<~RUBY)
+
+    expect_correction(<<~RUBY)
       def method(&func)
         yield
       end
@@ -136,7 +147,7 @@ RSpec.describe RuboCop::Cop::Performance::RedundantBlockCall, :config do
     RUBY
   end
 
-  it 'registers an offense when an optional block that is not overridden by block variable' do
+  it 'registers and corrects an offense when an optional block that is not overridden by block variable' do
     expect_offense(<<~RUBY)
       def method(&block)
         ->(i) { puts i }.then do |_block|
@@ -164,33 +175,32 @@ RSpec.describe RuboCop::Cop::Performance::RedundantBlockCall, :config do
     RUBY
   end
 
-  it 'autocorrects using parentheses when block.call uses parentheses' do
-    new_source = autocorrect_source(<<~RUBY)
+  it 'registers and autocorrects an offense using parentheses when block.call uses parentheses' do
+    expect_offense(<<~RUBY)
       def method(&block)
         block.call(a, b)
+        ^^^^^^^^^^^^^^^^ Use `yield` instead of `block.call`.
       end
     RUBY
 
-    expect(new_source).to eq(<<~RUBY)
+    expect_correction(<<~RUBY)
       def method(&block)
         yield(a, b)
       end
     RUBY
   end
 
-  it 'autocorrects when the result of the call is used in a scope that ' \
-     'requires parentheses' do
-    source = <<~RUBY
+  it 'registers and autocorrects an offense when the result of the call is used in a scope that requires parentheses' do
+    expect_offense(<<~RUBY)
       def method(&block)
         each_with_object({}) do |(key, value), acc|
           acc.merge!(block.call(key) => rhs[value])
+                     ^^^^^^^^^^^^^^^ Use `yield` instead of `block.call`.
         end
       end
     RUBY
 
-    new_source = autocorrect_source(source)
-
-    expect(new_source).to eq(<<~RUBY)
+    expect_correction(<<~RUBY)
       def method(&block)
         each_with_object({}) do |(key, value), acc|
           acc.merge!(yield(key) => rhs[value])
