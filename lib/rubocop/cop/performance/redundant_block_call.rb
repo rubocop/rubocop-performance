@@ -55,6 +55,7 @@ module RuboCop
             end
           end
         end
+        alias on_defs on_def
 
         private
 

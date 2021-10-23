@@ -31,6 +31,21 @@ RSpec.describe RuboCop::Cop::Performance::RedundantBlockCall, :config do
     RUBY
   end
 
+  it 'registers and corrects an offense when using `block.call` in a class method' do
+    expect_offense(<<~RUBY)
+      def self.method(&block)
+        block.call
+        ^^^^^^^^^^ Use `yield` instead of `block.call`.
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      def self.method(&block)
+        yield
+      end
+    RUBY
+  end
+
   it 'registers and autocorrects an offense when `block.call` with arguments' do
     expect_offense(<<~RUBY)
       def method(&block)
