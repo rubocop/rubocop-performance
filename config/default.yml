@@ -309,9 +309,9 @@ Performance/StartWith:
 Performance/StringInclude:
   Description: 'Use `String#include?` instead of a regex match with literal-only pattern.'
   Enabled: 'pending'
-  AutoCorrect: false
   SafeAutoCorrect: false
   VersionAdded: '1.7'
+  VersionChanged: '1.12'
 
 Performance/StringReplacement:
   Description: >-
