@@ -458,6 +458,36 @@ array.min_by(&:foo)
 array.sort_by { |a| a[:foo] }
 ----
 
+== Performance/ConcurrentMonotonicTime
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| Yes
+| Yes
+| 1.12
+| -
+|===
+
+This cop identifies places where `Concurrent.monotonic_time`
+can be replaced by `Process.clock_gettime(Process::CLOCK_MONOTONIC)`.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+Concurrent.monotonic_time
+
+# good
+Process.clock_gettime(Process::CLOCK_MONOTONIC)
+----
+
+=== References
+
+* https://github.com/rails/rails/pull/43502
+
 == Performance/ConstantRegexp
 
 |===

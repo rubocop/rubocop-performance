@@ -76,6 +76,12 @@ Performance/CompareWithBlock:
   Enabled: true
   VersionAdded: '0.46'
 
+Performance/ConcurrentMonotonicTime:
+  Description: 'Use `Process.clock_gettime(Process::CLOCK_MONOTONIC)` instead of `Concurrent.monotonic_time`.'
+  Reference: 'https://github.com/rails/rails/pull/43502'
+  Enabled: pending
+  VersionAdded: '1.12'
+
 Performance/ConstantRegexp:
   Description: 'Finds regular expressions with dynamic components that are all constants.'
   Enabled: pending

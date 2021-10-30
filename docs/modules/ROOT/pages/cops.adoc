@@ -23,6 +23,7 @@ Performance cops optimization analysis for your projects.
 * xref:cops_performance.adoc#performancechainarrayallocation[Performance/ChainArrayAllocation]
 * xref:cops_performance.adoc#performancecollectionliteralinloop[Performance/CollectionLiteralInLoop]
 * xref:cops_performance.adoc#performancecomparewithblock[Performance/CompareWithBlock]
+* xref:cops_performance.adoc#performanceconcurrentmonotonictime[Performance/ConcurrentMonotonicTime]
 * xref:cops_performance.adoc#performanceconstantregexp[Performance/ConstantRegexp]
 * xref:cops_performance.adoc#performancecount[Performance/Count]
 * xref:cops_performance.adoc#performancedeleteprefix[Performance/DeletePrefix]
