@@ -2,6 +2,19 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#267](https://github.com/rubocop/rubocop-performance/pull/267): Add new `Performance/ConcurrentMonotonicTime` cop. ([@koic][])
+
+### Bug fixes
+
+* [#261](https://github.com/rubocop/rubocop-performance/issues/261): Fix a false negative for `Performance/RedundantBlockCall` when using `block.call` in a class method'. ([@koic][])
+* [#264](https://github.com/rubocop/rubocop-performance/pull/264): Fix error in Performance/Sum when method has no brackets. ([@mvz][])
+
+### Changes
+
+* [#263](https://github.com/rubocop/rubocop-performance/pull/263): Unmark `AutoCorrect: false` from `Performance/StringInclude`. ([@koic][])
+
 ## 1.11.5 (2021-08-18)
 
 ### Bug fixes
