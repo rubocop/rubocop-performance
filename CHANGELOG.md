@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 1.12.0 (2021-10-31)
+
 ### New features
 
 * [#267](https://github.com/rubocop/rubocop-performance/pull/267): Add new `Performance/ConcurrentMonotonicTime` cop. ([@koic][])
