@@ -71,7 +71,7 @@ RSpec.describe RuboCop::Cop::Performance::FixedSize, :config do
         expect_no_offenses("CONST = %q(a).#{method} + 1 * 20")
       end
 
-      it "accepts calling #{method} on a variable " do
+      it "accepts calling #{method} on a variable" do
         expect_no_offenses(<<~RUBY)
           foo = "abc"
           foo.#{method}

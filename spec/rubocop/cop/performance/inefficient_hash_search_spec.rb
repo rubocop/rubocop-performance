@@ -39,7 +39,7 @@ RSpec.describe RuboCop::Cop::Performance::InefficientHashSearch, :config do
       RUBY
     end
 
-    it 'finds no offense when a `values` array variable receives `include?` ' do
+    it 'finds no offense when a `values` array variable receives `include?`' do
       expect_no_offenses(<<~RUBY)
         h = { a: 1 }; values = h.values ; values.include? 1
       RUBY

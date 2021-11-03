@@ -61,7 +61,7 @@ RSpec.describe RuboCop::Cop::Performance::RedundantBlockCall, :config do
     RUBY
   end
 
-  it 'registers and autocorrects an offense when  multiple occurrences of `block.call` with arguments' do
+  it 'registers and autocorrects an offense when multiple occurrences of `block.call` with arguments' do
     expect_offense(<<~RUBY)
       def method(&block)
         block.call 1

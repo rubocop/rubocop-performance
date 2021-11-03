@@ -89,7 +89,7 @@ RSpec.describe RuboCop::Cop::Performance::RedundantSplitRegexpArgument, :config 
     RUBY
   end
 
-  it 'registers and corrects an offense when `split` method argument is two or more speces regexp `/  /`' do
+  it 'registers and corrects an offense when `split` method argument is two or more speces regexp' do
     expect_offense(<<~RUBY)
       'foo         bar'.split(/  /)
                               ^^^^ Use string as argument instead of regexp.

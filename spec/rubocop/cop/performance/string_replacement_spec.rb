@@ -251,8 +251,7 @@ RSpec.describe RuboCop::Cop::Performance::StringReplacement, :config do
     RUBY
   end
 
-  it 'registers an offense when using gsub! to find and replace ' \
-     'a single character ' do
+  it 'registers an offense when using gsub! to find and replace a single character' do
     expect_offense(<<~RUBY)
       'abc'.gsub!('a', '1')
             ^^^^^^^^^^^^^^^ Use `tr!` instead of `gsub!`.

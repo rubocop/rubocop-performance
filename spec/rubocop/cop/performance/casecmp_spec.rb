@@ -124,7 +124,7 @@ RSpec.describe RuboCop::Cop::Performance::Casecmp, :config do
       RUBY
     end
 
-    it "registers an offense and corrects string.eql? str.#{selector} without parens " do
+    it "registers an offense and corrects string.eql? str.#{selector} without parens" do
       expect_offense(<<~RUBY, selector: selector)
         'string'.eql? str.#{selector}
         ^^^^^^^^^^^^^^^^^^^{selector} Use `str.casecmp('string').zero?` instead of `'string'.eql? str.#{selector}`.
@@ -135,7 +135,7 @@ RSpec.describe RuboCop::Cop::Performance::Casecmp, :config do
       RUBY
     end
 
-    it "registers an offense and corrects string.eql? str.#{selector} with parens " do
+    it "registers an offense and corrects string.eql? str.#{selector} with parens" do
       expect_offense(<<~RUBY, selector: selector)
         'string'.eql?(str.#{selector})
         ^^^^^^^^^^^^^^^^^^^{selector}^ Use `str.casecmp('string').zero?` instead of `'string'.eql?(str.#{selector})`.
