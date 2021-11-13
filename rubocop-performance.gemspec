@@ -26,7 +26,8 @@ Gem::Specification.new do |s|
     'changelog_uri' => 'https://github.com/rubocop/rubocop-performance/blob/master/CHANGELOG.md',
     'source_code_uri' => 'https://github.com/rubocop/rubocop-performance/',
     'documentation_uri' => "https://docs.rubocop.org/rubocop-performance/#{RuboCop::Performance::Version.document_version}/",
-    'bug_tracker_uri' => 'https://github.com/rubocop/rubocop-performance/issues'
+    'bug_tracker_uri' => 'https://github.com/rubocop/rubocop-performance/issues',
+    'rubygems_mfa_required' => 'true'
   }
 
   s.add_runtime_dependency('rubocop', '>= 1.7.0', '< 2.0')
