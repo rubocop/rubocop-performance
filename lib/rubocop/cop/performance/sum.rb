@@ -6,35 +6,46 @@ module RuboCop
       # This cop identifies places where custom code finding the sum of elements
       # in some Enumerable object can be replaced by `Enumerable#sum` method.
       #
-      # This cop can change auto-correction scope depending on the value of
-      # `SafeAutoCorrect`.
-      # Its auto-correction is marked as safe by default (`SafeAutoCorrect: true`)
-      # to prevent `TypeError` in auto-correced code when initial value is not
-      # specified as shown below:
+      # @safety
+      #   Auto-corrections are unproblematic wherever an initial value is provided explicitly:
       #
-      # [source,ruby]
-      # ----
-      # ['a', 'b'].sum # => (String can't be coerced into Integer)
-      # ----
+      #   [source,ruby]
+      #   ----
+      #   [1, 2, 3].reduce(4, :+) # => 10
+      #   [1, 2, 3].sum(4) # => 10
       #
-      # Therefore if initial value is not specified, unsafe auto-corrected will not occur.
+      #   [].reduce(4, :+) # => 4
+      #   [].sum(4) # => 4
+      #   ----
       #
-      # If you always want to enable auto-correction, you can set `SafeAutoCorrect: false`.
+      #   This also holds true for non-numeric types which implement a `:+` method:
       #
-      # [source,yaml]
-      # ----
-      # Performance/Sum:
-      #   SafeAutoCorrect: false
-      # ----
+      #   [source,ruby]
+      #   ----
+      #   ['l', 'o'].reduce('Hel', :+) # => "Hello"
+      #   ['l', 'o'].sum('Hel') # => "Hello"
+      #   ----
       #
-      # Please note that the auto-correction command line option will be changed from
-      # `rubocop -a` to `rubocop -A`, which includes unsafe auto-correction.
+      #   When no initial value is provided though, `Enumerable#reduce` will pick the first enumerated value
+      #   as initial value and successively add all following values to it, whereas
+      #   `Enumerable#sum` will set an initial value of `0` (`Integer`) which can lead to a `TypeError`:
+      #
+      #   [source,ruby]
+      #   ----
+      #   [].reduce(:+) # => nil
+      #   [1, 2, 3].reduce(:+) # => 6
+      #   ['H', 'e', 'l', 'l', 'o'].reduce(:+) # => "Hello"
+      #
+      #   [].sum # => 0
+      #   [1, 2, 3].sum # => 6
+      #   ['H', 'e', 'l', 'l', 'o'].sum # => in `+': String can't be coerced into Integer (TypeError)
+      #   ----
       #
       # @example OnlySumOrWithInitialValue: false (default)
       #   # bad
-      #   [1, 2, 3].inject(:+)                        # These bad cases with no initial value are unsafe and
-      #   [1, 2, 3].inject(&:+)                       # will not be auto-correced by default. If you want to
-      #   [1, 2, 3].reduce { |acc, elem| acc + elem } # auto-corrected, you can set `SafeAutoCorrect: false`.
+      #   [1, 2, 3].inject(:+)                        # Auto-corrections for cases without initial value are unsafe
+      #   [1, 2, 3].inject(&:+)                       # and will only be performed when using the `-A` option.
+      #   [1, 2, 3].reduce { |acc, elem| acc + elem } # They can be prohibited completely using `SafeAutoCorrect: true`.
       #   [1, 2, 3].reduce(10, :+)
       #   [1, 2, 3].map { |elem| elem ** 2 }.sum
       #   [1, 2, 3].collect(&:count).sum(10)
