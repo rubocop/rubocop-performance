@@ -330,9 +330,11 @@ Performance/StringReplacement:
 
 Performance/Sum:
   Description: 'Use `sum` instead of a custom array summation.'
+  SafeAutoCorrect: false
   Reference: 'https://blog.bigbinary.com/2016/11/02/ruby-2-4-introduces-enumerable-sum.html'
   Enabled: 'pending'
   VersionAdded: '1.8'
+  VersionChanged: '1.13'
   OnlySumOrWithInitialValue: false
 
 Performance/TimesMap:
