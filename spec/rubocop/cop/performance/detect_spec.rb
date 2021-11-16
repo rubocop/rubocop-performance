@@ -243,4 +243,51 @@ RSpec.describe RuboCop::Cop::Performance::Detect, :config do
     it_behaves_like 'detect_autocorrect', 'detect'
     it_behaves_like 'detect_autocorrect', 'find'
   end
+
+  context 'with `SequelCompatibilityMode: true`' do
+    let(:config) do
+      RuboCop::Config.new(
+        'Performance/Detect' => {
+          'SequelCompatibilityMode' => true
+        },
+        'Style/CollectionMethods' => {
+          'PreferredMethods' => {
+            'detect' => collection_method
+          }
+        }
+      )
+    end
+
+    it 'does not register an offense when select is used and the block does not have any block arguments (inline)' do
+      expect_no_offenses(<<~RUBY)
+        # SQL query using the `sequel` gem
+        row = connection[:my_table].select { sum(nominal_value).as(total_nominal_value) }.first
+      RUBY
+    end
+
+    it 'does not register an offense when select is used and the block does not have any block arguments (multiline)' do
+      expect_no_offenses(<<~RUBY)
+        # SQL query using the `sequel` gem
+        row = connection[:my_table].select do
+          sum(nominal_value).as(total_nominal_value)
+        end.first
+      RUBY
+    end
+
+    it 'registers an offense when select is used and the block takes arguments (inline)' do
+      expect_offense(<<~RUBY)
+        array.select { |x| interesting?(x) }.first
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `detect` instead of `select.first`.
+      RUBY
+    end
+
+    it 'registers an offense when select is used and the block takes arguments (multiline)' do
+      expect_offense(<<~RUBY)
+        array.select do |x|
+              ^^^^^^^^^^^^^ Use `detect` instead of `select.first`.
+          interesting?(x)
+        end.first
+      RUBY
+    end
+  end
 end

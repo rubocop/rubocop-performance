@@ -753,7 +753,7 @@ str.sub!(/suffix$/, '')
 | Yes
 | Yes (Unsafe)
 | 0.30
-| 1.8
+| 1.13
 |===
 
 This cop is used to identify usages of `first`, `last`, `[0]` or `[-1]`
@@ -789,6 +789,24 @@ meaning. Correcting `ActiveRecord` methods with this cop should be considered un
 [].detect { |item| true }
 [].reverse.detect { |item| true }
 ----
+
+==== SequelCompatibilityMode: true
+
+[source,ruby]
+----
+# good
+connection[:my_table].select { sum(nominal_value).as(total_nominal_value) }.first
+----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| SequelCompatibilityMode
+| `false`
+| Boolean
+|===
 
 === References
 

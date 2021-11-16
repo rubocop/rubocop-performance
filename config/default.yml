@@ -127,7 +127,8 @@ Performance/Detect:
   SafeAutoCorrect: false
   Enabled: true
   VersionAdded: '0.30'
-  VersionChanged: '1.8'
+  VersionChanged: '1.13'
+  SequelCompatibilityMode: false
 
 Performance/DoubleStartEndWith:
   Description: >-

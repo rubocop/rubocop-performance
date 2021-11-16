@@ -27,6 +27,10 @@ module RuboCop
       #   [].detect { |item| true }
       #   [].reverse.detect { |item| true }
       #
+      # @example SequelCompatibilityMode: true
+      #   # good
+      #   connection[:my_table].select { sum(nominal_value).as(total_nominal_value) }.first
+      #
       # `ActiveRecord` compatibility:
       # `ActiveRecord` does not implement a `detect` method and `find` has its
       # own meaning. Correcting ActiveRecord methods with this cop should be
@@ -58,8 +62,7 @@ module RuboCop
               args = {}
             end
 
-            return unless args.empty?
-            return unless receiver
+            return if skip?(node, receiver, second_method, args)
 
             receiver, _args, body = *receiver if receiver.block_type?
             return if accept_first_call?(receiver, body)
@@ -128,11 +131,23 @@ module RuboCop
           config.for_cop('Style/CollectionMethods')['PreferredMethods']['detect'] || 'detect'
         end
 
+        def skip?(node, receiver, _second_method, args)
+          !receiver || !args.empty? || (cop_config['SequelCompatibilityMode'] && maybe_sequel?(node))
+        end
+
         def lazy?(node)
           return false unless node
 
           receiver, method, _args = *node
           method == :lazy && !receiver.nil?
+        end
+
+        def maybe_sequel?(node)
+          return false if lazy?(node)
+
+          receiver, _method, _args = *node
+
+          receiver.method?(:select) && receiver.arguments.empty?
         end
       end
     end
