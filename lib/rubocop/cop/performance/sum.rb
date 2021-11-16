@@ -30,7 +30,7 @@ module RuboCop
       # Please note that the auto-correction command line option will be changed from
       # `rubocop -a` to `rubocop -A`, which includes unsafe auto-correction.
       #
-      # @example
+      # @example OnlySumOrWithInitialValue: false (default)
       #   # bad
       #   [1, 2, 3].inject(:+)                        # These bad cases with no initial value are unsafe and
       #   [1, 2, 3].inject(&:+)                       # will not be auto-correced by default. If you want to
@@ -41,6 +41,17 @@ module RuboCop
       #
       #   # good
       #   [1, 2, 3].sum
+      #   [1, 2, 3].sum(10)
+      #   [1, 2, 3].sum { |elem| elem ** 2 }
+      #   [1, 2, 3].sum(10, &:count)
+      #
+      # @example OnlySumOrWithInitialValue: true
+      #   # bad
+      #   [1, 2, 3].reduce(10, :+)
+      #   [1, 2, 3].map { |elem| elem ** 2 }.sum
+      #   [1, 2, 3].collect(&:count).sum(10)
+      #
+      #   # good
       #   [1, 2, 3].sum(10)
       #   [1, 2, 3].sum { |elem| elem ** 2 }
       #   [1, 2, 3].sum(10, &:count)
@@ -103,6 +114,8 @@ module RuboCop
 
         def handle_sum_candidate(node)
           sum_candidate?(node) do |method, init, operation|
+            next if cop_config['OnlySumOrWithInitialValue'] && init.empty?
+
             range = sum_method_range(node)
             message = build_method_message(node, method, init, operation)
 

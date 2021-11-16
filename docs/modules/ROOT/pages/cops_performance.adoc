@@ -2047,6 +2047,8 @@ Please note that the auto-correction command line option will be changed from
 
 === Examples
 
+==== OnlySumOrWithInitialValue: false (default)
+
 [source,ruby]
 ----
 # bad
@@ -2063,6 +2065,31 @@ Please note that the auto-correction command line option will be changed from
 [1, 2, 3].sum { |elem| elem ** 2 }
 [1, 2, 3].sum(10, &:count)
 ----
+
+==== OnlySumOrWithInitialValue: true
+
+[source,ruby]
+----
+# bad
+[1, 2, 3].reduce(10, :+)
+[1, 2, 3].map { |elem| elem ** 2 }.sum
+[1, 2, 3].collect(&:count).sum(10)
+
+# good
+[1, 2, 3].sum(10)
+[1, 2, 3].sum { |elem| elem ** 2 }
+[1, 2, 3].sum(10, &:count)
+----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| OnlySumOrWithInitialValue
+| `false`
+| Boolean
+|===
 
 === References
 
