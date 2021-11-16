@@ -17,7 +17,7 @@ Performance/ArraySemiInfiniteRangeSlice:
   VersionAdded: '1.9'
 
 Performance/BigDecimalWithNumericArgument:
-  Description: 'Convert numeric argument to string before passing to BigDecimal.'
+  Description: 'Convert numeric literal to string and pass it to `BigDecimal`.'
   Enabled: 'pending'
   VersionAdded: '1.7'
 
