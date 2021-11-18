@@ -82,18 +82,26 @@ module RuboCop
 
         def build_good_method(method, args)
           case method
-          when :[], :slice
+          when :slice
             "[#{build_call_args(args)}].chars"
-          when :first
-            if args.any?
-              "[0...#{args.first.source}].chars"
-            else
-              '[0]'
-            end
+          when :[], :first
+            build_good_method_for_brackets_or_first_method(method, args)
           when :take
             "[0...#{args.first.source}].chars"
           else
             ".#{method}"
+          end
+        end
+
+        def build_good_method_for_brackets_or_first_method(method, args)
+          first_arg = args.first
+
+          if first_arg&.range_type?
+            "[#{build_call_args(args)}].chars"
+          elsif method == :first && args.any?
+            "[0...#{args.first.source}].chars"
+          else
+            first_arg ? "[#{first_arg.source}]" : '[0]'
           end
         end
 

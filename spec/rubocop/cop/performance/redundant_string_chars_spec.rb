@@ -34,6 +34,28 @@ RSpec.describe RuboCop::Cop::Performance::RedundantStringChars, :config do
     RUBY
   end
 
+  it 'registers an offense and corrects when using `str.chars[0]`' do
+    expect_offense(<<~RUBY)
+      str.chars[0]
+          ^^^^^^^^ Use `[0]` instead of `chars[0]`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      str[0]
+    RUBY
+  end
+
+  it 'registers an offense and corrects when using `str.chars[42]`' do
+    expect_offense(<<~RUBY)
+      str.chars[42]
+          ^^^^^^^^^ Use `[42]` instead of `chars[42]`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      str[42]
+    RUBY
+  end
+
   it 'registers an offense and corrects when using `str.chars.first(2)`' do
     expect_offense(<<~RUBY)
       str.chars.first(2)
