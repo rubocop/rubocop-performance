@@ -49,6 +49,14 @@ namespace :cut_release do
     version.split('.').take(2).join('.')
   end
 
+  # Replace `<<next>>` (and variations) with version being cut.
+  def update_cop_versions(_old_version, new_version)
+    update_file('config/default.yml') do |default|
+      default.gsub(/['"]?<<\s*next\s*>>['"]?/i,
+                   "'#{version_sans_patch(new_version)}'")
+    end
+  end
+
   def new_version_changes
     changelog = File.read('CHANGELOG.md')
     _, _, new_changes, _older_changes = changelog.split(/^## .*$/, 4)
@@ -61,10 +69,18 @@ namespace :cut_release do
          .join("\n")
   end
 
+  def update_file(path)
+    content = File.read(path)
+    File.write(path, yield(content))
+  end
+
   def run(release_type)
     old_version = Bump::Bump.current
     Bump::Bump.run(release_type, commit: false, bundle: false, tag: false)
     new_version = Bump::Bump.current
+
+    update_cop_versions(old_version, new_version)
+    Rake::Task['update_cops_documentation'].invoke
 
     add_header_to_changelog(new_version)
     create_release_notes(new_version)
