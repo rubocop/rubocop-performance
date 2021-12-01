@@ -43,10 +43,9 @@ Performance/CaseWhenSplat:
                  Reordering `when` conditions with a splat to the end
                  of the `when` branches can improve performance.
   Enabled: false
-  AutoCorrect: false
   SafeAutoCorrect: false
   VersionAdded: '0.34'
-  VersionChanged: '0.59'
+  VersionChanged: '<<next>>'
 
 Performance/Casecmp:
   Description: >-
