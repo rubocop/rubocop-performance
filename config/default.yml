@@ -338,11 +338,11 @@ Performance/Sum:
 
 Performance/TimesMap:
   Description: 'Checks for .times.map calls.'
-  AutoCorrect: false
   Enabled: true
+  # See https://github.com/rubocop/rubocop/issues/4658
+  SafeAutoCorrect: false
   VersionAdded: '0.36'
-  VersionChanged: '0.50'
-  SafeAutoCorrect: false # see https://github.com/rubocop/rubocop/issues/4658
+  VersionChanged: '<<next>>'
 
 Performance/UnfreezeString:
   Description: 'Use unary plus to get an unfrozen string literal.'
