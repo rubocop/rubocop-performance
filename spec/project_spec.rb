@@ -11,6 +11,8 @@ RSpec.describe 'RuboCop Performance Project', type: :feature do
 
     let(:configuration_keys) { config.keys }
 
+    let(:version_regexp) { /\A\d+\.\d+\z|\A<<next>>\z/ }
+
     it 'has a nicely formatted description for all cops' do
       cop_names.each do |name|
         description = config[name]['Description']
@@ -21,11 +23,23 @@ RSpec.describe 'RuboCop Performance Project', type: :feature do
 
     it 'requires a nicely formatted `VersionAdded` metadata for all cops' do
       cop_names.each do |name|
-        version = config[name]['VersionAdded']
+        version = config.dig(name, 'VersionAdded')
         expect(version.nil?).to(be(false),
-                                "VersionAdded is required for #{name}.")
-        expect(version).to(match(/\A\d+\.\d+\z/),
-                           "#{version} should be format ('X.Y') for #{name}.")
+                                "`VersionAdded` configuration is required for `#{name}`.")
+        expect(version).to(match(version_regexp),
+                           "#{version} should be format ('X.Y' or '<<next>>') for #{name}.")
+      end
+    end
+
+    %w[VersionChanged VersionRemoved].each do |version_type|
+      it "requires a nicely formatted `#{version_type}` metadata for all cops" do
+        cop_names.each do |name|
+          version = config.dig(name, version_type)
+          next unless version
+
+          expect(version).to(match(version_regexp),
+                             "#{version} should be format ('X.Y' or '<<next>>') for #{name}.")
+        end
       end
     end
 
