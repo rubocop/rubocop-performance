@@ -27,10 +27,6 @@ module RuboCop
       #   [].detect { |item| true }
       #   [].reverse.detect { |item| true }
       #
-      # `ActiveRecord` compatibility:
-      # `ActiveRecord` does not implement a `detect` method and `find` has its
-      # own meaning. Correcting ActiveRecord methods with this cop should be
-      # considered unsafe.
       class Detect < Base
         extend AutoCorrector
 
