@@ -58,19 +58,19 @@ module RuboCop
 
           add_offense(range) do |corrector|
             corrector.replace(map_node.loc.selector, 'filter_map')
-            remove_compact_method(corrector, node)
+            remove_compact_method(corrector, node, node.parent)
           end
         end
 
         private
 
-        def remove_compact_method(corrector, compact_node)
-          chained_method = compact_node.parent
+        def remove_compact_method(corrector, compact_node, chained_method)
           compact_method_range = compact_node.loc.selector
 
           if compact_node.multiline? && chained_method&.loc.respond_to?(:selector) && chained_method.dot? &&
+             !map_method_and_compact_method_on_same_line?(compact_node) &&
              !invoke_method_after_map_compact_on_same_line?(compact_node, chained_method)
-            compact_method_range = range_by_whole_lines(compact_method_range, include_final_newline: true)
+            compact_method_range = compact_method_with_final_newline_range(compact_method_range)
           else
             corrector.remove(compact_node.loc.dot)
           end
@@ -78,8 +78,20 @@ module RuboCop
           corrector.remove(compact_method_range)
         end
 
+        def map_method_and_compact_method_on_same_line?(compact_node)
+          return false unless compact_node.children.first.respond_to?(:send_node)
+
+          map_node = compact_node.children.first.send_node
+
+          compact_node.loc.selector.line == map_node.loc.selector.line
+        end
+
         def invoke_method_after_map_compact_on_same_line?(compact_node, chained_method)
           compact_node.loc.selector.line == chained_method.loc.selector.line
+        end
+
+        def compact_method_with_final_newline_range(compact_method_range)
+          range_by_whole_lines(compact_method_range, include_final_newline: true)
         end
       end
     end
