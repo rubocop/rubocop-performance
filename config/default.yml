@@ -311,6 +311,11 @@ Performance/StartWith:
   VersionAdded: '0.36'
   VersionChanged: '1.10'
 
+Performance/StringIdentifierArgument:
+  Description: 'Use symbol identifier argument instead of string identifier argument.'
+  Enabled: pending
+  VersionAdded: '<<next>>'
+
 Performance/StringInclude:
   Description: 'Use `String#include?` instead of a regex match with literal-only pattern.'
   Enabled: 'pending'
