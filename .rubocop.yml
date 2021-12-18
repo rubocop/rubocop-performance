@@ -96,9 +96,6 @@ Performance/Caller:
   Exclude:
     - spec/rubocop/cop/performance/caller_spec.rb
 
-Performance/ChainArrayAllocation:
-  Enabled: false
-
 Performance/CollectionLiteralInLoop:
   Exclude:
     - 'spec/**/*.rb'
