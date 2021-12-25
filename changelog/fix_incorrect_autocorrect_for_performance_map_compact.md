@@ -1,1 +1,0 @@
-* [#277](https://github.com/rubocop/rubocop-performance/pull/277): Fix an incorrect autocorrect for `Performance/MapCompact` when using `map.compact.first` and there is a line break after `map.compact` and receiver. ([@koic][])

@@ -2,6 +2,23 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#276](https://github.com/rubocop/rubocop-performance/pull/276): Add new `Performance/StringIdentifierArgument` cop. ([@koic][])
+* [#204](https://github.com/rubocop/rubocop-performance/issues/204): Add `Performance/Sum` option to ignore potential false positives. ([@leoarnold][])
+* [#269](https://github.com/rubocop/rubocop-performance/pull/269): Add `#to_d` support to `BigDecimalWithNumericArgument`. ([@leoarnold][])
+
+### Bug fixes
+
+* [#277](https://github.com/rubocop/rubocop-performance/pull/277): Fix an incorrect autocorrect for `Performance/MapCompact` when using `map.compact.first` and there is a line break after `map.compact` and receiver. ([@koic][])
+* [#273](https://github.com/rubocop/rubocop-performance/pull/273): Fix an incorrect autocorrect for `Performance/RedundantStringChars` when using `str.chars[0]`. ([@koic][])
+
+### Changes
+
+* [#270](https://github.com/rubocop/rubocop-performance/pull/270): Mark `Performance/Sum` auto-correction as unsafe and extend documentation. ([@leoarnold][])
+* [#274](https://github.com/rubocop/rubocop-performance/pull/274): Unmark `AutoCorrect: false` from `Performance/CaseWhenSplat`. ([@koic][])
+* [#275](https://github.com/rubocop/rubocop-performance/pull/275): Unmark `AutoCorrect: false` from `Performance/TimesMap`. ([@koic][])
+
 ## 1.12.0 (2021-10-31)
 
 ### New features
