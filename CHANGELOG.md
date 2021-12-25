@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 1.13.0 (2021-12-25)
+
 ### New features
 
 * [#276](https://github.com/rubocop/rubocop-performance/pull/276): Add new `Performance/StringIdentifierArgument` cop. ([@koic][])

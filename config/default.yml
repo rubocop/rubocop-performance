@@ -45,7 +45,7 @@ Performance/CaseWhenSplat:
   Enabled: false
   SafeAutoCorrect: false
   VersionAdded: '0.34'
-  VersionChanged: '<<next>>'
+  VersionChanged: '1.13'
 
 Performance/Casecmp:
   Description: >-
@@ -314,7 +314,7 @@ Performance/StartWith:
 Performance/StringIdentifierArgument:
   Description: 'Use symbol identifier argument instead of string identifier argument.'
   Enabled: pending
-  VersionAdded: '<<next>>'
+  VersionAdded: '1.13'
 
 Performance/StringInclude:
   Description: 'Use `String#include?` instead of a regex match with literal-only pattern.'
@@ -347,7 +347,7 @@ Performance/TimesMap:
   # See https://github.com/rubocop/rubocop/issues/4658
   SafeAutoCorrect: false
   VersionAdded: '0.36'
-  VersionChanged: '<<next>>'
+  VersionChanged: '1.13'
 
 Performance/UnfreezeString:
   Description: 'Use unary plus to get an unfrozen string literal.'
