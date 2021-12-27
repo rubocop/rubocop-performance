@@ -27,8 +27,11 @@ module RuboCop
 
         MSG = 'Use `%<symbol_arg>s` instead of `%<string_arg>s`.'
 
+        # NOTE: `attr` method is not included in this list as it can cause false positives in Nokogiri API.
+        # And `attr` may not be used because `Style/Attr` registers an offense.
+        # https://github.com/rubocop/rubocop-performance/issues/278
         RESTRICT_ON_SEND = %i[
-          alias_method attr attr_accessor attr_reader attr_writer autoload autoload?
+          alias_method attr_accessor attr_reader attr_writer autoload autoload?
           class_variable_defined? const_defined? const_get const_set const_source_location
           define_method instance_method method_defined? private_class_method? private_method_defined?
           protected_method_defined? public_class_method public_instance_method public_method_defined?
