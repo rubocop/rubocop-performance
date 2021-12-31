@@ -50,4 +50,13 @@ RSpec.describe RuboCop::Cop::Performance::StringIdentifierArgument, :config do
       send(':foo is :bar', foo, bar)
     RUBY
   end
+
+  # NOTE: `attr` method is not included in this list as it can cause false positives in Nokogiri API.
+  # And `attr` may not be used because `Style/Attr` registers an offense.
+  # https://github.com/rubocop/rubocop-performance/issues/278
+  it 'does not register an offense when using string argument for `attr` method' do
+    expect_no_offenses(<<~RUBY)
+      attr('foo')
+    RUBY
+  end
 end
