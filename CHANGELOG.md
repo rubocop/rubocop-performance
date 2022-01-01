@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#278](https://github.com/rubocop/rubocop-performance/issues/278): Fix a false positive for `Performance/StringIdentifierArgument` when using `attr`. ([@koic][])
+
 ## 1.13.0 (2021-12-25)
 
 ### New features
