@@ -12,6 +12,11 @@ end
 
 task update_cops_documentation: :yard_for_generate_documentation do
   deps = ['Performance']
+
+  # NOTE: Update `<<next>>` version for docs/modules/ROOT/pages/cops_performance.adoc
+  # when running release tasks.
+  RuboCop::Performance::Inject.defaults!
+
   CopsDocumentationGenerator.new(departments: deps).call
 end
 
