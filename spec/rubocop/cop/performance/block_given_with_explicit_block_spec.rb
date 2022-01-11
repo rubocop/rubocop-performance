@@ -68,4 +68,15 @@ RSpec.describe RuboCop::Cop::Performance::BlockGivenWithExplicitBlock, :config d
       do_something if block_given?
     RUBY
   end
+
+  context 'when Ruby >= 3.1', :ruby31 do
+    it 'does not register an offense when using anonymous block argument' do
+      expect_no_offenses(<<~RUBY)
+        def method(x, &)
+          raise ArgumentError, "block required" unless block_given?
+          do_something(&)
+        end
+      RUBY
+    end
+  end
 end
