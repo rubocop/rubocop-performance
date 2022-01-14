@@ -38,8 +38,9 @@ module RuboCop
 
           block_arg = def_node.arguments.find(&:blockarg_type?)
           return unless block_arg
+          return unless (block_arg_name = block_arg.loc.name)
 
-          block_arg_name = block_arg.loc.name.source.to_sym
+          block_arg_name = block_arg_name.source.to_sym
           return if reassigns_block_arg?(def_node, block_arg_name)
 
           add_offense(node) do |corrector|
