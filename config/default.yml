@@ -1,5 +1,8 @@
 # This is the default configuration file.
 
+Performance:
+  Enabled: true
+
 Performance/AncestorsInclude:
   Description: 'Use `A <= B` instead of `A.ancestors.include?(B)`.'
   Reference: 'https://github.com/JuanitoFatas/fast-ruby#ancestorsinclude-vs--code'
