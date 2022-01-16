@@ -1,1 +1,0 @@
-* [#281](https://github.com/rubocop/rubocop-performance/issues/281): Fix an error for `Performance/BlockGivenWithExplicitBlock` when using Ruby 3.1's anonymous block forwarding. ([@koic][])
