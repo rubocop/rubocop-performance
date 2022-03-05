@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 1.13.3 (2022-03-05)
+
 ### Bug fixes
 
 * [#285](https://github.com/rubocop/rubocop-performance/pull/285): Fix an error for `Performance/MapCompact` when using `map(&:do_something).compact.first` and there is a line break after `map.compact` and receiver. ([@ydah][])
