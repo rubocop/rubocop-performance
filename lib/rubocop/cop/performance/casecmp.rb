@@ -54,11 +54,11 @@ module RuboCop
           return unless (parts = take_method_apart(node))
 
           _receiver, method, arg, variable = parts
-          good_method = build_good_method(arg, variable)
+          good_method = build_good_method(method, arg, variable)
 
           message = format(MSG, good: good_method, bad: node.source)
           add_offense(node, message: message) do |corrector|
-            correction(corrector, node, method, arg, variable)
+            autocorrect(corrector, node, good_method)
           end
         end
 
@@ -81,22 +81,20 @@ module RuboCop
           [receiver, method, arg, variable]
         end
 
-        def correction(corrector, node, method, arg, variable)
-          corrector.insert_before(node.loc.expression, '!') if method == :!=
-
-          replacement = build_good_method(arg, variable)
-
-          corrector.replace(node.loc.expression, replacement)
+        def autocorrect(corrector, node, replacement)
+          corrector.replace(node, replacement)
         end
 
-        def build_good_method(arg, variable)
+        def build_good_method(method, arg, variable)
+          bang = method == :!= ? '!' : ''
+
           # We want resulting call to be parenthesized
           # if arg already includes one or more sets of parens, don't add more
           # or if method call already used parens, again, don't add more
           if arg.send_type? || !parentheses?(arg)
-            "#{variable.source}.casecmp(#{arg.source}).zero?"
+            "#{bang}#{variable.source}.casecmp(#{arg.source}).zero?"
           else
-            "#{variable.source}.casecmp#{arg.source}.zero?"
+            "#{bang}#{variable.source}.casecmp#{arg.source}.zero?"
           end
         end
       end

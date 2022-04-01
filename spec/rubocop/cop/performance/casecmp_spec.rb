@@ -27,7 +27,7 @@ RSpec.describe RuboCop::Cop::Performance::Casecmp, :config do
     it "registers an offense and corrects str.#{selector} !=" do
       expect_offense(<<~RUBY, selector: selector)
         str.#{selector} != 'string'
-        ^^^^^{selector}^^^^^^^^^^^^ Use `str.casecmp('string').zero?` instead of `str.#{selector} != 'string'`.
+        ^^^^^{selector}^^^^^^^^^^^^ Use `!str.casecmp('string').zero?` instead of `str.#{selector} != 'string'`.
       RUBY
 
       expect_correction(<<~RUBY)
@@ -38,7 +38,7 @@ RSpec.describe RuboCop::Cop::Performance::Casecmp, :config do
     it "registers an offense and corrects str.#{selector} != with parens around arg" do
       expect_offense(<<~RUBY, selector: selector)
         str.#{selector} != ('string')
-        ^^^^^{selector}^^^^^^^^^^^^^^ Use `str.casecmp('string').zero?` instead of `str.#{selector} != ('string')`.
+        ^^^^^{selector}^^^^^^^^^^^^^^ Use `!str.casecmp('string').zero?` instead of `str.#{selector} != ('string')`.
       RUBY
 
       expect_correction(<<~RUBY)
@@ -104,7 +104,7 @@ RSpec.describe RuboCop::Cop::Performance::Casecmp, :config do
     it "registers an offense and corrects string != str.#{selector}" do
       expect_offense(<<~RUBY, selector: selector)
         'string' != str.#{selector}
-        ^^^^^^^^^^^^^^^^^{selector} Use `str.casecmp('string').zero?` instead of `'string' != str.#{selector}`.
+        ^^^^^^^^^^^^^^^^^{selector} Use `!str.casecmp('string').zero?` instead of `'string' != str.#{selector}`.
       RUBY
 
       expect_correction(<<~RUBY)
