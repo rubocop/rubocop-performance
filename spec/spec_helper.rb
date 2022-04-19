@@ -3,7 +3,7 @@
 require 'rubocop-performance'
 require 'rubocop/rspec/support'
 
-if ENV['COVERAGE'] == 'true'
+if ENV.fetch('COVERAGE', nil) == 'true'
   require 'simplecov'
   SimpleCov.start
 end
