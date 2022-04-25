@@ -54,9 +54,9 @@ module RuboCop
 
       def drop_start_metacharacter(regexp_string)
         if regexp_string.start_with?('\\A')
-          regexp_string[2..-1] # drop `\A` anchor
+          regexp_string[2..] # drop `\A` anchor
         else
-          regexp_string[1..-1] # drop `^` anchor
+          regexp_string[1..] # drop `^` anchor
         end
       end
 
