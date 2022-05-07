@@ -105,7 +105,7 @@
 ### Changes
 
 * [#228](https://github.com/rubocop/rubocop-performance/pull/228): Mark `Performance/RedundantMerge` as unsafe. ([@dvandersluis][])
-* [#232](https://github.com/rubocop/rubocop-performance/pull/232): Drop Ruby 2.4 support. ([@koic][])
+* [#232](https://github.com/rubocop/rubocop-performance/pull/232): **(Compatibility)** Drop Ruby 2.4 support. ([@koic][])
 * [#235](https://github.com/rubocop/rubocop-performance/pull/235): Require RuboCop 1.7 or higher. ([@koic][])
 
 ## 1.10.2 (2021-03-23)
@@ -264,7 +264,7 @@
 
 ### Changes
 
-* [#103](https://github.com/rubocop/rubocop-performance/pull/103): **(BREAKING)** Drop support for Ruby 2.3. ([@koic][])
+* [#103](https://github.com/rubocop/rubocop-performance/pull/103): **(Compatibility)** Drop support for Ruby 2.3. ([@koic][])
 * [#101](https://github.com/rubocop/rubocop-performance/issues/101): Mark unsafe for `Performance/Casecmp` cop. ([@koic][])
 
 ## 1.5.2 (2019-12-25)
@@ -312,7 +312,7 @@
 
 ### Changes
 
-* [#52](https://github.com/rubocop/rubocop-performance/issues/52): Drop support for Ruby 2.2. ([@bquorning][])
+* [#52](https://github.com/rubocop/rubocop-performance/issues/52): **(Compatibility)** Drop support for Ruby 2.2. ([@bquorning][])
 
 ## 1.2.0 (2019-05-04)
 
