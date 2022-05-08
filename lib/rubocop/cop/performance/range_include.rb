@@ -11,7 +11,7 @@ module RuboCop
       #
       # @safety
       #   This cop is unsafe because `Range#include?` (or `Range#member?`) and `Range#cover?`
-      #   are not equivalent behaviour.
+      #   are not equivalent behavior.
       #
       # @example
       #   # bad
