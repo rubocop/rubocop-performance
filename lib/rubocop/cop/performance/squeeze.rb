@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Performance
-      # This cop identifies places where `gsub(/a+/, 'a')` and `gsub!(/a+/, 'a')`
+      # Identifies places where `gsub(/a+/, 'a')` and `gsub!(/a+/, 'a')`
       # can be replaced by `squeeze('a')` and `squeeze!('a')`.
       #
       # The `squeeze('a')` method is faster than `gsub(/a+/, 'a')`.

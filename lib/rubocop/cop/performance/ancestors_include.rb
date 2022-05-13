@@ -3,8 +3,7 @@
 module RuboCop
   module Cop
     module Performance
-      # This cop is used to identify usages of `ancestors.include?` and
-      # change them to use `<=` instead.
+      # Identifies usages of `ancestors.include?` and change them to use `<=` instead.
       #
       # @safety
       #   This cop is unsafe because it can't tell whether the receiver is a class or an object.

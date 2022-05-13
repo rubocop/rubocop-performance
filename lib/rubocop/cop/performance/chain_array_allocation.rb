@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Performance
-      # This cop is used to identify usages of `array.compact.flatten.map { |x| x.downcase }`.
+      # Identifies usages of `array.compact.flatten.map { |x| x.downcase }`.
       # Each of these methods (`compact`, `flatten`, `map`) will generate a new intermediate array
       # that is promptly thrown away. Instead it is faster to mutate when we know it's safe.
       #

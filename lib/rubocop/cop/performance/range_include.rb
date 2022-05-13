@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Performance
-      # This cop identifies uses of `Range#include?` and `Range#member?`, which iterates over each
+      # Identifies uses of `Range#include?` and `Range#member?`, which iterates over each
       # item in a `Range` to see if a specified item is there. In contrast,
       # `Range#cover?` simply compares the target item with the beginning and
       # end points of the `Range`. In a great majority of cases, this is what

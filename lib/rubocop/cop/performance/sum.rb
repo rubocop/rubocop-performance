@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Performance
-      # This cop identifies places where custom code finding the sum of elements
+      # Identifies places where custom code finding the sum of elements
       # in some Enumerable object can be replaced by `Enumerable#sum` method.
       #
       # @safety

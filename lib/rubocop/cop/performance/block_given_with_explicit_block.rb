@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Performance
-      # This cop identifies unnecessary use of a `block_given?` where explicit check
+      # Identifies unnecessary use of a `block_given?` where explicit check
       # of block argument would suffice.
       #
       # @example

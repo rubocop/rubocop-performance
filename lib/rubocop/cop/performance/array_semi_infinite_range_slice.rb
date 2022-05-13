@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Performance
-      # This cop identifies places where slicing arrays with semi-infinite ranges
+      # Identifies places where slicing arrays with semi-infinite ranges
       # can be replaced by `Array#take` and `Array#drop`.
       # This cop was created due to a mistake in microbenchmark and hence is disabled by default.
       # Refer https://github.com/rubocop/rubocop-performance/pull/175#issuecomment-731892717

@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Performance
-      # This cop identifies places where string identifier argument can be replaced
+      # Identifies places where string identifier argument can be replaced
       # by symbol identifier argument.
       # It prevents the redundancy of the internal string-to-symbol conversion.
       #

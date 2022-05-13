@@ -5,8 +5,8 @@ require 'set'
 module RuboCop
   module Cop
     module Performance
-      # This cop identifies places where Array and Hash literals are used
-      # within loops. It is better to extract them into a local variable or constant
+      # Identifies places where Array and Hash literals are used within loops.
+      # It is better to extract them into a local variable or constant
       # to avoid unnecessary allocations on each iteration.
       #
       # You can set the minimum number of elements to consider

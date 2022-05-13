@@ -3,8 +3,7 @@
 module RuboCop
   module Cop
     module Performance
-      # This cop identifies places where `sort { |a, b| a <=> b }`
-      # can be replaced with `sort`.
+      # Identifies places where `sort { |a, b| a <=> b }` can be replaced with `sort`.
       #
       # @example
       #   # bad

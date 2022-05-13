@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Performance
-      # This cop checks for `OpenStruct.new` calls.
+      # Checks for `OpenStruct.new` calls.
       # Instantiation of an `OpenStruct` invalidates
       # Ruby global method cache as it causes dynamic method
       # definition during program runtime.

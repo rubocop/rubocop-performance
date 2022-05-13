@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Performance
-      # This cop identifies places where `Concurrent.monotonic_time`
+      # Identifies places where `Concurrent.monotonic_time`
       # can be replaced by `Process.clock_gettime(Process::CLOCK_MONOTONIC)`.
       #
       # @example

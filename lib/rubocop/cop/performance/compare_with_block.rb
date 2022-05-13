@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Performance
-      # This cop identifies places where `sort { |a, b| a.foo <=> b.foo }`
+      # Identifies places where `sort { |a, b| a.foo <=> b.foo }`
       # can be replaced by `sort_by(&:foo)`.
       # This cop also checks `max` and `min` methods.
       #

@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Performance
-      # This cop identifies places where `reverse.first(n)` and `reverse.first`
+      # Identifies places where `reverse.first(n)` and `reverse.first`
       # can be replaced by `last(n).reverse` and `last`.
       #
       # @example

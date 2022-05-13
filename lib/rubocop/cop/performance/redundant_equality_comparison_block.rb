@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Performance
-      # This cop checks for uses `Enumerable#all?`, `Enumerable#any?`, `Enumerable#one?`,
+      # Checks for uses `Enumerable#all?`, `Enumerable#any?`, `Enumerable#one?`,
       # and `Enumerable#none?` are compared with `===` or similar methods in block.
       #
       # By default, `Object#===` behaves the same as `Object#==`, but this

@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Performance
-      # This cop checks for redundant `String#chars`.
+      # Checks for redundant `String#chars`.
       #
       # @example
       #   # bad
