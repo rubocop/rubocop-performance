@@ -46,7 +46,7 @@ module RuboCop
         def on_send(node)
           return unless (first_argument = node.first_argument)
           return unless first_argument.str_type?
-          return if first_argument.value.include?(' ')
+          return if first_argument.value.include?(' ') || first_argument.value.include?('::')
 
           replacement = first_argument.value.to_sym.inspect
 
