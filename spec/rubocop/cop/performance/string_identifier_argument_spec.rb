@@ -38,6 +38,18 @@ RSpec.describe RuboCop::Cop::Performance::StringIdentifierArgument, :config do
     RUBY
   end
 
+  it 'does not register an offense when using cbase class string argument' do
+    expect_no_offenses(<<~RUBY)
+      Object.const_defined?('::Foo')
+    RUBY
+  end
+
+  it 'does not register an offense when using namespaced class string argument' do
+    expect_no_offenses(<<~RUBY)
+      Object.const_defined?('Foo::Bar')
+    RUBY
+  end
+
   it 'does not register an offense when using symbol argument for no identifier argument' do
     expect_no_offenses(<<~RUBY)
       foo('do_something')
