@@ -18,7 +18,7 @@ module RuboCop
       # that is inside of the splat expansion.
       #
       # @safety
-      #   This cop is not unsafe auto-correction because it is not a guaranteed
+      #   This cop is not unsafe autocorrection because it is not a guaranteed
       #   performance improvement. If the data being processed by the `case` condition is
       #   normalized in a manner that favors hitting a condition in the splat expansion,
       #   it is possible that moving the splat condition to the end will use more memory,

@@ -265,7 +265,7 @@ RSpec.describe RuboCop::Cop::Performance::StringReplacement, :config do
     RUBY
   end
 
-  context 'auto-correct' do
+  context 'autocorrect' do
     describe 'corrects to tr' do
       it 'corrects when the length of the pattern and replacement are one' do
         new_source = autocorrect_source("'abc'.gsub('a', 'd')")

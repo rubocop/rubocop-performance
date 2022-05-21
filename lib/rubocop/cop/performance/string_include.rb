@@ -6,7 +6,7 @@ module RuboCop
       # Identifies unnecessary use of a regex where `String#include?` would suffice.
       #
       # @safety
-      #   This cop's offenses are not safe to auto-correct if a receiver is nil.
+      #   This cop's offenses are not safe to autocorrect if a receiver is nil.
       #
       # @example
       #   # bad
