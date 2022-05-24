@@ -12,8 +12,7 @@
 | -
 |===
 
-This cop is used to identify usages of `ancestors.include?` and
-change them to use `<=` instead.
+Identifies usages of `ancestors.include?` and change them to use `<=` instead.
 
 === Safety
 
@@ -49,7 +48,7 @@ NOTE: Required Ruby version: 2.7
 | -
 |===
 
-This cop identifies places where slicing arrays with semi-infinite ranges
+Identifies places where slicing arrays with semi-infinite ranges
 can be replaced by `Array#take` and `Array#drop`.
 This cop was created due to a mistake in microbenchmark and hence is disabled by default.
 Refer https://github.com/rubocop/rubocop-performance/pull/175#issuecomment-731892717
@@ -89,7 +88,7 @@ array.take(3)
 | -
 |===
 
-This cop identifies places where numeric argument to BigDecimal should be
+Identifies places where numeric argument to BigDecimal should be
 converted to string. Initializing from String is faster
 than from Numeric for BigDecimal.
 
@@ -156,7 +155,7 @@ umethod.bind_call(obj, foo, bar)
 | -
 |===
 
-This cop identifies unnecessary use of a `block_given?` where explicit check
+Identifies unnecessary use of a `block_given?` where explicit check
 of block argument would suffice.
 
 === Examples
@@ -193,8 +192,7 @@ end
 | 1.9
 |===
 
-This cop identifies places where `caller[n]`
-can be replaced by `caller(n..n).first`.
+Identifies places where `caller[n]` can be replaced by `caller(n..n).first`.
 
 === Examples
 
@@ -241,7 +239,7 @@ that is inside of the splat expansion.
 
 === Safety
 
-This cop is not unsafe auto-correction because it is not a guaranteed
+This cop is not unsafe autocorrection because it is not a guaranteed
 performance improvement. If the data being processed by the `case` condition is
 normalized in a manner that favors hitting a condition in the splat expansion,
 it is possible that moving the splat condition to the end will use more memory,
@@ -295,7 +293,7 @@ end
 | -
 |===
 
-This cop identifies places where a case-insensitive string comparison
+Identifies places where a case-insensitive string comparison
 can better be implemented using `casecmp`.
 
 === Safety
@@ -335,7 +333,7 @@ str.casecmp('ABC').zero?
 | -
 |===
 
-This cop is used to identify usages of `array.compact.flatten.map { |x| x.downcase }`.
+Identifies usages of `array.compact.flatten.map { |x| x.downcase }`.
 Each of these methods (`compact`, `flatten`, `map`) will generate a new intermediate array
 that is promptly thrown away. Instead it is faster to mutate when we know it's safe.
 
@@ -371,8 +369,8 @@ array
 | -
 |===
 
-This cop identifies places where Array and Hash literals are used
-within loops. It is better to extract them into a local variable or constant
+Identifies places where Array and Hash literals are used within loops.
+It is better to extract them into a local variable or constant
 to avoid unnecessary allocations on each iteration.
 
 You can set the minimum number of elements to consider
@@ -423,7 +421,7 @@ end
 | -
 |===
 
-This cop identifies places where `sort { |a, b| a.foo <=> b.foo }`
+Identifies places where `sort { |a, b| a.foo <=> b.foo }`
 can be replaced by `sort_by(&:foo)`.
 This cop also checks `max` and `min` methods.
 
@@ -460,7 +458,7 @@ array.sort_by { |a| a[:foo] }
 | -
 |===
 
-This cop identifies places where `Concurrent.monotonic_time`
+Identifies places where `Concurrent.monotonic_time`
 can be replaced by `Process.clock_gettime(Process::CLOCK_MONOTONIC)`.
 
 === Examples
@@ -490,7 +488,7 @@ Process.clock_gettime(Process::CLOCK_MONOTONIC)
 | 1.10
 |===
 
-This cop finds regular expressions with dynamic components that are all constants.
+Finds regular expressions with dynamic components that are all constants.
 
 Ruby allocates a new Regexp object every time it executes a code containing such
 a regular expression. It is more efficient to extract it into a constant,
@@ -535,7 +533,7 @@ end
 | 1.8
 |===
 
-This cop is used to identify usages of `count` on an `Enumerable` that
+Identifies usages of `count` on an `Enumerable` that
 follow calls to `select`, `find_all`, `filter` or `reject`. Querying logic can instead be
 passed to the `count` call.
 
@@ -585,6 +583,8 @@ Model.select(:value).count
 ----
 
 == Performance/DeletePrefix
+
+NOTE: Required Ruby version: 2.5
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -660,6 +660,8 @@ str.sub!(/^prefix/, '')
 |===
 
 == Performance/DeleteSuffix
+
+NOTE: Required Ruby version: 2.5
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -746,7 +748,7 @@ str.sub!(/suffix$/, '')
 | 1.8
 |===
 
-This cop is used to identify usages of `first`, `last`, `[0]` or `[-1]`
+Identifies usages of `first`, `last`, `[0]` or `[-1]`
 chained to `select`, `find_all` or `filter` and change them to use
 `detect` instead.
 
@@ -791,7 +793,7 @@ meaning. Correcting `ActiveRecord` methods with this cop should be considered un
 | 0.48
 |===
 
-This cop checks for double `#start_with?` or `#end_with?` calls
+Checks for double `#start_with?` or `#end_with?` calls
 separated by `||`. In some cases such calls can be replaced
 with an single `#start_with?`/`#end_with?` call.
 
@@ -860,7 +862,7 @@ str.ends_with?(var1, var2)
 | 1.10
 |===
 
-This cop identifies unnecessary use of a regex where `String#end_with?` would suffice.
+Identifies unnecessary use of a regex where `String#end_with?` would suffice.
 
 This cop has `SafeMultiline` configuration option that `true` by default because
 `end$` is unsafe as it will behave incompatible with `end_with?`
@@ -998,7 +1000,7 @@ waldo.size
 | -
 |===
 
-This cop is used to identify usages of `map { ... }.flatten` and
+Identifies usages of `map { ... }.flatten` and
 change them to use `flat_map { ... }` instead.
 
 === Examples
@@ -1041,7 +1043,7 @@ change them to use `flat_map { ... }` instead.
 | -
 |===
 
-This cop checks for inefficient searching of keys and values within
+Checks for inefficient searching of keys and values within
 hashes.
 
 `Hash#keys.include?` is less efficient than `Hash#key?` because
@@ -1098,7 +1100,7 @@ h = { a: 1, b: 2 }; h.value?(nil)
 | -
 |===
 
-This cop identifies places where inefficient `readlines` method
+Identifies places where inefficient `readlines` method
 can be replaced by `each_line` to avoid fully loading file content into memory.
 
 === Examples
@@ -1181,7 +1183,7 @@ ary.compact.map(&:foo)
 | -
 |===
 
-This cop identifies places where methods are converted to blocks, with the
+Identifies places where methods are converted to blocks, with the
 use of `&method`, and passed as arguments to method calls.
 It is faster to replace those with explicit blocks, calling those methods inside.
 
@@ -1214,7 +1216,7 @@ array.map { |x| do_something(x) }
 | -
 |===
 
-This cop checks for `OpenStruct.new` calls.
+Checks for `OpenStruct.new` calls.
 Instantiation of an `OpenStruct` invalidates
 Ruby global method cache as it causes dynamic method
 definition during program runtime.
@@ -1259,7 +1261,7 @@ end
 | 1.7
 |===
 
-This cop identifies uses of `Range#include?` and `Range#member?`, which iterates over each
+Identifies uses of `Range#include?` and `Range#member?`, which iterates over each
 item in a `Range` to see if a specified item is there. In contrast,
 `Range#cover?` simply compares the target item with the beginning and
 end points of the `Range`. In a great majority of cases, this is what
@@ -1303,7 +1305,7 @@ are not equivalent behavior.
 | -
 |===
 
-This cop identifies the use of a `&block` parameter and `block.call`
+Identifies the use of a `&block` parameter and `block.call`
 where `yield` would do just as well.
 
 === Examples
@@ -1333,6 +1335,8 @@ end
 
 == Performance/RedundantEqualityComparisonBlock
 
+NOTE: Required Ruby version: 2.5
+
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
 
@@ -1343,7 +1347,7 @@ end
 | -
 |===
 
-This cop checks for uses `Enumerable#all?`, `Enumerable#any?`, `Enumerable#one?`,
+Checks for uses `Enumerable#all?`, `Enumerable#any?`, `Enumerable#one?`,
 and `Enumerable#none?` are compared with `===` or similar methods in block.
 
 By default, `Object#===` behaves the same as `Object#==`, but this
@@ -1384,7 +1388,7 @@ items.all?(pattern)
 | -
 |===
 
-This cop identifies the use of `Regexp#match` or `String#match`, which
+Identifies the use of `Regexp#match` or `String#match`, which
 returns `#<MatchData>`/`nil`. The return value of `=~` is an integral
 index/`nil` and is more performant.
 
@@ -1415,8 +1419,7 @@ return value unless regex =~ 'str'
 | 1.11
 |===
 
-This cop identifies places where `Hash#merge!` can be replaced by
-`Hash#[]=`.
+Identifies places where `Hash#merge!` can be replaced by `Hash#[]=`.
 You can set the maximum number of key-value pairs to consider
 an offense with `MaxKeyValuePairs`.
 
@@ -1476,8 +1479,7 @@ hash[:b] = 2
 | -
 |===
 
-This cop identifies places where `sort { |a, b| a <=> b }`
-can be replaced with `sort`.
+Identifies places where `sort { |a, b| a <=> b }` can be replaced with `sort`.
 
 === Examples
 
@@ -1502,7 +1504,7 @@ array.sort
 | -
 |===
 
-This cop identifies places where `split` argument can be replaced from
+Identifies places where `split` argument can be replaced from
 a deterministic regexp to a string.
 
 === Examples
@@ -1528,7 +1530,7 @@ a deterministic regexp to a string.
 | -
 |===
 
-This cop checks for redundant `String#chars`.
+Checks for redundant `String#chars`.
 
 === Examples
 
@@ -1670,8 +1672,7 @@ end
 | -
 |===
 
-This cop is used to identify usages of `reverse.each` and
-change them to use `reverse_each` instead.
+Identifies usages of `reverse.each` and change them to use `reverse_each` instead.
 
 If the return value is used, it will not be detected because the result will be different.
 
@@ -1708,7 +1709,7 @@ items.reverse_each
 | -
 |===
 
-This cop identifies places where `reverse.first(n)` and `reverse.first`
+Identifies places where `reverse.first(n)` and `reverse.first`
 can be replaced by `last(n).reverse` and `last`.
 
 === Examples
@@ -1766,8 +1767,7 @@ ary.filter_map { |o| o.bar if o.foo }
 | -
 |===
 
-This cop is used to identify usages of `count` on an
-`Array` and `Hash` and change them to `size`.
+Identifies usages of `count` on an `Array` and `Hash` and change them to `size`.
 
 TODO: Add advanced detection of variables that could
 have been assigned to an array or a hash.
@@ -1820,7 +1820,7 @@ Hash(key: :value).size
 | -
 |===
 
-This cop identifies places where `sort { |a, b| b <=> a }`
+Identifies places where `sort { |a, b| b <=> a }`
 can be replaced by a faster `sort.reverse`.
 
 === Examples
@@ -1846,7 +1846,7 @@ array.sort.reverse
 | -
 |===
 
-This cop identifies places where `gsub(/a+/, 'a')` and `gsub!(/a+/, 'a')`
+Identifies places where `gsub(/a+/, 'a')` and `gsub!(/a+/, 'a')`
 can be replaced by `squeeze('a')` and `squeeze!('a')`.
 
 The `squeeze('a')` method is faster than `gsub(/a+/, 'a')`.
@@ -1880,7 +1880,7 @@ str.squeeze!('a')
 | 1.10
 |===
 
-This cop identifies unnecessary use of a regex where `String#start_with?` would suffice.
+Identifies unnecessary use of a regex where `String#start_with?` would suffice.
 
 This cop has `SafeMultiline` configuration option that `true` by default because
 `^start` is unsafe as it will behave incompatible with `start_with?`
@@ -1960,7 +1960,7 @@ of the variables which rubocop doesn't have.
 | -
 |===
 
-This cop identifies places where string identifier argument can be replaced
+Identifies places where string identifier argument can be replaced
 by symbol identifier argument.
 It prevents the redundancy of the internal string-to-symbol conversion.
 
@@ -1994,12 +1994,11 @@ instance_variable_get(:@ivar)
 | 1.12
 |===
 
-This cop identifies unnecessary use of a regex where
-`String#include?` would suffice.
+Identifies unnecessary use of a regex where `String#include?` would suffice.
 
 === Safety
 
-This cop's offenses are not safe to auto-correct if a receiver is nil.
+This cop's offenses are not safe to autocorrect if a receiver is nil.
 
 === Examples
 
@@ -2029,8 +2028,7 @@ This cop's offenses are not safe to auto-correct if a receiver is nil.
 | -
 |===
 
-This cop identifies places where `gsub` can be replaced by
-`tr` or `delete`.
+Identifies places where `gsub` can be replaced by `tr` or `delete`.
 
 === Examples
 
@@ -2065,7 +2063,7 @@ This cop identifies places where `gsub` can be replaced by
 | 1.13
 |===
 
-This cop identifies places where custom code finding the sum of elements
+Identifies places where custom code finding the sum of elements
 in some Enumerable object can be replaced by `Enumerable#sum` method.
 
 === Safety
@@ -2166,7 +2164,7 @@ as initial value and successively add all following values to it, whereas
 | 1.13
 |===
 
-This cop checks for .times.map calls.
+Checks for .times.map calls.
 In most cases such calls can be replaced
 with an explicit array creation.
 
@@ -2249,8 +2247,7 @@ String.new('something')
 | -
 |===
 
-This cop identifies places where `URI::Parser.new`
-can be replaced by `URI::DEFAULT_PARSER`.
+Identifies places where `URI::Parser.new` can be replaced by `URI::DEFAULT_PARSER`.
 
 === Examples
 
