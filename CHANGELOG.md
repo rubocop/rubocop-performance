@@ -11,7 +11,7 @@
 
 ### Changes
 
-* [#287](https://github.com/rubocop/rubocop-performance/pull/287): **(Breaking)** Drop Ruby 2.5 support. ([@koic][])
+* [#287](https://github.com/rubocop/rubocop-performance/pull/287): **(Compatibility)** Drop Ruby 2.5 support. ([@koic][])
 
 ## 1.13.3 (2022-03-05)
 
