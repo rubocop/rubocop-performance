@@ -2,6 +2,15 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#289](https://github.com/rubocop/rubocop-performance/issues/289): Fix a false positive for `Performance/StringIdentifierArgument` when using namespaced class string argument. ([@koic][])
+* [#288](https://github.com/rubocop/rubocop-performance/pull/288): Recover Ruby 2.4 code analysis using `TargetRubyVersion: 2.4`. ([@koic][])
+
+### Changes
+
+* [#287](https://github.com/rubocop/rubocop-performance/pull/287): **(Breaking)** Drop Ruby 2.5 support. ([@koic][])
+
 ## 1.13.3 (2022-03-05)
 
 ### Bug fixes
