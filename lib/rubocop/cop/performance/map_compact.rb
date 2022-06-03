@@ -83,7 +83,7 @@ module RuboCop
         end
 
         def invoke_method_after_map_compact_on_same_line?(compact_node, chained_method)
-          compact_node.loc.selector.line == chained_method.loc.selector.line
+          compact_node.loc.selector.line == chained_method.loc.last_line
         end
 
         def compact_method_with_final_newline_range(compact_method_range)
