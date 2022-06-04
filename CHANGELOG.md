@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#291](https://github.com/rubocop/rubocop-performance/pull/291): Fix `Performance/MapCompact` autocorrect causing invalid syntax when using multiline `map { ... }.compact` as an argument for an assignment method. ([@QQism][])
+
 ## 1.14.0 (2022-05-24)
 
 ### Bug fixes

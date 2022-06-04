@@ -1,1 +1,0 @@
-* [#291](https://github.com/rubocop/rubocop-performance/pull/291): Fix `Performance/MapCompact` autocorrect causing invalid syntax when using multiline `map { ... }.compact` as an argument for an assignment method. ([@QQism][])
