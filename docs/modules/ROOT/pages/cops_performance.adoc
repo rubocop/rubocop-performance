@@ -1572,6 +1572,8 @@ str.chars.drop(2) # Incompatible with `str[2..-1].chars`.
 
 == Performance/RegexpMatch
 
+NOTE: Required Ruby version: 2.4
+
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
 
