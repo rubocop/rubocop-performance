@@ -74,6 +74,9 @@ module RuboCop
       #   end
       class RegexpMatch < Base
         extend AutoCorrector
+        extend TargetRubyVersion
+
+        minimum_target_ruby_version 2.4
 
         # Constants are included in this list because it is unlikely that
         # someone will store `nil` as a constant and then use it for comparison
