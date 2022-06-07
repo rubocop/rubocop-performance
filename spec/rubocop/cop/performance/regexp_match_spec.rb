@@ -423,4 +423,13 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
       end
     RUBY
   end
+
+  context 'when Ruby <= 2.3', :ruby23 do
+    it 'does not register an offense when using `String#match` in condition' do
+      expect_no_offenses(<<~RUBY)
+        if 'foo'.match(re)
+        end
+      RUBY
+    end
+  end
 end
