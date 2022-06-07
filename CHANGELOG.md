@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#292](https://github.com/rubocop/rubocop-performance/pull/292): Fix a false positive for `Performance/RegexpMatch` when `TargetRubyVersion: 2.3`. ([@koic][])
+
 ## 1.14.1 (2022-06-05)
 
 ### Bug fixes
