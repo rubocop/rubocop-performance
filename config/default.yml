@@ -160,7 +160,7 @@ Performance/FlatMap:
   Description: >-
                   Use `Enumerable#flat_map`
                   instead of `Enumerable#map...Array#flatten(1)`
-                  or `Enumberable#collect..Array#flatten(1)`.
+                  or `Enumerable#collect..Array#flatten(1)`.
   Reference: 'https://github.com/JuanitoFatas/fast-ruby#enumerablemaparrayflatten-vs-enumerableflat_map-code'
   Enabled: true
   VersionAdded: '0.30'
