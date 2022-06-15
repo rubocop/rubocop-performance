@@ -23,6 +23,13 @@ RSpec.describe RuboCop::Cop::Performance::ChainArrayAllocation, :config do
                                     ^^^^^ Use unchained `first` and `uniq!` (followed by `return array` if required) instead of chaining `first...uniq`.
       RUBY
     end
+
+    it 'registers an offense for `first(do_something).uniq`' do
+      expect_offense(<<~RUBY)
+        [1, 2, 3, 4].first(do_something).uniq
+                                        ^^^^^ Use unchained `first` and `uniq!` (followed by `return array` if required) instead of chaining `first...uniq`.
+      RUBY
+    end
   end
 
   describe 'methods that only return an array with no block' do
