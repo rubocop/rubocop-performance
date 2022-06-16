@@ -53,7 +53,7 @@ module RuboCop
 
         def_node_matcher :chain_array_allocation?, <<~PATTERN
           (send {
-            (send _ $%RETURN_NEW_ARRAY_WHEN_ARGS {int lvar ivar cvar gvar})
+            (send _ $%RETURN_NEW_ARRAY_WHEN_ARGS {int lvar ivar cvar gvar send})
             (block (send _ $%ALWAYS_RETURNS_NEW_ARRAY) ...)
             (send _ $%RETURNS_NEW_ARRAY ...)
           } $%HAS_MUTATION_ALTERNATIVE ...)
