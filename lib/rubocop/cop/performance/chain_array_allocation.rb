@@ -47,8 +47,8 @@ module RuboCop
 
         RETURNS_NEW_ARRAY = (ALWAYS_RETURNS_NEW_ARRAY + RETURNS_NEW_ARRAY_WHEN_NO_BLOCK).freeze
 
-        MSG = 'Use unchained `%<method>s` and `%<second_method>s!` '\
-              '(followed by `return array` if required) instead of chaining '\
+        MSG = 'Use unchained `%<method>s` and `%<second_method>s!` ' \
+              '(followed by `return array` if required) instead of chaining ' \
               '`%<method>s...%<second_method>s`.'
 
         def_node_matcher :chain_array_allocation?, <<~PATTERN

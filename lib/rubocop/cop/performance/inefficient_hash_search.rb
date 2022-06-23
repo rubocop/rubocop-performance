@@ -58,8 +58,7 @@ module RuboCop
               # `key?`/`value?` method.
               corrector.replace(
                 node.loc.expression,
-                "#{autocorrect_hash_expression(node)}."\
-                "#{autocorrect_method(node)}(#{autocorrect_argument(node)})"
+                "#{autocorrect_hash_expression(node)}.#{autocorrect_method(node)}(#{autocorrect_argument(node)})"
               )
             end
           end
@@ -68,8 +67,7 @@ module RuboCop
         private
 
         def message(node)
-          "Use `##{autocorrect_method(node)}` instead of "\
-            "`##{current_method(node)}.include?`."
+          "Use `##{autocorrect_method(node)}` instead of `##{current_method(node)}.include?`."
         end
 
         def autocorrect_method(node)

@@ -58,8 +58,7 @@ RSpec.describe RuboCop::Cop::Performance::ConstantRegexp, :config do
     RUBY
   end
 
-  it 'does not register an offense when regexp contains interpolated constant and '\
-     'and interpolated non constant' do
+  it 'does not register an offense when regexp contains interpolated constant and and interpolated non constant' do
     expect_no_offenses(<<~RUBY)
       str.match?(/\#{CONST}\#{do_something(1)}/)
     RUBY

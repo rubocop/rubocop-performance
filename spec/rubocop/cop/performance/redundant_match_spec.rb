@@ -85,8 +85,7 @@ RSpec.describe RuboCop::Cop::Performance::RedundantMatch, :config do
     RUBY
   end
 
-  it 'does not register an error when return value of .match is returned from' \
-     ' surrounding method' do
+  it 'does not register an error when return value of .match is returned from surrounding method' do
     expect_no_offenses(<<~RUBY)
       def method(str)
        str.match(/regex/)
