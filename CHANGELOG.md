@@ -2,6 +2,11 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#296](https://github.com/rubocop/rubocop-performance/pull/296): Fix a false negative for `Performance/StringIdentifierArgument` when using `instance_variable_defined?`. ([@koic][])
+* [#294](https://github.com/rubocop/rubocop-performance/pull/294): Fix a false negative for `Performance/ChainArrayAllocation` when using `array.first(do_something).uniq`. ([@koic][])
+
 ## 1.14.2 (2022-06-08)
 
 ### Bug fixes
