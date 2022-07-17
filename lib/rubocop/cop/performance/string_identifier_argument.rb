@@ -38,7 +38,7 @@ module RuboCop
           remove_class_variable remove_method undef_method class_variable_get class_variable_set
           deprecate_constant module_function private private_constant protected public public_constant
           remove_const ruby2_keywords
-          define_singleton_method instance_variable_defined instance_variable_get instance_variable_set
+          define_singleton_method instance_variable_defined? instance_variable_get instance_variable_set
           method public_method public_send remove_instance_variable respond_to? send singleton_method
           __send__
         ].freeze
