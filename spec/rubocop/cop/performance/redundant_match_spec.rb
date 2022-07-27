@@ -111,4 +111,15 @@ RSpec.describe RuboCop::Cop::Performance::RedundantMatch, :config do
                    ^^^^^^^^^^^^^^^^^^ Use `=~` in places where the `MatchData` returned by `#match` will not be used.
     RUBY
   end
+
+  it 'registers an offense and corrects when receiver is a Regexp literal' do
+    expect_offense(<<~RUBY)
+      something if /regex/.match(str)
+                   ^^^^^^^^^^^^^^^^^^ Use `=~` in places where the `MatchData` returned by `#match` will not be used.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      something if /regex/ =~ str
+    RUBY
+  end
 end
