@@ -41,20 +41,22 @@ module RuboCop
                         !(node.parent && node.parent.block_type?)
 
           add_offense(node) do |corrector|
-            autocorrect(corrector, node)
+            autocorrect(corrector, node) if autocorrectable?(node)
           end
         end
 
         private
 
         def autocorrect(corrector, node)
-          # Regexp#match can take a second argument, but this cop doesn't
-          # register an offense in that case
-          return unless node.first_argument.regexp_type?
-
           new_source = "#{node.receiver.source} =~ #{node.first_argument.source}"
 
           corrector.replace(node.source_range, new_source)
+        end
+
+        def autocorrectable?(node)
+          # Regexp#match can take a second argument, but this cop doesn't
+          # register an offense in that case
+          node.receiver.regexp_type? || node.first_argument.regexp_type?
         end
       end
     end
