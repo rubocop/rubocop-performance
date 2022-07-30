@@ -76,8 +76,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat, :config do
     RUBY
   end
 
-  it 'registers an offense for a single when with splat expansion followed ' \
-     'by another value' do
+  it 'registers an offense for a single when with splat expansion followed by another value' do
     expect_offense(<<~RUBY)
       case foo
       when *Foo, Bar
@@ -166,8 +165,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat, :config do
     RUBY
   end
 
-  it 'registers an offense for a splat on a variable that proceeds a splat ' \
-     'on an array literal as the last condition' do
+  it 'registers an offense for a splat on a variable that proceeds a splat on an array literal as the last condition' do
     expect_offense(<<~RUBY)
       case foo
       when *cond
@@ -293,8 +291,7 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat, :config do
       RUBY
     end
 
-    it 'moves multiple out of order splat condition to the end ' \
-       'of the when conditions' do
+    it 'moves multiple out of order splat condition to the end of the when conditions' do
       new_source = autocorrect_source(<<~RUBY)
         case foo
         when *cond1

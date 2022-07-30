@@ -15,8 +15,7 @@ module RuboCop
       class UriDefaultParser < Base
         extend AutoCorrector
 
-        MSG = 'Use `%<double_colon>sURI::DEFAULT_PARSER` instead of ' \
-              '`%<double_colon>sURI::Parser.new`.'
+        MSG = 'Use `%<double_colon>sURI::DEFAULT_PARSER` instead of `%<double_colon>sURI::Parser.new`.'
         RESTRICT_ON_SEND = %i[new].freeze
 
         def_node_matcher :uri_parser_new?, <<~PATTERN

@@ -20,8 +20,7 @@ module RuboCop
       class RedundantMatch < Base
         extend AutoCorrector
 
-        MSG = 'Use `=~` in places where the `MatchData` returned by ' \
-              '`#match` will not be used.'
+        MSG = 'Use `=~` in places where the `MatchData` returned by `#match` will not be used.'
         RESTRICT_ON_SEND = %i[match].freeze
 
         # 'match' is a fairly generic name, so we don't flag it unless we see

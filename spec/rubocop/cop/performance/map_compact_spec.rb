@@ -73,8 +73,7 @@ RSpec.describe RuboCop::Cop::Performance::MapCompact, :config do
       RUBY
     end
 
-    it 'registers an offense when using `map(&:do_something).compact.first` with multi-line trailing' \
-       'dot method calls' do
+    it 'registers an offense when using `map(&:do_something).compact.first` with multi-line trailingdot method calls' do
       expect_offense(<<~RUBY)
         collection.
           map(&:do_something).

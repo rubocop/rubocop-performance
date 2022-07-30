@@ -66,8 +66,7 @@ RSpec.describe RuboCop::Cop::Performance::RedundantMatch, :config do
     expect(new_source).to eq 'something if str.match("string")'
   end
 
-  it 'does not register an error when return value of .match is passed ' \
-     'to another method' do
+  it 'does not register an error when return value of .match is passed to another method' do
     expect_no_offenses(<<~RUBY)
       def method(str)
        something(str.match(/regex/))
@@ -75,8 +74,7 @@ RSpec.describe RuboCop::Cop::Performance::RedundantMatch, :config do
     RUBY
   end
 
-  it 'does not register an error when return value of .match is stored in an ' \
-     'instance variable' do
+  it 'does not register an error when return value of .match is stored in an instance variable' do
     expect_no_offenses(<<~RUBY)
       def method(str)
        @var = str.match(/regex/)

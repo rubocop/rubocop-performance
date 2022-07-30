@@ -99,8 +99,7 @@ module RuboCop
         end
 
         def non_redundant_value_used?(receiver, node)
-          node.value_used? &&
-            !EachWithObjectInspector.new(node, receiver).value_used?
+          node.value_used? && !EachWithObjectInspector.new(node, receiver).value_used?
         end
 
         def correct_multiple_elements(corrector, node, parent, new_source)
@@ -125,9 +124,7 @@ module RuboCop
 
             key = key.sym_type? && pair.colon? ? ":#{key.source}" : key.source
 
-            format(AREF_ASGN, receiver: receiver.source,
-                              key: key,
-                              value: value.source)
+            format(AREF_ASGN, receiver: receiver.source, key: key, value: value.source)
           end
         end
 

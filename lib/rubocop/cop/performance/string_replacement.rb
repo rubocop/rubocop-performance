@@ -86,8 +86,7 @@ module RuboCop
 
           unless first_param.str_type?
             return true if options
-            return true unless first_source.is_a?(String) &&
-                               first_source =~ DETERMINISTIC_REGEX
+            return true unless first_source.is_a?(String) && first_source =~ DETERMINISTIC_REGEX
 
             # This must be done after checking DETERMINISTIC_REGEX
             # Otherwise things like \s will trip us up
@@ -141,8 +140,7 @@ module RuboCop
         end
 
         def message(node, first_source, second_source)
-          replacement_method =
-            replacement_method(node, first_source, second_source)
+          replacement_method = replacement_method(node, first_source, second_source)
 
           format(MSG, prefer: replacement_method, current: node.method_name)
         end
@@ -152,8 +150,7 @@ module RuboCop
         end
 
         def remove_second_param(corrector, node, first_param)
-          end_range = range_between(first_param.source_range.end_pos,
-                                    node.source_range.end_pos)
+          end_range = range_between(first_param.source_range.end_pos, node.source_range.end_pos)
 
           corrector.replace(end_range, method_suffix(node))
         end

@@ -40,8 +40,7 @@ RSpec.describe RuboCop::Cop::Performance::UnfreezeString, :config do
     RUBY
   end
 
-  it 'registers an offense and corrects for a string that contains a string' \
-     'interpolation with `.dup`' do
+  it 'registers an offense and corrects for a string that contains a stringinterpolation with `.dup`' do
     expect_offense(<<~'RUBY')
       "foo#{bar}baz".dup
       ^^^^^^^^^^^^^^^^^^ Use unary plus to get an unfrozen string literal.

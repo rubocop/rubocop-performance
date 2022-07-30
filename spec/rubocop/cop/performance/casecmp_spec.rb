@@ -112,8 +112,7 @@ RSpec.describe RuboCop::Cop::Performance::Casecmp, :config do
       RUBY
     end
 
-    it 'registers an offense and corrects string with parens and funny spacing ' \
-       "eql? str.#{selector}" do
+    it "registers an offense and corrects string with parens and funny spacing eql? str.#{selector}" do
       expect_offense(<<~RUBY, selector: selector)
         ( 'string' ).eql? str.#{selector}
         ^^^^^^^^^^^^^^^^^^^^^^^{selector} Use `str.casecmp( 'string' ).zero?` instead of `( 'string' ).eql? str.#{selector}`.

@@ -104,9 +104,7 @@ module RuboCop
         end
 
         def loop?(ancestor, node)
-          keyword_loop?(ancestor.type) ||
-            kernel_loop?(ancestor) ||
-            node_within_enumerable_loop?(node, ancestor)
+          keyword_loop?(ancestor.type) || kernel_loop?(ancestor) || node_within_enumerable_loop?(node, ancestor)
         end
 
         def keyword_loop?(type)

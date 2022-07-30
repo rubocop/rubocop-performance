@@ -83,9 +83,7 @@ module RuboCop
 
         def use_long_method
           preferred_config = config.for_all_cops['Style/PreferredHashMethods']
-          preferred_config &&
-            preferred_config['EnforcedStyle'] == 'long' &&
-            preferred_config['Enabled']
+          preferred_config && preferred_config['EnforcedStyle'] == 'long' && preferred_config['Enabled']
         end
 
         def autocorrect_argument(node)

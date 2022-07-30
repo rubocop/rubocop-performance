@@ -45,8 +45,7 @@ RSpec.describe RuboCop::Cop::Performance::InefficientHashSearch, :config do
       RUBY
     end
 
-    it 'does not register an offense when `keys` method defined by itself ' \
-       'and `include?` method are method chaining' do
+    it 'does not register an offense when `keys` method defined by itself and `include?` method are method chaining' do
       expect_no_offenses(<<~RUBY)
         def my_include?(key)
           keys.include?(key)
@@ -80,8 +79,7 @@ RSpec.describe RuboCop::Cop::Performance::InefficientHashSearch, :config do
 
         it 'corrects when hash is not a literal' do
           new_source = autocorrect_source('h = { a: 1 }; h.values.include?(1)')
-          expect(new_source)
-            .to eq("h = { a: 1 }; h.#{expected_value_method}(1)")
+          expect(new_source).to eq("h = { a: 1 }; h.#{expected_value_method}(1)")
         end
 
         it 'gracefully handles whitespace' do

@@ -39,9 +39,7 @@ module RuboCop
         MSG = 'Extract this regexp into a constant, memoize it, or append an `/o` option to its options.'
 
         def on_regexp(node)
-          return if within_allowed_assignment?(node) ||
-                    !include_interpolated_const?(node) ||
-                    node.single_interpolation?
+          return if within_allowed_assignment?(node) || !include_interpolated_const?(node) || node.single_interpolation?
 
           add_offense(node) do |corrector|
             corrector.insert_after(node, 'o')

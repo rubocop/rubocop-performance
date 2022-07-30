@@ -44,15 +44,13 @@ RSpec.describe RuboCop::Cop::Performance::RedundantMerge, :config do
   end
 
   context 'when any argument is a double splat' do
-    it 'does not register an offense when the only argument is a' \
-       'double splat' do
+    it 'does not register an offense when the only argument is adouble splat' do
       expect_no_offenses(<<~RUBY)
         foo.merge!(**bar)
       RUBY
     end
 
-    it 'does not register an offense when there are multiple arguments ' \
-       'and at least one is a double splat' do
+    it 'does not register an offense when there are multiple arguments and at least one is a double splat' do
       expect_no_offenses(<<~RUBY)
         foo.merge!(baz: qux, **bar)
       RUBY
@@ -76,8 +74,7 @@ RSpec.describe RuboCop::Cop::Performance::RedundantMerge, :config do
       RUBY
     end
 
-    it 'autocorrects when the receiver is the object being built when ' \
-       'merge! is the last statement' do
+    it 'autocorrects when the receiver is the object being built when merge! is the last statement' do
       source = <<~RUBY
         foo.each_with_object({}) do |f, hash|
           some_method
@@ -95,8 +92,7 @@ RSpec.describe RuboCop::Cop::Performance::RedundantMerge, :config do
       RUBY
     end
 
-    it 'autocorrects when the receiver is the object being built when ' \
-       'merge! is not the last statement' do
+    it 'autocorrects when the receiver is the object being built when merge! is not the last statement' do
       source = <<~RUBY
         foo.each_with_object({}) do |f, hash|
           hash.merge!(a: 1, b: 2)
@@ -114,8 +110,7 @@ RSpec.describe RuboCop::Cop::Performance::RedundantMerge, :config do
       RUBY
     end
 
-    it 'does not register an offense when merge! is being assigned inside ' \
-       'each_with_object' do
+    it 'does not register an offense when merge! is being assigned inside each_with_object' do
       expect_no_offenses(<<~RUBY)
         foo.each_with_object({}) do |f, hash|
           changes = hash.merge!(a: 1, b: 2)
@@ -124,8 +119,7 @@ RSpec.describe RuboCop::Cop::Performance::RedundantMerge, :config do
       RUBY
     end
 
-    it 'autocorrects when receiver uses element reference to the object ' \
-       'built by each_with_object' do
+    it 'autocorrects when receiver uses element reference to the object built by each_with_object' do
       source = <<~RUBY
         foo.each_with_object(bar) do |f, hash|
           hash[:a].merge!(b: "")
@@ -140,8 +134,7 @@ RSpec.describe RuboCop::Cop::Performance::RedundantMerge, :config do
       RUBY
     end
 
-    it 'autocorrects when receiver uses multiple element references to the ' \
-       'object built by each_with_object' do
+    it 'autocorrects when receiver uses multiple element references to the object built by each_with_object' do
       source = <<~RUBY
         foo.each_with_object(bar) do |f, hash|
           hash[:a][:b].merge!(c: "")
@@ -156,8 +149,7 @@ RSpec.describe RuboCop::Cop::Performance::RedundantMerge, :config do
       RUBY
     end
 
-    it 'autocorrects merge! called on any method on the object built ' \
-       'by each_with_object' do
+    it 'autocorrects merge! called on any method on the object built by each_with_object' do
       source = <<~RUBY
         foo.each_with_object(bar) do |f, hash|
           hash.bar.merge!(c: "")

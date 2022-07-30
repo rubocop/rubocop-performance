@@ -80,13 +80,11 @@ RSpec.describe RuboCop::Cop::Performance::StringReplacement, :config do
       end
     end
 
-    it 'accepts calls to gsub when the length of the pattern is shorter than ' \
-       'the length of the replacement' do
+    it 'accepts calls to gsub when the length of the pattern is shorter than the length of the replacement' do
       expect_no_offenses("'abc'.#{method}('a', 'ab')")
     end
 
-    it 'accepts calls to gsub when the length of the pattern is longer than ' \
-       'the length of the replacement' do
+    it 'accepts calls to gsub when the length of the pattern is longer than the length of the replacement' do
       expect_no_offenses("'abc'.#{method}('ab', 'd')")
     end
   end
@@ -120,8 +118,7 @@ RSpec.describe RuboCop::Cop::Performance::StringReplacement, :config do
         end
       end
 
-      it 'allows deterministic regex when the length of the pattern ' \
-         'and the length of the replacement do not match' do
+      it 'allows deterministic regex when the length of the pattern and the length of the replacement do not match' do
         expect_no_offenses(%('abc'.gsub(/a/, 'def')))
       end
 
@@ -235,16 +232,14 @@ RSpec.describe RuboCop::Cop::Performance::StringReplacement, :config do
     end
   end
 
-  it 'registers an offense when the pattern has non deterministic regex ' \
-     'as a string' do
+  it 'registers an offense when the pattern has non deterministic regex as a string' do
     expect_offense(<<~RUBY)
       'a + c'.gsub('+', '-')
               ^^^^^^^^^^^^^^ Use `tr` instead of `gsub`.
     RUBY
   end
 
-  it 'registers an offense when using gsub to find and replace ' \
-     'a single character' do
+  it 'registers an offense when using gsub to find and replace a single character' do
     expect_offense(<<~RUBY)
       'abc'.gsub('a', '1')
             ^^^^^^^^^^^^^^ Use `tr` instead of `gsub`.

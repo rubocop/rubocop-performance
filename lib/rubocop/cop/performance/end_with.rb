@@ -50,8 +50,7 @@ module RuboCop
         include RegexpMetacharacter
         extend AutoCorrector
 
-        MSG = 'Use `String#end_with?` instead of a regex match anchored to ' \
-              'the end of the string.'
+        MSG = 'Use `String#end_with?` instead of a regex match anchored to the end of the string.'
         RESTRICT_ON_SEND = %i[match =~ match?].freeze
 
         def_node_matcher :redundant_regex?, <<~PATTERN

@@ -3,11 +3,7 @@
 RSpec.describe RuboCop::Cop::Performance::DoubleStartEndWith, :config do
   context 'IncludeActiveSupportAliases: false' do
     let(:config) do
-      RuboCop::Config.new(
-        'Performance/DoubleStartEndWith' => {
-          'IncludeActiveSupportAliases' => false
-        }
-      )
+      RuboCop::Config.new('Performance/DoubleStartEndWith' => { 'IncludeActiveSupportAliases' => false })
     end
 
     context 'two #start_with? calls' do
@@ -89,11 +85,7 @@ RSpec.describe RuboCop::Cop::Performance::DoubleStartEndWith, :config do
 
   context 'IncludeActiveSupportAliases: true' do
     let(:config) do
-      RuboCop::Config.new(
-        'Performance/DoubleStartEndWith' => {
-          'IncludeActiveSupportAliases' => true
-        }
-      )
+      RuboCop::Config.new('Performance/DoubleStartEndWith' => { 'IncludeActiveSupportAliases' => true })
     end
 
     context 'two #start_with? calls' do

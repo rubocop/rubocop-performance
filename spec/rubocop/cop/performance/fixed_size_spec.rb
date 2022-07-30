@@ -167,8 +167,7 @@ RSpec.describe RuboCop::Cop::Performance::FixedSize, :config do
         expect_no_offenses("{a: 1, **foo}.#{method}")
       end
 
-      it "accepts calling #{method} on an hash that is assigned " \
-         'to a constant' do
+      it "accepts calling #{method} on an hash that is assigned to a constant" do
         expect_no_offenses("CONST = {a: 1, b: 2}.#{method}")
       end
     end

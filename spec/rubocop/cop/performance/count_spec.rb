@@ -148,8 +148,7 @@ RSpec.describe RuboCop::Cop::Performance::Count, :config do
     RUBY
   end
 
-  it 'allows usage of count on an interstitial method with blocks ' \
-     'called on select' do
+  it 'allows usage of count on an interstitial method with blocks called on select' do
     expect_no_offenses(<<~RUBY)
       Data = Struct.new(:value)
       array = [Data.new(2), Data.new(3), Data.new(2)]

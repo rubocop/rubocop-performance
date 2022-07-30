@@ -41,11 +41,7 @@ module RuboCop
             end
           elsif (numeric_to_d = to_d?(node))
             add_offense(numeric_to_d.source_range) do |corrector|
-              big_decimal_args = node
-                                 .arguments
-                                 .map(&:source)
-                                 .unshift("'#{numeric_to_d.source}'")
-                                 .join(', ')
+              big_decimal_args = node.arguments.map(&:source).unshift("'#{numeric_to_d.source}'").join(', ')
 
               corrector.replace(node, "BigDecimal(#{big_decimal_args})")
             end

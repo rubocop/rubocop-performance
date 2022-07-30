@@ -41,8 +41,7 @@ module RuboCop
       class DoubleStartEndWith < Base
         extend AutoCorrector
 
-        MSG = 'Use `%<receiver>s.%<method>s(%<combined_args>s)` ' \
-              'instead of `%<original_code>s`.'
+        MSG = 'Use `%<receiver>s.%<method>s(%<combined_args>s)` instead of `%<original_code>s`.'
 
         def on_or(node)
           receiver, method, first_call_args, second_call_args = process_source(node)

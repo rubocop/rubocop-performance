@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Performance::Size, :config do
-  it 'does not register an offense when calling count ' \
-     'as a stand alone method' do
+  it 'does not register an offense when calling count as a stand alone method' do
     expect_no_offenses('count(items)')
   end
 
-  it 'does not register an offense when calling count on an object ' \
-     'other than an array or a hash' do
+  it 'does not register an offense when calling count on an object other than an array or a hash' do
     expect_no_offenses('object.count(items)')
   end
 

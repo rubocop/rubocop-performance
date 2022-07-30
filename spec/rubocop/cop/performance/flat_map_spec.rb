@@ -46,10 +46,7 @@ RSpec.describe RuboCop::Cop::Performance::FlatMap, :config do
 
   describe 'configured to only warn when flattening one level' do
     let(:config) do
-      RuboCop::Config.new('Performance/FlatMap' => {
-                            'Enabled' => true,
-                            'EnabledForFlattenWithoutParams' => false
-                          })
+      RuboCop::Config.new('Performance/FlatMap' => { 'Enabled' => true, 'EnabledForFlattenWithoutParams' => false })
     end
 
     shared_examples 'flatten_with_params_disabled' do |method, flatten|
@@ -71,10 +68,7 @@ RSpec.describe RuboCop::Cop::Performance::FlatMap, :config do
 
   describe 'configured to warn when flatten is not called with parameters' do
     let(:config) do
-      RuboCop::Config.new('Performance/FlatMap' => {
-                            'Enabled' => true,
-                            'EnabledForFlattenWithoutParams' => true
-                          })
+      RuboCop::Config.new('Performance/FlatMap' => { 'Enabled' => true, 'EnabledForFlattenWithoutParams' => true })
     end
 
     shared_examples 'flatten_with_params_enabled' do |method, flatten|

@@ -217,8 +217,7 @@ module RuboCop
         def find_last_match(body, range, scope_root)
           last_matches(body).find do |ref|
             ref_pos = ref.loc.expression.begin_pos
-            range.cover?(ref_pos) &&
-              scope_root(ref) == scope_root
+            range.cover?(ref_pos) && scope_root(ref) == scope_root
           end
         end
 
@@ -241,14 +240,7 @@ module RuboCop
         end
 
         def match_gvar?(sym)
-          %i[
-            $~
-            $MATCH
-            $PREMATCH
-            $POSTMATCH
-            $LAST_PAREN_MATCH
-            $LAST_MATCH_INFO
-          ].include?(sym)
+          %i[$~ $MATCH $PREMATCH $POSTMATCH $LAST_PAREN_MATCH $LAST_MATCH_INFO].include?(sym)
         end
 
         def correct_operator(corrector, recv, arg, oper = nil)

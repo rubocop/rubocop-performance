@@ -32,8 +32,7 @@ module RuboCop
       class TimesMap < Base
         extend AutoCorrector
 
-        MESSAGE = 'Use `Array.new(%<count>s)` with a block ' \
-                  'instead of `.times.%<map_or_collect>s`'
+        MESSAGE = 'Use `Array.new(%<count>s)` with a block instead of `.times.%<map_or_collect>s`'
         MESSAGE_ONLY_IF = 'only if `%<count>s` is always 0 or more'
         RESTRICT_ON_SEND = %i[map collect].freeze
 
@@ -50,8 +49,7 @@ module RuboCop
         def check(node)
           times_map_call(node) do |map_or_collect, count|
             add_offense(node, message: message(map_or_collect, count)) do |corrector|
-              replacement = "Array.new(#{count.source}" \
-                            "#{map_or_collect.arguments.map { |arg| ", #{arg.source}" }.join})"
+              replacement = "Array.new(#{count.source}#{map_or_collect.arguments.map { |arg| ", #{arg.source}" }.join})"
 
               corrector.replace(map_or_collect.loc.expression, replacement)
             end

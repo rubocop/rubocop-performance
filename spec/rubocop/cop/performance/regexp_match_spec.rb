@@ -136,8 +136,7 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
         RUBY
       end
 
-      it "accepts #{name} in guard condition with " \
-         "#{var} is used in the line after that" do
+      it "accepts #{name} in guard condition with #{var} is used in the line after that" do
         expect_no_offenses(<<~RUBY)
           def foo
             return if #{cond}
@@ -310,69 +309,43 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
     end
   end
 
-  it_behaves_like('all legacy match methods', 'String#match method call',
-                  '"foo".match(re)', '"foo".match?(re)')
+  it_behaves_like('all legacy match methods', 'String#match method call', '"foo".match(re)', '"foo".match?(re)')
   it_behaves_like('all legacy match methods',
                   'String#match method call with position',
                   '"foo".match(re, 1)', '"foo".match?(re, 1)')
-  it_behaves_like('all legacy match methods', 'Regexp#match method call',
-                  '/re/.match(foo)', '/re/.match?(foo)')
+  it_behaves_like('all legacy match methods', 'Regexp#match method call', '/re/.match(foo)', '/re/.match?(foo)')
   it_behaves_like('all legacy match methods',
                   'Regexp#match method call with position',
                   '/re/.match(foo, 1)', '/re/.match?(foo, 1)')
-  it_behaves_like('all legacy match methods', 'Symbol#match method call',
-                  ':foo.match(re)', ':foo.match?(re)')
+  it_behaves_like('all legacy match methods', 'Symbol#match method call', ':foo.match(re)', ':foo.match?(re)')
   it_behaves_like('all legacy match methods',
                   'Symbol#match method call with position',
                   ':foo.match(re, 1)', ':foo.match?(re, 1)')
-  it_behaves_like('all legacy match methods',
-                  'match method call for a variable',
-                  'foo.match(/re/)', 'foo.match?(/re/)')
+  it_behaves_like('all legacy match methods', 'match method call for a variable', 'foo.match(/re/)', 'foo.match?(/re/)')
   it_behaves_like('all legacy match methods',
                   'match method call for a variable with position',
                   'foo.match(/re/, 1)', 'foo.match?(/re/, 1)')
-  it_behaves_like('all legacy match methods', 'matching by =~`',
-                  '/re/ =~ foo', '/re/.match?(foo)')
-  it_behaves_like('all legacy match methods', 'matching by =~`',
-                  'foo =~ /re/', '/re/.match?(foo)')
-  it_behaves_like('all legacy match methods', 'matching by =~`',
-                  '"foo" =~ re', '"foo".match?(re)')
-  it_behaves_like('all legacy match methods', 'matching by =~`',
-                  're =~ "foo"', '"foo".match?(re)')
-  it_behaves_like('all legacy match methods', 'matching by =~`',
-                  're.=~("foo")', '"foo".match?(re)')
-  it_behaves_like('all legacy match methods', 'matching by =~`',
-                  ':foo =~ re', ':foo.match?(re)')
-  it_behaves_like('all legacy match methods', 'matching by =~`',
-                  're =~ :foo', ':foo.match?(re)')
-  it_behaves_like('all legacy match methods', 'matching by =~`',
-                  're =~ foo', 're&.match?(foo)')
-  it_behaves_like('all legacy match methods', 'matching by =~`',
-                  're =~ FOO', 'FOO.match?(re)')
-  it_behaves_like('all legacy match methods', 'matching by =~`',
-                  'FOO =~ re', 'FOO.match?(re)')
-  it_behaves_like('all legacy match methods', 'matching by !~`',
-                  '/re/ !~ foo', '!/re/.match?(foo)')
-  it_behaves_like('all legacy match methods', 'matching by !~`',
-                  'foo !~ /re/', '!/re/.match?(foo)')
-  it_behaves_like('all legacy match methods', 'matching by !~`',
-                  '"foo" !~ re', '!"foo".match?(re)')
-  it_behaves_like('all legacy match methods', 'matching by !~`',
-                  're !~ "foo"', '!"foo".match?(re)')
-  it_behaves_like('all legacy match methods', 'matching by !~`',
-                  ':foo !~ re', '!:foo.match?(re)')
-  it_behaves_like('all legacy match methods', 'matching by !~`',
-                  're !~ :foo', '!:foo.match?(re)')
-  it_behaves_like('all legacy match methods', 'matching by !~`',
-                  're !~ foo', '!re&.match?(foo)')
-  it_behaves_like('all legacy match methods', 'matching by !~`',
-                  're !~ FOO', '!FOO.match?(re)')
-  it_behaves_like('all legacy match methods', 'matching by !~`',
-                  'FOO !~ re', '!FOO.match?(re)')
-  it_behaves_like('all legacy match methods', 'matching by ===`',
-                  '/re/ === foo', '/re/.match?(foo)')
-  it_behaves_like('all legacy match methods', 'matching by ===`',
-                  '/re/i === foo', '/re/i.match?(foo)')
+  it_behaves_like('all legacy match methods', 'matching by =~`', '/re/ =~ foo', '/re/.match?(foo)')
+  it_behaves_like('all legacy match methods', 'matching by =~`', 'foo =~ /re/', '/re/.match?(foo)')
+  it_behaves_like('all legacy match methods', 'matching by =~`', '"foo" =~ re', '"foo".match?(re)')
+  it_behaves_like('all legacy match methods', 'matching by =~`', 're =~ "foo"', '"foo".match?(re)')
+  it_behaves_like('all legacy match methods', 'matching by =~`', 're.=~("foo")', '"foo".match?(re)')
+  it_behaves_like('all legacy match methods', 'matching by =~`', ':foo =~ re', ':foo.match?(re)')
+  it_behaves_like('all legacy match methods', 'matching by =~`', 're =~ :foo', ':foo.match?(re)')
+  it_behaves_like('all legacy match methods', 'matching by =~`', 're =~ foo', 're&.match?(foo)')
+  it_behaves_like('all legacy match methods', 'matching by =~`', 're =~ FOO', 'FOO.match?(re)')
+  it_behaves_like('all legacy match methods', 'matching by =~`', 'FOO =~ re', 'FOO.match?(re)')
+  it_behaves_like('all legacy match methods', 'matching by !~`', '/re/ !~ foo', '!/re/.match?(foo)')
+  it_behaves_like('all legacy match methods', 'matching by !~`', 'foo !~ /re/', '!/re/.match?(foo)')
+  it_behaves_like('all legacy match methods', 'matching by !~`', '"foo" !~ re', '!"foo".match?(re)')
+  it_behaves_like('all legacy match methods', 'matching by !~`', 're !~ "foo"', '!"foo".match?(re)')
+  it_behaves_like('all legacy match methods', 'matching by !~`', ':foo !~ re', '!:foo.match?(re)')
+  it_behaves_like('all legacy match methods', 'matching by !~`', 're !~ :foo', '!:foo.match?(re)')
+  it_behaves_like('all legacy match methods', 'matching by !~`', 're !~ foo', '!re&.match?(foo)')
+  it_behaves_like('all legacy match methods', 'matching by !~`', 're !~ FOO', '!FOO.match?(re)')
+  it_behaves_like('all legacy match methods', 'matching by !~`', 'FOO !~ re', '!FOO.match?(re)')
+  it_behaves_like('all legacy match methods', 'matching by ===`', '/re/ === foo', '/re/.match?(foo)')
+  it_behaves_like('all legacy match methods', 'matching by ===`', '/re/i === foo', '/re/i.match?(foo)')
 
   it 'accepts Regexp#match? method call' do
     expect_no_offenses(<<~RUBY)
@@ -412,8 +385,7 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
     RUBY
   end
 
-  it 'registers an offense when a regexp used independently ' \
-     'with a regexp used in `if` are mixed' do
+  it 'registers an offense when a regexp used independently with a regexp used in `if` are mixed' do
     expect_offense(<<~RUBY)
       def foo
         /re/ === re # A regexp used independently is not yet supported.

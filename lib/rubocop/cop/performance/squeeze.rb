@@ -24,10 +24,7 @@ module RuboCop
         MSG = 'Use `%<prefer>s` instead of `%<current>s`.'
         RESTRICT_ON_SEND = %i[gsub gsub!].freeze
 
-        PREFERRED_METHODS = {
-          gsub: :squeeze,
-          gsub!: :squeeze!
-        }.freeze
+        PREFERRED_METHODS = { gsub: :squeeze, gsub!: :squeeze! }.freeze
 
         def_node_matcher :squeeze_candidate?, <<~PATTERN
           (send

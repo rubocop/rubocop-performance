@@ -99,8 +99,7 @@ module RuboCop
 
         def inline_fix_branch(corrector, when_node)
           conditions = when_node.conditions
-          range = range_between(conditions[0].loc.expression.begin_pos,
-                                conditions[-1].loc.expression.end_pos)
+          range = range_between(conditions[0].loc.expression.begin_pos, conditions[-1].loc.expression.end_pos)
 
           corrector.replace(range, replacement(conditions))
         end
@@ -111,8 +110,7 @@ module RuboCop
           return if when_branches.one?
 
           corrector.remove(when_branch_range(when_node))
-          corrector.insert_after(when_branches.last.source_range,
-                                 reordering_correction(when_node))
+          corrector.insert_after(when_branches.last.source_range, reordering_correction(when_node))
         end
 
         def reordering_correction(when_node)
@@ -126,11 +124,9 @@ module RuboCop
         end
 
         def when_branch_range(when_node)
-          next_branch =
-            when_node.parent.when_branches[when_node.branch_index + 1]
+          next_branch = when_node.parent.when_branches[when_node.branch_index + 1]
 
-          range_between(when_node.source_range.begin_pos,
-                        next_branch.source_range.begin_pos)
+          range_between(when_node.source_range.begin_pos, next_branch.source_range.begin_pos)
         end
 
         def new_condition_with_then(node, new_condition)
@@ -162,13 +158,11 @@ module RuboCop
         def non_splat?(condition)
           variable, = *condition
 
-          (condition.splat_type? && variable.array_type?) ||
-            !condition.splat_type?
+          (condition.splat_type? && variable.array_type?) || !condition.splat_type?
         end
 
         def needs_reorder?(when_node)
-          following_branches =
-            when_node.parent.when_branches[(when_node.branch_index + 1)..]
+          following_branches = when_node.parent.when_branches[(when_node.branch_index + 1)..]
 
           following_branches.any? do |when_branch|
             when_branch.conditions.any? do |condition|

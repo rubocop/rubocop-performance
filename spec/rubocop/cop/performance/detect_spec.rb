@@ -3,13 +3,7 @@
 RSpec.describe RuboCop::Cop::Performance::Detect, :config do
   let(:collection_method) { nil }
   let(:config) do
-    RuboCop::Config.new(
-      'Style/CollectionMethods' => {
-        'PreferredMethods' => {
-          'detect' => collection_method
-        }
-      }
-    )
+    RuboCop::Config.new('Style/CollectionMethods' => { 'PreferredMethods' => { 'detect' => collection_method } })
   end
 
   # rspec will not let you use a variable assigned using let outside
@@ -162,8 +156,7 @@ RSpec.describe RuboCop::Cop::Performance::Detect, :config do
       expect_no_offenses("adapter.#{method}.first")
     end
 
-    it "does not register an offense when #{method} is called" \
-       'with args but without ampersand syntax' do
+    it "does not register an offense when #{method} is called with args but without ampersand syntax" do
       expect_no_offenses("adapter.#{method}('something').first")
     end
 
@@ -224,8 +217,7 @@ RSpec.describe RuboCop::Cop::Performance::Detect, :config do
             RUBY
           end
 
-          it "corrects multiline #{method} to #{preferred_method} " \
-             "with 'first' on the last line (short syntax)" do
+          it "corrects multiline #{method} to #{preferred_method} with 'first' on the last line (short syntax)" do
             expect_offense(<<~RUBY, method: method)
               [1, 2, 3].#{method}(&:blank?)
                         ^{method}^^^^^^^^^^ Use `#{preferred_method}` instead of `#{method}.first`.
