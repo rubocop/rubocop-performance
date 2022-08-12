@@ -15,6 +15,9 @@ InternalAffairs/NodeDestructuring:
     - 'lib/rubocop/cop/performance/regexp_match.rb'
     - 'lib/rubocop/cop/performance/string_replacement.rb'
 
+InternalAffairs/NumblockHandler:
+  Enabled: false
+
 # Offense count: 8
 Metrics/AbcSize:
   Max: 17
