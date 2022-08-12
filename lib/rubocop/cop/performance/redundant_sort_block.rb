@@ -16,25 +16,33 @@ module RuboCop
         include SortBlock
         extend AutoCorrector
 
-        MSG = 'Use `sort` instead of `%<bad_method>s`.'
+        MSG = 'Use `sort` without block.'
 
         def on_block(node)
           return unless (send, var_a, var_b, body = sort_with_block?(node))
 
           replaceable_body?(body, var_a, var_b) do
-            range = sort_range(send, node)
+            register_offense(send, node)
+          end
+        end
 
-            add_offense(range, message: message(var_a, var_b)) do |corrector|
-              corrector.replace(range, 'sort')
-            end
+        def on_numblock(node)
+          return unless (send, arg_count, body = sort_with_numblock?(node))
+          return unless arg_count == 2
+
+          replaceable_body?(body, :_1, :_2) do
+            register_offense(send, node)
           end
         end
 
         private
 
-        def message(var_a, var_b)
-          bad_method = "sort { |#{var_a}, #{var_b}| #{var_a} <=> #{var_b} }"
-          format(MSG, bad_method: bad_method)
+        def register_offense(send, node)
+          range = sort_range(send, node)
+
+          add_offense(range) do |corrector|
+            corrector.replace(range, 'sort')
+          end
         end
       end
     end

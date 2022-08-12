@@ -57,6 +57,19 @@ RSpec.describe RuboCop::Cop::Performance::TimesMap, :config do
           RUBY
         end
       end
+
+      context 'when using numbered parameter', :ruby27 do
+        it 'registers an offense and corrects' do
+          expect_offense(<<~RUBY, method: method)
+            4.times.#{method} { _1.to_s }
+            ^^^^^^^^^{method}^^^^^^^^^^^^ Use `Array.new(4)` with a block instead of `.times.#{method}`.
+          RUBY
+
+          expect_correction(<<~RUBY)
+            Array.new(4) { _1.to_s }
+          RUBY
+        end
+      end
     end
   end
 
