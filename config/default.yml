@@ -1,5 +1,9 @@
 # This is the default configuration file.
 
+Performance:
+  Enabled: true
+  DocumentationBaseURL: https://docs.rubocop.org/rubocop-performance
+
 Performance/AncestorsInclude:
   Description: 'Use `A <= B` instead of `A.ancestors.include?(B)`.'
   Reference: 'https://github.com/JuanitoFatas/fast-ruby#ancestorsinclude-vs--code'
