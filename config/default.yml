@@ -74,6 +74,12 @@ Performance/CollectionLiteralInLoop:
   # Min number of elements to consider an offense
   MinSize: 1
 
+Performance/CollectionLiteralInMethod:
+  Description: 'Extract Array and Hash literals outside of methods into class variables or constants.'
+  Enabled: 'pending'
+  VersionAdded: '1.15'
+  MinSize: 1
+
 Performance/CompareWithBlock:
   Description: 'Use `sort_by(&:foo)` instead of `sort { |a, b| a.foo <=> b.foo }`.'
   Enabled: true
