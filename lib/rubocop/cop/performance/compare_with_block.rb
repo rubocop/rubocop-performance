@@ -3,6 +3,8 @@
 module RuboCop
   module Cop
     module Performance
+      KEY_TYPES = %i[sym str int].freeze
+
       # Identifies places where `sort { |a, b| a.foo <=> b.foo }`
       # can be replaced by `sort_by(&:foo)`.
       # This cop also checks `max` and `min` methods.
@@ -73,7 +75,7 @@ module RuboCop
             return false unless args_a.size == 1
 
             key = args_a.first
-            return false unless %i[sym str int].include?(key.type)
+            return false unless KEY_TYPES.include?(key.type)
           else
             return false unless args_a.empty?
           end

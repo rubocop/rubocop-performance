@@ -80,7 +80,8 @@ module RuboCop
 
         # Constants are included in this list because it is unlikely that
         # someone will store `nil` as a constant and then use it for comparison
-        TYPES_IMPLEMENTING_MATCH = %i[const regexp str sym].freeze
+        TYPES_IMPLEMENTING_MATCH = %i[const regexp str sym].to_set.freeze
+        GVAR_SYMS = %i[$~ $MATCH $PREMATCH $POSTMATCH $LAST_PAREN_MATCH $LAST_MATCH_INFO].to_set.freeze
         MSG = 'Use `match?` instead of `%<current>s` when `MatchData` is not used.'
 
         def_node_matcher :match_method?, <<~PATTERN
@@ -240,7 +241,7 @@ module RuboCop
         end
 
         def match_gvar?(sym)
-          %i[$~ $MATCH $PREMATCH $POSTMATCH $LAST_PAREN_MATCH $LAST_MATCH_INFO].include?(sym)
+          GVAR_SYMS.include?(sym)
         end
 
         def correct_operator(corrector, recv, arg, oper = nil)
