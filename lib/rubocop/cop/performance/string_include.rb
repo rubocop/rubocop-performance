@@ -6,7 +6,8 @@ module RuboCop
       # Identifies unnecessary use of a regex where `String#include?` would suffice.
       #
       # @safety
-      #   This cop's offenses are not safe to autocorrect if a receiver is nil.
+      #   This cop's autocorrection is not safe because it may change the return value
+      #   from `false` to `nil` when the receiver is `nil`.
       #
       # @example
       #   # bad
@@ -19,6 +20,12 @@ module RuboCop
       #
       #   # good
       #   'abc'.include?('ab')
+      #
+      #   # bad
+      #   abc.match?(/ab/)
+      #
+      #   # good
+      #   abc&.include?('ab')
       class StringInclude < Base
         extend AutoCorrector
 
@@ -38,7 +45,8 @@ module RuboCop
             receiver, regex_str = regex_str, receiver if receiver.is_a?(String)
             regex_str = interpret_string_escapes(regex_str)
 
-            new_source = "#{receiver.source}.include?(#{to_string_literal(regex_str)})"
+            dot = receiver.str_type? ? '.' : '&.'
+            new_source = "#{receiver.source}#{dot}include?(#{to_string_literal(regex_str)})"
 
             corrector.replace(node.source_range, new_source)
           end

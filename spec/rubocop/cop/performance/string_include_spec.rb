@@ -9,7 +9,7 @@ RSpec.describe RuboCop::Cop::Performance::StringInclude, :config do
       RUBY
 
       expect_correction(<<~RUBY)
-        str.include?('abc')
+        str&.include?('abc')
       RUBY
     end
 
@@ -35,7 +35,7 @@ RSpec.describe RuboCop::Cop::Performance::StringInclude, :config do
         RUBY
 
         expect_correction(<<~RUBY)
-          str.include?("\\#{str}")
+          str&.include?("\\#{str}")
         RUBY
       end
 
@@ -60,7 +60,7 @@ RSpec.describe RuboCop::Cop::Performance::StringInclude, :config do
         RUBY
 
         expect_correction(<<~RUBY)
-          str.include?('#{str}')
+          str&.include?('#{str}')
         RUBY
       end
 
@@ -104,7 +104,7 @@ RSpec.describe RuboCop::Cop::Performance::StringInclude, :config do
         RUBY
 
         expect_correction(<<~RUBY)
-          str.include?('#{str}')
+          str&.include?('#{str}')
         RUBY
       end
 
@@ -127,7 +127,7 @@ RSpec.describe RuboCop::Cop::Performance::StringInclude, :config do
       RUBY
 
       expect_correction(<<~RUBY)
-        str.include?('\\\\')
+        str&.include?('\\\\')
       RUBY
     end
 
