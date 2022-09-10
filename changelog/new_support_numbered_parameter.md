@@ -1,1 +1,0 @@
-* [#305](https://github.com/rubocop/rubocop-performance/pull/305): Support numbered parameter for `Performance/RedundantSortBlock`, `Performance/SortReverse`, and `Performance/TimesMap` cops. ([@koic][])

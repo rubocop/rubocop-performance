@@ -2,6 +2,18 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#305](https://github.com/rubocop/rubocop-performance/pull/305): Support numbered parameter for `Performance/RedundantSortBlock`, `Performance/SortReverse`, and `Performance/TimesMap` cops. ([@koic][])
+
+### Bug fixes
+
+* [#299](https://github.com/rubocop/rubocop-performance/pull/299): Fix incorrect documentation URLs when using `rubocop --show-docs-url`. ([@r7kamura][])
+
+### Changes
+
+* [#297](https://github.com/rubocop/rubocop-performance/pull/297): Support autocorrection on `Performance/RedundantMatch` when receiver is a Regexp literal. ([@r7kamura][])
+
 ## 1.14.3 (2022-07-17)
 
 ### Bug fixes
@@ -382,3 +394,4 @@
 [@leoarnold]: https://github.com/leoarnold
 [@ydah]: https://github.com/ydah
 [@QQism]: https://github.com/QQism
+[@r7kamura]: https://github.com/r7kamura
