@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 1.15.0 (2022-09-10)
+
 ### New features
 
 * [#305](https://github.com/rubocop/rubocop-performance/pull/305): Support numbered parameter for `Performance/RedundantSortBlock`, `Performance/SortReverse`, and `Performance/TimesMap` cops. ([@koic][])
