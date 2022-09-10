@@ -14,6 +14,13 @@ module RuboCop
           $send)
       PATTERN
 
+      def_node_matcher :sort_with_numblock?, <<~PATTERN
+        (numblock
+          $(send _ :sort)
+          $_arg_count
+          $send)
+      PATTERN
+
       def_node_matcher :replaceable_body?, <<~PATTERN
         (send (lvar %1) :<=> (lvar %2))
       PATTERN
