@@ -114,6 +114,13 @@ Performance/CollectionLiteralInLoop:
   Exclude:
     - 'spec/**/*.rb'
 
+RSpec:
+  Language:
+    Expectations:
+      - expect_correction
+      - expect_no_offenses
+      - expect_offense
+
 # This disabling is a workaround for https://github.com/rubocop-hq/rubocop-rails/issues/374.
 RSpec/FactoryBot/CreateList:
   Enabled: false
