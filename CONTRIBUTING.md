@@ -50,7 +50,6 @@ Here are a few examples:
 
 ```
 * [#716](https://github.com/rubocop/rubocop-performance/issues/716): Fixed a regression in the autocorrection logic of `MethodDefParentheses`. ([@bbatsov][])
-* New cop `ElseLayout` checks for odd arrangement of code in the `else` branch of a conditional expression. ([@bbatsov][])
 ```
 
 * Create one file `changelog/{type}_{some_description}.md`, where `type` is `new` (New feature), `fix` or `change`, and `some_description` is unique to avoid conflicts. Task `changelog:fix` (or `:new` or `:change`) can help you.

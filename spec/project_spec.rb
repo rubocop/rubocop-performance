@@ -213,6 +213,13 @@ RSpec.describe 'RuboCop Performance Project', type: :feature do
 
           include_examples 'has Changelog format'
 
+          it 'has a link to the issue or pull request address at the beginning' do
+            repo = 'rubocop/rubocop-performance'
+            address_pattern = %r{\A\* \[#\d+\]\(https://github\.com/#{repo}/(issues|pull)/\d+\):}
+
+            expect(entries).to all(match(address_pattern))
+          end
+
           it 'has a link to the contributors at the end' do
             expect(entries).to all(match(/\(\[@\S+\]\[\](?:, \[@\S+\]\[\])*\)$/))
           end
