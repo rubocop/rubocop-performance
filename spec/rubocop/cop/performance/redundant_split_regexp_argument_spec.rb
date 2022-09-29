@@ -63,7 +63,7 @@ RSpec.describe RuboCop::Cop::Performance::RedundantSplitRegexpArgument, :config 
     RUBY
 
     expect_correction(<<~RUBY)
-      "foo\\\\\\.bar".split("\\\\\.")
+      "foo\\\\\\.bar".split("\\\\.")
     RUBY
   end
 

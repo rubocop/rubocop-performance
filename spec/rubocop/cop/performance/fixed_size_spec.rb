@@ -47,11 +47,11 @@ RSpec.describe RuboCop::Cop::Performance::FixedSize, :config do
       end
 
       it "accepts calling #{method} on a %Q string that contains interpolation" do
-        expect_no_offenses("\%Q(\#{foo}).#{method}")
+        expect_no_offenses("%Q(\#{foo}).#{method}")
       end
 
       it "accepts calling #{method} on a % string that contains interpolation" do
-        expect_no_offenses("\%(\#{foo}).#{method}")
+        expect_no_offenses("%(\#{foo}).#{method}")
       end
 
       it "accepts calling #{method} on a single quoted string that is assigned to a constant" do

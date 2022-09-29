@@ -44,14 +44,14 @@ RSpec.describe RuboCop::Cop::Performance::StringReplacement, :config do
       it 'accepts a pattern with string interpolation' do
         expect_no_offenses(<<~RUBY)
           foo = 'a'
-          'abc'.#{method}(\"\#{foo}\", '1')
+          'abc'.#{method}("\#{foo}", '1')
         RUBY
       end
 
       it 'accepts a replacement with string interpolation' do
         expect_no_offenses(<<~RUBY)
           foo = '1'
-          'abc'.#{method}('a', \"\#{foo}\")
+          'abc'.#{method}('a', "\#{foo}")
         RUBY
       end
 
