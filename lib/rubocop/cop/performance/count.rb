@@ -79,12 +79,11 @@ module RuboCop
         def autocorrect(corrector, node, selector_node, selector)
           selector_loc = selector_node.loc.selector
 
-          return if selector == :reject
-
           range = source_starting_at(node) { |n| n.loc.dot.begin_pos }
 
           corrector.remove(range)
           corrector.replace(selector_loc, 'count')
+          negate_reject(corrector, node) if selector == :reject
         end
 
         def eligible_node?(node)
@@ -99,6 +98,43 @@ module RuboCop
                       end
 
           range_between(begin_pos, node.source_range.end_pos)
+        end
+
+        def negate_reject(corrector, node)
+          if node.receiver.send_type?
+            negate_block_pass_reject(corrector, node)
+          else
+            negate_block_reject(corrector, node)
+          end
+        end
+
+        def negate_block_pass_reject(corrector, node)
+          corrector.replace(
+            node.receiver.loc.expression.with(begin_pos: node.receiver.loc.begin.begin_pos),
+            negate_block_pass_as_inline_block(node.receiver)
+          )
+        end
+
+        def negate_block_reject(corrector, node)
+          target =
+            if node.receiver.body.begin_type?
+              node.receiver.body.children.last
+            else
+              node.receiver.body
+            end
+          corrector.replace(target, negate_expression(target))
+        end
+
+        def negate_expression(node)
+          "!(#{node.source})"
+        end
+
+        def negate_block_pass_as_inline_block(node)
+          if node.last_argument.children.first.sym_type?
+            " { |element| !element.#{node.last_argument.children.first.value} }"
+          else
+            " { !#{node.last_argument.children.first.source}.call }"
+          end
         end
       end
     end

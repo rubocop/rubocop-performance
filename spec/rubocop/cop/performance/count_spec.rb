@@ -177,101 +177,166 @@ RSpec.describe RuboCop::Cop::Performance::Count, :config do
     end
   end
 
-  context 'autocorrect' do
-    context 'will correct' do
-      it 'select..size to count' do
-        expect_offense(<<~RUBY)
-          [1, 2].select { |e| e > 2 }.size
-                 ^^^^^^^^^^^^^^^^^^^^^^^^^ Use `count` instead of `select...size`.
-        RUBY
+  context 'with `select` and `size`' do
+    it 'registers an offense' do
+      expect_offense(<<~RUBY)
+        array.select { |e| e > 2 }.size
+              ^^^^^^^^^^^^^^^^^^^^^^^^^ Use `count` instead of `select...size`.
+      RUBY
 
-        expect_correction(<<~RUBY)
-          [1, 2].count { |e| e > 2 }
-        RUBY
-      end
-
-      it 'select..count without a block to count' do
-        expect_offense(<<~RUBY)
-          [1, 2].select { |e| e > 2 }.count
-                 ^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `count` instead of `select...count`.
-        RUBY
-
-        expect_correction(<<~RUBY)
-          [1, 2].count { |e| e > 2 }
-        RUBY
-      end
-
-      it 'select..length to count' do
-        expect_offense(<<~RUBY)
-          [1, 2].select { |e| e > 2 }.length
-                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `count` instead of `select...length`.
-        RUBY
-
-        expect_correction(<<~RUBY)
-          [1, 2].count { |e| e > 2 }
-        RUBY
-      end
-
-      it 'select...size when select has parameters' do
-        expect_offense(<<~RUBY)
-          Data = Struct.new(:value)
-          array = [Data.new(2), Data.new(3), Data.new(2)]
-          puts array.select(&:value).size
-                     ^^^^^^^^^^^^^^^^^^^^ Use `count` instead of `select...size`.
-        RUBY
-
-        expect_correction(<<~RUBY)
-          Data = Struct.new(:value)
-          array = [Data.new(2), Data.new(3), Data.new(2)]
-          puts array.count(&:value)
-        RUBY
-      end
+      expect_correction(<<~RUBY)
+        array.count { |e| e > 2 }
+      RUBY
     end
+  end
 
-    describe 'will not correct' do
-      it 'reject...size' do
-        expect_offense(<<~RUBY)
-          [1, 2].reject { |e| e > 2 }.size
-                 ^^^^^^^^^^^^^^^^^^^^^^^^^ Use `count` instead of `reject...size`.
-        RUBY
+  context 'with `select` and `count`' do
+    it 'registers an offense' do
+      expect_offense(<<~RUBY)
+        array.select { |e| e > 2 }.count
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `count` instead of `select...count`.
+      RUBY
 
-        expect_no_corrections
-      end
+      expect_correction(<<~RUBY)
+        array.count { |e| e > 2 }
+      RUBY
+    end
+  end
 
-      it 'reject...count' do
-        expect_offense(<<~RUBY)
-          [1, 2].reject { |e| e > 2 }.count
-                 ^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `count` instead of `reject...count`.
-        RUBY
+  context 'with `select` and `length`' do
+    it 'registers an offense' do
+      expect_offense(<<~RUBY)
+        array.select { |e| e > 2 }.length
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `count` instead of `select...length`.
+      RUBY
 
-        expect_no_corrections
-      end
+      expect_correction(<<~RUBY)
+        array.count { |e| e > 2 }
+      RUBY
+    end
+  end
 
-      it 'reject...length' do
-        expect_offense(<<~RUBY)
-          [1, 2].reject { |e| e > 2 }.length
-                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `count` instead of `reject...length`.
-        RUBY
+  context 'with `select` with symbol block argument and `size`' do
+    it 'registers an offense' do
+      expect_offense(<<~RUBY)
+        array.select(&:value).size
+              ^^^^^^^^^^^^^^^^^^^^ Use `count` instead of `select...size`.
+      RUBY
 
-        expect_no_corrections
-      end
+      expect_correction(<<~RUBY)
+        array.count(&:value)
+      RUBY
+    end
+  end
 
-      it 'select...count when count has a block' do
-        expect_no_offenses(<<~RUBY)
-          [1, 2].select { |e| e > 2 }.count { |e| e.even? }
-        RUBY
-      end
+  context 'with `reject` and `size`' do
+    it 'registers an offense' do
+      expect_offense(<<~RUBY)
+        array.reject { |e| e > 2 }.size
+              ^^^^^^^^^^^^^^^^^^^^^^^^^ Use `count` instead of `reject...size`.
+      RUBY
 
-      it 'reject...size when select has parameters' do
-        expect_offense(<<~RUBY)
-          Data = Struct.new(:value)
-          array = [Data.new(2), Data.new(3), Data.new(2)]
-          puts array.reject(&:value).size
-                     ^^^^^^^^^^^^^^^^^^^^ Use `count` instead of `reject...size`.
-        RUBY
+      expect_correction(<<~RUBY)
+        array.count { |e| !(e > 2) }
+      RUBY
+    end
+  end
 
-        expect_no_corrections
-      end
+  context 'with `reject` and `count`' do
+    it 'registers an offense' do
+      expect_offense(<<~RUBY)
+        array.reject { |e| e > 2 }.count
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `count` instead of `reject...count`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        array.count { |e| !(e > 2) }
+      RUBY
+    end
+  end
+
+  context 'with `reject` and `length`' do
+    it 'registers an offense' do
+      expect_offense(<<~RUBY)
+        array.reject { |e| e > 2 }.length
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `count` instead of `reject...length`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        array.count { |e| !(e > 2) }
+      RUBY
+    end
+  end
+
+  context 'with `reject` with symbol block argument and `size`' do
+    it 'registers an offense' do
+      expect_offense(<<~RUBY)
+        array.reject(&:value).size
+              ^^^^^^^^^^^^^^^^^^^^ Use `count` instead of `reject...size`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        array.count { |element| !element.value }
+      RUBY
+    end
+  end
+
+  context 'with `reject` with variable block argument and `size`' do
+    it 'registers an offense' do
+      expect_offense(<<~RUBY)
+        array.reject(&block).size
+              ^^^^^^^^^^^^^^^^^^^ Use `count` instead of `reject...size`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        array.count { !block.call }
+      RUBY
+    end
+  end
+
+  context 'with `reject` with some statements and `length`' do
+    it 'registers an offense' do
+      expect_offense(<<~RUBY)
+        array.reject {
+              ^^^^^^^^ Use `count` instead of `reject...length`.
+          foo
+          bar
+        }.length
+      RUBY
+
+      expect_correction(<<~RUBY)
+        array.count {
+          foo
+          !(bar)
+        }
+      RUBY
+    end
+  end
+
+  context 'with `reject` with some conditional statement and `length`' do
+    it 'registers an offense' do
+      expect_offense(<<~RUBY)
+        array.reject {
+              ^^^^^^^^ Use `count` instead of `reject...length`.
+          foo
+          if bar
+            baz
+          else
+            qux
+          end
+        }.length
+      RUBY
+
+      expect_correction(<<~RUBY)
+        array.count {
+          foo
+          !(if bar
+            baz
+          else
+            qux
+          end)
+        }
+      RUBY
     end
   end
 end
