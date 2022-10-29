@@ -266,7 +266,9 @@ Performance/RegexpMatch:
                   `Regexp#===`, or `=~` when `MatchData` is not used.
   Reference: 'https://github.com/JuanitoFatas/fast-ruby#regexp-vs-stringmatch-vs-string-vs-stringmatch-code-'
   Enabled: true
+  Safe: false
   VersionAdded: '0.47'
+  VersionChanged: '<<next>>'
 
 Performance/ReverseEach:
   Description: 'Use `reverse_each` instead of `reverse.each`.'

@@ -9,6 +9,10 @@ module RuboCop
       # backref.
       # So, when `MatchData` is not used, use `match?` instead of `match`.
       #
+      # @safety
+      #   This cop is unsafe because subsequent code may require the last
+      #   `MatchData` through `Regexp.last_match`, `$~`, etc.
+      #
       # @example
       #   # bad
       #   def foo
