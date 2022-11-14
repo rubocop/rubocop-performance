@@ -119,6 +119,20 @@ RSpec.describe RuboCop::Cop::Performance::MapCompact, :config do
       RUBY
     end
 
+    it 'registers an offense when using `map(&:do_something).compact` and there is a line break after' \
+       '`map.compact` and assigning with `||=`' do
+      expect_offense(<<~RUBY)
+        foo[1] ||= collection
+                   .map(&:do_something).compact
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `filter_map` instead.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        foo[1] ||= collection
+                   .filter_map(&:do_something)
+      RUBY
+    end
+
     it 'registers an offense when using `map { ... }.compact.first` with single-line method calls' do
       expect_offense(<<~RUBY)
         collection.map { |item| item.do_something }.compact.first
