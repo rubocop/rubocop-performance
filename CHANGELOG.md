@@ -2,6 +2,14 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#309](https://github.com/rubocop/rubocop-performance/issues/309): Fix an error for `Performance/MapCompact` when using `map(&:do_something).compact` and there is a line break after `map.compact` and assigning with `||=`. ([@koic][])
+
+### Changes
+
+* [#307](https://github.com/rubocop/rubocop-performance/pull/307): Support autocorrection even if `reject` is used on `Performance/Count`. ([@r7kamura][])
+
 ## 1.15.0 (2022-09-10)
 
 ### New features
