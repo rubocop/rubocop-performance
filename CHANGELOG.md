@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 1.15.1 (2022-11-16)
+
 ### Bug fixes
 
 * [#309](https://github.com/rubocop/rubocop-performance/issues/309): Fix an error for `Performance/MapCompact` when using `map(&:do_something).compact` and there is a line break after `map.compact` and assigning with `||=`. ([@koic][])
