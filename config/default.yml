@@ -181,6 +181,11 @@ Performance/InefficientHashSearch:
   VersionAdded: '0.56'
   Safe: false
 
+Performance/IntersectionCheck:
+  Description: 'Use `receiver.intersect?(argument)` instead of `(receiver & argument).any?`.'
+  Enabled: true
+  VersionAdded: '1.15'
+
 Performance/IoReadlines:
   Description: 'Use `IO.each_line` (`IO#each_line`) instead of `IO.readlines` (`IO#readlines`).'
   Reference: 'https://docs.gitlab.com/ee/development/performance.html#reading-from-files-and-other-data-sources'

@@ -1,0 +1,1 @@
+* [#311](https://github.com/rubocop/rubocop-performance/issues/311): Add new cop `Perfomance/IntersectionCheck` which replaces `(receiver & argument).any?` with `receiver.intersect?(argument)`, method `Array#intersect?` was added in ruby 3.1. ([@KirIgor][])
