@@ -124,8 +124,8 @@ module RuboCop
 
         def_node_search :last_matches, <<~PATTERN
           {
-            (send (const nil? :Regexp) :last_match)
-            (send (const nil? :Regexp) :last_match _)
+            (send (const {nil? cbase} :Regexp) :last_match)
+            (send (const {nil? cbase} :Regexp) :last_match _)
             ({back_ref nth_ref} _)
             (gvar #match_gvar?)
           }

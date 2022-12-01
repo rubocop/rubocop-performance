@@ -98,7 +98,7 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
     %w[
       $& $' $` $~ $1 $2 $100
       $MATCH
-      Regexp.last_match Regexp.last_match(1)
+      Regexp.last_match ::Regexp.last_match Regexp.last_match(1)
     ].each do |var|
       it "accepts #{name} in method with #{var}" do
         expect_no_offenses(<<~RUBY)
