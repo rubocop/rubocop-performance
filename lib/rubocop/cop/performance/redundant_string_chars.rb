@@ -9,6 +9,7 @@ module RuboCop
       #   # bad
       #   str.chars[0..2]
       #   str.chars.slice(0..2)
+      #   str.chars.last
       #
       #   # good
       #   str[0..2].chars
@@ -20,6 +21,7 @@ module RuboCop
       #   # good
       #   str[0]
       #   str[0...2].chars
+      #   str[-1]
       #
       #   # bad
       #   str.chars.take(2)
@@ -33,9 +35,8 @@ module RuboCop
       #   str.size
       #   str.empty?
       #
-      #   # For example, if the receiver is a blank string, it will be incompatible.
+      #   # For example, if the receiver is an empty string, it will be incompatible.
       #   # If a negative value is specified for the receiver, `nil` is returned.
-      #   str.chars.last    # Incompatible with `str[-1]`.
       #   str.chars.last(2) # Incompatible with `str[-2..-1].chars`.
       #   str.chars.drop(2) # Incompatible with `str[2..-1].chars`.
       #
@@ -44,7 +45,7 @@ module RuboCop
         extend AutoCorrector
 
         MSG = 'Use `%<good_method>s` instead of `%<bad_method>s`.'
-        RESTRICT_ON_SEND = %i[[] slice first take length size empty?].freeze
+        RESTRICT_ON_SEND = %i[[] slice first last take length size empty?].freeze
 
         def_node_matcher :redundant_chars_call?, <<~PATTERN
           (send $(send _ :chars) $_ $...)
@@ -52,6 +53,7 @@ module RuboCop
 
         def on_send(node)
           return unless (receiver, method, args = redundant_chars_call?(node))
+          return if method == :last && !args.empty?
 
           range = offense_range(receiver, node)
           message = build_message(method, args)
@@ -86,6 +88,8 @@ module RuboCop
             "[#{build_call_args(args)}].chars"
           when :[], :first
             build_good_method_for_brackets_or_first_method(method, args)
+          when :last
+            '[-1]'
           when :take
             "[0...#{args.first.source}].chars"
           else

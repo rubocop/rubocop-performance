@@ -67,9 +67,14 @@ RSpec.describe RuboCop::Cop::Performance::RedundantStringChars, :config do
     RUBY
   end
 
-  it 'does not register an offense when using `str.chars.last`' do
-    expect_no_offenses(<<~RUBY)
+  it 'registers an offense and corrects when using `str.chars.last`' do
+    expect_offense(<<~RUBY)
       str.chars.last
+          ^^^^^^^^^^ Use `[-1]` instead of `chars.last`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      str[-1]
     RUBY
   end
 
