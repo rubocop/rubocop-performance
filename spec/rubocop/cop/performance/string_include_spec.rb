@@ -157,4 +157,15 @@ RSpec.describe RuboCop::Cop::Performance::StringInclude, :config do
   it 'allows argument of `match?` is not a string literal' do
     expect_no_offenses('/ /.match?(content_as_symbol)')
   end
+
+  it 'registers an offense and corrects when using `!~`' do
+    expect_offense(<<~RUBY)
+      str !~ /abc/
+      ^^^^^^^^^^^^ Use `!String#include?` instead of a regex match with literal-only pattern.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      !str.include?('abc')
+    RUBY
+  end
 end

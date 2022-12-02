@@ -22,11 +22,11 @@ module RuboCop
       class StringInclude < Base
         extend AutoCorrector
 
-        MSG = 'Use `String#include?` instead of a regex match with literal-only pattern.'
-        RESTRICT_ON_SEND = %i[match =~ match?].freeze
+        MSG = 'Use `%<negation>sString#include?` instead of a regex match with literal-only pattern.'
+        RESTRICT_ON_SEND = %i[match =~ !~ match?].freeze
 
         def_node_matcher :redundant_regex?, <<~PATTERN
-          {(send $!nil? {:match :=~ :match?} (regexp (str $#literal?) (regopt)))
+          {(send $!nil? {:match :=~ :!~ :match?} (regexp (str $#literal?) (regopt)))
            (send (regexp (str $#literal?) (regopt)) {:match :match?} $str)
            (match-with-lvasgn (regexp (str $#literal?) (regopt)) $_)}
         PATTERN
@@ -34,11 +34,14 @@ module RuboCop
         def on_send(node)
           return unless (receiver, regex_str = redundant_regex?(node))
 
-          add_offense(node) do |corrector|
+          negation = node.send_type? && node.method?(:!~)
+          message = format(MSG, negation: ('!' if negation))
+
+          add_offense(node, message: message) do |corrector|
             receiver, regex_str = regex_str, receiver if receiver.is_a?(String)
             regex_str = interpret_string_escapes(regex_str)
 
-            new_source = "#{receiver.source}.include?(#{to_string_literal(regex_str)})"
+            new_source = "#{'!' if negation}#{receiver.source}.include?(#{to_string_literal(regex_str)})"
 
             corrector.replace(node.source_range, new_source)
           end
