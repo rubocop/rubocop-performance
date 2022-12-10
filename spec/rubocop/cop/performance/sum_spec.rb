@@ -304,6 +304,14 @@ RSpec.describe RuboCop::Cop::Performance::Sum, :config do
         array.sum
       RUBY
     end
+
+    context 'when Ruby 2.3 or lower', :ruby23 do
+      it "does not register an offense when using `array.#{method}(10, :+)`" do
+        expect_no_offenses(<<~RUBY, method: method)
+          array.#{method}(10, :+)
+        RUBY
+      end
+    end
   end
 
   %i[map collect].each do |method|

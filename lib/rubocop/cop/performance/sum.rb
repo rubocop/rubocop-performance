@@ -70,6 +70,9 @@ module RuboCop
       class Sum < Base
         include RangeHelp
         extend AutoCorrector
+        extend TargetRubyVersion
+
+        minimum_target_ruby_version 2.4
 
         MSG = 'Use `%<good_method>s` instead of `%<bad_method>s`.'
         MSG_IF_NO_INIT_VALUE =
