@@ -2,6 +2,16 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#313](https://github.com/rubocop/rubocop-performance/issues/313): Fix a false negative for `Performance/RedundantStringChars` when using `str.chars.last` without argument. ([@koic][])
+* [#321](https://github.com/rubocop/rubocop-performance/pull/321): Fix a false positive for `Performance/Sum` when using `TargetRubyVersion` is 2.3 or lower. ([@koic][])
+* [#314](https://github.com/rubocop/rubocop-performance/issues/314): Fix `Performance/RegexpMatch` to handle `::Regexp`. ([@fatkodima][])
+
+### Changes
+
+* [#318](https://github.com/rubocop/rubocop-performance/issues/318): Extend `Performance/StringInclude` to handle `!~`. ([@fatkodima][])
+
 ## 1.15.1 (2022-11-16)
 
 ### Bug fixes
