@@ -213,6 +213,11 @@ Performance/RangeInclude:
   VersionChanged: '1.7'
   Safe: false
 
+Performance/ReduceMerge:
+  Description: 'Checks that `Enumerable#reduce` and `Hash#merge` are not combined to build up a `Hash`.'
+  Enabled: pending
+  VersionAdded: '<<next>>'
+
 Performance/RedundantBlockCall:
   Description: 'Use `yield` instead of `block.call`.'
   Reference: 'https://github.com/JuanitoFatas/fast-ruby#proccall-and-block-arguments-vs-yieldcode'
