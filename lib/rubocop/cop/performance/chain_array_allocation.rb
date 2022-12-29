@@ -33,7 +33,7 @@ module RuboCop
         RETURNS_NEW_ARRAY_WHEN_NO_BLOCK = %i[zip product].to_set.freeze
 
         # These methods ALWAYS return a new array
-        # after they're called it's safe to mutate the the resulting array
+        # after they're called it's safe to mutate the resulting array
         ALWAYS_RETURNS_NEW_ARRAY = %i[* + - collect compact drop
                                       drop_while flatten map reject
                                       reverse rotate select shuffle sort
