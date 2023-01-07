@@ -79,6 +79,18 @@ class Changelog
   end
   attr_reader :header, :rest
 
+  def self.read_entries
+    entry_paths.to_h { |path| [path, File.read(path)] }
+  end
+
+  def self.pending?
+    entry_paths.any?
+  end
+
+  def self.entry_paths
+    Dir["#{ENTRIES_PATH}*"]
+  end
+
   def initialize(content: File.read(PATH), entries: Changelog.read_entries)
     require 'strscan'
 
@@ -105,18 +117,6 @@ class Changelog
     merged_content = [@header, unreleased_content, @rest.chomp, *new_contributor_lines].join("\n")
 
     merged_content << EOF
-  end
-
-  def self.pending?
-    entry_paths.any?
-  end
-
-  def self.entry_paths
-    Dir["#{ENTRIES_PATH}*"]
-  end
-
-  def self.read_entries
-    entry_paths.to_h { |path| [path, File.read(path)] }
   end
 
   def new_contributor_lines
