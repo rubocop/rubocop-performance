@@ -6,19 +6,19 @@ module RuboCop
       # Identifies unnecessary use of a regex where `String#include?` would suffice.
       #
       # @safety
-      #   This cop's offenses are not safe to autocorrect if a receiver is nil.
+      #   This cop's offenses are not safe to autocorrect if a receiver is nil or a Symbol.
       #
       # @example
       #   # bad
-      #   'abc'.match?(/ab/)
-      #   /ab/.match?('abc')
-      #   'abc' =~ /ab/
-      #   /ab/ =~ 'abc'
-      #   'abc'.match(/ab/)
-      #   /ab/.match('abc')
+      #   str.match?(/ab/)
+      #   /ab/.match?(str)
+      #   str =~ /ab/
+      #   /ab/ =~ str
+      #   str.match(/ab/)
+      #   /ab/.match(str)
       #
       #   # good
-      #   'abc'.include?('ab')
+      #   str.include?('ab')
       class StringInclude < Base
         extend AutoCorrector
 
@@ -27,7 +27,7 @@ module RuboCop
 
         def_node_matcher :redundant_regex?, <<~PATTERN
           {(send $!nil? {:match :=~ :!~ :match?} (regexp (str $#literal?) (regopt)))
-           (send (regexp (str $#literal?) (regopt)) {:match :match?} $str)
+           (send (regexp (str $#literal?) (regopt)) {:match :match?} $_)
            (match-with-lvasgn (regexp (str $#literal?) (regopt)) $_)}
         PATTERN
 
