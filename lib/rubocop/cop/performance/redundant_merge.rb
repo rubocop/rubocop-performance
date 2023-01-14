@@ -28,6 +28,7 @@ module RuboCop
       #   hash[:a] = 1
       #   hash[:b] = 2
       class RedundantMerge < Base
+        include Alignment
         extend AutoCorrector
 
         AREF_ASGN = '%<receiver>s[%<key>s] = %<value>s'
@@ -129,7 +130,7 @@ module RuboCop
         end
 
         def rewrite_with_modifier(node, parent, new_source)
-          indent = ' ' * indent_width
+          indent = ' ' * configured_indentation_width
           padding = "\n#{indent + leading_spaces(node)}"
           new_source.gsub!(/\n/, padding)
 
@@ -142,10 +143,6 @@ module RuboCop
 
         def leading_spaces(node)
           node.source_range.source_line[/\A\s*/]
-        end
-
-        def indent_width
-          @config.for_cop('Layout/IndentationWidth')['Width'] || 2
         end
 
         def max_key_value_pairs
