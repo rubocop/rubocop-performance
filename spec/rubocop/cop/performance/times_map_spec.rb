@@ -2,7 +2,7 @@
 
 RSpec.describe RuboCop::Cop::Performance::TimesMap, :config do
   shared_examples 'map_or_collect' do |method|
-    context ".times.#{method}" do
+    describe ".times.#{method}" do
       context 'with a block' do
         it 'registers an offense and corrects' do
           expect_offense(<<~RUBY, method: method)
