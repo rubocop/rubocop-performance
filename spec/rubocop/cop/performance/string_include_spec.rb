@@ -151,11 +151,11 @@ RSpec.describe RuboCop::Cop::Performance::StringInclude, :config do
     expect_no_offenses('expect(subject.spin).to match(/\A\n/)')
   end
 
-  # Symbol object does not have `include?` method.
-  # A variable possible to be a symbol object, so if `match?` argument is
-  # a variable, accept it.
-  it 'allows argument of `match?` is not a string literal' do
-    expect_no_offenses('/ /.match?(content_as_symbol)')
+  it 'registers an offense and corrects when argument of `match?` is not a string literal' do
+    expect_offense(<<~RUBY)
+      / /.match?(content)
+      ^^^^^^^^^^^^^^^^^^^ Use `String#include?` instead of a regex match with literal-only pattern.
+    RUBY
   end
 
   it 'registers an offense and corrects when using `!~`' do
