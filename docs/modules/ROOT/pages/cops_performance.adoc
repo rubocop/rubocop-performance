@@ -754,9 +754,12 @@ chained to `select`, `find_all` or `filter` and change them to use
 
 === Safety
 
-This cop is unsafe because is has known compatibility issues with `ActiveRecord` and other
-frameworks. `ActiveRecord` does not implement a `detect` method and `find` has its own
-meaning. Correcting `ActiveRecord` methods with this cop should be considered unsafe.
+This cop is unsafe because is assumes the class implements the
+`Enumerable` interface, but can't reliably detect this. This creates
+known compatibility issues with `Hash`, `ActiveRecord` and other
+frameworks. `Hash` and `ActiveRecord` do not implement a `detect`
+method and `find` has its own meaning. Correcting `Hash` and
+`ActiveRecord` methods with this cop should be considered unsafe.
 
 === Examples
 
@@ -2001,22 +2004,22 @@ Identifies unnecessary use of a regex where `String#include?` would suffice.
 
 === Safety
 
-This cop's offenses are not safe to autocorrect if a receiver is nil.
+This cop's offenses are not safe to autocorrect if a receiver is nil or a Symbol.
 
 === Examples
 
 [source,ruby]
 ----
 # bad
-'abc'.match?(/ab/)
-/ab/.match?('abc')
-'abc' =~ /ab/
-/ab/ =~ 'abc'
-'abc'.match(/ab/)
-/ab/.match('abc')
+str.match?(/ab/)
+/ab/.match?(str)
+str =~ /ab/
+/ab/ =~ str
+str.match(/ab/)
+/ab/.match(str)
 
 # good
-'abc'.include?('ab')
+str.include?('ab')
 ----
 
 == Performance/StringReplacement
