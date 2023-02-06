@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### Changes
+
+* [#332](https://github.com/rubocop/rubocop-performance/pull/332): Register offenses for variables against regexes in `Performance/StringInclude`. ([@fatkodima][])
+
 ## 1.15.2 (2022-12-25)
 
 ### Bug fixes
