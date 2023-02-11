@@ -17,11 +17,14 @@ module RuboCop
       #   # bad
       #   items.all? { |item| pattern === item }
       #   items.all? { |item| item == other }
+      #   items.all? { |item| item =~ pattern }
       #   items.all? { |item| item.is_a?(Klass) }
       #   items.all? { |item| item.kind_of?(Klass) }
+      #   items.all? { |item| item.match?(pattern) }
       #
       #   # good
       #   items.all?(pattern)
+      #   items.all?(Klass)
       #
       class RedundantEqualityComparisonBlock < Base
         extend AutoCorrector
@@ -32,7 +35,7 @@ module RuboCop
         MSG = 'Use `%<prefer>s` instead of block.'
 
         TARGET_METHODS = %i[all? any? one? none?].freeze
-        COMPARISON_METHODS = %i[== === is_a? kind_of?].freeze
+        COMPARISON_METHODS = %i[== === =~ is_a? kind_of? match?].freeze
         IS_A_METHODS = %i[is_a? kind_of?].freeze
 
         def on_block(node)
