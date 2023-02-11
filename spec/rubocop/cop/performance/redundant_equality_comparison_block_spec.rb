@@ -25,6 +25,17 @@ RSpec.describe RuboCop::Cop::Performance::RedundantEqualityComparisonBlock, :con
         RUBY
       end
 
+      it "registers and corrects an offense when using `#{method_name}` with `=~` comparison block" do
+        expect_offense(<<~RUBY, method_name: method_name)
+          items.#{method_name} { |item| item =~ other }
+                ^{method_name}^^^^^^^^^^^^^^^^^^^^^^^^^ Use `#{method_name}(other)` instead of block.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          items.#{method_name}(other)
+        RUBY
+      end
+
       it "registers and corrects an offense when using `#{method_name}` with `is_a?` comparison block" do
         expect_offense(<<~RUBY, method_name: method_name)
           items.#{method_name} { |item| item.is_a?(Klass) }
@@ -44,6 +55,17 @@ RSpec.describe RuboCop::Cop::Performance::RedundantEqualityComparisonBlock, :con
 
         expect_correction(<<~RUBY)
           items.#{method_name}(Klass)
+        RUBY
+      end
+
+      it "registers and corrects an offense when using `#{method_name}` with `match?` comparison block" do
+        expect_offense(<<~RUBY, method_name: method_name)
+          items.#{method_name} { |item| item.match?(pattern) }
+                ^{method_name}^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `#{method_name}(pattern)` instead of block.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          items.#{method_name}(pattern)
         RUBY
       end
 
