@@ -56,6 +56,16 @@ RSpec.describe RuboCop::Cop::Performance::ReduceMerge, :config do
         RUBY
       end
 
+      it 'registers no offense with `Set.new` initial value' do
+        # Set#merge mutates the receiver, like Hash#merge!
+        expect_no_offenses(<<~RUBY)
+          enumerable.reduce(Set.new) do |set, values|
+            other(stuff)
+            set.merge(values)
+          end
+        RUBY
+      end
+
       it 'registers an offense with many key-value pairs' do
         expect_offense(<<~RUBY)
           enumerable.reduce({}) do |hash, (key, value)|

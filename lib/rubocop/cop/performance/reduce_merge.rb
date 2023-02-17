@@ -72,9 +72,15 @@ module RuboCop
           )
         PATTERN
 
+        # @!method set_new?(node)
+        def_node_matcher :set_new?, <<~PATTERN
+          (send (const {nil? cbase} :Set) :new ...)
+        PATTERN
+
         def on_block(node)
           reduce_with_merge(node) do |reduce_send, block_args, first_block_arg, merge_send, merge_receiver|
             return unless first_block_arg == merge_receiver
+            return if set_new?(reduce_send.first_argument)
 
             add_offense(node) do |corrector|
               replace_method_name(corrector, reduce_send, 'each_with_object')
