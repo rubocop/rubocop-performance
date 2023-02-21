@@ -8,12 +8,9 @@ module RuboCop
       # `detect` instead.
       #
       # @safety
-      #   This cop is unsafe because is assumes the class implements the
-      #   `Enumerable` interface, but can't reliably detect this. This creates
-      #   known compatibility issues with `Hash`, `ActiveRecord` and other
-      #   frameworks. `Hash` and `ActiveRecord` do not implement a `detect`
-      #   method and `find` has its own meaning. Correcting `Hash` and
-      #   `ActiveRecord` methods with this cop should be considered unsafe.
+      #   This cop is unsafe because it assumes that the receiver is an
+      #   `Array` or equivalent, but can't reliably detect it. For example,
+      #   if the receiver is a `Hash`, it may report a false positive.
       #
       # @example
       #   # bad
