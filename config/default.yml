@@ -205,6 +205,13 @@ Performance/OpenStruct:
   VersionAdded: '0.61'
   Safe: false
 
+Performance/PredicateOnSelectResult:
+  Description: >-
+                  Identifies usages of `any?`, `empty?` or `none?` predicate methods chained to `select`/`filter`
+                  and change them to use predicate method instead.
+  Enabled: pending
+  VersionAdded: '<<next>>'
+
 Performance/RangeInclude:
   Description: 'Use `Range#cover?` instead of `Range#include?` (or `Range#member?`).'
   Reference: 'https://github.com/JuanitoFatas/fast-ruby#cover-vs-include-code'
