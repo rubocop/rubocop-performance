@@ -99,7 +99,7 @@ module RuboCop
 
         def inline_fix_branch(corrector, when_node)
           conditions = when_node.conditions
-          range = range_between(conditions[0].loc.expression.begin_pos, conditions[-1].loc.expression.end_pos)
+          range = range_between(conditions[0].source_range.begin_pos, conditions[-1].source_range.end_pos)
 
           corrector.replace(range, replacement(conditions))
         end

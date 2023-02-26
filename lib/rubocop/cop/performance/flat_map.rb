@@ -60,7 +60,7 @@ module RuboCop
         end
 
         def register_offense(node, map_node, first_method, flatten, message)
-          range = range_between(map_node.loc.selector.begin_pos, node.loc.expression.end_pos)
+          range = range_between(map_node.loc.selector.begin_pos, node.source_range.end_pos)
           message = format(message, method: first_method, flatten: flatten)
 
           add_offense(range, message: message) do |corrector|

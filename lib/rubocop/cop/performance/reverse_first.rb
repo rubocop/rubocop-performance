@@ -43,7 +43,7 @@ module RuboCop
         private
 
         def correction_range(receiver, node)
-          range_between(receiver.loc.selector.begin_pos, node.loc.expression.end_pos)
+          range_between(receiver.loc.selector.begin_pos, node.source_range.end_pos)
         end
 
         def build_message(node)

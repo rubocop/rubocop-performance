@@ -110,7 +110,7 @@ module RuboCop
 
         def negate_block_pass_reject(corrector, node)
           corrector.replace(
-            node.receiver.loc.expression.with(begin_pos: node.receiver.loc.begin.begin_pos),
+            node.receiver.source_range.with(begin_pos: node.receiver.loc.begin.begin_pos),
             negate_block_pass_as_inline_block(node.receiver)
           )
         end

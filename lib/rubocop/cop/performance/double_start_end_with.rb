@@ -58,8 +58,8 @@ module RuboCop
         private
 
         def autocorrect(corrector, first_call_args, second_call_args, combined_args)
-          first_argument = first_call_args.first.loc.expression
-          last_argument = second_call_args.last.loc.expression
+          first_argument = first_call_args.first.source_range
+          last_argument = second_call_args.last.source_range
           range = first_argument.join(last_argument)
 
           corrector.replace(range, combined_args)

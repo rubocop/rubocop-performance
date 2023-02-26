@@ -185,9 +185,9 @@ module RuboCop
 
         def range_to_search_for_last_matches(match_node, body, scope_root)
           expression = if modifier_form?(match_node)
-                         match_node.parent.if_branch.loc.expression
+                         match_node.parent.if_branch.source_range
                        else
-                         match_node.loc.expression
+                         match_node.source_range
                        end
 
           match_node_pos = expression.begin_pos
@@ -199,15 +199,15 @@ module RuboCop
         def next_match_pos(body, match_node_pos, scope_root)
           node = search_match_nodes(body).find do |match|
             begin_pos = if modifier_form?(match)
-                          match.parent.if_branch.loc.expression.begin_pos
+                          match.parent.if_branch.source_range.begin_pos
                         else
-                          match.loc.expression.begin_pos
+                          match.source_range.begin_pos
                         end
 
             begin_pos > match_node_pos && scope_root(match) == scope_root
           end
 
-          node ? node.loc.expression.begin_pos : Float::INFINITY
+          node ? node.source_range.begin_pos : Float::INFINITY
         end
 
         def modifier_form?(match_node)
@@ -216,7 +216,7 @@ module RuboCop
 
         def find_last_match(body, range, scope_root)
           last_matches(body).find do |ref|
-            ref_pos = ref.loc.expression.begin_pos
+            ref_pos = ref.source_range.begin_pos
             range.cover?(ref_pos) && scope_root(ref) == scope_root
           end
         end
@@ -248,8 +248,8 @@ module RuboCop
 
           replace_with_match_predicate_method(corrector, recv, arg, op_range)
 
-          corrector.insert_after(arg.loc.expression, ')') unless op_range.source.end_with?('(')
-          corrector.insert_before(recv.loc.expression, '!') if oper == :!~
+          corrector.insert_after(arg.source_range, ')') unless op_range.source.end_with?('(')
+          corrector.insert_before(recv.source_range, '!') if oper == :!~
         end
 
         def replace_with_match_predicate_method(corrector, recv, arg, op_range)
@@ -264,14 +264,14 @@ module RuboCop
         end
 
         def swap_receiver_and_arg(corrector, recv, arg)
-          corrector.replace(recv.loc.expression, arg.source)
-          corrector.replace(arg.loc.expression, recv.source)
+          corrector.replace(recv.source_range, arg.source)
+          corrector.replace(arg.source_range, recv.source)
         end
 
         def correction_range(recv, arg)
           buffer = processed_source.buffer
-          op_begin_pos = recv.loc.expression.end_pos
-          op_end_pos = arg.loc.expression.begin_pos
+          op_begin_pos = recv.source_range.end_pos
+          op_end_pos = arg.source_range.begin_pos
           Parser::Source::Range.new(buffer, op_begin_pos, op_end_pos)
         end
       end

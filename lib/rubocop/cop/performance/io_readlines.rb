@@ -95,7 +95,7 @@ module RuboCop
           begin_pos = readlines_call.loc.selector.begin_pos
 
           end_pos = if enumerable_call.method?(:each)
-                      enumerable_call.loc.expression.end_pos
+                      enumerable_call.source_range.end_pos
                     else
                       enumerable_call.loc.dot.begin_pos
                     end

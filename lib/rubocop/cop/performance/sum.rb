@@ -183,7 +183,7 @@ module RuboCop
         end
 
         def sum_method_range(node)
-          range_between(node.loc.selector.begin_pos, node.loc.expression.end_pos)
+          range_between(node.loc.selector.begin_pos, node.source_range.end_pos)
         end
 
         def sum_map_range(map, sum)

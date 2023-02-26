@@ -52,7 +52,7 @@ module RuboCop
             add_offense(node, message: message(map_or_collect, count)) do |corrector|
               replacement = "Array.new(#{count.source}#{map_or_collect.arguments.map { |arg| ", #{arg.source}" }.join})"
 
-              corrector.replace(map_or_collect.loc.expression, replacement)
+              corrector.replace(map_or_collect.source_range, replacement)
             end
           end
         end
