@@ -11,7 +11,7 @@ Performance optimization analysis for your projects, as an extension to [RuboCop
 Just install the `rubocop-performance` gem
 
 ```sh
-gem install rubocop-performance
+$ gem install rubocop-performance
 ```
 
 or if you use bundler put this in your `Gemfile`
@@ -47,7 +47,7 @@ cops together with the standard cops.
 ### Command line
 
 ```sh
-rubocop --require rubocop-performance
+$ rubocop --require rubocop-performance
 ```
 
 ### Rake task

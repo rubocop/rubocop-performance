@@ -19,7 +19,7 @@ cops together with the standard cops.
 
 [source,sh]
 ----
-rubocop --require rubocop-performance
+$ rubocop --require rubocop-performance
 ----
 
 == Rake task
