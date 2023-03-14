@@ -10,6 +10,16 @@ module RuboCop
       # behavior is appropriately overridden in subclass. For example,
       # `Range#===` returns `true` when argument is within the range.
       #
+      # This cop has `AllowRegexpMatch` option and it is false by default because
+      # `regexp.match?('string')` often used in block changes to the opposite result:
+      #
+      # [source,ruby]
+      # ----
+      # [/pattern/].all? { |regexp| regexp.match?('pattern') } # => true
+      # [/pattern/].all? { |regexp| regexp =~ 'pattern' }      # => true
+      # [/pattern/].all?('pattern')                            # => false
+      # ----
+      #
       # @safety
       #   This cop is unsafe because `===` and `==` do not always behave the same.
       #
@@ -17,14 +27,24 @@ module RuboCop
       #   # bad
       #   items.all? { |item| pattern === item }
       #   items.all? { |item| item == other }
-      #   items.all? { |item| item =~ pattern }
       #   items.all? { |item| item.is_a?(Klass) }
       #   items.all? { |item| item.kind_of?(Klass) }
-      #   items.all? { |item| item.match?(pattern) }
       #
       #   # good
       #   items.all?(pattern)
       #   items.all?(Klass)
+      #
+      # @example AllowRegexpMatch: true (default)
+      #
+      #   # good
+      #   items.all? { |item| item =~ pattern }
+      #   items.all? { |item| item.match?(pattern) }
+      #
+      # @example AllowRegexpMatch: false
+      #
+      #   # bad
+      #   items.all? { |item| item =~ pattern }
+      #   items.all? { |item| item.match?(pattern) }
       #
       class RedundantEqualityComparisonBlock < Base
         extend AutoCorrector
@@ -35,7 +55,8 @@ module RuboCop
         MSG = 'Use `%<prefer>s` instead of block.'
 
         TARGET_METHODS = %i[all? any? one? none?].freeze
-        COMPARISON_METHODS = %i[== === =~ is_a? kind_of? match?].freeze
+        COMPARISON_METHODS = %i[== === is_a? kind_of?].freeze
+        REGEXP_METHODS = %i[=~ match?].freeze
         IS_A_METHODS = %i[is_a? kind_of?].freeze
 
         def on_block(node)
@@ -63,7 +84,11 @@ module RuboCop
         end
 
         def use_equality_comparison_block?(block_body)
-          block_body.send_type? && COMPARISON_METHODS.include?(block_body.method_name)
+          return false unless block_body.send_type?
+
+          method_name = block_body.method_name
+
+          COMPARISON_METHODS.include?(method_name) || (!allow_regexp_match? && REGEXP_METHODS.include?(method_name))
         end
 
         def same_block_argument_and_is_a_argument?(block_body, block_argument)
@@ -101,6 +126,10 @@ module RuboCop
 
         def offense_range(node)
           node.send_node.loc.selector.join(node.source_range.end)
+        end
+
+        def allow_regexp_match?
+          cop_config.fetch('AllowRegexpMatch', true)
         end
       end
     end

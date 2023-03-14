@@ -25,17 +25,6 @@ RSpec.describe RuboCop::Cop::Performance::RedundantEqualityComparisonBlock, :con
         RUBY
       end
 
-      it "registers and corrects an offense when using `#{method_name}` with `=~` comparison block" do
-        expect_offense(<<~RUBY, method_name: method_name)
-          items.#{method_name} { |item| item =~ other }
-                ^{method_name}^^^^^^^^^^^^^^^^^^^^^^^^^ Use `#{method_name}(other)` instead of block.
-        RUBY
-
-        expect_correction(<<~RUBY)
-          items.#{method_name}(other)
-        RUBY
-      end
-
       it "registers and corrects an offense when using `#{method_name}` with `is_a?` comparison block" do
         expect_offense(<<~RUBY, method_name: method_name)
           items.#{method_name} { |item| item.is_a?(Klass) }
@@ -55,17 +44,6 @@ RSpec.describe RuboCop::Cop::Performance::RedundantEqualityComparisonBlock, :con
 
         expect_correction(<<~RUBY)
           items.#{method_name}(Klass)
-        RUBY
-      end
-
-      it "registers and corrects an offense when using `#{method_name}` with `match?` comparison block" do
-        expect_offense(<<~RUBY, method_name: method_name)
-          items.#{method_name} { |item| item.match?(pattern) }
-                ^{method_name}^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `#{method_name}(pattern)` instead of block.
-        RUBY
-
-        expect_correction(<<~RUBY)
-          items.#{method_name}(pattern)
         RUBY
       end
 
@@ -128,6 +106,40 @@ RSpec.describe RuboCop::Cop::Performance::RedundantEqualityComparisonBlock, :con
       expect_no_offenses(<<~RUBY)
         items.do_something { |item| item == other }
       RUBY
+    end
+
+    context 'when `AllowRegexpMatch: true`' do
+      let(:cop_config) { { 'AllowRegexpMatch' => true } }
+
+      it 'does not register an offense when using target method` with `=~` comparison block' do
+        expect_no_offenses(<<~RUBY)
+          items.all? { |item| item =~ pattern }
+        RUBY
+      end
+
+      it 'does not register an offense when using target method with `match?` comparison block' do
+        expect_no_offenses(<<~RUBY)
+          items.all? { |item| item.match?(pattern) }
+        RUBY
+      end
+    end
+
+    context 'when `AllowRegexpMatch: false`' do
+      let(:cop_config) { { 'AllowRegexpMatch' => false } }
+
+      it 'registers an offense when using target method with `=~` comparison block' do
+        expect_offense(<<~RUBY)
+          items.all? { |item| item =~ pattern }
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `all?(pattern)` instead of block.
+        RUBY
+      end
+
+      it 'registers an offense when using target method with `match?` comparison block' do
+        expect_offense(<<~RUBY)
+          items.all? { |item| item.match?(pattern) }
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `all?(pattern)` instead of block.
+        RUBY
+      end
     end
   end
 
