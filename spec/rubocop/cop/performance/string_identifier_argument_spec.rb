@@ -26,6 +26,14 @@ RSpec.describe RuboCop::Cop::Performance::StringIdentifierArgument, :config do
     end
   end
 
+  RuboCop::Cop::Performance::StringIdentifierArgument::COMMAND_METHODS.each do |method|
+    it "does not register an offense when using string argument for `#{method}` method with receiver" do
+      expect_no_offenses(<<~RUBY)
+        obj.#{method}('do_something')
+      RUBY
+    end
+  end
+
   it 'does not register an offense when no arguments' do
     expect_no_offenses(<<~RUBY)
       send
