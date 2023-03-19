@@ -248,8 +248,8 @@ module RuboCop
 
           replace_with_match_predicate_method(corrector, recv, arg, op_range)
 
-          corrector.insert_after(arg.source_range, ')') unless op_range.source.end_with?('(')
-          corrector.insert_before(recv.source_range, '!') if oper == :!~
+          corrector.insert_after(arg, ')') unless op_range.source.end_with?('(')
+          corrector.insert_before(recv, '!') if oper == :!~
         end
 
         def replace_with_match_predicate_method(corrector, recv, arg, op_range)
@@ -264,8 +264,8 @@ module RuboCop
         end
 
         def swap_receiver_and_arg(corrector, recv, arg)
-          corrector.replace(recv.source_range, arg.source)
-          corrector.replace(arg.source_range, recv.source)
+          corrector.replace(recv, arg.source)
+          corrector.replace(arg, recv.source)
         end
 
         def correction_range(recv, arg)

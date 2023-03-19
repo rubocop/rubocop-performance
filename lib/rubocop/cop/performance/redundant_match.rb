@@ -49,7 +49,7 @@ module RuboCop
         def autocorrect(corrector, node)
           new_source = "#{node.receiver.source} =~ #{node.first_argument.source}"
 
-          corrector.replace(node.source_range, new_source)
+          corrector.replace(node, new_source)
         end
 
         def autocorrectable?(node)

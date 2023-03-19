@@ -75,7 +75,7 @@ module RuboCop
 
           new_source << CLOSE_PAREN if parentheses?(node) && !args.empty?
 
-          corrector.replace(node.source_range, new_source)
+          corrector.replace(node, new_source)
         end
 
         def calls_to_report(argname, body)

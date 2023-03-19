@@ -43,7 +43,7 @@ module RuboCop
 
             new_source = "#{'!' if negation}#{receiver.source}.include?(#{to_string_literal(regex_str)})"
 
-            corrector.replace(node.source_range, new_source)
+            corrector.replace(node, new_source)
           end
         end
         alias on_match_with_lvasgn on_send

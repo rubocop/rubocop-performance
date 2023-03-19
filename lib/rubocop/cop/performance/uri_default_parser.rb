@@ -30,7 +30,7 @@ module RuboCop
             message = format(MSG, double_colon: double_colon)
 
             add_offense(node, message: message) do |corrector|
-              corrector.replace(node.source_range, "#{double_colon}URI::DEFAULT_PARSER")
+              corrector.replace(node, "#{double_colon}URI::DEFAULT_PARSER")
             end
           end
         end

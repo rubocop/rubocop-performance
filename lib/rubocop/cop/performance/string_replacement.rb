@@ -70,7 +70,7 @@ module RuboCop
           replacement_method = replacement_method(node, first_source, second_source)
 
           corrector.replace(node.loc.selector, replacement_method)
-          corrector.replace(first_param.source_range, to_string_literal(first_source)) unless first_param.str_type?
+          corrector.replace(first_param, to_string_literal(first_source)) unless first_param.str_type?
 
           remove_second_param(corrector, node, first_param) if second_source.empty? && first_source.length == 1
         end

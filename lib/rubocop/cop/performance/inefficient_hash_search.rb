@@ -57,7 +57,7 @@ module RuboCop
               # Replace `keys.include?` or `values.include?` with the appropriate
               # `key?`/`value?` method.
               corrector.replace(
-                node.source_range,
+                node,
                 "#{autocorrect_hash_expression(node)}.#{autocorrect_method(node)}(#{autocorrect_argument(node)})"
               )
             end

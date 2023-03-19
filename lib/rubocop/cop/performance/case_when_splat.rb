@@ -110,7 +110,7 @@ module RuboCop
           return if when_branches.one?
 
           corrector.remove(when_branch_range(when_node))
-          corrector.insert_after(when_branches.last.source_range, reordering_correction(when_node))
+          corrector.insert_after(when_branches.last, reordering_correction(when_node))
         end
 
         def reordering_correction(when_node)

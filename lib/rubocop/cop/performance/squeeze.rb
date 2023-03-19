@@ -48,7 +48,7 @@ module RuboCop
               string_literal = to_string_literal(replace_str)
               new_code = "#{receiver.source}.#{good_method}(#{string_literal})"
 
-              corrector.replace(node.source_range, new_code)
+              corrector.replace(node, new_code)
             end
           end
         end

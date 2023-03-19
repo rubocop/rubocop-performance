@@ -112,11 +112,11 @@ module RuboCop
             new_source.gsub!(/\n/, padding)
           end
 
-          corrector.replace(node.source_range, new_source)
+          corrector.replace(node, new_source)
         end
 
         def correct_single_element(corrector, node, new_source)
-          corrector.replace(node.source_range, new_source)
+          corrector.replace(node, new_source)
         end
 
         def to_assignments(receiver, pairs)
