@@ -226,7 +226,7 @@ Performance/RedundantEqualityComparisonBlock:
   Reference: 'https://github.com/rails/rails/pull/41363'
   Enabled: pending
   Safe: false
-  AllowRegexpMatch: false
+  AllowRegexpMatch: true
   VersionAdded: '1.10'
 
 Performance/RedundantMatch:
