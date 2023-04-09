@@ -11,6 +11,10 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#352](https://github.com/rubocop/rubocop-performance/pull/352): Fix the default config for `AllowRegexpMatch` option of `Performance/RedundantEqualityComparisonBlock`. ([@koic][])
+
 ## 1.17.0 (2023-04-09)
 
 ### New features
