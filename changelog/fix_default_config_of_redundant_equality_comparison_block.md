@@ -1,0 +1,1 @@
+* [#352](https://github.com/rubocop/rubocop-performance/pull/352): Fix the default config for `AllowRegexpMatch` option of `Performance/RedundantEqualityComparisonBlock`. ([@koic][])

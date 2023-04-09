@@ -10,7 +10,7 @@ module RuboCop
       # behavior is appropriately overridden in subclass. For example,
       # `Range#===` returns `true` when argument is within the range.
       #
-      # This cop has `AllowRegexpMatch` option and it is false by default because
+      # This cop has `AllowRegexpMatch` option and it is true by default because
       # `regexp.match?('string')` often used in block changes to the opposite result:
       #
       # [source,ruby]
