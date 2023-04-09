@@ -11,6 +11,15 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#347](https://github.com/rubocop/rubocop-performance/pull/347): Add `AllowRegexpMatch` option to `Performance/RedundantEqualityComparisonBlock`. ([@koic][])
+
+### Bug fixes
+
+* [#346](https://github.com/rubocop/rubocop-performance/issues/346): Fix a false positive for `Performance/StringIdentifierArgument` when using a command method with receiver. ([@koic][])
+* [#344](https://github.com/rubocop/rubocop-performance/issues/344): Fix `Performance/FlatMap` autocorrection for chained methods on separate lines. ([@fatkodima][])
+
 ## 1.16.0 (2023-02-06)
 
 ### Changes
