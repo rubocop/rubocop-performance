@@ -754,12 +754,9 @@ chained to `select`, `find_all` or `filter` and change them to use
 
 === Safety
 
-This cop is unsafe because is assumes the class implements the
-`Enumerable` interface, but can't reliably detect this. This creates
-known compatibility issues with `Hash`, `ActiveRecord` and other
-frameworks. `Hash` and `ActiveRecord` do not implement a `detect`
-method and `find` has its own meaning. Correcting `Hash` and
-`ActiveRecord` methods with this cop should be considered unsafe.
+This cop is unsafe because it assumes that the receiver is an
+`Array` or equivalent, but can't reliably detect it. For example,
+if the receiver is a `Hash`, it may report a false positive.
 
 === Examples
 
@@ -1357,6 +1354,16 @@ By default, `Object#===` behaves the same as `Object#==`, but this
 behavior is appropriately overridden in subclass. For example,
 `Range#===` returns `true` when argument is within the range.
 
+This cop has `AllowRegexpMatch` option and it is false by default because
+`regexp.match?('string')` often used in block changes to the opposite result:
+
+[source,ruby]
+----
+[/pattern/].all? { |regexp| regexp.match?('pattern') } # => true
+[/pattern/].all? { |regexp| regexp =~ 'pattern' }      # => true
+[/pattern/].all?('pattern')                            # => false
+----
+
 === Safety
 
 This cop is unsafe because `===` and `==` do not always behave the same.
@@ -1373,7 +1380,36 @@ items.all? { |item| item.kind_of?(Klass) }
 
 # good
 items.all?(pattern)
+items.all?(Klass)
 ----
+
+==== AllowRegexpMatch: true (default)
+
+[source,ruby]
+----
+# good
+items.all? { |item| item =~ pattern }
+items.all? { |item| item.match?(pattern) }
+----
+
+==== AllowRegexpMatch: false
+
+[source,ruby]
+----
+# bad
+items.all? { |item| item =~ pattern }
+items.all? { |item| item.match?(pattern) }
+----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| AllowRegexpMatch
+| `false`
+| Boolean
+|===
 
 === References
 
