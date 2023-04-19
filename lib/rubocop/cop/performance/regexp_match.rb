@@ -131,6 +131,10 @@ module RuboCop
           }
         PATTERN
 
+        def self.autocorrect_incompatible_with
+          [ConstantRegexp]
+        end
+
         def on_if(node)
           check_condition(node.condition)
         end

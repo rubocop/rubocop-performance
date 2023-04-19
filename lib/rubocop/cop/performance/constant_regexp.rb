@@ -38,6 +38,10 @@ module RuboCop
 
         MSG = 'Extract this regexp into a constant, memoize it, or append an `/o` option to its options.'
 
+        def self.autocorrect_incompatible_with
+          [RegexpMatch]
+        end
+
         def on_regexp(node)
           return if within_allowed_assignment?(node) || !include_interpolated_const?(node) || node.single_interpolation?
 
