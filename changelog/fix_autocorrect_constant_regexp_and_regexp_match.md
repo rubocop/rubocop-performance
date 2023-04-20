@@ -1,0 +1,1 @@
+* [#351](https://github.com/rubocop/rubocop-performance/issues/351): Fix an incorrect autocorrect for `Performance/ConstantRegexp` and `Performance/RegexpMatch` when autocorrecting both at the same time. ([@fatkodima][])
