@@ -124,10 +124,6 @@ RSpec:
       - expect_no_offenses
       - expect_offense
 
-# This disabling is a workaround for https://github.com/rubocop-hq/rubocop-rails/issues/374.
-RSpec/FactoryBot/CreateList:
-  Enabled: false
-
 RSpec/PredicateMatcher:
   EnforcedStyle: explicit
 
