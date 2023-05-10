@@ -5,35 +5,42 @@ module RuboCop
     module Performance
       # Identifies places where `sort { |a, b| a.foo <=> b.foo }`
       # can be replaced by `sort_by(&:foo)`.
-      # This cop also checks `max` and `min` methods.
+      # This cop also checks `sort!`, `min`, `max` and `minmax` methods.
       #
       # @example
       #   # bad
-      #   array.sort { |a, b| a.foo <=> b.foo }
-      #   array.max { |a, b| a.foo <=> b.foo }
-      #   array.min { |a, b| a.foo <=> b.foo }
-      #   array.sort { |a, b| a[:foo] <=> b[:foo] }
+      #   array.sort   { |a, b| a.foo <=> b.foo }
+      #   array.sort!  { |a, b| a.foo <=> b.foo }
+      #   array.max    { |a, b| a.foo <=> b.foo }
+      #   array.min    { |a, b| a.foo <=> b.foo }
+      #   array.minmax { |a, b| a.foo <=> b.foo }
+      #   array.sort   { |a, b| a[:foo] <=> b[:foo] }
       #
       #   # good
       #   array.sort_by(&:foo)
+      #   array.sort_by!(&:foo)
       #   array.sort_by { |v| v.foo }
       #   array.sort_by do |var|
       #     var.foo
       #   end
       #   array.max_by(&:foo)
       #   array.min_by(&:foo)
+      #   array.minmax_by(&:foo)
       #   array.sort_by { |a| a[:foo] }
       class CompareWithBlock < Base
         include RangeHelp
         extend AutoCorrector
 
-        MSG = 'Use `%<compare_method>s_by%<instead>s` instead of ' \
+        MSG = 'Use `%<replacement_method>s%<instead>s` instead of ' \
               '`%<compare_method>s { |%<var_a>s, %<var_b>s| %<str_a>s ' \
               '<=> %<str_b>s }`.'
 
+        REPLACEMENT = { sort: :sort_by, sort!: :sort_by!, min: :min_by, max: :max_by, minmax: :minmax_by }.freeze
+        private_constant :REPLACEMENT
+
         def_node_matcher :compare?, <<~PATTERN
           (block
-            $(send _ {:sort :min :max})
+            $(send _ {:sort :sort! :min :max :minmax})
             (args (arg $_a) (arg $_b))
             $send)
         PATTERN
@@ -54,9 +61,9 @@ module RuboCop
 
               add_offense(range, message: message(send, method, var_a, var_b, args_a)) do |corrector|
                 replacement = if method == :[]
-                                "#{send.method_name}_by { |a| a[#{args_a.first.source}] }"
+                                "#{REPLACEMENT[send.method_name]} { |a| a[#{args_a.first.source}] }"
                               else
-                                "#{send.method_name}_by(&:#{method})"
+                                "#{REPLACEMENT[send.method_name]}(&:#{method})"
                               end
                 corrector.replace(range, replacement)
               end
@@ -82,7 +89,8 @@ module RuboCop
 
         # rubocop:disable Metrics/MethodLength
         def message(send, method, var_a, var_b, args)
-          compare_method = send.method_name
+          compare_method     = send.method_name
+          replacement_method = REPLACEMENT[compare_method]
           if method == :[]
             key = args.first
             instead = " { |a| a[#{key.source}] }"
@@ -94,6 +102,7 @@ module RuboCop
             str_b = "#{var_b}.#{method}"
           end
           format(MSG, compare_method: compare_method,
+                      replacement_method: replacement_method,
                       instead: instead,
                       var_a: var_a,
                       var_b: var_b,
