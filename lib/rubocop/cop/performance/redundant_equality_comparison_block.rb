@@ -97,7 +97,7 @@ module RuboCop
           elsif IS_A_METHODS.include?(block_body.method_name)
             block_argument.source == block_body.first_argument.source
           else
-            false
+            block_body.receiver.source == block_body.first_argument.receiver&.source
           end
         end
 
