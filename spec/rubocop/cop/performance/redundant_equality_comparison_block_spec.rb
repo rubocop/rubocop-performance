@@ -102,6 +102,12 @@ RSpec.describe RuboCop::Cop::Performance::RedundantEqualityComparisonBlock, :con
       RUBY
     end
 
+    it 'does not register an offense when the block variable is used on both sides of `==`' do
+      expect_no_offenses(<<~RUBY)
+        items.all? { |item| item == item.do_something }
+      RUBY
+    end
+
     it 'does not register an offense when using not target methods with `===` comparison block' do
       expect_no_offenses(<<~RUBY)
         items.do_something { |item| item == other }
