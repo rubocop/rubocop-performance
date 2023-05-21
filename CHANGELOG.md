@@ -11,6 +11,8 @@
 
 ## master (unreleased)
 
+## 1.18.0 (2023-05-21)
+
 ### Bug fixes
 
 * [#359](https://github.com/rubocop/rubocop-performance/issues/359): Fix a false positive for `Performance/RedundantEqualityComparisonBlock` when the block variable is used on both sides of `==`. ([@koic][])
