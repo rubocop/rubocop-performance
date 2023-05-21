@@ -11,6 +11,16 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#359](https://github.com/rubocop/rubocop-performance/issues/359): Fix a false positive for `Performance/RedundantEqualityComparisonBlock` when the block variable is used on both sides of `==`. ([@koic][])
+* [#351](https://github.com/rubocop/rubocop-performance/issues/351): Fix an incorrect autocorrect for `Performance/ConstantRegexp` and `Performance/RegexpMatch` when autocorrecting both at the same time. ([@fatkodima][])
+
+### Changes
+
+* [#357](https://github.com/rubocop/rubocop-performance/pull/357): Add `sort!` and `minmax` to `Performance/CompareWithBlock`. ([@vlad-pisanov][])
+* [#353](https://github.com/rubocop/rubocop-performance/pull/353): **(Breaking)** Drop Ruby 2.6 support. ([@koic][])
+
 ## 1.17.1 (2023-04-09)
 
 ### Bug fixes
@@ -451,3 +461,4 @@
 [@ydah]: https://github.com/ydah
 [@QQism]: https://github.com/QQism
 [@r7kamura]: https://github.com/r7kamura
+[@vlad-pisanov]: https://github.com/vlad-pisanov
