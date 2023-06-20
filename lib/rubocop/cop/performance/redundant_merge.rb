@@ -109,7 +109,7 @@ module RuboCop
             node = parent
           else
             padding = "\n#{leading_spaces(node)}"
-            new_source.gsub!(/\n/, padding)
+            new_source.gsub!("\n", padding)
           end
 
           corrector.replace(node, new_source)
@@ -132,7 +132,7 @@ module RuboCop
         def rewrite_with_modifier(node, parent, new_source)
           indent = ' ' * configured_indentation_width
           padding = "\n#{indent + leading_spaces(node)}"
-          new_source.gsub!(/\n/, padding)
+          new_source.gsub!("\n", padding)
 
           format(WITH_MODIFIER_CORRECTION, keyword: parent.loc.keyword.source,
                                            condition: parent.condition.source,
