@@ -78,13 +78,13 @@ module RuboCop
         end
 
         def contains_splat?(node)
-          return unless node.array_type?
+          return false unless node.array_type?
 
           node.each_child_node(:splat).any?
         end
 
         def contains_double_splat?(node)
-          return unless node.hash_type?
+          return false unless node.hash_type?
 
           node.each_child_node(:kwsplat).any?
         end
