@@ -45,7 +45,7 @@ module RuboCop
         RESTRICT_ON_SEND = %i[include?].freeze
 
         def_node_matcher :inefficient_include?, <<~PATTERN
-          (send (send $_ {:keys :values}) :include? _)
+          (send (call $_ {:keys :values}) :include? _)
         PATTERN
 
         def on_send(node)
@@ -56,21 +56,23 @@ module RuboCop
             add_offense(node, message: message) do |corrector|
               # Replace `keys.include?` or `values.include?` with the appropriate
               # `key?`/`value?` method.
-              corrector.replace(
-                node,
-                "#{autocorrect_hash_expression(node)}.#{autocorrect_method(node)}(#{autocorrect_argument(node)})"
-              )
+              corrector.replace(node, replacement(node))
             end
           end
         end
+        alias on_csend on_send
 
         private
 
         def message(node)
-          "Use `##{autocorrect_method(node)}` instead of `##{current_method(node)}.include?`."
+          "Use `##{correct_method(node)}` instead of `##{current_method(node)}.include?`."
         end
 
-        def autocorrect_method(node)
+        def replacement(node)
+          "#{correct_hash_expression(node)}#{correct_dot(node)}#{correct_method(node)}(#{correct_argument(node)})"
+        end
+
+        def correct_method(node)
           case current_method(node)
           when :keys then use_long_method ? 'has_key?' : 'key?'
           when :values then use_long_method ? 'has_value?' : 'value?'
@@ -86,12 +88,16 @@ module RuboCop
           preferred_config && preferred_config['EnforcedStyle'] == 'long' && preferred_config['Enabled']
         end
 
-        def autocorrect_argument(node)
+        def correct_argument(node)
           node.arguments.first.source
         end
 
-        def autocorrect_hash_expression(node)
+        def correct_hash_expression(node)
           node.receiver.receiver.source
+        end
+
+        def correct_dot(node)
+          node.receiver.loc.dot.source
         end
       end
     end

@@ -44,6 +44,20 @@ RSpec.describe RuboCop::Cop::Performance::ArraySemiInfiniteRangeSlice, :config d
       RUBY
     end
 
+    it 'registers an offense and corrects when using `slice` with semi-infinite ranges and safe navigation operator' do
+      expect_offense(<<~RUBY)
+        array&.slice(2..)
+        ^^^^^^^^^^^^^^^^^ Use `drop` instead of `slice` with semi-infinite range.
+        array&.slice(..2)
+        ^^^^^^^^^^^^^^^^^ Use `take` instead of `slice` with semi-infinite range.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        array.drop(2)
+        array.take(3)
+      RUBY
+    end
+
     it 'does not register an offense when using `[]` with full range' do
       expect_no_offenses(<<~RUBY)
         array[0..2]

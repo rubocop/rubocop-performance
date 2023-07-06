@@ -43,6 +43,17 @@ RSpec.describe RuboCop::Cop::Performance::DeletePrefix, :config do
         RUBY
       end
 
+      it "registers an offense and corrects when `gsub(/\Aprefix/, '')` with safe navigation operator" do
+        expect_offense(<<~RUBY)
+          str&.gsub(/\\Aprefix/, '')
+               ^^^^ Use `delete_prefix` instead of `gsub`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          str&.delete_prefix('prefix')
+        RUBY
+      end
+
       it "registers an offense and corrects when `gsub!(/\Aprefix/, '')`" do
         expect_offense(<<~RUBY)
           str.gsub!(/\\Aprefix/, '')

@@ -90,6 +90,28 @@ RSpec.describe RuboCop::Cop::Performance::InefficientHashSearch, :config do
     end
   end
 
+  it 'registers an offense when a hash literal receives `keys.include?` with safe navigation operator' do
+    expect_offense(<<~RUBY)
+      hash&.keys.include? 1
+      ^^^^^^^^^^^^^^^^^^^^^ Use `#key?` instead of `#keys.include?`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      hash&.key?(1)
+    RUBY
+  end
+
+  it 'registers an offense when a hash literal receives `values.include?` with safe navigation operator' do
+    expect_offense(<<~RUBY)
+      hash&.values.include? 1
+      ^^^^^^^^^^^^^^^^^^^^^^^ Use `#value?` instead of `#values.include?`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      hash&.value?(1)
+    RUBY
+  end
+
   context 'when config is empty' do
     it_behaves_like 'correct behavior', :short
   end

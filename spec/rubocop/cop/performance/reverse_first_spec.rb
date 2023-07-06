@@ -23,6 +23,17 @@ RSpec.describe RuboCop::Cop::Performance::ReverseFirst, :config do
     RUBY
   end
 
+  it 'registers an offense and corrects when using `#reverse.first` with safe navigation operator' do
+    expect_offense(<<~RUBY)
+      array&.reverse.first
+             ^^^^^^^^^^^^^ Use `last` instead of `reverse.first`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      array&.last
+    RUBY
+  end
+
   it 'does not register an offense when `#reverse` is not followed by `#first`' do
     expect_no_offenses(<<~RUBY)
       array.reverse

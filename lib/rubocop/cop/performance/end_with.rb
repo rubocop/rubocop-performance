@@ -54,7 +54,7 @@ module RuboCop
         RESTRICT_ON_SEND = %i[match =~ match?].freeze
 
         def_node_matcher :redundant_regex?, <<~PATTERN
-          {(send $!nil? {:match :=~ :match?} (regexp (str $#literal_at_end?) (regopt)))
+          {(call $!nil? {:match :=~ :match?} (regexp (str $#literal_at_end?) (regopt)))
            (send (regexp (str $#literal_at_end?) (regopt)) {:match :match?} $_)
            (match-with-lvasgn (regexp (str $#literal_at_end?) (regopt)) $_)}
         PATTERN
@@ -66,12 +66,14 @@ module RuboCop
             receiver, regex_str = regex_str, receiver if receiver.is_a?(String)
             regex_str = drop_end_metacharacter(regex_str)
             regex_str = interpret_string_escapes(regex_str)
+            dot = node.loc.dot ? node.loc.dot.source : '.'
 
-            new_source = "#{receiver.source}.end_with?(#{to_string_literal(regex_str)})"
+            new_source = "#{receiver.source}#{dot}end_with?(#{to_string_literal(regex_str)})"
 
             corrector.replace(node, new_source)
           end
         end
+        alias on_csend on_send
         alias on_match_with_lvasgn on_send
       end
     end

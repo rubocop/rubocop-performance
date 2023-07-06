@@ -8,6 +8,13 @@ RSpec.describe RuboCop::Cop::Performance::ReverseEach, :config do
     RUBY
   end
 
+  it 'registers an offense when each is called on reverse with safe navigation operator' do
+    expect_offense(<<~RUBY)
+      array&.reverse.each { |e| puts e }
+             ^^^^^^^^^^^^ Use `reverse_each` instead of `reverse.each`.
+    RUBY
+  end
+
   it 'registers an offense when each is called on reverse on a variable' do
     expect_offense(<<~RUBY)
       arr = [1, 2, 3]

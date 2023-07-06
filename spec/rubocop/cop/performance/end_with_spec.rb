@@ -2,6 +2,7 @@
 
 RSpec.describe RuboCop::Cop::Performance::EndWith, :config do
   let(:cop_config) { { 'SafeMultiline' => safe_multiline } }
+  let(:safe_multiline) { true }
 
   shared_examples 'different match methods' do |method|
     it "registers an offense and corrects str#{method} /abc\\z/" do
@@ -209,6 +210,28 @@ RSpec.describe RuboCop::Cop::Performance::EndWith, :config do
         str.end_with?('\\\\')
       RUBY
     end
+  end
+
+  it 'registers an offense and corrects str&.match /abc\\z/' do
+    expect_offense(<<~RUBY)
+      str&.match /abc\\z/
+      ^^^^^^^^^^^^^^^^^^ Use `String#end_with?` instead of a regex match anchored to the end of the string.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      str&.end_with?('abc')
+    RUBY
+  end
+
+  it 'registers an offense and corrects str&.match? /abc\\z/' do
+    expect_offense(<<~RUBY)
+      str&.match? /abc\\z/
+      ^^^^^^^^^^^^^^^^^^^ Use `String#end_with?` instead of a regex match anchored to the end of the string.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      str&.end_with?('abc')
+    RUBY
   end
 
   context 'when `SafeMultiline: false`' do

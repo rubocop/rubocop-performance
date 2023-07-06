@@ -27,7 +27,7 @@ module RuboCop
         PREFERRED_METHODS = { gsub: :squeeze, gsub!: :squeeze! }.freeze
 
         def_node_matcher :squeeze_candidate?, <<~PATTERN
-          (send
+          (call
             $!nil? ${:gsub :gsub!}
             (regexp
               (str $#repeating_literal?)
@@ -35,6 +35,7 @@ module RuboCop
             (str $_))
         PATTERN
 
+        # rubocop:disable Metrics/AbcSize
         def on_send(node)
           squeeze_candidate?(node) do |receiver, bad_method, regexp_str, replace_str|
             regexp_str = regexp_str[0..-2] # delete '+' from the end
@@ -46,12 +47,14 @@ module RuboCop
 
             add_offense(node.loc.selector, message: message) do |corrector|
               string_literal = to_string_literal(replace_str)
-              new_code = "#{receiver.source}.#{good_method}(#{string_literal})"
+              new_code = "#{receiver.source}#{node.loc.dot.source}#{good_method}(#{string_literal})"
 
               corrector.replace(node, new_code)
             end
           end
         end
+        # rubocop:enable Metrics/AbcSize
+        alias on_csend on_send
 
         private
 

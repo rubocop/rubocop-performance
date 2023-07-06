@@ -24,7 +24,7 @@ module RuboCop
         RESTRICT_ON_SEND = %i[first].freeze
 
         def_node_matcher :reverse_first_candidate?, <<~PATTERN
-          (send $(send _ :reverse) :first (int _)?)
+          (send $(call _ :reverse) :first (int _)?)
         PATTERN
 
         def on_send(node)
@@ -39,6 +39,7 @@ module RuboCop
             end
           end
         end
+        alias on_csend on_send
 
         private
 

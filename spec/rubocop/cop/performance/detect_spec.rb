@@ -22,6 +22,17 @@ RSpec.describe RuboCop::Cop::Performance::Detect, :config do
       RUBY
     end
 
+    it "registers an offense and corrects when first is called on #{method} with safe navigation operator" do
+      expect_offense(<<~RUBY, method: method)
+        array&.#{method} { |i| i % 2 == 0 }.first
+               ^{method}^^^^^^^^^^^^^^^^^^^^^^^^^ Use `detect` instead of `#{method}.first`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        array&.detect { |i| i % 2 == 0 }
+      RUBY
+    end
+
     it "doesn't register an offense when first(n) is called on #{method}" do
       expect_no_offenses("[1, 2, 3].#{method} { |i| i % 2 == 0 }.first(n)")
     end
@@ -79,6 +90,17 @@ RSpec.describe RuboCop::Cop::Performance::Detect, :config do
 
       expect_correction(<<~RUBY)
         [1, 2, 3].detect(&:even?)
+      RUBY
+    end
+
+    it "registers an offense when first is called on #{method} short syntax with safe navigation operator" do
+      expect_offense(<<~RUBY, method: method)
+        array&.#{method}(&:even?).first
+               ^{method}^^^^^^^^^^^^^^^ Use `detect` instead of `#{method}.first`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        array&.detect(&:even?)
       RUBY
     end
 

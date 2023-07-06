@@ -16,6 +16,20 @@ RSpec.describe RuboCop::Cop::Performance::SelectMap, :config do
       RUBY
     end
 
+    it 'registers an offense when using `select(&:...).map(&:...)` with safe navigation operator' do
+      expect_offense(<<~RUBY)
+        ary&.select(&:present?).map(&:to_i)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `filter_map` instead of `select.map`.
+      RUBY
+    end
+
+    it 'registers an offense when using `filter(&:...).map(&:...)` with safe navitaion operator' do
+      expect_offense(<<~RUBY)
+        ary&.filter(&:present?).map(&:to_i)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `filter_map` instead of `filter.map`.
+      RUBY
+    end
+
     it 'registers an offense when using `select { ... }.map { ... }`' do
       expect_offense(<<~RUBY)
         ary.select { |o| o.present? }.map { |o| o.to_i }

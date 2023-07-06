@@ -39,7 +39,7 @@ module RuboCop
         RESTRICT_ON_SEND = SLICE_METHODS
 
         def_node_matcher :endless_range_slice?, <<~PATTERN
-          (send $_ $%SLICE_METHODS $#endless_range?)
+          (call $_ $%SLICE_METHODS $#endless_range?)
         PATTERN
 
         def_node_matcher :endless_range?, <<~PATTERN
@@ -59,6 +59,7 @@ module RuboCop
             end
           end
         end
+        alias on_csend on_send
 
         private
 
