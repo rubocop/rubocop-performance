@@ -43,6 +43,17 @@ RSpec.describe RuboCop::Cop::Performance::DeleteSuffix, :config do
         RUBY
       end
 
+      it "registers an offense and corrects when `gsub(/suffix\z/, '')` with safe navigation operator" do
+        expect_offense(<<~RUBY)
+          str&.gsub(/suffix\\z/, '')
+               ^^^^ Use `delete_suffix` instead of `gsub`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          str&.delete_suffix('suffix')
+        RUBY
+      end
+
       it "registers an offense and corrects when `gsub!(/suffix\z/, '')`" do
         expect_offense(<<~RUBY)
           str.gsub!(/suffix\\z/, '')

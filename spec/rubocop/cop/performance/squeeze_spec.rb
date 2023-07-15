@@ -12,6 +12,17 @@ RSpec.describe RuboCop::Cop::Performance::Squeeze, :config do
     RUBY
   end
 
+  it "registers an offense and corrects when using `#gsub(/a+/, 'a')` with safe navigation operator" do
+    expect_offense(<<~RUBY)
+      str&.gsub(/a+/, 'a')
+           ^^^^ Use `squeeze` instead of `gsub`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      str&.squeeze('a')
+    RUBY
+  end
+
   it "registers an offense and corrects when using `#gsub!(/a+/, 'a')`" do
     expect_offense(<<~RUBY)
       str.gsub!(/a+/, 'a')

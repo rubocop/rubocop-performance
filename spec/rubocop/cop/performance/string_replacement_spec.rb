@@ -99,6 +99,21 @@ RSpec.describe RuboCop::Cop::Performance::StringReplacement, :config do
           'abc'.gsub(/ /, '')
                 ^^^^^^^^^^^^^ Use `delete` instead of `gsub`.
         RUBY
+
+        expect_correction(<<~RUBY)
+          'abc'.delete(' ')
+        RUBY
+      end
+
+      it 'registers an offense when using space with safe navigation operator' do
+        expect_offense(<<~RUBY)
+          'abc'&.gsub(/ /, '')
+                 ^^^^^^^^^^^^^ Use `delete` instead of `gsub`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          'abc'&.delete(' ')
+        RUBY
       end
 
       %w[a b c ' " % ! = < > # & ; : ` ~ 1 2 3 - _ , \r \\\\ \y \u1234

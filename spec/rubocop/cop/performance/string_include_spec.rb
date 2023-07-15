@@ -168,4 +168,15 @@ RSpec.describe RuboCop::Cop::Performance::StringInclude, :config do
       !str.include?('abc')
     RUBY
   end
+
+  it 'registers an offense and corrects when using `match? with safe navigation operator' do
+    expect_offense(<<~RUBY)
+      str&.match?(/abc/)
+      ^^^^^^^^^^^^^^^^^^ Use `String#include?` instead of a regex match with literal-only pattern.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      str&.include?('abc')
+    RUBY
+  end
 end

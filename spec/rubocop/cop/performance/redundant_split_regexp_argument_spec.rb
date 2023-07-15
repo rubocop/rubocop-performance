@@ -34,6 +34,17 @@ RSpec.describe RuboCop::Cop::Performance::RedundantSplitRegexpArgument, :config 
     RUBY
   end
 
+  it 'registers an offense when the method is split with safe navigation operator' do
+    expect_offense(<<~RUBY)
+      str&.split(/\\./)
+                 ^^^^ Use string as argument instead of regexp.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      str&.split(".")
+    RUBY
+  end
+
   it 'registers an offense when the method is split and corrects correctly special string chars' do
     expect_offense(<<~RUBY)
       "foo\\nbar\\nbaz\\n".split(/\\n/)

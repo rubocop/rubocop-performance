@@ -27,7 +27,7 @@ module RuboCop
         RESTRICT_ON_SEND = %i[each].freeze
 
         def_node_matcher :reverse_each?, <<~MATCHER
-          (send (send _ :reverse) :each)
+          (send (call _ :reverse) :each)
         MATCHER
 
         def on_send(node)
@@ -41,6 +41,7 @@ module RuboCop
             end
           end
         end
+        alias on_csend on_send
 
         private
 

@@ -21,7 +21,7 @@ module RuboCop
         STR_SPECIAL_CHARS = %w[\n \" \' \\\\ \t \b \f \r].freeze
 
         def_node_matcher :split_call_with_regexp?, <<~PATTERN
-          {(send !nil? :split $regexp)}
+          {(call !nil? :split $regexp)}
         PATTERN
 
         def on_send(node)
@@ -35,6 +35,7 @@ module RuboCop
             corrector.replace(regexp_node, "\"#{new_argument}\"")
           end
         end
+        alias on_csend on_send
 
         private
 

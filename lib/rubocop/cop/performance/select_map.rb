@@ -38,6 +38,7 @@ module RuboCop
           range = offense_range(node, map_method)
           add_offense(range, message: format(MSG, method_name: node.method_name))
         end
+        alias on_csend on_send
 
         private
 

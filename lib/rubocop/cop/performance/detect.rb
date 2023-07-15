@@ -40,9 +40,9 @@ module RuboCop
 
         def_node_matcher :detect_candidate?, <<~PATTERN
           {
-            (send $(block (send _ %CANDIDATE_METHODS) ...) ${:first :last} $...)
+            (send $(block (call _ %CANDIDATE_METHODS) ...) ${:first :last} $...)
             (send $(block (send _ %CANDIDATE_METHODS) ...) $:[] (int ${0 -1}))
-            (send $(send _ %CANDIDATE_METHODS ...) ${:first :last} $...)
+            (send $(call _ %CANDIDATE_METHODS ...) ${:first :last} $...)
             (send $(send _ %CANDIDATE_METHODS ...) $:[] (int ${0 -1}))
           }
         PATTERN
@@ -63,6 +63,7 @@ module RuboCop
             register_offense(node, receiver, second_method, index)
           end
         end
+        alias on_csend on_send
 
         private
 

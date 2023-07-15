@@ -2,6 +2,7 @@
 
 RSpec.describe RuboCop::Cop::Performance::StartWith, :config do
   let(:cop_config) { { 'SafeMultiline' => safe_multiline } }
+  let(:safe_multiline) { true }
 
   shared_examples 'different match methods' do |method|
     it "registers an offense and corrects str#{method} /\\Aabc/" do
@@ -165,6 +166,28 @@ RSpec.describe RuboCop::Cop::Performance::StartWith, :config do
         str.start_with?('\\\\')
       RUBY
     end
+  end
+
+  it 'registers an offense and corrects str&.match /\\Aabc/' do
+    expect_offense(<<~RUBY)
+      str&.match /\\Aabc/
+      ^^^^^^^^^^^^^^^^^^ Use `String#start_with?` instead of a regex match anchored to the beginning of the string.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      str&.start_with?('abc')
+    RUBY
+  end
+
+  it 'registers an offense and corrects str&.match? /\\Aabc/' do
+    expect_offense(<<~RUBY)
+      str&.match? /\\Aabc/
+      ^^^^^^^^^^^^^^^^^^^ Use `String#start_with?` instead of a regex match anchored to the beginning of the string.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      str&.start_with?('abc')
+    RUBY
   end
 
   context 'when `SafeMultiline: false`' do

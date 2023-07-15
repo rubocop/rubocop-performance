@@ -29,7 +29,7 @@ module RuboCop
         BANG = '!'
 
         def_node_matcher :string_replacement?, <<~PATTERN
-          (send _ {:gsub :gsub!}
+          (call _ {:gsub :gsub!}
                     ${regexp str (send (const nil? :Regexp) {:new :compile} _)}
                     $str)
         PATTERN
@@ -42,6 +42,7 @@ module RuboCop
             offense(node, first_param, second_param)
           end
         end
+        alias on_csend on_send
 
         private
 

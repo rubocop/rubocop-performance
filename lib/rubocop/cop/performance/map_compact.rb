@@ -40,12 +40,12 @@ module RuboCop
         def_node_matcher :map_compact, <<~PATTERN
           {
             (send
-              $(send _ {:map :collect}
+              $(call _ {:map :collect}
                 (block_pass
                   (sym _))) _)
             (send
               (block
-                $(send _ {:map :collect})
+                $(call _ {:map :collect})
                   (args ...) _) _)
           }
         PATTERN
@@ -61,6 +61,7 @@ module RuboCop
             remove_compact_method(corrector, map_node, node, node.parent)
           end
         end
+        alias on_csend on_send
 
         private
 
