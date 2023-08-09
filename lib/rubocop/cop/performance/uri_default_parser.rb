@@ -25,7 +25,7 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          return unless uri_parser_new?(node) do |captured_value|
+          uri_parser_new?(node) do |captured_value|
             double_colon = captured_value ? '::' : ''
             message = format(MSG, double_colon: double_colon)
 
