@@ -12,6 +12,12 @@ module RuboCop
       # @safety
       #   This cop is unsafe because `Range#include?` (or `Range#member?`) and `Range#cover?`
       #   are not equivalent behavior.
+      #   Example of a case where `Range#cover?` may not provide the desired result:
+      #
+      #   [source,ruby]
+      #   ----
+      #   ('a'..'z').cover?('yellow') # => true
+      #   ----
       #
       # @example
       #   # bad
@@ -20,11 +26,6 @@ module RuboCop
       #
       #   # good
       #   ('a'..'z').cover?('b') # => true
-      #
-      #   # Example of a case where `Range#cover?` may not provide
-      #   # the desired result:
-      #
-      #   ('a'..'z').cover?('yellow') # => true
       class RangeInclude < Base
         extend AutoCorrector
 
