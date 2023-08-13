@@ -11,6 +11,11 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#364](https://github.com/rubocop/rubocop-performance/pull/364): Add new `Performance/MapMethodChain` cop. ([@koic][])
+* [#363](https://github.com/rubocop/rubocop-performance/pull/363): Support safe navigation operator for `Performance/ArraySemiInfiniteRangeSlice`, `Performance/DeletePrefix`, `Performance/DeleteSuffix`, `Performance/Detect`, `Performance/EndWith`, `Performance/InefficientHashSearch`, `Performance/MapCompact`, `Performance/RedundantSplitRegexpArgument`, `Performance/ReverseEach`, `Performance/ReverseFirst`, `Performance/SelectMap`, `Performance/Squeeze`, `Performance/StartWith`, `Performance/StringInclude`, and `Performance/StringReplacement` cops. ([@koic][])
+
 ## 1.18.0 (2023-05-21)
 
 ### Bug fixes
