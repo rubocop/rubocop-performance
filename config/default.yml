@@ -193,6 +193,12 @@ Performance/MapCompact:
   SafeAutoCorrect: false
   VersionAdded: '1.11'
 
+Performance/MapMethodChain:
+  Description: 'Checks if the `map` method is used in a chain.'
+  Enabled: pending
+  Safe: false
+  VersionAdded: '<<next>>'
+
 Performance/MethodObjectAsBlock:
   Description: 'Use block explicitly instead of block-passing a method object.'
   Reference: 'https://github.com/JuanitoFatas/fast-ruby#normal-way-to-apply-method-vs-method-code'
