@@ -197,7 +197,7 @@ Performance/MapMethodChain:
   Description: 'Checks if the `map` method is used in a chain.'
   Enabled: pending
   Safe: false
-  VersionAdded: '<<next>>'
+  VersionAdded: '1.19'
 
 Performance/MethodObjectAsBlock:
   Description: 'Use block explicitly instead of block-passing a method object.'

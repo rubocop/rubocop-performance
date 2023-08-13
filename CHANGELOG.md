@@ -11,6 +11,8 @@
 
 ## master (unreleased)
 
+## 1.19.0 (2023-08-13)
+
 ### New features
 
 * [#364](https://github.com/rubocop/rubocop-performance/pull/364): Add new `Performance/MapMethodChain` cop. ([@koic][])
