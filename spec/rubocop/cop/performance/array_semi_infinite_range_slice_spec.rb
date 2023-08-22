@@ -77,5 +77,23 @@ RSpec.describe RuboCop::Cop::Performance::ArraySemiInfiniteRangeSlice, :config d
         array[-2..]
       RUBY
     end
+
+    it 'does not registers an offense when using `[]` with endless range for string literal' do
+      expect_no_offenses(<<~RUBY)
+        'str'[3..]
+      RUBY
+    end
+
+    it 'does not registers an offense when using `[]` with endless range for interpolated string literal' do
+      expect_no_offenses(<<~'RUBY')
+        "string#{interpolation}"[3..]
+      RUBY
+    end
+
+    it 'does not registers an offense when using `[]` with endless range for backquote string literal' do
+      expect_no_offenses(<<~RUBY)
+        `str`[3..]
+      RUBY
+    end
   end
 end
