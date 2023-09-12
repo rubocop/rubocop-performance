@@ -47,6 +47,10 @@ module RuboCop
             corrector.replace(node, block_arg_name)
           end
         end
+
+        def self.autocorrect_incompatible_with
+          [Lint::UnusedMethodArgument]
+        end
       end
     end
   end

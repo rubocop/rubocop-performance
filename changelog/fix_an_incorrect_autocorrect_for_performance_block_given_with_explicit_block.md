@@ -1,0 +1,1 @@
+* [#367](https://github.com/rubocop/rubocop-performance/issues/367): Fix an incorrect autocorrect for `Performance/BlockGivenWithExplicitBlock` when using `Lint/UnusedMethodArgument`'s autocorrection together. ([@ymap][])
