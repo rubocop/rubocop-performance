@@ -1,0 +1,1 @@
+* [#370](https://github.com/rubocop/rubocop-performance/issues/370): Fix an incorrect autocorrect for `Performance/RedundantMatch` when expressions with lower precedence than `=~` are used as an argument. ([@ymap][])
