@@ -23,6 +23,8 @@ module RuboCop
         MSG = 'Use `=~` in places where the `MatchData` returned by `#match` will not be used.'
         RESTRICT_ON_SEND = %i[match].freeze
 
+        HIGHER_PRECEDENCE_OPERATOR_METHODS = %i[| ^ & + - * / % ** > >= < <= << >>].freeze
+
         # 'match' is a fairly generic name, so we don't flag it unless we see
         # a string or regexp literal on one side or the other
         def_node_matcher :match_call?, <<~PATTERN
@@ -47,7 +49,7 @@ module RuboCop
         private
 
         def autocorrect(corrector, node)
-          new_source = "#{node.receiver.source} =~ #{node.first_argument.source}"
+          new_source = "#{node.receiver.source} =~ #{replacement(node)}"
 
           corrector.replace(node, new_source)
         end
@@ -56,6 +58,33 @@ module RuboCop
           # Regexp#match can take a second argument, but this cop doesn't
           # register an offense in that case
           node.receiver.regexp_type? || node.first_argument.regexp_type?
+        end
+
+        def replacement(node)
+          arg = node.first_argument
+
+          if requires_parentheses?(arg)
+            "(#{arg.source})"
+          else
+            arg.source
+          end
+        end
+
+        def requires_parentheses?(arg)
+          return true if arg.if_type? && arg.ternary?
+          return true if arg.and_type? || arg.or_type? || arg.range_type?
+
+          call_like?(arg) && requires_parentheses_for_call_like?(arg)
+        end
+
+        def requires_parentheses_for_call_like?(arg)
+          return false if arg.parenthesized? || !arg.arguments?
+
+          !HIGHER_PRECEDENCE_OPERATOR_METHODS.include?(arg.method_name)
+        end
+
+        def call_like?(arg)
+          arg.call_type? || arg.yield_type? || arg.super_type?
         end
       end
     end

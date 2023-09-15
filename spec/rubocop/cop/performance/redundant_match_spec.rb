@@ -120,4 +120,50 @@ RSpec.describe RuboCop::Cop::Performance::RedundantMatch, :config do
       something if /regex/ =~ str
     RUBY
   end
+
+  shared_examples 'require parentheses' do |arg|
+    it "registers an offense and corrects when argument is `#{arg}`" do
+      expect_offense(<<~RUBY, arg: arg)
+        something if /regex/.match(%{arg})
+                     ^^^^^^^^^^^^^^^{arg}^ Use `=~` in places where the `MatchData` returned by `#match` will not be used.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        something if /regex/ =~ (#{arg})
+      RUBY
+    end
+  end
+
+  it_behaves_like 'require parentheses', 'a ? b : c'
+  it_behaves_like 'require parentheses', 'a && b'
+  it_behaves_like 'require parentheses', 'a || b'
+  it_behaves_like 'require parentheses', 'a..b'
+  it_behaves_like 'require parentheses', 'method a'
+  it_behaves_like 'require parentheses', 'yield a'
+  it_behaves_like 'require parentheses', 'super a'
+  it_behaves_like 'require parentheses', 'a == b'
+
+  shared_examples 'require no parentheses' do |arg|
+    it "registers an offense and corrects when argument is `#{arg}`" do
+      expect_offense(<<~RUBY, arg: arg)
+        something if /regex/.match(%{arg})
+                     ^^^^^^^^^^^^^^^{arg}^ Use `=~` in places where the `MatchData` returned by `#match` will not be used.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        something if /regex/ =~ #{arg}
+      RUBY
+    end
+  end
+
+  it_behaves_like 'require no parentheses', 'if a then b else c end'
+  it_behaves_like 'require no parentheses', 'method(a)'
+  it_behaves_like 'require no parentheses', 'method'
+  it_behaves_like 'require no parentheses', 'yield'
+  it_behaves_like 'require no parentheses', 'super'
+  it_behaves_like 'require no parentheses', 'a.==(b)'
+
+  %w[| ^ & + - * / % ** > >= < <= << >>].each do |op|
+    it_behaves_like 'require no parentheses', "a #{op} b"
+  end
 end
