@@ -112,4 +112,12 @@ RSpec.describe RuboCop::Cop::Performance::UnfreezeString, :config do
       String.new(capacity: 100)
     RUBY
   end
+
+  context 'when Ruby <= 2.2', :ruby22 do
+    it 'does not register an offense for an empty string with `.dup`' do
+      expect_no_offenses(<<~RUBY)
+        "".dup
+      RUBY
+    end
+  end
 end
