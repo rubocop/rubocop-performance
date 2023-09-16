@@ -26,6 +26,9 @@ module RuboCop
       #   +''
       class UnfreezeString < Base
         extend AutoCorrector
+        extend TargetRubyVersion
+
+        minimum_target_ruby_version 2.3
 
         MSG = 'Use unary plus to get an unfrozen string literal.'
         RESTRICT_ON_SEND = %i[dup new].freeze
