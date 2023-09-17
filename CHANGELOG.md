@@ -11,6 +11,13 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#367](https://github.com/rubocop/rubocop-performance/issues/367): Fix an incorrect autocorrect for `Performance/BlockGivenWithExplicitBlock` when using `Lint/UnusedMethodArgument`'s autocorrection together. ([@ymap][])
+* [#370](https://github.com/rubocop/rubocop-performance/issues/370): Fix an incorrect autocorrect for `Performance/RedundantMatch` when expressions with lower precedence than `=~` are used as an argument. ([@ymap][])
+* [#365](https://github.com/rubocop/rubocop-performance/issues/365): Fix false positives for `Performance/ArraySemiInfiniteRangeSlice` when using `[]` with string literals. ([@koic][])
+* [#373](https://github.com/rubocop/rubocop-performance/pull/373): Set target version for `Performance/UnfreezeString`. ([@tagliala][])
+
 ## 1.19.0 (2023-08-13)
 
 ### New features
@@ -471,3 +478,5 @@
 [@QQism]: https://github.com/QQism
 [@r7kamura]: https://github.com/r7kamura
 [@vlad-pisanov]: https://github.com/vlad-pisanov
+[@ymap]: https://github.com/ymap
+[@tagliala]: https://github.com/tagliala
