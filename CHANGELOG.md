@@ -11,6 +11,8 @@
 
 ## master (unreleased)
 
+## 1.19.1 (2023-09-17)
+
 ### Bug fixes
 
 * [#367](https://github.com/rubocop/rubocop-performance/issues/367): Fix an incorrect autocorrect for `Performance/BlockGivenWithExplicitBlock` when using `Lint/UnusedMethodArgument`'s autocorrection together. ([@ymap][])

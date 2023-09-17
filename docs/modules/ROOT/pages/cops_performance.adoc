@@ -1328,6 +1328,12 @@ is wanted.
 
 This cop is unsafe because `Range#include?` (or `Range#member?`) and `Range#cover?`
 are not equivalent behavior.
+Example of a case where `Range#cover?` may not provide the desired result:
+
+[source,ruby]
+----
+('a'..'z').cover?('yellow') # => true
+----
 
 === Examples
 
@@ -1339,11 +1345,6 @@ are not equivalent behavior.
 
 # good
 ('a'..'z').cover?('b') # => true
-
-# Example of a case where `Range#cover?` may not provide
-# the desired result:
-
-('a'..'z').cover?('yellow') # => true
 ----
 
 === References
@@ -2298,6 +2299,8 @@ end
 ----
 
 == Performance/UnfreezeString
+
+NOTE: Required Ruby version: 2.3
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
