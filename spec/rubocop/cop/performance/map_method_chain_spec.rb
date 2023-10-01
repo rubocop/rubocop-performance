@@ -44,6 +44,13 @@ RSpec.describe RuboCop::Cop::Performance::MapMethodChain, :config do
     RUBY
   end
 
+  it 'registers an offense when using `map` method chain without receiver' do
+    expect_offense(<<~RUBY)
+      map(&:foo).map(&:bar)
+      ^^^^^^^^^^^^^^^^^^^^^ Use `map { |x| x.foo.bar }` instead of `map` method chain.
+    RUBY
+  end
+
   it 'does not register an offense when using `do_something` method chain and receiver is a method call' do
     expect_no_offenses(<<~RUBY)
       array.do_something(&:foo).do_something(&:bar)
