@@ -9,8 +9,7 @@ module RuboCop
       #
       # @safety
       #   This cop is unsafe because it has known compatibility issues with `ActiveRecord` and other
-      #   frameworks. ActiveRecord's `count` ignores the block that is passed to it.
-      #   `ActiveRecord` will ignore the block that is passed to `count`.
+      #   frameworks. Before Rails 5.1, `ActiveRecord` will ignore the block that is passed to `count`.
       #   Other methods, such as `select`, will convert the association to an
       #   array and then run the block on the array. A simple work around to
       #   make `count` work with a block is to call `to_a.count {...}`.
