@@ -55,7 +55,7 @@ module RuboCop
 
         def build_good_method(node)
           if node.arguments?
-            "last(#{node.arguments.first.source}).reverse"
+            "last(#{node.first_argument.source}).reverse"
           else
             'last'
           end
@@ -63,7 +63,7 @@ module RuboCop
 
         def build_bad_method(node)
           if node.arguments?
-            "reverse.first(#{node.arguments.first.source})"
+            "reverse.first(#{node.first_argument.source})"
           else
             'reverse.first'
           end

@@ -63,7 +63,7 @@ module RuboCop
           return unless TARGET_METHODS.include?(node.method_name)
           return unless one_block_argument?(node.arguments)
 
-          block_argument = node.arguments.first
+          block_argument = node.first_argument
           block_body = node.body
           return unless use_equality_comparison_block?(block_body)
           return if same_block_argument_and_is_a_argument?(block_body, block_argument)
