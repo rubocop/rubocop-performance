@@ -89,7 +89,7 @@ module RuboCop
         end
 
         def correct_argument(node)
-          node.arguments.first.source
+          node.first_argument.source
         end
 
         def correct_hash_expression(node)
