@@ -32,7 +32,7 @@ A <= B
 
 === References
 
-* https://github.com/JuanitoFatas/fast-ruby#ancestorsinclude-vs--code
+* https://github.com/fastruby/fast-ruby#ancestorsinclude-vs--code
 
 == Performance/ArraySemiInfiniteRangeSlice
 
@@ -319,7 +319,7 @@ str.casecmp('ABC').zero?
 
 === References
 
-* https://github.com/JuanitoFatas/fast-ruby#stringcasecmp-vs-stringdowncase---code
+* https://github.com/fastruby/fast-ruby#stringcasecmp-vs--stringcasecmp-vs-stringdowncase---code
 
 == Performance/ChainArrayAllocation
 
@@ -783,7 +783,7 @@ if the receiver is a `Hash`, it may report a false positive.
 
 === References
 
-* https://github.com/JuanitoFatas/fast-ruby#enumerabledetect-vs-enumerableselectfirst-code
+* https://github.com/fastruby/fast-ruby#enumerabledetect-vs-enumerableselectfirst-code
 
 == Performance/DoubleStartEndWith
 
@@ -932,7 +932,7 @@ of the variables which rubocop doesn't have.
 
 === References
 
-* https://github.com/JuanitoFatas/fast-ruby#stringmatch-vs-stringstart_withstringend_with-code-start-code-end
+* https://github.com/fastruby/fast-ruby#stringmatch-vs-stringmatch-vs-stringstart_withstringend_with-code-start-code-end
 
 == Performance/FixedSize
 
@@ -1033,7 +1033,7 @@ change them to use `flat_map { ... }` instead.
 
 === References
 
-* https://github.com/JuanitoFatas/fast-ruby#enumerablemaparrayflatten-vs-enumerableflat_map-code
+* https://github.com/fastruby/fast-ruby#enumerablemaparrayflatten-vs-enumerableflat_map-code
 
 == Performance/InefficientHashSearch
 
@@ -1090,7 +1090,7 @@ h = { a: 1, b: 2 }; h.value?(nil)
 
 === References
 
-* https://github.com/JuanitoFatas/fast-ruby#hashkey-instead-of-hashkeysinclude-code
+* https://github.com/fastruby/fast-ruby#hashkey-instead-of-hashkeysinclude-code
 
 == Performance/IoReadlines
 
@@ -1259,7 +1259,7 @@ array.map { |x| do_something(x) }
 
 === References
 
-* https://github.com/JuanitoFatas/fast-ruby#normal-way-to-apply-method-vs-method-code
+* https://github.com/fastruby/fast-ruby#normal-way-to-apply-method-vs-method-code
 
 == Performance/OpenStruct
 
@@ -1349,7 +1349,7 @@ Example of a case where `Range#cover?` may not provide the desired result:
 
 === References
 
-* https://github.com/JuanitoFatas/fast-ruby#cover-vs-include-code
+* https://github.com/fastruby/fast-ruby#cover-vs-include-code
 
 == Performance/RedundantBlockCall
 
@@ -1389,7 +1389,7 @@ end
 
 === References
 
-* https://github.com/JuanitoFatas/fast-ruby#proccall-and-block-arguments-vs-yieldcode
+* https://github.com/fastruby/fast-ruby#proccall-and-block-arguments-vs-yieldcode
 
 == Performance/RedundantEqualityComparisonBlock
 
@@ -1562,7 +1562,7 @@ hash[:b] = 2
 
 === References
 
-* https://github.com/JuanitoFatas/fast-ruby#hashmerge-vs-hash-code
+* https://github.com/fastruby/fast-ruby#hashmerge-vs-hash-code
 
 == Performance/RedundantSortBlock
 
@@ -1758,7 +1758,7 @@ end
 
 === References
 
-* https://github.com/JuanitoFatas/fast-ruby#regexp-vs-stringmatch-vs-string-vs-stringmatch-code-
+* https://github.com/fastruby/fast-ruby#regexp-vs-regexpmatch-vs-regexpmatch-vs-stringmatch-vs-string-vs-stringmatch-code-
 
 == Performance/ReverseEach
 
@@ -1795,7 +1795,7 @@ items.reverse_each
 
 === References
 
-* https://github.com/JuanitoFatas/fast-ruby#enumerablereverseeach-vs-enumerablereverse_each-code
+* https://github.com/fastruby/fast-ruby#enumerablereverseeach-vs-enumerablereverse_each-code
 
 == Performance/ReverseFirst
 
@@ -1906,7 +1906,7 @@ Hash(key: :value).size
 
 === References
 
-* https://github.com/JuanitoFatas/fast-ruby#arraylength-vs-arraysize-vs-arraycount-code
+* https://github.com/fastruby/fast-ruby#arraylength-vs-arraysize-vs-arraycount-code
 
 == Performance/SortReverse
 
@@ -1966,7 +1966,7 @@ str.squeeze!('a')
 
 === References
 
-* https://github.com/JuanitoFatas/fast-ruby#remove-extra-spaces-or-other-contiguous-characters-code
+* https://github.com/fastruby/fast-ruby#remove-extra-spaces-or-other-contiguous-characters-code
 
 == Performance/StartWith
 
@@ -2046,7 +2046,7 @@ of the variables which rubocop doesn't have.
 
 === References
 
-* https://github.com/JuanitoFatas/fast-ruby#stringmatch-vs-stringstart_withstringend_with-code-start-code-end
+* https://github.com/fastruby/fast-ruby#stringmatch-vs-stringmatch-vs-stringstart_withstringend_with-code-start-code-end
 
 == Performance/StringIdentifierArgument
 
@@ -2149,7 +2149,7 @@ Identifies places where `gsub` can be replaced by `tr` or `delete`.
 
 === References
 
-* https://github.com/JuanitoFatas/fast-ruby#stringgsub-vs-stringtr-code
+* https://github.com/fastruby/fast-ruby#stringgsub-vs-stringtr-code
 
 == Performance/Sum
 
