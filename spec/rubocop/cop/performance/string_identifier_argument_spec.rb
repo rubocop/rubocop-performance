@@ -19,9 +19,14 @@ RSpec.describe RuboCop::Cop::Performance::StringIdentifierArgument, :config do
       RUBY
     end
 
-    it 'does not register an offense when using interpolated string argument' do
-      expect_no_offenses(<<~'RUBY')
-        send("do_something_#{var}")
+    it 'registers an offense when using interpolated string argument' do
+      expect_offense(<<~RUBY, method: method)
+        #{method}("do_something_\#{var}")
+        _{method} ^^^^^^^^^^^^^^^^^^^^^ Use `:"do_something_\#{var}"` instead of `"do_something_\#{var}"`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        #{method}(:"do_something_\#{var}")
       RUBY
     end
   end
