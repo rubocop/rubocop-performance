@@ -16,11 +16,13 @@ module RuboCop
       #   send('do_something')
       #   attr_accessor 'do_something'
       #   instance_variable_get('@ivar')
+      #   const_get("string_#{interpolation}")
       #
       #   # good
       #   send(:do_something)
       #   attr_accessor :do_something
       #   instance_variable_get(:@ivar)
+      #   const_get(:"string_#{interpolation}")
       #
       class StringIdentifierArgument < Base
         extend AutoCorrector
@@ -45,20 +47,32 @@ module RuboCop
           respond_to? send singleton_method __send__
         ] + COMMAND_METHODS).freeze
 
+        # rubocop:disable Metrics/CyclomaticComplexity
         def on_send(node)
           return if COMMAND_METHODS.include?(node.method_name) && node.receiver
           return unless (first_argument = node.first_argument)
-          return unless first_argument.str_type?
+          return unless first_argument.str_type? || first_argument.dstr_type?
 
           first_argument_value = first_argument.value
           return if first_argument_value.include?(' ') || first_argument_value.include?('::')
 
-          replacement = first_argument_value.to_sym.inspect
+          replacement = argument_replacement(first_argument, first_argument_value)
 
           message = format(MSG, symbol_arg: replacement, string_arg: first_argument.source)
 
           add_offense(first_argument, message: message) do |corrector|
             corrector.replace(first_argument, replacement)
+          end
+        end
+        # rubocop:enable Metrics/CyclomaticComplexity
+
+        private
+
+        def argument_replacement(node, value)
+          if node.str_type?
+            value.to_sym.inspect
+          else
+            ":\"#{value.to_sym}\""
           end
         end
       end
