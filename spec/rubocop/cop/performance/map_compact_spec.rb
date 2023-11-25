@@ -13,10 +13,21 @@ RSpec.describe RuboCop::Cop::Performance::MapCompact, :config do
       RUBY
     end
 
-    it 'registers an offense when using `collection.map(&:do_something)&.compact`' do
+    it 'registers an offense when using `collection&.map(&:do_something).compact`' do
       expect_offense(<<~RUBY)
         collection&.map(&:do_something).compact
                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `filter_map` instead.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        collection&.filter_map(&:do_something)
+      RUBY
+    end
+
+    it 'registers an offense when using `collection&.map(&:do_something)&.compact`' do
+      expect_offense(<<~RUBY)
+        collection&.map(&:do_something)&.compact
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `filter_map` instead.
       RUBY
 
       expect_correction(<<~RUBY)
@@ -39,6 +50,17 @@ RSpec.describe RuboCop::Cop::Performance::MapCompact, :config do
       expect_offense(<<~RUBY)
         collection&.map { |item| item.do_something }.compact
                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `filter_map` instead.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        collection&.filter_map { |item| item.do_something }
+      RUBY
+    end
+
+    it 'registers an offense when using `collection&.map { |item| item.do_something }&.compact`' do
+      expect_offense(<<~RUBY)
+        collection&.map { |item| item.do_something }&.compact
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `filter_map` instead.
       RUBY
 
       expect_correction(<<~RUBY)
