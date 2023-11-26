@@ -39,11 +39,11 @@ module RuboCop
 
         def_node_matcher :map_compact, <<~PATTERN
           {
-            (send
+            (call
               $(call _ {:map :collect}
                 (block_pass
                   (sym _))) _)
-            (send
+            (call
               (block
                 $(call _ {:map :collect})
                   (args ...) _) _)
