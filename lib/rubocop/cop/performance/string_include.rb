@@ -16,6 +16,7 @@ module RuboCop
       #   /ab/ =~ str
       #   str.match(/ab/)
       #   /ab/.match(str)
+      #   /ab/ === str
       #
       #   # good
       #   str.include?('ab')
@@ -23,11 +24,11 @@ module RuboCop
         extend AutoCorrector
 
         MSG = 'Use `%<negation>sString#include?` instead of a regex match with literal-only pattern.'
-        RESTRICT_ON_SEND = %i[match =~ !~ match?].freeze
+        RESTRICT_ON_SEND = %i[match =~ !~ match? ===].freeze
 
         def_node_matcher :redundant_regex?, <<~PATTERN
           {(call $!nil? {:match :=~ :!~ :match?} (regexp (str $#literal?) (regopt)))
-           (send (regexp (str $#literal?) (regopt)) {:match :match?} $_)
+           (send (regexp (str $#literal?) (regopt)) {:match :match? :===} $_)
            (match-with-lvasgn (regexp (str $#literal?) (regopt)) $_)}
         PATTERN
 
