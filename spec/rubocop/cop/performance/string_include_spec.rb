@@ -147,6 +147,29 @@ RSpec.describe RuboCop::Cop::Performance::StringInclude, :config do
   include_examples('different match methods', ' =~')
   include_examples('different match methods', '.match')
 
+  it 'registers an offense and corrects /abc/ === str' do
+    expect_offense(<<~RUBY)
+      /abc/ === 'str'
+      ^^^^^^^^^^^^^^^ Use `String#include?` instead of a regex match with literal-only pattern.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      'str'.include?('abc')
+    RUBY
+  end
+
+  it 'does not register an offense for str === /abc/' do
+    expect_no_offenses(<<~RUBY)
+      str === /abc/
+    RUBY
+  end
+
+  it 'does not register an offense when receiver of `===` is not a simple regexp' do
+    expect_no_offenses(<<~RUBY)
+      /abc[de]/ === str
+    RUBY
+  end
+
   it 'allows match without a receiver' do
     expect_no_offenses('expect(subject.spin).to match(/\A\n/)')
   end
