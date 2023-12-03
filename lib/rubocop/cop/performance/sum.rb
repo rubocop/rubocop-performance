@@ -80,21 +80,21 @@ module RuboCop
         RESTRICT_ON_SEND = %i[inject reduce sum].freeze
 
         def_node_matcher :sum_candidate?, <<~PATTERN
-          (send _ ${:inject :reduce} $_init ? ${(sym :+) (block_pass (sym :+))})
+          (call _ ${:inject :reduce} $_init ? ${(sym :+) (block_pass (sym :+))})
         PATTERN
 
         def_node_matcher :sum_map_candidate?, <<~PATTERN
-          (send
+          (call
             {
-              (block $(send _ {:map :collect}) ...)
-              $(send _ {:map :collect} (block_pass _))
+              (block $(call _ {:map :collect}) ...)
+              $(call _ {:map :collect} (block_pass _))
             }
           :sum $_init ?)
         PATTERN
 
         def_node_matcher :sum_with_block_candidate?, <<~PATTERN
           (block
-            $(send _ {:inject :reduce} $_init ?)
+            $(call _ {:inject :reduce} $_init ?)
             (args (arg $_acc) (arg $_elem))
             $send)
         PATTERN
@@ -110,6 +110,7 @@ module RuboCop
           handle_sum_candidate(node)
           handle_sum_map_candidate(node)
         end
+        alias on_csend on_send
 
         def on_block(node)
           sum_with_block_candidate?(node) do |send, init, var_acc, var_elem, body|
@@ -143,7 +144,7 @@ module RuboCop
           sum_map_candidate?(node) do |map, init|
             next if node.block_literal? || node.block_argument?
 
-            message = build_sum_map_message(map.method_name, init)
+            message = build_sum_map_message(map, init)
 
             add_offense(sum_map_range(map, node), message: message) do |corrector|
               autocorrect_sum_map(corrector, node, map, init)
@@ -178,7 +179,7 @@ module RuboCop
 
           corrector.remove(sum_range)
 
-          dot = '.' if map.receiver
+          dot = map.loc.dot&.source || ''
           corrector.replace(map_range, "#{dot}#{replacement}")
         end
 
@@ -205,10 +206,11 @@ module RuboCop
           format(msg, good_method: good_method, bad_method: bad_method)
         end
 
-        def build_sum_map_message(method, init)
+        def build_sum_map_message(send_node, init)
           sum_method = build_good_method(init)
           good_method = "#{sum_method} { ... }"
-          bad_method = "#{method} { ... }.#{sum_method}"
+          dot = send_node.loc.dot&.source || '.'
+          bad_method = "#{send_node.method_name} { ... }#{dot}#{sum_method}"
           format(MSG, good_method: good_method, bad_method: bad_method)
         end
 

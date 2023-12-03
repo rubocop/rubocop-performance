@@ -13,6 +13,17 @@ RSpec.describe RuboCop::Cop::Performance::Sum, :config do
       RUBY
     end
 
+    it "registers an offense and corrects when using `array&.#{method}(10, :+)`" do
+      expect_offense(<<~RUBY, method: method)
+        array&.#{method}(10, :+)
+               ^{method}^^^^^^^^ Use `sum(10)` instead of `#{method}(10, :+)`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        array&.sum(10)
+      RUBY
+    end
+
     it "registers an offense and corrects when using `array.#{method}(10) { |acc, elem| acc + elem }`" do
       expect_offense(<<~RUBY, method: method)
         array.#{method}(10) { |acc, elem| acc + elem }
@@ -21,6 +32,17 @@ RSpec.describe RuboCop::Cop::Performance::Sum, :config do
 
       expect_correction(<<~RUBY)
         array.sum(10)
+      RUBY
+    end
+
+    it "registers an offense and corrects when using `array&.#{method}(10) { |acc, elem| acc + elem }`" do
+      expect_offense(<<~RUBY, method: method)
+        array&.#{method}(10) { |acc, elem| acc + elem }
+               ^{method}^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `sum(10)` instead of `#{method}(10) { |acc, elem| acc + elem }`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        array&.sum(10)
       RUBY
     end
 
@@ -342,6 +364,17 @@ RSpec.describe RuboCop::Cop::Performance::Sum, :config do
       RUBY
     end
 
+    it "registers an offense and corrects when using `array&.#{method} { |elem| elem ** 2 }&.sum`" do
+      expect_offense(<<~RUBY, method: method)
+        array&.%{method} { |elem| elem ** 2 }&.sum
+               ^{method}^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `sum { ... }` instead of `%{method} { ... }&.sum`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        array&.sum { |elem| elem ** 2 }
+      RUBY
+    end
+
     it "registers an offense and corrects when using `array.#{method}(&:count).sum`" do
       expect_offense(<<~RUBY, method: method)
         array.%{method}(&:count).sum
@@ -350,6 +383,17 @@ RSpec.describe RuboCop::Cop::Performance::Sum, :config do
 
       expect_correction(<<~RUBY)
         array.sum(&:count)
+      RUBY
+    end
+
+    it "registers an offense and corrects when using `array&.#{method}(&:count)&.sum`" do
+      expect_offense(<<~RUBY, method: method)
+        array&.%{method}(&:count)&.sum
+               ^{method}^^^^^^^^^^^^^^ Use `sum { ... }` instead of `%{method} { ... }&.sum`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        array&.sum(&:count)
       RUBY
     end
 
