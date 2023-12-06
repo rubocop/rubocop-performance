@@ -15,8 +15,8 @@ module RuboCop
       #
       # @example
       #   # bad
-      #   ''.dup
-      #   "something".dup
+      #   ''.dup          # when Ruby 3.2 or lower
+      #   "something".dup # when Ruby 3.2 or lower
       #   String.new
       #   String.new('')
       #   String.new('something')
@@ -45,7 +45,7 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          return unless dup_string?(node) || string_new?(node)
+          return unless (dup_string?(node) && target_ruby_version <= 3.2) || string_new?(node)
 
           add_offense(node) do |corrector|
             string_value = "+#{string_value(node)}"
