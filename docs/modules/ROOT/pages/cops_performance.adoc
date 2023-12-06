@@ -823,10 +823,11 @@ str.end_with?(var1, var2)
 
 [source,ruby]
 ----
-# good
+# bad
 str.starts_with?("a", "b") || str.starts_with?("c")
 str.ends_with?(var1) || str.ends_with?(var2)
 
+# good
 str.starts_with?("a", "b", "c")
 str.ends_with?(var1, var2)
 ----
