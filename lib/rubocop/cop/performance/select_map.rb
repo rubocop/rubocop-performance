@@ -24,10 +24,6 @@ module RuboCop
         MSG = 'Use `filter_map` instead of `%<method_name>s.map`.'
         RESTRICT_ON_SEND = %i[select filter].freeze
 
-        def_node_matcher :bad_method?, <<~PATTERN
-          (send nil? :bad_method ...)
-        PATTERN
-
         def on_send(node)
           return if (first_argument = node.first_argument) && !first_argument.block_pass_type?
           return unless (send_node = map_method_candidate(node))
