@@ -1,15 +1,25 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Performance::UnfreezeString, :config do
-  it 'registers an offense and corrects for an empty string with `.dup`' do
-    expect_offense(<<~RUBY)
-      "".dup
-      ^^^^^^ Use unary plus to get an unfrozen string literal.
-    RUBY
+  context 'when Ruby <= 3.2', :ruby32 do
+    it 'registers an offense and corrects for an empty string with `.dup`' do
+      expect_offense(<<~RUBY)
+        "".dup
+        ^^^^^^ Use unary plus to get an unfrozen string literal.
+      RUBY
 
-    expect_correction(<<~RUBY)
-      +""
-    RUBY
+      expect_correction(<<~RUBY)
+        +""
+      RUBY
+    end
+  end
+
+  context 'when Ruby >= 3.3', :ruby33 do
+    it 'does not register an offense and corrects for an empty string with `.dup`' do
+      expect_no_offenses(<<~RUBY)
+        "".dup
+      RUBY
+    end
   end
 
   it 'registers an offense and corrects for a string with `.dup`' do
