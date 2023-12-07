@@ -16,6 +16,19 @@ RSpec.describe RuboCop::Cop::Performance::TimesMap, :config do
         end
       end
 
+      context 'with a block with safe navigation call' do
+        it 'registers an offense and corrects' do
+          expect_offense(<<~RUBY, method: method)
+            4&.times&.#{method} { |i| i.to_s }
+            ^^^^^^^^^^^{method}^^^^^^^^^^^^^^^ Use `Array.new(4)` with a block instead of `.times.#{method}`.
+          RUBY
+
+          expect_correction(<<~RUBY)
+            Array.new(4) { |i| i.to_s }
+          RUBY
+        end
+      end
+
       context 'for non-literal receiver' do
         it 'registers an offense' do
           expect_offense(<<~RUBY, method: method)
@@ -34,6 +47,19 @@ RSpec.describe RuboCop::Cop::Performance::TimesMap, :config do
           expect_offense(<<~RUBY, method: method)
             4.times.#{method}(&method(:foo))
             ^^^^^^^^^{method}^^^^^^^^^^^^^^^ Use `Array.new(4)` with a block instead of `.times.#{method}`.
+          RUBY
+
+          expect_correction(<<~RUBY)
+            Array.new(4, &method(:foo))
+          RUBY
+        end
+      end
+
+      context 'with an explicitly passed block with safe navigation call' do
+        it 'registers an offense and corrects' do
+          expect_offense(<<~RUBY, method: method)
+            4&.times&.#{method}(&method(:foo))
+            ^^^^^^^^^^^{method}^^^^^^^^^^^^^^^ Use `Array.new(4)` with a block instead of `.times.#{method}`.
           RUBY
 
           expect_correction(<<~RUBY)

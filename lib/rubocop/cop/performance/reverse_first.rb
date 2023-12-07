@@ -24,13 +24,13 @@ module RuboCop
         RESTRICT_ON_SEND = %i[first].freeze
 
         def_node_matcher :reverse_first_candidate?, <<~PATTERN
-          (send $(call _ :reverse) :first (int _)?)
+          (call $(call _ :reverse) :first (int _)?)
         PATTERN
 
         def on_send(node)
           reverse_first_candidate?(node) do |receiver|
             range = correction_range(receiver, node)
-            message = build_message(node)
+            message = build_message(node, range)
 
             add_offense(range, message: message) do |corrector|
               replacement = build_good_method(node)
@@ -47,25 +47,17 @@ module RuboCop
           range_between(receiver.loc.selector.begin_pos, node.source_range.end_pos)
         end
 
-        def build_message(node)
+        def build_message(node, range)
           good_method = build_good_method(node)
-          bad_method = build_bad_method(node)
+          bad_method = range.source
           format(MSG, good_method: good_method, bad_method: bad_method)
         end
 
         def build_good_method(node)
           if node.arguments?
-            "last(#{node.first_argument.source}).reverse"
+            "last(#{node.first_argument.source})#{node.loc.dot.source}reverse"
           else
             'last'
-          end
-        end
-
-        def build_bad_method(node)
-          if node.arguments?
-            "reverse.first(#{node.first_argument.source})"
-          else
-            'reverse.first'
           end
         end
       end

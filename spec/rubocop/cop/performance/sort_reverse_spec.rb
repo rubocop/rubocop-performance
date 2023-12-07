@@ -17,6 +17,17 @@ RSpec.describe RuboCop::Cop::Performance::SortReverse, :config do
     RUBY
   end
 
+  it 'registers an offense and corrects when sorting in reverse order with safe navigation' do
+    expect_offense(<<~RUBY)
+      array&.sort { |a, b| b <=> a }
+             ^^^^^^^^^^^^^^^^^^^^^^^ Use `sort&.reverse` instead.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      array&.sort&.reverse
+    RUBY
+  end
+
   context 'when using numbered parameter', :ruby27 do
     it 'registers an offense and corrects when sorting in reverse order' do
       expect_offense(<<~RUBY)

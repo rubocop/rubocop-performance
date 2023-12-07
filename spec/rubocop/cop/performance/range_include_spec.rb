@@ -7,6 +7,11 @@ RSpec.describe RuboCop::Cop::Performance::RangeInclude, :config do
       expect(new_source).to eq '(a..b).cover? 1'
     end
 
+    it "autocorrects (a..b)&.#{method} without parens" do
+      new_source = autocorrect_source("(a..b)&.#{method} 1")
+      expect(new_source).to eq '(a..b)&.cover? 1'
+    end
+
     it "autocorrects (a...b).#{method} without parens" do
       new_source = autocorrect_source("(a...b).#{method} 1")
       expect(new_source).to eq '(a...b).cover? 1'

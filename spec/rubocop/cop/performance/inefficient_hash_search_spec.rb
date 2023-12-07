@@ -12,6 +12,13 @@ RSpec.describe RuboCop::Cop::Performance::InefficientHashSearch, :config do
       RUBY
     end
 
+    it 'registers an offense when a hash literal receives `&.keys&.include?`' do
+      expect_offense(<<~RUBY)
+        { a: 1 }&.keys&.include? 1
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `##{expected_key_method}` instead of `#keys.include?`.
+      RUBY
+    end
+
     it 'registers an offense when an existing hash receives `keys.include?`' do
       expect_offense(<<~RUBY)
         h = { a: 1 }; h.keys.include? 1

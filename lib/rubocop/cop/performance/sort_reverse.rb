@@ -17,7 +17,7 @@ module RuboCop
         include SortBlock
         extend AutoCorrector
 
-        MSG = 'Use `sort.reverse` instead.'
+        MSG = 'Use `%<prefer>s` instead.'
 
         def on_block(node)
           sort_with_block?(node) do |send, var_a, var_b, body|
@@ -41,11 +41,12 @@ module RuboCop
 
         def register_offense(send, node)
           range = sort_range(send, node)
+          prefer = "sort#{send.loc.dot.source}reverse"
 
-          add_offense(range) do |corrector|
-            replacement = 'sort.reverse'
+          message = format(MSG, prefer: prefer)
 
-            corrector.replace(range, replacement)
+          add_offense(range, message: message) do |corrector|
+            corrector.replace(range, prefer)
           end
         end
       end

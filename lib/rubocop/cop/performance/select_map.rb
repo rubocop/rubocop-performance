@@ -41,9 +41,9 @@ module RuboCop
         def map_method_candidate(node)
           return unless (parent = node.parent)
 
-          if parent.block_type? && parent.parent&.send_type?
+          if parent.block_type? && parent.parent&.call_type?
             parent.parent
-          elsif parent.send_type?
+          elsif parent.call_type?
             parent
           end
         end

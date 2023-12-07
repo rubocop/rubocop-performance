@@ -17,10 +17,24 @@ RSpec.describe RuboCop::Cop::Performance::Size, :config do
       RUBY
     end
 
+    it 'registers an offense when safe navigation calling count' do
+      expect_offense(<<~RUBY)
+        [1, 2, 3]&.count
+                   ^^^^^ Use `size` instead of `count`.
+      RUBY
+    end
+
     it 'registers an offense when calling count on to_a' do
       expect_offense(<<~RUBY)
         (1..3).to_a.count
                     ^^^^^ Use `size` instead of `count`.
+      RUBY
+    end
+
+    it 'registers an offense when safe navigation calling count on to_a' do
+      expect_offense(<<~RUBY)
+        (1..3)&.to_a&.count
+                      ^^^^^ Use `size` instead of `count`.
       RUBY
     end
 
@@ -95,6 +109,13 @@ RSpec.describe RuboCop::Cop::Performance::Size, :config do
       expect_offense(<<~RUBY)
         [[:foo, :bar], [1, 2]].to_h.count
                                     ^^^^^ Use `size` instead of `count`.
+      RUBY
+    end
+
+    it 'registers an offense when safe navigation calling count on to_h' do
+      expect_offense(<<~RUBY)
+        [[:foo, :bar], [1, 2]]&.to_h&.count
+                                      ^^^^^ Use `size` instead of `count`.
       RUBY
     end
 

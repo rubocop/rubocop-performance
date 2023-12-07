@@ -9,6 +9,13 @@ RSpec.describe RuboCop::Cop::Performance::Count, :config do
       RUBY
     end
 
+    it "registers an offense for using array&.#{selector}...size" do
+      expect_offense(<<~RUBY, selector: selector)
+        [1, 2, 3]&.#{selector} { |e| e.even? }&.size
+                   ^{selector}^^^^^^^^^^^^^^^^^^^^^^ Use `count` instead of `#{selector}...size`.
+      RUBY
+    end
+
     it "registers an offense for using hash.#{selector}...size" do
       expect_offense(<<~RUBY, selector: selector)
         {a: 1, b: 2, c: 3}.#{selector} { |e| e == :a }.size
@@ -69,6 +76,13 @@ RSpec.describe RuboCop::Cop::Performance::Count, :config do
       expect_offense(<<~RUBY, selector: selector)
         foo.#{selector}(&:something).count
             ^{selector}^^^^^^^^^^^^^^^^^^^ Use `count` instead of `#{selector}...count`.
+      RUBY
+    end
+
+    it "registers an offense for #{selector}(&:something)&.count" do
+      expect_offense(<<~RUBY, selector: selector)
+        foo&.#{selector}(&:something)&.count
+             ^{selector}^^^^^^^^^^^^^^^^^^^^ Use `count` instead of `#{selector}...count`.
       RUBY
     end
 

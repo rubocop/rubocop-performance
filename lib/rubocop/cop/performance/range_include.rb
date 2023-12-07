@@ -38,7 +38,7 @@ module RuboCop
         # (We don't even catch it if the Range is in double parens)
 
         def_node_matcher :range_include, <<~PATTERN
-          (send {irange erange (begin {irange erange})} ${:include? :member?} ...)
+          (call {irange erange (begin {irange erange})} ${:include? :member?} ...)
         PATTERN
 
         def on_send(node)
@@ -50,6 +50,7 @@ module RuboCop
             end
           end
         end
+        alias on_csend on_send
       end
     end
   end
