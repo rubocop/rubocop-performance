@@ -9,6 +9,13 @@ RSpec.describe RuboCop::Cop::Performance::SelectMap, :config do
       RUBY
     end
 
+    it 'registers an offense when using `select(&:...)&.map(&:...)`' do
+      expect_offense(<<~RUBY)
+        ary&.select(&:present?)&.map(&:to_i)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `filter_map` instead of `select.map`.
+      RUBY
+    end
+
     it 'registers an offense when using `filter(&:...).map(&:...)`' do
       expect_offense(<<~RUBY)
         ary.filter(&:present?).map(&:to_i)
@@ -34,6 +41,13 @@ RSpec.describe RuboCop::Cop::Performance::SelectMap, :config do
       expect_offense(<<~RUBY)
         ary.select { |o| o.present? }.map { |o| o.to_i }
             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `filter_map` instead of `select.map`.
+      RUBY
+    end
+
+    it 'registers an offense when using `select { ... }&.map { ... }`' do
+      expect_offense(<<~RUBY)
+        ary&.select { |o| o.present? }&.map { |o| o.to_i }
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `filter_map` instead of `select.map`.
       RUBY
     end
 

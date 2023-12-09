@@ -54,8 +54,8 @@ module RuboCop
 
         def_node_matcher :count_candidate?, <<~PATTERN
           {
-            (send (block $(send _ ${:select :filter :find_all :reject}) ...) ${:count :length :size})
-            (send $(send _ ${:select :filter :find_all :reject} (:block_pass _)) ${:count :length :size})
+            (call (block $(call _ ${:select :filter :find_all :reject}) ...) ${:count :length :size})
+            (call $(call _ ${:select :filter :find_all :reject} (:block_pass _)) ${:count :length :size})
           }
         PATTERN
 
@@ -72,6 +72,7 @@ module RuboCop
             end
           end
         end
+        alias on_csend on_send
 
         private
 
@@ -100,7 +101,7 @@ module RuboCop
         end
 
         def negate_reject(corrector, node)
-          if node.receiver.send_type?
+          if node.receiver.call_type?
             negate_block_pass_reject(corrector, node)
           else
             negate_block_reject(corrector, node)

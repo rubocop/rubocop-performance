@@ -43,7 +43,7 @@ module RuboCop
         def_node_matcher :array?, <<~PATTERN
           {
             [!nil? array_type?]
-            (send _ :to_a)
+            (call _ :to_a)
             (send (const nil? :Array) :[] _)
             (send nil? :Array _)
           }
@@ -52,14 +52,14 @@ module RuboCop
         def_node_matcher :hash?, <<~PATTERN
           {
             [!nil? hash_type?]
-            (send _ :to_h)
+            (call _ :to_h)
             (send (const nil? :Hash) :[] _)
             (send nil? :Hash _)
           }
         PATTERN
 
         def_node_matcher :count?, <<~PATTERN
-          (send {#array? #hash?} :count)
+          (call {#array? #hash?} :count)
         PATTERN
 
         def on_send(node)
@@ -69,6 +69,7 @@ module RuboCop
             corrector.replace(node.loc.selector, 'size')
           end
         end
+        alias on_csend on_send
       end
     end
   end

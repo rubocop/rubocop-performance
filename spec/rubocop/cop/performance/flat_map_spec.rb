@@ -13,6 +13,17 @@ RSpec.describe RuboCop::Cop::Performance::FlatMap, :config do
       RUBY
     end
 
+    it "registers an offense and corrects when safe navigation calling #{method}...#{flatten}(1)" do
+      expect_offense(<<~RUBY, method: method, flatten: flatten)
+        [1, 2, 3, 4]&.#{method} { |e| [e, e] }&.#{flatten}(1)
+                      ^{method}^^^^^^^^^^^^^^^^^^{flatten}^^^ Use `flat_map` instead of `#{method}...#{flatten}`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        [1, 2, 3, 4]&.flat_map { |e| [e, e] }
+      RUBY
+    end
+
     it "registers an offense and corrects when calling #{method}...#{flatten}(1) on separate lines" do
       expect_offense(<<~RUBY, method: method, flatten: flatten)
         [1, 2, 3, 4]
@@ -37,6 +48,17 @@ RSpec.describe RuboCop::Cop::Performance::FlatMap, :config do
 
       expect_correction(<<~RUBY)
         [1, 2, 3, 4].flat_map(&:foo)
+      RUBY
+    end
+
+    it "registers an offense and corrects when safe navigation calling #{method}(&:foo).#{flatten}(1)" do
+      expect_offense(<<~RUBY, method: method, flatten: flatten)
+        [1, 2, 3, 4]&.#{method}(&:foo).#{flatten}(1)
+                      ^{method}^^^^^^^^^{flatten}^^^ Use `flat_map` instead of `#{method}...#{flatten}`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        [1, 2, 3, 4]&.flat_map(&:foo)
       RUBY
     end
 

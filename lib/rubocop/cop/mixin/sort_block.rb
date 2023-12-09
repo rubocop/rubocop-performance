@@ -9,14 +9,14 @@ module RuboCop
 
       def_node_matcher :sort_with_block?, <<~PATTERN
         (block
-          $(send _ :sort)
+          $(call _ :sort)
           (args (arg $_a) (arg $_b))
           $send)
       PATTERN
 
       def_node_matcher :sort_with_numblock?, <<~PATTERN
         (numblock
-          $(send _ :sort)
+          $(call _ :sort)
           $_arg_count
           $send)
       PATTERN

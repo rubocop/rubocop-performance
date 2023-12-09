@@ -39,6 +39,7 @@ module RuboCop
         def on_send(node)
           check(node)
         end
+        alias on_csend on_send
 
         def on_block(node)
           check(node)
@@ -67,8 +68,10 @@ module RuboCop
         end
 
         def_node_matcher :times_map_call, <<~PATTERN
-          {({block numblock} $(send (send $!nil? :times) {:map :collect}) ...)
-           $(send (send $!nil? :times) {:map :collect} (block_pass ...))}
+          {
+            ({block numblock} $(call (call $!nil? :times) {:map :collect}) ...)
+            $(call (call $!nil? :times) {:map :collect} (block_pass ...))
+          }
         PATTERN
       end
     end

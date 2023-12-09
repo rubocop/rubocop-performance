@@ -50,7 +50,7 @@ module RuboCop
         RESTRICT_ON_SEND = %i[count length size].freeze
 
         def_node_matcher :counter, <<~MATCHER
-          (send ${array hash str sym} {:count :length :size} $...)
+          (call ${array hash str sym} {:count :length :size} $...)
         MATCHER
 
         def on_send(node)
@@ -62,6 +62,7 @@ module RuboCop
             add_offense(node)
           end
         end
+        alias on_csend on_send
 
         private
 

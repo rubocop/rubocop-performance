@@ -12,6 +12,28 @@ RSpec.describe RuboCop::Cop::Performance::ReverseFirst, :config do
     RUBY
   end
 
+  it 'registers an offense and corrects when using `#reverse&.first(5)`' do
+    expect_offense(<<~RUBY)
+      array.reverse&.first(5)
+            ^^^^^^^^^^^^^^^^^ Use `last(5)&.reverse` instead of `reverse&.first(5)`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      array.last(5)&.reverse
+    RUBY
+  end
+
+  it 'registers an offense and corrects when using `&.reverse&.first(5)`' do
+    expect_offense(<<~RUBY)
+      array&.reverse&.first(5)
+             ^^^^^^^^^^^^^^^^^ Use `last(5)&.reverse` instead of `reverse&.first(5)`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      array&.last(5)&.reverse
+    RUBY
+  end
+
   it 'registers an offense and corrects when using `#reverse.first`' do
     expect_offense(<<~RUBY)
       array.reverse.first

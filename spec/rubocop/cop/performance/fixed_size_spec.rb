@@ -14,6 +14,13 @@ RSpec.describe RuboCop::Cop::Performance::FixedSize, :config do
         RUBY
       end
 
+      it "registers an offense when safe navigation calling #{method} on a single quoted string" do
+        expect_offense(<<~RUBY, method: method)
+          'a'&.#{method}
+          ^^^^^^{method} Do not compute the size of statically sized objects.
+        RUBY
+      end
+
       it "registers an offense when calling #{method} on a double quoted string" do
         expect_offense(<<~RUBY, method: method)
           "a".#{method}
