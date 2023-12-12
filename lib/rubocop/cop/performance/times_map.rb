@@ -50,12 +50,21 @@ module RuboCop
 
         def check(node)
           times_map_call(node) do |map_or_collect, count|
+            next unless handleable_receiver?(node)
+
             add_offense(node, message: message(map_or_collect, count)) do |corrector|
               replacement = "Array.new(#{count.source}#{map_or_collect.arguments.map { |arg| ", #{arg.source}" }.join})"
 
               corrector.replace(map_or_collect, replacement)
             end
           end
+        end
+
+        def handleable_receiver?(node)
+          receiver = node.receiver.receiver
+          return true if receiver.literal? && (receiver.int_type? || receiver.float_type?)
+
+          node.receiver.dot?
         end
 
         def message(map_or_collect, count)

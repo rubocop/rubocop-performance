@@ -29,6 +29,48 @@ RSpec.describe RuboCop::Cop::Performance::TimesMap, :config do
         end
       end
 
+      context 'with a block with safe navigation call for integer literal' do
+        it 'registers an offense and corrects' do
+          expect_offense(<<~RUBY, method: method)
+            42&.times&.#{method} { |i| i.to_s }
+            ^^^^^^^^^^^^{method}^^^^^^^^^^^^^^^ Use `Array.new(42)` with a block instead of `.times.#{method}`.
+          RUBY
+        end
+      end
+
+      context 'with a block with safe navigation call for float literal' do
+        it 'registers an offense and corrects' do
+          expect_offense(<<~RUBY, method: method)
+            4.2&.times&.#{method} { |i| i.to_s }
+            ^^^^^^^^^^^^^{method}^^^^^^^^^^^^^^^ Use `Array.new(4.2)` with a block instead of `.times.#{method}`.
+          RUBY
+        end
+      end
+
+      context 'with a block with safe navigation call for nil literal' do
+        it 'does not register an offense' do
+          expect_no_offenses(<<~RUBY, method: method)
+            nil&.times&.#{method} { |i| i.to_s }
+          RUBY
+        end
+      end
+
+      context 'with a block with safe navigation call for local variable' do
+        it 'does not register an offense' do
+          expect_no_offenses(<<~RUBY, method: method)
+            nullable&.times&.#{method} { |i| i.to_s }
+          RUBY
+        end
+      end
+
+      context 'with a block with safe navigation call for instance variable' do
+        it 'does not register an offense' do
+          expect_no_offenses(<<~RUBY, method: method)
+            @nullable&.times&.#{method} { |i| i.to_s }
+          RUBY
+        end
+      end
+
       context 'for non-literal receiver' do
         it 'registers an offense' do
           expect_offense(<<~RUBY, method: method)
