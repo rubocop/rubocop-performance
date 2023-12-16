@@ -544,8 +544,7 @@ passed to the `count` call.
 === Safety
 
 This cop is unsafe because it has known compatibility issues with `ActiveRecord` and other
-frameworks. ActiveRecord's `count` ignores the block that is passed to it.
-`ActiveRecord` will ignore the block that is passed to `count`.
+frameworks. Before Rails 5.1, `ActiveRecord` will ignore the block that is passed to `count`.
 Other methods, such as `select`, will convert the association to an
 array and then run the block on the array. A simple work around to
 make `count` work with a block is to call `to_a.count {...}`.
@@ -2075,11 +2074,13 @@ and the following examples are parts of it.
 send('do_something')
 attr_accessor 'do_something'
 instance_variable_get('@ivar')
+const_get("string_#{interpolation}")
 
 # good
 send(:do_something)
 attr_accessor :do_something
 instance_variable_get(:@ivar)
+const_get(:"string_#{interpolation}")
 ----
 
 == Performance/StringInclude
@@ -2111,6 +2112,7 @@ str =~ /ab/
 /ab/ =~ str
 str.match(/ab/)
 /ab/.match(str)
+/ab/ === str
 
 # good
 str.include?('ab')
@@ -2328,8 +2330,8 @@ if you expect `ASCII-8BIT` encoding, disable this cop.
 [source,ruby]
 ----
 # bad
-''.dup
-"something".dup
+''.dup          # when Ruby 3.2 or lower
+"something".dup # when Ruby 3.2 or lower
 String.new
 String.new('')
 String.new('something')

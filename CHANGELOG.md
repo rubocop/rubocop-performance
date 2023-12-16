@@ -11,6 +11,8 @@
 
 ## master (unreleased)
 
+## 1.20.0 (2023-12-16)
+
 ### New features
 
 * [#384](https://github.com/rubocop/rubocop-performance/issues/384): Support optimized `String#dup` for `Performance/UnfreezeString` when Ruby 3.3+. ([@koic][])
