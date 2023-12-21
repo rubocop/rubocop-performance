@@ -38,7 +38,7 @@ module RuboCop
         # And `attr` may not be used because `Style/Attr` registers an offense.
         # https://github.com/rubocop/rubocop-performance/issues/278
         RESTRICT_ON_SEND = (%i[
-          class_variable_defined? const_defined? const_get const_set const_source_location
+          class_variable_defined? const_defined? const_set const_source_location
           define_method instance_method method_defined? private_class_method? private_method_defined?
           protected_method_defined? public_class_method public_instance_method public_method_defined?
           remove_class_variable remove_method undef_method class_variable_get class_variable_set
