@@ -1,0 +1,1 @@
+* [#428](https://github.com/rubocop/rubocop-performance/pull/428): Fix false negatives for `Performance/StringIdentifierArgument` when using multiple string arguments. ([@koic][])
