@@ -34,6 +34,12 @@ module RuboCop
           protected public public_constant module_function
         ].freeze
 
+        TWO_ARGUMENTS_METHOD = :alias_method
+        MULTIPLE_ARGUMENTS_METHODS = %i[
+          attr_accessor attr_reader attr_writer private private_constant
+          protected public public_constant module_function
+        ].freeze
+
         # NOTE: `attr` method is not included in this list as it can cause false positives in Nokogiri API.
         # And `attr` may not be used because `Style/Attr` registers an offense.
         # https://github.com/rubocop/rubocop-performance/issues/278
@@ -47,26 +53,42 @@ module RuboCop
           respond_to? send singleton_method __send__
         ] + COMMAND_METHODS).freeze
 
-        # rubocop:disable Metrics/CyclomaticComplexity
         def on_send(node)
           return if COMMAND_METHODS.include?(node.method_name) && node.receiver
-          return unless (first_argument = node.first_argument)
-          return unless first_argument.str_type? || first_argument.dstr_type?
 
-          first_argument_value = first_argument.value
-          return if first_argument_value.include?(' ') || first_argument_value.include?('::')
+          string_arguments(node).each do |string_argument|
+            string_argument_value = string_argument.value
+            next if string_argument_value.include?(' ') || string_argument_value.include?('::')
 
-          replacement = argument_replacement(first_argument, first_argument_value)
-
-          message = format(MSG, symbol_arg: replacement, string_arg: first_argument.source)
-
-          add_offense(first_argument, message: message) do |corrector|
-            corrector.replace(first_argument, replacement)
+            register_offense(string_argument, string_argument_value)
           end
         end
-        # rubocop:enable Metrics/CyclomaticComplexity
 
         private
+
+        def string_arguments(node)
+          arguments = if node.method?(TWO_ARGUMENTS_METHOD)
+                        [node.first_argument, node.arguments[1]]
+                      elsif MULTIPLE_ARGUMENTS_METHODS.include?(node.method_name)
+                        node.arguments
+                      else
+                        [node.first_argument]
+                      end
+
+          arguments.compact.filter do |argument|
+            argument.str_type? || argument.dstr_type?
+          end
+        end
+
+        def register_offense(argument, argument_value)
+          replacement = argument_replacement(argument, argument_value)
+
+          message = format(MSG, symbol_arg: replacement, string_arg: argument.source)
+
+          add_offense(argument, message: message) do |corrector|
+            corrector.replace(argument, replacement)
+          end
+        end
 
         def argument_replacement(node, value)
           if node.str_type?

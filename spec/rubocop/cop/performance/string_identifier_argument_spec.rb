@@ -2,31 +2,78 @@
 
 RSpec.describe RuboCop::Cop::Performance::StringIdentifierArgument, :config do
   RuboCop::Cop::Performance::StringIdentifierArgument::RESTRICT_ON_SEND.each do |method|
-    it "registers an offense when using string argument for `#{method}` method" do
+    if method == RuboCop::Cop::Performance::StringIdentifierArgument::TWO_ARGUMENTS_METHOD
+      it 'registers an offense when using string two arguments for `alias_method`' do
+        expect_offense(<<~RUBY)
+          alias_method 'new', 'original'
+                       ^^^^^ Use `:new` instead of `'new'`.
+                              ^^^^^^^^^^ Use `:original` instead of `'original'`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          alias_method :new, :original
+        RUBY
+      end
+
+      it 'does not register an offense when using symbol two arguments for `alias_method`' do
+        expect_no_offenses(<<~RUBY)
+          alias_method :new, :original
+        RUBY
+      end
+
+      it 'does not register an offense when using symbol single argument for `alias_method`' do
+        expect_no_offenses(<<~RUBY)
+          alias_method :new
+        RUBY
+      end
+    else
+      it "registers an offense when using string argument for `#{method}` method" do
+        expect_offense(<<~RUBY, method: method)
+          #{method}('do_something')
+          _{method} ^^^^^^^^^^^^^^ Use `:do_something` instead of `'do_something'`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          #{method}(:do_something)
+        RUBY
+      end
+
+      it "does not register an offense when using symbol argument for `#{method}` method" do
+        expect_no_offenses(<<~RUBY)
+          #{method}(:do_something)
+        RUBY
+      end
+
+      it 'registers an offense when using interpolated string argument' do
+        expect_offense(<<~RUBY, method: method)
+          #{method}("do_something_\#{var}")
+          _{method} ^^^^^^^^^^^^^^^^^^^^^ Use `:"do_something_\#{var}"` instead of `"do_something_\#{var}"`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          #{method}(:"do_something_\#{var}")
+        RUBY
+      end
+    end
+  end
+
+  RuboCop::Cop::Performance::StringIdentifierArgument::MULTIPLE_ARGUMENTS_METHODS.each do |method|
+    it "registers an offense when using string multiple arguments for `#{method}` method" do
       expect_offense(<<~RUBY, method: method)
-        #{method}('do_something')
-        _{method} ^^^^^^^^^^^^^^ Use `:do_something` instead of `'do_something'`.
+        #{method} 'one', 'two', 'three'
+        _{method} ^^^^^ Use `:one` instead of `'one'`.
+        _{method}        ^^^^^ Use `:two` instead of `'two'`.
+        _{method}               ^^^^^^^ Use `:three` instead of `'three'`.
       RUBY
 
       expect_correction(<<~RUBY)
-        #{method}(:do_something)
+        #{method} :one, :two, :three
       RUBY
     end
 
-    it "does not register an offense when using symbol argument for `#{method}` method" do
+    it "does not register an offense when using symbol multiple arguments for `#{method}`" do
       expect_no_offenses(<<~RUBY)
-        #{method}(:do_something)
-      RUBY
-    end
-
-    it 'registers an offense when using interpolated string argument' do
-      expect_offense(<<~RUBY, method: method)
-        #{method}("do_something_\#{var}")
-        _{method} ^^^^^^^^^^^^^^^^^^^^^ Use `:"do_something_\#{var}"` instead of `"do_something_\#{var}"`.
-      RUBY
-
-      expect_correction(<<~RUBY)
-        #{method}(:"do_something_\#{var}")
+        #{method} :one, :two, :three
       RUBY
     end
   end
