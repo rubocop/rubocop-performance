@@ -11,6 +11,10 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#428](https://github.com/rubocop/rubocop-performance/pull/428): Fix false negatives for `Performance/StringIdentifierArgument` when using multiple string arguments. ([@koic][])
+
 ## 1.20.0 (2023-12-16)
 
 ### New features
