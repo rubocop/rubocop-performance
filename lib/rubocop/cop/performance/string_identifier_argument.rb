@@ -16,13 +16,19 @@ module RuboCop
       #   send('do_something')
       #   attr_accessor 'do_something'
       #   instance_variable_get('@ivar')
-      #   const_get("string_#{interpolation}")
+      #   respond_to?("string_#{interpolation}")
       #
       #   # good
       #   send(:do_something)
       #   attr_accessor :do_something
       #   instance_variable_get(:@ivar)
-      #   const_get(:"string_#{interpolation}")
+      #   respond_to?(:"string_#{interpolation}")
+      #
+      #   # good - these methods don't support namespaced symbols
+      #   const_get("#{module_path}::Base")
+      #   const_source_location("#{module_path}::Base")
+      #   const_defined?("#{module_path}::Base")
+      #
       #
       class StringIdentifierArgument < Base
         extend AutoCorrector
@@ -34,6 +40,8 @@ module RuboCop
           protected public public_constant module_function
         ].freeze
 
+        INTERPOLATION_IGNORE_METHODS = %i[const_get const_source_location const_defined?].freeze
+
         TWO_ARGUMENTS_METHOD = :alias_method
         MULTIPLE_ARGUMENTS_METHODS = %i[
           attr_accessor attr_reader attr_writer private private_constant
@@ -44,14 +52,14 @@ module RuboCop
         # And `attr` may not be used because `Style/Attr` registers an offense.
         # https://github.com/rubocop/rubocop-performance/issues/278
         RESTRICT_ON_SEND = (%i[
-          class_variable_defined? const_defined? const_get const_set const_source_location
+          class_variable_defined? const_set
           define_method instance_method method_defined? private_class_method? private_method_defined?
           protected_method_defined? public_class_method public_instance_method public_method_defined?
           remove_class_variable remove_method undef_method class_variable_get class_variable_set
           deprecate_constant remove_const ruby2_keywords define_singleton_method instance_variable_defined?
           instance_variable_get instance_variable_set method public_method public_send remove_instance_variable
           respond_to? send singleton_method __send__
-        ] + COMMAND_METHODS).freeze
+        ] + COMMAND_METHODS + INTERPOLATION_IGNORE_METHODS).freeze
 
         def on_send(node)
           return if COMMAND_METHODS.include?(node.method_name) && node.receiver
@@ -75,9 +83,13 @@ module RuboCop
                         [node.first_argument]
                       end
 
-          arguments.compact.filter do |argument|
-            argument.str_type? || argument.dstr_type?
-          end
+          arguments.compact.filter { |argument| string_argument_compatible?(argument, node) }
+        end
+
+        def string_argument_compatible?(argument, node)
+          return true if argument.str_type?
+
+          argument.dstr_type? && INTERPOLATION_IGNORE_METHODS.none? { |method| node.method?(method) }
         end
 
         def register_offense(argument, argument_value)
