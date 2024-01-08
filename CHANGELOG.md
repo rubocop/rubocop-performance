@@ -11,6 +11,8 @@
 
 ## master (unreleased)
 
+## 1.20.2 (2024-01-08)
+
 ### Bug fixes
 
 * [#425](https://github.com/rubocop/rubocop-performance/issues/425): Fix a false positive for `Performance/StringIdentifierArgument` when using string interpolation with methods that don't support symbols with `::` inside them. ([@earlopain][])
