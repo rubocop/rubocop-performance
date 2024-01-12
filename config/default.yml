@@ -11,6 +11,13 @@ Performance/AncestorsInclude:
   Safe: false
   VersionAdded: '1.7'
 
+Performance/ArrayConcatLiteral:
+  Description: 'Use `array.push(1, 2, 3)` instead of `array.concat([1, 2, 3])`.'
+  Reference: 'https://github.com/rubocop/rubocop-performance/issues/434'
+  Enabled: true
+  Safe: false
+  VersionAdded: '<<next>>'
+
 Performance/ArrayPushSingle:
   Description: 'Use `array << x` instead of `array.push(x)`.'
   Reference: 'https://github.com/rubocop/rubocop-performance/issues/431'
