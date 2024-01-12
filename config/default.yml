@@ -11,6 +11,13 @@ Performance/AncestorsInclude:
   Safe: false
   VersionAdded: '1.7'
 
+Performance/ArrayPushSingle:
+  Description: 'Use `array << x` instead of `array.push(x)`.'
+  Reference: 'https://github.com/rubocop/rubocop-performance/issues/431'
+  Enabled: true
+  Safe: false
+  VersionAdded: '<<next>>'
+
 Performance/ArraySemiInfiniteRangeSlice:
   Description: 'Identifies places where slicing arrays with semi-infinite ranges can be replaced by `Array#take` and `Array#drop`.'
   # This cop was created due to a mistake in microbenchmark.
