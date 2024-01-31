@@ -54,7 +54,7 @@ module RuboCop
         def_node_matcher :chain_array_allocation?, <<~PATTERN
           (send {
             (send _ $%RETURN_NEW_ARRAY_WHEN_ARGS {int lvar ivar cvar gvar send})
-            (block (send _ $%ALWAYS_RETURNS_NEW_ARRAY) ...)
+            ({block numblock} (send _ $%ALWAYS_RETURNS_NEW_ARRAY) ...)
             (send _ $%RETURNS_NEW_ARRAY ...)
           } $%HAS_MUTATION_ALTERNATIVE ...)
         PATTERN
@@ -62,11 +62,20 @@ module RuboCop
         def on_send(node)
           chain_array_allocation?(node) do |fm, sm|
             return if node.each_descendant(:send).any? { |descendant| descendant.method?(:lazy) }
+            return if node.method?(:select) && !enumerable_select_method?(node.receiver)
 
             range = range_between(node.loc.dot.begin_pos, node.source_range.end_pos)
 
             add_offense(range, message: format(MSG, method: fm, second_method: sm))
           end
+        end
+
+        private
+
+        def enumerable_select_method?(node)
+          # NOTE: `QueryMethods#select` in Rails accepts positional arguments, whereas `Enumerable#select` does not.
+          #        This difference can be utilized to reduce the knowledge requirements related to `select`.
+          (node.block_type? || node.numblock_type?) && node.send_node.arguments.empty?
         end
       end
     end
