@@ -53,4 +53,38 @@ RSpec.describe RuboCop::Cop::Performance::ChainArrayAllocation, :config do
       RUBY
     end
   end
+
+  describe 'when using `select` with block argument after `select` with positional arguments' do
+    it 'does not register an offense' do
+      expect_no_offenses(<<~RUBY)
+        model.select(:foo, :bar).select { |item| item.do_something }
+      RUBY
+    end
+  end
+
+  describe 'when using `select` with block argument after `select` with block argument' do
+    it 'registers an offense' do
+      expect_offense(<<~RUBY)
+        model.select { |item| item.foo }.select { |item| item.bar }
+                                        ^^^^^^^ Use unchained `select` and `select!` (followed by `return array` if required) instead of chaining `select...select`.
+      RUBY
+    end
+  end
+
+  describe 'when using `select` with block argument after `select` with numbered block argument' do
+    it 'registers an offense' do
+      expect_offense(<<~RUBY)
+        model.select { _1.foo }.select { |item| item.bar }
+                               ^^^^^^^ Use unchained `select` and `select!` (followed by `return array` if required) instead of chaining `select...select`.
+      RUBY
+    end
+  end
+
+  describe 'when using `select` with positional arguments after `select`' do
+    it 'does not register an offense' do
+      expect_no_offenses(<<~RUBY)
+        model.select(:foo, :bar).select(:baz, :qux)
+      RUBY
+    end
+  end
 end
