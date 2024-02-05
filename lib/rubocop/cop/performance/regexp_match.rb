@@ -248,7 +248,7 @@ module RuboCop
         end
 
         def correct_operator(corrector, recv, arg, oper = nil)
-          op_range = correction_range(recv, arg)
+          op_range = recv.source_range.end.join(arg.source_range.begin)
 
           replace_with_match_predicate_method(corrector, recv, arg, op_range)
 
@@ -270,13 +270,6 @@ module RuboCop
         def swap_receiver_and_arg(corrector, recv, arg)
           corrector.replace(recv, arg.source)
           corrector.replace(arg, recv.source)
-        end
-
-        def correction_range(recv, arg)
-          buffer = processed_source.buffer
-          op_begin_pos = recv.source_range.end_pos
-          op_end_pos = arg.source_range.begin_pos
-          Parser::Source::Range.new(buffer, op_begin_pos, op_end_pos)
         end
       end
     end
