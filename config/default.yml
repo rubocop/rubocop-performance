@@ -205,6 +205,12 @@ Performance/MethodObjectAsBlock:
   Enabled: pending
   VersionAdded: '1.9'
 
+Performance/NumericPredicate:
+  Description: 'Use compare operator instead of `Numeric#positive?`, `Numeric#negative?`, or `Numeric#zero?`.'
+  Enabled: pending
+  Safe: false
+  VersionAdded: '<<next>>'
+
 Performance/OpenStruct:
   Description: 'Use `Struct` instead of `OpenStruct`.'
   Enabled: false
