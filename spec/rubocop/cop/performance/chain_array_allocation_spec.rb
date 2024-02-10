@@ -12,7 +12,7 @@ RSpec.describe RuboCop::Cop::Performance::ChainArrayAllocation, :config do
     it 'registers an offense for `first(10).uniq`' do
       expect_offense(<<~RUBY)
         [1, 2, 3, 4].first(10).uniq
-                              ^^^^^ Use unchained `first` and `uniq!` (followed by `return array` if required) instead of chaining `first...uniq`.
+                               ^^^^ Use unchained `first` and `uniq!` (followed by `return array` if required) instead of chaining `first...uniq`.
       RUBY
     end
 
@@ -20,14 +20,14 @@ RSpec.describe RuboCop::Cop::Performance::ChainArrayAllocation, :config do
       expect_offense(<<~RUBY)
         variable = 42
         [1, 2, 3, 4].first(variable).uniq
-                                    ^^^^^ Use unchained `first` and `uniq!` (followed by `return array` if required) instead of chaining `first...uniq`.
+                                     ^^^^ Use unchained `first` and `uniq!` (followed by `return array` if required) instead of chaining `first...uniq`.
       RUBY
     end
 
     it 'registers an offense for `first(do_something).uniq`' do
       expect_offense(<<~RUBY)
         [1, 2, 3, 4].first(do_something).uniq
-                                        ^^^^^ Use unchained `first` and `uniq!` (followed by `return array` if required) instead of chaining `first...uniq`.
+                                         ^^^^ Use unchained `first` and `uniq!` (followed by `return array` if required) instead of chaining `first...uniq`.
       RUBY
     end
   end
@@ -41,7 +41,7 @@ RSpec.describe RuboCop::Cop::Performance::ChainArrayAllocation, :config do
 
       expect_offense(<<~RUBY)
         [1, 2, 3, 4].zip {|f| }.zip.uniq
-                                   ^^^^^ Use unchained `zip` and `uniq!` (followed by `return array` if required) instead of chaining `zip...uniq`.
+                                    ^^^^ Use unchained `zip` and `uniq!` (followed by `return array` if required) instead of chaining `zip...uniq`.
       RUBY
     end
   end
@@ -66,7 +66,7 @@ RSpec.describe RuboCop::Cop::Performance::ChainArrayAllocation, :config do
     it 'registers an offense' do
       expect_offense(<<~RUBY)
         model.select { |item| item.foo }.select { |item| item.bar }
-                                        ^^^^^^^ Use unchained `select` and `select!` (followed by `return array` if required) instead of chaining `select...select`.
+                                         ^^^^^^ Use unchained `select` and `select!` (followed by `return array` if required) instead of chaining `select...select`.
       RUBY
     end
   end
@@ -75,7 +75,7 @@ RSpec.describe RuboCop::Cop::Performance::ChainArrayAllocation, :config do
     it 'registers an offense' do
       expect_offense(<<~RUBY)
         model.select { _1.foo }.select { |item| item.bar }
-                               ^^^^^^^ Use unchained `select` and `select!` (followed by `return array` if required) instead of chaining `select...select`.
+                                ^^^^^^ Use unchained `select` and `select!` (followed by `return array` if required) instead of chaining `select...select`.
       RUBY
     end
   end

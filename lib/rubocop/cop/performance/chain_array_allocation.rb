@@ -19,8 +19,6 @@ module RuboCop
       #   array.map! { |x| x.downcase }
       #   array
       class ChainArrayAllocation < Base
-        include RangeHelp
-
         # These methods return a new array but only sometimes. They must be
         # called with an argument. For example:
         #
@@ -64,7 +62,7 @@ module RuboCop
             return if node.each_descendant(:send).any? { |descendant| descendant.method?(:lazy) }
             return if node.method?(:select) && !enumerable_select_method?(node.receiver)
 
-            range = range_between(node.loc.dot.begin_pos, node.source_range.end_pos)
+            range = node.loc.selector.begin.join(node.source_range.end)
 
             add_offense(range, message: format(MSG, method: fm, second_method: sm))
           end
