@@ -49,7 +49,7 @@ RSpec.describe RuboCop::Cop::Performance::TimesMap, :config do
 
       context 'with a block with safe navigation call for nil literal' do
         it 'does not register an offense' do
-          expect_no_offenses(<<~RUBY, method: method)
+          expect_no_offenses(<<~RUBY)
             nil&.times&.#{method} { |i| i.to_s }
           RUBY
         end
@@ -57,7 +57,7 @@ RSpec.describe RuboCop::Cop::Performance::TimesMap, :config do
 
       context 'with a block with safe navigation call for local variable' do
         it 'does not register an offense' do
-          expect_no_offenses(<<~RUBY, method: method)
+          expect_no_offenses(<<~RUBY)
             nullable&.times&.#{method} { |i| i.to_s }
           RUBY
         end
@@ -65,7 +65,7 @@ RSpec.describe RuboCop::Cop::Performance::TimesMap, :config do
 
       context 'with a block with safe navigation call for instance variable' do
         it 'does not register an offense' do
-          expect_no_offenses(<<~RUBY, method: method)
+          expect_no_offenses(<<~RUBY)
             @nullable&.times&.#{method} { |i| i.to_s }
           RUBY
         end

@@ -326,7 +326,7 @@ RSpec.describe RuboCop::Cop::Performance::Sum, :config do
     end
 
     it 'does not register an offense when the array is empty' do
-      expect_no_offenses(<<~RUBY, method: method)
+      expect_no_offenses(<<~RUBY)
         [].#{method}(:+)
       RUBY
     end
@@ -345,7 +345,7 @@ RSpec.describe RuboCop::Cop::Performance::Sum, :config do
 
     context 'when Ruby 2.3 or lower', :ruby23 do
       it "does not register an offense when using `array.#{method}(10, :+)`" do
-        expect_no_offenses(<<~RUBY, method: method)
+        expect_no_offenses(<<~RUBY)
           array.#{method}(10, :+)
         RUBY
       end

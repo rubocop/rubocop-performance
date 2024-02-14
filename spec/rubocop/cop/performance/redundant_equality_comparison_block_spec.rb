@@ -49,7 +49,7 @@ RSpec.describe RuboCop::Cop::Performance::RedundantEqualityComparisonBlock, :con
 
       it "does not register an offense when using `#{method_name}` with `===` comparison block and" \
          'block argument is not used as a receiver for `===`' do
-        expect_no_offenses(<<~RUBY, method_name: method_name)
+        expect_no_offenses(<<~RUBY)
           items.#{method_name} { |item| item === pattern }
         RUBY
       end
