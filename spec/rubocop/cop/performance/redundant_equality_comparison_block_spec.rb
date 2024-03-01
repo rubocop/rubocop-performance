@@ -2,7 +2,7 @@
 
 RSpec.describe RuboCop::Cop::Performance::RedundantEqualityComparisonBlock, :config do
   context 'when TargetRubyVersion >= 2.5', :ruby25 do
-    RuboCop::Cop::Performance::RedundantEqualityComparisonBlock::TARGET_METHODS.each do |method_name|
+    described_class::TARGET_METHODS.each do |method_name|
       it "registers and corrects an offense when using `#{method_name}` with `===` comparison block" do
         expect_offense(<<~RUBY, method_name: method_name)
           items.#{method_name} { |item| pattern === item }

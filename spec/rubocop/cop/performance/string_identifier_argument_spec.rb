@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Performance::StringIdentifierArgument, :config do
-  RuboCop::Cop::Performance::StringIdentifierArgument::RESTRICT_ON_SEND.each do |method|
-    if method == RuboCop::Cop::Performance::StringIdentifierArgument::TWO_ARGUMENTS_METHOD
+  described_class::RESTRICT_ON_SEND.each do |method|
+    if method == described_class::TWO_ARGUMENTS_METHOD
       it 'registers an offense when using string two arguments for `alias_method`' do
         expect_offense(<<~RUBY)
           alias_method 'new', 'original'
@@ -44,7 +44,7 @@ RSpec.describe RuboCop::Cop::Performance::StringIdentifierArgument, :config do
         RUBY
       end
 
-      if RuboCop::Cop::Performance::StringIdentifierArgument::INTERPOLATION_IGNORE_METHODS.include?(method)
+      if described_class::INTERPOLATION_IGNORE_METHODS.include?(method)
         it 'does not register an offense when using string interpolation for `#{method}` method' do
           # NOTE: These methods don't support `::` when passing a symbol. const_get('A::B') is valid
           # but const_get(:'A::B') isn't. Since interpolated arguments may contain any content these
@@ -68,7 +68,7 @@ RSpec.describe RuboCop::Cop::Performance::StringIdentifierArgument, :config do
     end
   end
 
-  RuboCop::Cop::Performance::StringIdentifierArgument::MULTIPLE_ARGUMENTS_METHODS.each do |method|
+  described_class::MULTIPLE_ARGUMENTS_METHODS.each do |method|
     it "registers an offense when using string multiple arguments for `#{method}` method" do
       expect_offense(<<~RUBY, method: method)
         #{method} 'one', 'two', 'three'
@@ -89,7 +89,7 @@ RSpec.describe RuboCop::Cop::Performance::StringIdentifierArgument, :config do
     end
   end
 
-  RuboCop::Cop::Performance::StringIdentifierArgument::COMMAND_METHODS.each do |method|
+  described_class::COMMAND_METHODS.each do |method|
     it "does not register an offense when using string argument for `#{method}` method with receiver" do
       expect_no_offenses(<<~RUBY)
         obj.#{method}('do_something')
