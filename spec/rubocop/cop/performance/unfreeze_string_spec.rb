@@ -9,7 +9,7 @@ RSpec.describe RuboCop::Cop::Performance::UnfreezeString, :config do
     end
   end
 
-  context 'when Ruby <= 3.2', :ruby32 do
+  context 'when Ruby <= 3.2', :ruby32, unsupported_on: :prism do
     it 'registers an offense and corrects for an empty string with `.dup`' do
       expect_offense(<<~RUBY)
         "".dup
@@ -123,7 +123,7 @@ RSpec.describe RuboCop::Cop::Performance::UnfreezeString, :config do
     RUBY
   end
 
-  context 'when Ruby <= 2.2', :ruby22 do
+  context 'when Ruby <= 2.2', :ruby22, unsupported_on: :prism do
     it 'does not register an offense for an empty string with `.dup`' do
       expect_no_offenses(<<~RUBY)
         "".dup

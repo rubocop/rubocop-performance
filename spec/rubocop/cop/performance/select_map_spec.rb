@@ -130,7 +130,7 @@ RSpec.describe RuboCop::Cop::Performance::SelectMap, :config do
     end
   end
 
-  context 'when TargetRubyVersion <= 2.6', :ruby26 do
+  context 'when TargetRubyVersion <= 2.6', :ruby26, unsupported_on: :prism do
     it 'does not register an offense when using `select.map`' do
       expect_no_offenses(<<~RUBY)
         ary.select(&:present?).map(&:to_i)

@@ -343,7 +343,7 @@ RSpec.describe RuboCop::Cop::Performance::Sum, :config do
       RUBY
     end
 
-    context 'when Ruby 2.3 or lower', :ruby23 do
+    context 'when Ruby 2.3 or lower', :ruby23, unsupported_on: :prism do
       it "does not register an offense when using `array.#{method}(10, :+)`" do
         expect_no_offenses(<<~RUBY)
           array.#{method}(10, :+)

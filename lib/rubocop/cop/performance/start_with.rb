@@ -56,7 +56,8 @@ module RuboCop
         def_node_matcher :redundant_regex?, <<~PATTERN
           {(call $!nil? {:match :=~ :match?} (regexp (str $#literal_at_start?) (regopt)))
            (send (regexp (str $#literal_at_start?) (regopt)) {:match :match?} $_)
-           (match-with-lvasgn (regexp (str $#literal_at_start?) (regopt)) $_)}
+           (match-with-lvasgn (regexp (str $#literal_at_start?) (regopt)) $_)
+           (send (regexp (str $#literal_at_start?) (regopt)) :=~ $_)}
         PATTERN
 
         def on_send(node)
