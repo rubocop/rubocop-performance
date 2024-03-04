@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Performance::UnfreezeString, :config do
+  context 'when Ruby >= 3.3', :ruby33 do
+    it 'does not register an offense and corrects for an empty string with `.dup`' do
+      expect_no_offenses(<<~RUBY)
+        "".dup
+      RUBY
+    end
+  end
+
   context 'when Ruby <= 3.2', :ruby32 do
     it 'registers an offense and corrects for an empty string with `.dup`' do
       expect_offense(<<~RUBY)
@@ -12,53 +20,45 @@ RSpec.describe RuboCop::Cop::Performance::UnfreezeString, :config do
         +""
       RUBY
     end
-  end
 
-  context 'when Ruby >= 3.3', :ruby33 do
-    it 'does not register an offense and corrects for an empty string with `.dup`' do
-      expect_no_offenses(<<~RUBY)
-        "".dup
+    it 'registers an offense and corrects for a string with `.dup`' do
+      expect_offense(<<~RUBY)
+        "foo".dup
+        ^^^^^^^^^ Use unary plus to get an unfrozen string literal.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        +"foo"
       RUBY
     end
-  end
 
-  it 'registers an offense and corrects for a string with `.dup`' do
-    expect_offense(<<~RUBY)
-      "foo".dup
-      ^^^^^^^^^ Use unary plus to get an unfrozen string literal.
-    RUBY
+    it 'registers an offense and corrects for a heredoc with `.dup`' do
+      expect_offense(<<~RUBY)
+        <<TEXT.dup
+        ^^^^^^^^^^ Use unary plus to get an unfrozen string literal.
+          foo
+          bar
+        TEXT
+      RUBY
 
-    expect_correction(<<~RUBY)
-      +"foo"
-    RUBY
-  end
+      expect_correction(<<~RUBY)
+        +<<TEXT
+          foo
+          bar
+        TEXT
+      RUBY
+    end
 
-  it 'registers an offense and corrects for a heredoc with `.dup`' do
-    expect_offense(<<~RUBY)
-      <<TEXT.dup
-      ^^^^^^^^^^ Use unary plus to get an unfrozen string literal.
-        foo
-        bar
-      TEXT
-    RUBY
+    it 'registers an offense and corrects for a string that contains a stringinterpolation with `.dup`' do
+      expect_offense(<<~'RUBY')
+        "foo#{bar}baz".dup
+        ^^^^^^^^^^^^^^^^^^ Use unary plus to get an unfrozen string literal.
+      RUBY
 
-    expect_correction(<<~RUBY)
-      +<<TEXT
-        foo
-        bar
-      TEXT
-    RUBY
-  end
-
-  it 'registers an offense and corrects for a string that contains a stringinterpolation with `.dup`' do
-    expect_offense(<<~'RUBY')
-      "foo#{bar}baz".dup
-      ^^^^^^^^^^^^^^^^^^ Use unary plus to get an unfrozen string literal.
-    RUBY
-
-    expect_correction(<<~'RUBY')
-      +"foo#{bar}baz"
-    RUBY
+      expect_correction(<<~'RUBY')
+        +"foo#{bar}baz"
+      RUBY
+    end
   end
 
   it 'registers an offense and corrects for `String.new`' do
