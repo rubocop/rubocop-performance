@@ -29,7 +29,8 @@ module RuboCop
         def_node_matcher :redundant_regex?, <<~PATTERN
           {(call $!nil? {:match :=~ :!~ :match?} (regexp (str $#literal?) (regopt)))
            (send (regexp (str $#literal?) (regopt)) {:match :match? :===} $_)
-           (match-with-lvasgn (regexp (str $#literal?) (regopt)) $_)}
+           (match-with-lvasgn (regexp (str $#literal?) (regopt)) $_)
+           (send (regexp (str $#literal?) (regopt)) :=~ $_)}
         PATTERN
 
         # rubocop:disable Metrics/AbcSize

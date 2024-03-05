@@ -149,7 +149,7 @@ RSpec.describe RuboCop::Cop::Performance::RedundantEqualityComparisonBlock, :con
     end
   end
 
-  context 'when TargetRubyVersion <= 2.4', :ruby24 do
+  context 'when TargetRubyVersion <= 2.4', :ruby24, unsupported_on: :prism do
     # Ruby 2.4 does not support `items.all?(Klass)`.
     it 'does not register an offense when using `all?` with `is_a?` comparison block' do
       expect_no_offenses(<<~RUBY)

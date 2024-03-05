@@ -27,7 +27,9 @@ RSpec.describe RuboCop::Cop::Performance::StringIdentifierArgument, :config do
         RUBY
       end
     else
-      it "registers an offense when using string argument for `#{method}` method" do
+      # FIXME: `undefined method `[]' for nil` occurs Prism 0.24.0. It has been resolved in
+      # the development line. This will be resolved in Prism > 0.24.0 and higher releases.
+      it "registers an offense when using string argument for `#{method}` method", broken_on: :prism do
         expect_offense(<<~RUBY, method: method)
           #{method}('do_something')
           _{method} ^^^^^^^^^^^^^^ Use `:do_something` instead of `'do_something'`.
@@ -38,14 +40,18 @@ RSpec.describe RuboCop::Cop::Performance::StringIdentifierArgument, :config do
         RUBY
       end
 
-      it "does not register an offense when using symbol argument for `#{method}` method" do
+      # FIXME: `undefined method `[]' for nil` occurs Prism 0.24.0. It has been resolved in
+      # the development line. This will be resolved in Prism > 0.24.0 and higher releases.
+      it "does not register an offense when using symbol argument for `#{method}` method", broken_on: :prism do
         expect_no_offenses(<<~RUBY)
           #{method}(:do_something)
         RUBY
       end
 
       if described_class::INTERPOLATION_IGNORE_METHODS.include?(method)
-        it 'does not register an offense when using string interpolation for `#{method}` method' do
+        # FIXME: `undefined method `[]' for nil` occurs Prism 0.24.0. It has been resolved in
+        # the development line. This will be resolved in Prism > 0.24.0 and higher releases.
+        it 'does not register an offense when using string interpolation for `#{method}` method', broken_on: :prism do
           # NOTE: These methods don't support `::` when passing a symbol. const_get('A::B') is valid
           # but const_get(:'A::B') isn't. Since interpolated arguments may contain any content these
           # cases are not detected as an offense to prevent false positives.
@@ -54,7 +60,9 @@ RSpec.describe RuboCop::Cop::Performance::StringIdentifierArgument, :config do
           RUBY
         end
       else
-        it 'registers an offense when using interpolated string argument' do
+        # FIXME: `undefined method `[]' for nil` occurs Prism 0.24.0. It has been resolved in
+        # the development line. This will be resolved in Prism > 0.24.0 and higher releases.
+        it 'registers an offense when using interpolated string argument', broken_on: :prism do
           expect_offense(<<~RUBY, method: method)
             #{method}("do_something_\#{var}")
             _{method} ^^^^^^^^^^^^^^^^^^^^^ Use `:"do_something_\#{var}"` instead of `"do_something_\#{var}"`.

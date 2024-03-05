@@ -144,7 +144,9 @@ RSpec.describe RuboCop::Cop::Performance::CollectionLiteralInLoop, :config do
       RUBY
     end
 
-    it 'registers an offense when the method is called with no receiver' do
+    # FIXME: `undefined method `[]' for nil` occurs Prism 0.24.0. It has been resolved in
+    # the development line. This will be resolved in Prism > 0.24.0 and higher releases.
+    it 'registers an offense when the method is called with no receiver', broken_on: :prism do
       expect_offense(<<~RUBY)
         all? do |e|
           [1, 2, 3].include?(e)

@@ -361,7 +361,7 @@ RSpec.describe RuboCop::Cop::Performance::MapCompact, :config do
     end
   end
 
-  context 'when TargetRubyVersion <= 2.6', :ruby26 do
+  context 'when TargetRubyVersion <= 2.6', :ruby26, unsupported_on: :prism do
     it 'does not register an offense when using `collection.map(&:do_something).compact`' do
       expect_no_offenses(<<~RUBY)
         collection.map(&:do_something).compact
