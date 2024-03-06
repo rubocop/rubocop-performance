@@ -49,7 +49,7 @@ module RuboCop
         end
 
         def self.autocorrect_incompatible_with
-          [Lint::UnusedMethodArgument]
+          [Lint::UnusedMethodArgument, Naming::BlockForwarding]
         end
       end
     end
