@@ -117,6 +117,22 @@ RSpec.describe RuboCop::Cop::Performance::RedundantBlockCall, :config do
     RUBY
   end
 
+  it 'accepts when using `block.call` with block argument' do
+    expect_no_offenses(<<~RUBY)
+      def method(&block)
+        block.call { do_something }
+      end
+    RUBY
+  end
+
+  it 'accepts when using `block.call` with numbered block argument' do
+    expect_no_offenses(<<~RUBY)
+      def method(&block)
+        block.call { _1.do_something }
+      end
+    RUBY
+  end
+
   it 'accepts another block being passed along with other args' do
     expect_no_offenses(<<~RUBY)
       def method(&block)
