@@ -49,6 +49,8 @@ module RuboCop
             next unless body
 
             calls_to_report(argname, body).each do |blockcall|
+              next if blockcall.block_literal?
+
               add_offense(blockcall, message: format(MSG, argname: argname)) do |corrector|
                 autocorrect(corrector, blockcall)
               end
