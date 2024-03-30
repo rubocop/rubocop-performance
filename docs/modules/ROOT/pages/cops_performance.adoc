@@ -13,7 +13,7 @@
 
 | Pending
 | No
-| Yes (Unsafe)
+| Always (Unsafe)
 | 1.7
 | -
 |===
@@ -49,7 +49,7 @@ NOTE: Required Ruby version: 2.7
 
 | Disabled
 | No
-| Yes (Unsafe)
+| Always (Unsafe)
 | 1.9
 | -
 |===
@@ -89,7 +89,7 @@ array.take(3)
 
 | Pending
 | Yes
-| Yes
+| Always
 | 1.7
 | -
 |===
@@ -124,7 +124,7 @@ NOTE: Required Ruby version: 2.7
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 1.6
 | -
 |===
@@ -156,7 +156,7 @@ umethod.bind_call(obj, foo, bar)
 
 | Pending
 | Yes
-| Yes
+| Always
 | 1.9
 | -
 |===
@@ -193,7 +193,7 @@ end
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 0.49
 | 1.9
 |===
@@ -224,7 +224,7 @@ caller_locations(1..1).first
 
 | Disabled
 | Yes
-| Yes (Unsafe)
+| Always (Unsafe)
 | 0.34
 | 1.13
 |===
@@ -292,15 +292,21 @@ end
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
 
-| Enabled
+| Disabled
 | No
-| Yes (Unsafe)
+| Always (Unsafe)
 | 0.36
-| -
+| 1.21
 |===
 
 Identifies places where a case-insensitive string comparison
 can better be implemented using `casecmp`.
+
+This cop is disabled by default because `String#casecmp` only works with
+ASCII characters. See https://github.com/rubocop/rubocop/issues/9753.
+
+If you are working only with ASCII characters, then this cop can be
+safely enabled.
 
 === Safety
 
@@ -422,7 +428,7 @@ end
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 0.46
 | -
 |===
@@ -463,7 +469,7 @@ array.sort_by { |a| a[:foo] }
 
 | Pending
 | Yes
-| Yes
+| Always
 | 1.12
 | -
 |===
@@ -493,7 +499,7 @@ Process.clock_gettime(Process::CLOCK_MONOTONIC)
 
 | Pending
 | Yes
-| Yes
+| Always
 | 1.9
 | 1.10
 |===
@@ -538,7 +544,7 @@ end
 
 | Enabled
 | Yes
-| Yes (Unsafe)
+| Always (Unsafe)
 | 0.31
 | 1.8
 |===
@@ -600,7 +606,7 @@ NOTE: Required Ruby version: 2.5
 
 | Enabled
 | No
-| Yes (Unsafe)
+| Always (Unsafe)
 | 1.6
 | 1.11
 |===
@@ -677,7 +683,7 @@ NOTE: Required Ruby version: 2.5
 
 | Enabled
 | No
-| Yes (Unsafe)
+| Always (Unsafe)
 | 1.6
 | 1.11
 |===
@@ -752,7 +758,7 @@ str.sub!(/suffix$/, '')
 
 | Enabled
 | Yes
-| Yes (Unsafe)
+| Always (Unsafe)
 | 0.30
 | 1.8
 |===
@@ -797,7 +803,7 @@ if the receiver is a `Hash`, it may report a false positive.
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 0.36
 | 0.48
 |===
@@ -866,7 +872,7 @@ str.ends_with?(var1, var2)
 
 | Enabled
 | Yes
-| Yes (Unsafe)
+| Always (Unsafe)
 | 0.36
 | 1.10
 |===
@@ -1004,7 +1010,7 @@ waldo.size
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 0.30
 | -
 |===
@@ -1047,7 +1053,7 @@ change them to use `flat_map { ... }` instead.
 
 | Enabled
 | No
-| Yes (Unsafe)
+| Always (Unsafe)
 | 0.56
 | -
 |===
@@ -1104,7 +1110,7 @@ h = { a: 1, b: 2 }; h.value?(nil)
 
 | Disabled
 | Yes
-| Yes
+| Always
 | 1.7
 | -
 |===
@@ -1146,7 +1152,7 @@ NOTE: Required Ruby version: 2.7
 
 | Pending
 | Yes
-| Yes (Unsafe)
+| Always (Unsafe)
 | 1.11
 | -
 |===
@@ -1318,7 +1324,7 @@ end
 
 | Enabled
 | No
-| Yes (Unsafe)
+| Always (Unsafe)
 | 0.36
 | 1.7
 |===
@@ -1363,7 +1369,7 @@ Example of a case where `Range#cover?` may not provide the desired result:
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 0.36
 | -
 |===
@@ -1405,7 +1411,7 @@ NOTE: Required Ruby version: 2.5
 
 | Pending
 | No
-| Yes (Unsafe)
+| Always (Unsafe)
 | 1.10
 | -
 |===
@@ -1485,7 +1491,7 @@ items.all? { |item| item.match?(pattern) }
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 0.36
 | -
 |===
@@ -1516,7 +1522,7 @@ return value unless regex =~ 'str'
 
 | Enabled
 | No
-| Yes (Unsafe)
+| Always (Unsafe)
 | 0.36
 | 1.11
 |===
@@ -1576,7 +1582,7 @@ hash[:b] = 2
 
 | Pending
 | Yes
-| Yes
+| Always
 | 1.7
 | -
 |===
@@ -1601,7 +1607,7 @@ array.sort
 
 | Pending
 | Yes
-| Yes
+| Always
 | 1.10
 | -
 |===
@@ -1627,7 +1633,7 @@ a deterministic regexp to a string.
 
 | Pending
 | Yes
-| Yes
+| Always
 | 1.7
 | -
 |===
@@ -1682,7 +1688,7 @@ NOTE: Required Ruby version: 2.4
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 0.47
 | -
 |===
@@ -1772,7 +1778,7 @@ end
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 0.30
 | -
 |===
@@ -1809,7 +1815,7 @@ items.reverse_each
 
 | Pending
 | Yes
-| Yes
+| Always
 | 1.7
 | -
 |===
@@ -1867,7 +1873,7 @@ ary.filter_map { |o| o.bar if o.foo }
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 0.30
 | -
 |===
@@ -1920,7 +1926,7 @@ Hash(key: :value).size
 
 | Pending
 | Yes
-| Yes
+| Always
 | 1.7
 | -
 |===
@@ -1946,7 +1952,7 @@ array.sort.reverse
 
 | Pending
 | Yes
-| Yes
+| Always
 | 1.7
 | -
 |===
@@ -1980,7 +1986,7 @@ str.squeeze!('a')
 
 | Enabled
 | Yes
-| Yes (Unsafe)
+| Always (Unsafe)
 | 0.36
 | 1.10
 |===
@@ -2060,7 +2066,7 @@ of the variables which rubocop doesn't have.
 
 | Pending
 | Yes
-| Yes
+| Always
 | 1.13
 | -
 |===
@@ -2101,7 +2107,7 @@ const_defined?("#{module_path}::Base")
 
 | Pending
 | Yes
-| Yes (Unsafe)
+| Always (Unsafe)
 | 1.7
 | 1.12
 |===
@@ -2136,7 +2142,7 @@ str.include?('ab')
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 0.33
 | -
 |===
@@ -2173,7 +2179,7 @@ NOTE: Required Ruby version: 2.4
 
 | Pending
 | Yes
-| Yes (Unsafe)
+| Always (Unsafe)
 | 1.8
 | 1.13
 |===
@@ -2274,7 +2280,7 @@ as initial value and successively add all following values to it, whereas
 
 | Enabled
 | Yes
-| Yes (Unsafe)
+| Always (Unsafe)
 | 0.36
 | 1.13
 |===
@@ -2320,7 +2326,7 @@ NOTE: Required Ruby version: 2.3
 
 | Enabled
 | Yes
-| Yes (Unsafe)
+| Always (Unsafe)
 | 0.50
 | 1.9
 |===
@@ -2359,7 +2365,7 @@ String.new('something')
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 0.50
 | -
 |===

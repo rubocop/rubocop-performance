@@ -58,7 +58,7 @@ Performance/Casecmp:
   Enabled: false
   Safe: false
   VersionAdded: '0.36'
-  VersionChanged: '<<next>>'
+  VersionChanged: '1.21'
 
 Performance/ChainArrayAllocation:
   Description: >-
