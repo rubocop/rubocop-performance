@@ -11,6 +11,19 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#446](https://github.com/rubocop/rubocop-performance/pull/446): Support Prism as a Ruby parser (experimental). ([@koic][])
+
+### Bug fixes
+
+* [#437](https://github.com/rubocop/rubocop-performance/issues/437): Fix a false positive for `Performance/ChainArrayAllocation` when using `select` with block argument after `select`. ([@koic][])
+* [#448](https://github.com/rubocop/rubocop-performance/issues/448): Fix a false positive for `Performance/RedundantBlockCall` when using `block.call` with block argument. ([@koic][])
+
+### Changes
+
+* [#240](https://github.com/rubocop/rubocop-performance/issues/240): Disable `Performance/Casecmp` cop by default. ([@parkerfinch][])
+
 ## 1.20.2 (2024-01-08)
 
 ### Bug fixes
@@ -516,3 +529,4 @@
 [@ymap]: https://github.com/ymap
 [@tagliala]: https://github.com/tagliala
 [@earlopain]: https://github.com/earlopain
+[@parkerfinch]: https://github.com/parkerfinch
