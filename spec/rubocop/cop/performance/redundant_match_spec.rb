@@ -139,7 +139,11 @@ RSpec.describe RuboCop::Cop::Performance::RedundantMatch, :config do
   it_behaves_like 'require parentheses', 'a || b'
   it_behaves_like 'require parentheses', 'a..b'
   it_behaves_like 'require parentheses', 'method a'
-  it_behaves_like 'require parentheses', 'yield a'
+
+  context 'when Ruby <= 3.2', :ruby32, unsupported_on: :prism do # rubocop:disable RSpec/RepeatedExampleGroupDescription
+    it_behaves_like 'require parentheses', 'yield a'
+  end
+
   it_behaves_like 'require parentheses', 'super a'
   it_behaves_like 'require parentheses', 'a == b'
 
@@ -159,7 +163,11 @@ RSpec.describe RuboCop::Cop::Performance::RedundantMatch, :config do
   it_behaves_like 'require no parentheses', 'if a then b else c end'
   it_behaves_like 'require no parentheses', 'method(a)'
   it_behaves_like 'require no parentheses', 'method'
-  it_behaves_like 'require no parentheses', 'yield'
+
+  context 'when Ruby <= 3.2', :ruby32, unsupported_on: :prism do # rubocop:disable RSpec/RepeatedExampleGroupDescription
+    it_behaves_like 'require no parentheses', 'yield'
+  end
+
   it_behaves_like 'require no parentheses', 'super'
   it_behaves_like 'require no parentheses', 'a.==(b)'
 
