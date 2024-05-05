@@ -2,7 +2,7 @@
 
 RSpec.describe RuboCop::Cop::Performance::UnfreezeString, :config do
   context 'when Ruby >= 3.3', :ruby33 do
-    it 'does not register an offense and corrects for an empty string with `.dup`' do
+    it 'does not register an offense for an empty string with `.dup`' do
       expect_no_offenses(<<~RUBY)
         "".dup
       RUBY

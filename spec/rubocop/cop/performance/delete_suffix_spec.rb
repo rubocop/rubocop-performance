@@ -92,25 +92,25 @@ RSpec.describe RuboCop::Cop::Performance::DeleteSuffix, :config do
       context 'when `SafeMultiline: true`' do
         let(:safe_multiline) { true }
 
-        it 'does not register an offense and corrects when using `gsub`' do
+        it 'does not register an offense when using `gsub`' do
           expect_no_offenses(<<~RUBY)
             str.gsub(/suffix$/, '')
           RUBY
         end
 
-        it 'does not register an offense and corrects when using `gsub!`' do
+        it 'does not register an offense when using `gsub!`' do
           expect_no_offenses(<<~RUBY)
             str.gsub!(/suffix$/, '')
           RUBY
         end
 
-        it 'does not register an offense and corrects when using `sub`' do
+        it 'does not register an offense when using `sub`' do
           expect_no_offenses(<<~RUBY)
             str.sub(/suffix$/, '')
           RUBY
         end
 
-        it 'does not register an offense and corrects when using `sub!`' do
+        it 'does not register an offense when using `sub!`' do
           expect_no_offenses(<<~RUBY)
             str.sub!(/suffix$/, '')
           RUBY
@@ -193,25 +193,25 @@ RSpec.describe RuboCop::Cop::Performance::DeleteSuffix, :config do
     end
 
     context 'with starting pattern `\A` and ending pattern `\z`' do
-      it 'does not register an offense and corrects when using `gsub`' do
+      it 'does not register an offense when using `gsub`' do
         expect_no_offenses(<<~RUBY)
           str.gsub(/\\Asuffix\\z/, '')
         RUBY
       end
 
-      it 'does not register an offense and corrects when using `gsub!`' do
+      it 'does not register an offense when using `gsub!`' do
         expect_no_offenses(<<~RUBY)
           str.gsub!(/\\Asuffix\\z/, '')
         RUBY
       end
 
-      it 'does not register an offense and corrects when using `sub`' do
+      it 'does not register an offense when using `sub`' do
         expect_no_offenses(<<~RUBY)
           str.sub(/\\Asuffix\\z/, '')
         RUBY
       end
 
-      it 'does not register an offense and corrects when using `sub!`' do
+      it 'does not register an offense when using `sub!`' do
         expect_no_offenses(<<~RUBY)
           str.sub!(/\\Asuffix\\z/, '')
         RUBY
@@ -219,25 +219,25 @@ RSpec.describe RuboCop::Cop::Performance::DeleteSuffix, :config do
     end
 
     context 'when using a non-blank string as replacement string' do
-      it 'does not register an offense and corrects when using `gsub`' do
+      it 'does not register an offense when using `gsub`' do
         expect_no_offenses(<<~RUBY)
           str.gsub(/suffix\\z/, 'foo')
         RUBY
       end
 
-      it 'does not register an offense and corrects when using `gsub!`' do
+      it 'does not register an offense when using `gsub!`' do
         expect_no_offenses(<<~RUBY)
           str.gsub!(/suffix\\z/, 'foo')
         RUBY
       end
 
-      it 'does not register an offense and corrects when using `sub`' do
+      it 'does not register an offense when using `sub`' do
         expect_no_offenses(<<~RUBY)
           str.sub(/suffix\\z/, 'foo')
         RUBY
       end
 
-      it 'does not register an offense and corrects when using `sub!`' do
+      it 'does not register an offense when using `sub!`' do
         expect_no_offenses(<<~RUBY)
           str.sub!(/suffix\\z/, 'foo')
         RUBY
