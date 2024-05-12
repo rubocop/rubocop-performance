@@ -36,9 +36,7 @@ RSpec.describe RuboCop::Cop::Performance::RedundantMerge, :config do
     end
   end
 
-  # FIXME: `undefined method `[]' for nil` occurs Prism 0.24.0. It has been resolved in
-  # the development line. This will be resolved in Prism > 0.24.0 and higher releases.
-  context 'when receiver is implicit', broken_on: :prism do
+  context 'when receiver is implicit' do
     it "doesn't autocorrect" do
       new_source = autocorrect_source('merge!(foo: 1, bar: 2)')
       expect(new_source).to eq('merge!(foo: 1, bar: 2)')
