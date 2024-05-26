@@ -181,4 +181,16 @@ RSpec.describe RuboCop::Cop::Performance::RedundantEqualityComparisonBlock, :con
       items.any? { |item| do_something[0..item] == item }
     RUBY
   end
+
+  it 'does not register an offense when the block is empty' do
+    expect_no_offenses(<<~RUBY)
+      items.any? { |item| }
+    RUBY
+  end
+
+  it 'does not register an offense when the block takes no argument' do
+    expect_no_offenses(<<~RUBY)
+      items.any? { }
+    RUBY
+  end
 end

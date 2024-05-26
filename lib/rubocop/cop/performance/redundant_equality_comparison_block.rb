@@ -64,7 +64,7 @@ module RuboCop
           return unless one_block_argument?(node.arguments)
 
           block_argument = node.first_argument
-          block_body = node.body
+          return unless (block_body = node.body)
           return unless use_equality_comparison_block?(block_body)
           return if same_block_argument_and_is_a_argument?(block_body, block_argument)
           return unless (new_argument = new_argument(block_argument, block_body))
