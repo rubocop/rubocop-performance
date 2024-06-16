@@ -11,6 +11,10 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#452](https://github.com/rubocop/rubocop-performance/pull/452): Fix an error for `Performance/RedundantEqualityComparisonBlock` when the block is empty. ([@earlopain][])
+
 ## 1.21.0 (2024-03-30)
 
 ### New features
