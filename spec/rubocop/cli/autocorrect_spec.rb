@@ -47,6 +47,25 @@ RSpec.describe 'RuboCop::CLI --autocorrect', :isolated_environment do # rubocop:
     RUBY
   end
 
+  it 'corrects `Performance/BlockGivenWithExplicitBlock` with `Naming/BlockForwarding`' do
+    source = <<~RUBY
+      def foo(&block)
+        block_given?
+        bar(&block)
+      end
+    RUBY
+    create_file('example.rb', source)
+    expect(
+      cli.run(['--autocorrect', '--only', 'Performance/BlockGivenWithExplicitBlock,Naming/BlockForwarding'])
+    ).to eq(0)
+    expect(File.read('example.rb')).to eq(<<~RUBY)
+      def foo(&block)
+        block
+        bar(&block)
+      end
+    RUBY
+  end
+
   private
 
   def create_file(file_path, content)
