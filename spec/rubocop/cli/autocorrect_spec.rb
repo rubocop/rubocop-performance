@@ -7,10 +7,16 @@ RSpec.describe 'RuboCop::CLI --autocorrect', :isolated_environment do # rubocop:
 
   include_context 'mock console output'
 
-  before do
+  # Restore injected config as well
+  around do |ex|
+    previous_config = RuboCop::ConfigLoader.default_configuration
+
     RuboCop::ConfigLoader.default_configuration = nil
     RuboCop::ConfigLoader.default_configuration.for_all_cops['SuggestExtensions'] = false
     RuboCop::ConfigLoader.default_configuration.for_all_cops['NewCops'] = 'disable'
+    ex.call
+  ensure
+    RuboCop::ConfigLoader.default_configuration = previous_config
   end
 
   it 'corrects `Performance/ConstantRegexp` with `Performance/RegexpMatch`' do
