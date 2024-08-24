@@ -130,9 +130,7 @@ module RuboCop
         end
 
         def rewrite_with_modifier(node, parent, new_source)
-          # FIXME: `|| 2` can be removed when support is limited to RuboCop 1.44 or higher.
-          # https://github.com/rubocop/rubocop/commit/02d1e5b
-          indent = ' ' * (configured_indentation_width || 2)
+          indent = ' ' * configured_indentation_width
           padding = "\n#{indent + leading_spaces(node)}"
           new_source.gsub!("\n", padding)
 
