@@ -6,6 +6,9 @@ module RuboCop
       # Identifies unnecessary use of a `block_given?` where explicit check
       # of block argument would suffice.
       #
+      # NOTE: This cop produces code with significantly worse performance when a
+      # block is being passed to the method and as such should not be enabled.
+      #
       # @example
       #   # bad
       #   def method(&block)

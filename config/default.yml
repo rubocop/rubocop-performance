@@ -32,8 +32,11 @@ Performance/BindCall:
 
 Performance/BlockGivenWithExplicitBlock:
   Description: 'Check block argument explicitly instead of using `block_given?`.'
-  Enabled: pending
+  # This cop was created due to a mistake in microbenchmark.
+  # https://github.com/rubocop/rubocop-performance/issues/385
+  Enabled: false
   VersionAdded: '1.9'
+  VersionChanged: <<next>>
 
 Performance/Caller:
   Description: >-
