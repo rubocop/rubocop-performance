@@ -26,6 +26,41 @@ RSpec.describe RuboCop::Cop::Performance::DoubleStartEndWith, :config do
             expect_no_offenses('x.start_with?(a, "b") || x.start_with?(C, d)')
           end
         end
+
+        context 'with safe navigation' do
+          it 'registers an offense' do
+            expect_offense(<<~RUBY)
+              x&.start_with?(a, b) || x&.start_with?("c", D)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `x&.start_with?(a, b, "c", D)` instead of `x&.start_with?(a, b) || x&.start_with?("c", D)`.
+            RUBY
+
+            expect_correction(<<~RUBY)
+              x&.start_with?(a, b, "c", D)
+            RUBY
+          end
+
+          it 'registers an offense when the first start_with uses no safe navigation' do
+            expect_offense(<<~RUBY)
+              x.start_with?(a, b) || x&.start_with?("c", D)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `x.start_with?(a, b, "c", D)` instead of `x.start_with?(a, b) || x&.start_with?("c", D)`.
+            RUBY
+
+            expect_correction(<<~RUBY)
+              x.start_with?(a, b, "c", D)
+            RUBY
+          end
+
+          it 'registers an offense when the second start_with uses no safe navigation' do
+            expect_offense(<<~RUBY)
+              x&.start_with?(a, b) || x.start_with?("c", D)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `x&.start_with?(a, b, "c", D)` instead of `x&.start_with?(a, b) || x.start_with?("c", D)`.
+            RUBY
+
+            expect_correction(<<~RUBY)
+              x&.start_with?(a, b, "c", D)
+            RUBY
+          end
+        end
       end
 
       context 'with different receivers' do

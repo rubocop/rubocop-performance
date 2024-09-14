@@ -41,7 +41,7 @@ module RuboCop
       class DoubleStartEndWith < Base
         extend AutoCorrector
 
-        MSG = 'Use `%<receiver>s.%<method>s(%<combined_args>s)` instead of `%<original_code>s`.'
+        MSG = 'Use `%<replacement>s` instead of `%<original_code>s`.'
 
         def on_or(node)
           receiver, method, first_call_args, second_call_args = process_source(node)
@@ -50,7 +50,7 @@ module RuboCop
 
           combined_args = combine_args(first_call_args, second_call_args)
 
-          add_offense(node, message: message(node, receiver, method, combined_args)) do |corrector|
+          add_offense(node, message: message(node, receiver, first_call_args, method, combined_args)) do |corrector|
             autocorrect(corrector, first_call_args, second_call_args, combined_args)
           end
         end
@@ -73,10 +73,10 @@ module RuboCop
           end
         end
 
-        def message(node, receiver, method, combined_args)
-          format(
-            MSG, receiver: receiver.source, method: method, combined_args: combined_args, original_code: node.source
-          )
+        def message(node, receiver, first_call_args, method, combined_args)
+          dot = first_call_args.first.parent.send_type? ? '.' : '&.'
+          replacement = "#{receiver.source}#{dot}#{method}(#{combined_args})"
+          format(MSG, replacement: replacement, original_code: node.source)
         end
 
         def combine_args(first_call_args, second_call_args)
@@ -89,16 +89,16 @@ module RuboCop
 
         def_node_matcher :two_start_end_with_calls, <<~PATTERN
           (or
-            (send $_recv [{:start_with? :end_with?} $_method] $...)
-            (send _recv _method $...))
+            (call $_recv [{:start_with? :end_with?} $_method] $...)
+            (call _recv _method $...))
         PATTERN
 
         def_node_matcher :check_with_active_support_aliases, <<~PATTERN
           (or
-            (send $_recv
+            (call $_recv
                     [{:start_with? :starts_with? :end_with? :ends_with?} $_method]
                   $...)
-            (send _recv _method $...))
+            (call _recv _method $...))
         PATTERN
       end
     end
