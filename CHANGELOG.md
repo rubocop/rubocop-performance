@@ -11,6 +11,8 @@
 
 ## master (unreleased)
 
+## 1.22.0 (2024-09-16)
+
 ### Bug fixes
 
 * [#454](https://github.com/rubocop/rubocop-performance/issues/454): Fix false positives for `Performance/BigDecimalWithNumericArgument` when using BigDecimal 3.1+. ([@koic][])

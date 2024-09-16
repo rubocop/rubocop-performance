@@ -36,7 +36,7 @@ Performance/BlockGivenWithExplicitBlock:
   # https://github.com/rubocop/rubocop-performance/issues/385
   Enabled: false
   VersionAdded: '1.9'
-  VersionChanged: <<next>>
+  VersionChanged: '1.22'
 
 Performance/Caller:
   Description: >-

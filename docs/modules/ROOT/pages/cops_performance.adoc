@@ -84,6 +84,8 @@ array.take(3)
 
 == Performance/BigDecimalWithNumericArgument
 
+NOTE: Required Ruby version: 3.1
+
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
 
@@ -94,25 +96,25 @@ array.take(3)
 | -
 |===
 
-Identifies places where numeric argument to BigDecimal should be
-converted to string. Initializing from String is faster
-than from Numeric for BigDecimal.
+Identifies places where string argument to `BigDecimal` should be
+converted to numeric. Initializing from Integer is faster
+than from String for BigDecimal.
 
 === Examples
 
 [source,ruby]
 ----
 # bad
-BigDecimal(1, 2)
-4.to_d(6)
-BigDecimal(1.2, 3, exception: true)
-4.5.to_d(6, exception: true)
-
-# good
 BigDecimal('1', 2)
 BigDecimal('4', 6)
 BigDecimal('1.2', 3, exception: true)
 BigDecimal('4.5', 6, exception: true)
+
+# good
+BigDecimal(1, 2)
+4.to_d(6)
+BigDecimal(1.2, 3, exception: true)
+4.5.to_d(6, exception: true)
 ----
 
 == Performance/BindCall
@@ -154,15 +156,18 @@ umethod.bind_call(obj, foo, bar)
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
 
-| Pending
+| Disabled
 | Yes
 | Always
 | 1.9
-| -
+| 1.22
 |===
 
 Identifies unnecessary use of a `block_given?` where explicit check
 of block argument would suffice.
+
+NOTE: This cop produces code with significantly worse performance when a
+block is being passed to the method and as such should not be enabled.
 
 === Examples
 
