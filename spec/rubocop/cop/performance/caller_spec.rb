@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Performance/Caller
 RSpec.describe RuboCop::Cop::Performance::Caller, :config do
   it 'accepts `caller` without argument and method chain' do
     expect_no_offenses('caller')
@@ -109,3 +110,4 @@ RSpec.describe RuboCop::Cop::Performance::Caller, :config do
     RUBY
   end
 end
+# rubocop:enable Performance/Caller

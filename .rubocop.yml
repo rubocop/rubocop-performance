@@ -105,13 +105,9 @@ Metrics/ModuleLength:
   Exclude:
     - 'spec/**/*.rb'
 
-Performance/Caller:
+Performance:
   Exclude:
-    - spec/rubocop/cop/performance/caller_spec.rb
-
-Performance/CollectionLiteralInLoop:
-  Exclude:
-    - 'spec/**/*.rb'
+    - 'bench/**/*.rb'
 
 RSpec:
   Language:
