@@ -11,6 +11,15 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#454](https://github.com/rubocop/rubocop-performance/issues/454): Fix false positives for `Performance/BigDecimalWithNumericArgument` when using BigDecimal 3.1+. ([@koic][])
+
+### Changes
+
+* [#385](https://github.com/rubocop/rubocop-performance/issues/385): Disable `Performance/BlockGivenWithExplicitBlock` by default. ([@earlopain][])
+* [#407](https://github.com/rubocop/rubocop-performance/issues/407): Make `Performance/DoubleStartEndWith` aware of safe navigation. ([@earlopain][])
+
 ## 1.21.1 (2024-06-16)
 
 ### Bug fixes
