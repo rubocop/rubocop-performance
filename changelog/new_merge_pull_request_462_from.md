@@ -1,0 +1,1 @@
+* [#462](https://github.com/rubocop/rubocop-performance/pull/462): Add new `Performance/ZipWithoutBlock` cop that checks patterns like `.map { |id| [id] }` or `.map { [_1] }` and can replace them with `.zip`. ([@corsonknowles][])
