@@ -6,6 +6,8 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 gemspec
 
+gem 'benchmark-ips', require: false
+gem 'benchmark-memory', require: false
 gem 'bump', require: false
 gem 'prism'
 gem 'rake'
