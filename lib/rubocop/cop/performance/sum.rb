@@ -159,7 +159,7 @@ module RuboCop
 
         def array_literal?(node)
           receiver = node.children.first
-          receiver&.literal? && receiver&.array_type?
+          receiver&.literal? && receiver.array_type?
         end
 
         def autocorrect(corrector, init, range)
