@@ -326,6 +326,12 @@ Performance/StartWith:
   VersionAdded: '0.36'
   VersionChanged: '1.10'
 
+Performance/StringBytesize:
+  Description: "Use `String#bytesize` instead of calculating the size of the bytes array."
+  Safe: false
+  Enabled: 'pending'
+  VersionAdded: '<<next>>'
+
 Performance/StringIdentifierArgument:
   Description: 'Use symbol identifier argument instead of string identifier argument.'
   Enabled: pending
