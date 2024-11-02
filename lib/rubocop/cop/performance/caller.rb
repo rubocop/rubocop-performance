@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Performance
-      # Identifies places where `caller[n]` can be replaced by `caller(n..n).first`.
+      # Identifies places where `caller[n]` can be replaced by `caller(n..n)&.first`.
       #
       # @example
       #   # bad
@@ -13,9 +13,9 @@ module RuboCop
       #   caller_locations.first
       #
       #   # good
-      #   caller(2..2).first
+      #   caller(2..2)&.first
       #   caller(1..1).first
-      #   caller_locations(2..2).first
+      #   caller_locations(2..2)&.first
       #   caller_locations(1..1).first
       class Caller < Base
         extend AutoCorrector
@@ -48,7 +48,7 @@ module RuboCop
             n += m
           end
 
-          preferred_method = "#{method_name}(#{n}..#{n}).first"
+          preferred_method = "#{method_name}(#{n}..#{n})&.first"
 
           message = format(MSG, preferred_method: preferred_method, current_method: node.source)
           add_offense(node, message: message) do |corrector|
