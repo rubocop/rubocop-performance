@@ -55,6 +55,7 @@ Performance cops optimization analysis for your projects.
 * xref:cops_performance.adoc#performancesortreverse[Performance/SortReverse]
 * xref:cops_performance.adoc#performancesqueeze[Performance/Squeeze]
 * xref:cops_performance.adoc#performancestartwith[Performance/StartWith]
+* xref:cops_performance.adoc#performancestringbytesize[Performance/StringBytesize]
 * xref:cops_performance.adoc#performancestringidentifierargument[Performance/StringIdentifierArgument]
 * xref:cops_performance.adoc#performancestringinclude[Performance/StringInclude]
 * xref:cops_performance.adoc#performancestringreplacement[Performance/StringReplacement]

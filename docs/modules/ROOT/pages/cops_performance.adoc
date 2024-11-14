@@ -6,6 +6,7 @@
 
 = Performance
 
+[#performanceancestorsinclude]
 == Performance/AncestorsInclude
 
 |===
@@ -20,11 +21,13 @@
 
 Identifies usages of `ancestors.include?` and change them to use `<=` instead.
 
+[#safety-performanceancestorsinclude]
 === Safety
 
 This cop is unsafe because it can't tell whether the receiver is a class or an object.
 e.g. the false positive was for `Nokogiri::XML::Node#ancestors`.
 
+[#examples-performanceancestorsinclude]
 === Examples
 
 [source,ruby]
@@ -36,10 +39,12 @@ A.ancestors.include?(B)
 A <= B
 ----
 
+[#references-performanceancestorsinclude]
 === References
 
 * https://github.com/fastruby/fast-ruby#ancestorsinclude-vs--code
 
+[#performancearraysemiinfiniterangeslice]
 == Performance/ArraySemiInfiniteRangeSlice
 
 NOTE: Required Ruby version: 2.7
@@ -59,10 +64,12 @@ can be replaced by `Array#take` and `Array#drop`.
 This cop was created due to a mistake in microbenchmark and hence is disabled by default.
 Refer https://github.com/rubocop/rubocop-performance/pull/175#issuecomment-731892717
 
+[#safety-performancearraysemiinfiniterangeslice]
 === Safety
 
 This cop is unsafe for string slices because strings do not have `#take` and `#drop` methods.
 
+[#examples-performancearraysemiinfiniterangeslice]
 === Examples
 
 [source,ruby]
@@ -82,6 +89,7 @@ array.drop(2)
 array.take(3)
 ----
 
+[#performancebigdecimalwithnumericargument]
 == Performance/BigDecimalWithNumericArgument
 
 NOTE: Required Ruby version: 3.1
@@ -102,6 +110,7 @@ Initializing from String is faster than from Float for BigDecimal.
 Also identifies places where an integer string argument to BigDecimal should be converted to
 an integer. Initializing from Integer is faster than from String for BigDecimal.
 
+[#examples-performancebigdecimalwithnumericargument]
 === Examples
 
 [source,ruby]
@@ -123,6 +132,7 @@ BigDecimal(1, 2)
 4.to_d(6)
 ----
 
+[#performancebindcall]
 == Performance/BindCall
 
 NOTE: Required Ruby version: 2.7
@@ -145,6 +155,7 @@ can be replaced by `bind_call(obj, args, ...)`.
 The `bind_call(obj, args, ...)` method is faster than
 `bind(obj).call(args, ...)`.
 
+[#examples-performancebindcall]
 === Examples
 
 [source,ruby]
@@ -157,6 +168,7 @@ umethod.bind(obj).(foo, bar)
 umethod.bind_call(obj, foo, bar)
 ----
 
+[#performanceblockgivenwithexplicitblock]
 == Performance/BlockGivenWithExplicitBlock
 
 |===
@@ -175,6 +187,7 @@ of block argument would suffice.
 NOTE: This cop produces code with significantly worse performance when a
 block is being passed to the method and as such should not be enabled.
 
+[#examples-performanceblockgivenwithexplicitblock]
 === Examples
 
 [source,ruby]
@@ -197,6 +210,7 @@ def method(&block)
 end
 ----
 
+[#performancecaller]
 == Performance/Caller
 
 |===
@@ -211,6 +225,7 @@ end
 
 Identifies places where `caller[n]` can be replaced by `caller(n..n).first`.
 
+[#examples-performancecaller]
 === Examples
 
 [source,ruby]
@@ -228,6 +243,7 @@ caller_locations(2..2).first
 caller_locations(1..1).first
 ----
 
+[#performancecasewhensplat]
 == Performance/CaseWhenSplat
 
 |===
@@ -254,6 +270,7 @@ conditions can be true for any given condition. A likely scenario for
 this defining a higher level when condition to override a condition
 that is inside of the splat expansion.
 
+[#safety-performancecasewhensplat]
 === Safety
 
 This cop is not unsafe autocorrection because it is not a guaranteed
@@ -263,6 +280,7 @@ it is possible that moving the splat condition to the end will use more memory,
 and run slightly slower.
 See for more details: https://github.com/rubocop/rubocop/pull/6163
 
+[#examples-performancecasewhensplat]
 === Examples
 
 [source,ruby]
@@ -298,6 +316,7 @@ when 5
 end
 ----
 
+[#performancecasecmp]
 == Performance/Casecmp
 
 |===
@@ -319,11 +338,13 @@ ASCII characters. See https://github.com/rubocop/rubocop/issues/9753.
 If you are working only with ASCII characters, then this cop can be
 safely enabled.
 
+[#safety-performancecasecmp]
 === Safety
 
 This cop is unsafe because `String#casecmp` and `String#casecmp?` behave
 differently when using Non-ASCII characters.
 
+[#examples-performancecasecmp]
 === Examples
 
 [source,ruby]
@@ -340,10 +361,12 @@ str.casecmp('ABC').zero?
 'abc'.casecmp(str).zero?
 ----
 
+[#references-performancecasecmp]
 === References
 
 * https://github.com/fastruby/fast-ruby#stringcasecmp-vs--stringcasecmp-vs-stringdowncase---code
 
+[#performancechainarrayallocation]
 == Performance/ChainArrayAllocation
 
 |===
@@ -360,6 +383,7 @@ Identifies usages of `array.compact.flatten.map { |x| x.downcase }`.
 Each of these methods (`compact`, `flatten`, `map`) will generate a new intermediate array
 that is promptly thrown away. Instead it is faster to mutate when we know it's safe.
 
+[#examples-performancechainarrayallocation]
 === Examples
 
 [source,ruby]
@@ -376,10 +400,12 @@ array.map! { |x| x.downcase }
 array
 ----
 
+[#references-performancechainarrayallocation]
 === References
 
 * https://twitter.com/schneems/status/1034123879978029057
 
+[#performancecollectionliteralinloop]
 == Performance/CollectionLiteralInLoop
 
 |===
@@ -399,6 +425,7 @@ to avoid unnecessary allocations on each iteration.
 You can set the minimum number of elements to consider
 an offense with `MinSize`.
 
+[#examples-performancecollectionliteralinloop]
 === Examples
 
 [source,ruby]
@@ -422,6 +449,7 @@ users.select do |user|
 end
 ----
 
+[#configurable-attributes-performancecollectionliteralinloop]
 === Configurable attributes
 
 |===
@@ -432,6 +460,7 @@ end
 | Integer
 |===
 
+[#performancecomparewithblock]
 == Performance/CompareWithBlock
 
 |===
@@ -448,6 +477,7 @@ Identifies places where `sort { |a, b| a.foo <=> b.foo }`
 can be replaced by `sort_by(&:foo)`.
 This cop also checks `sort!`, `min`, `max` and `minmax` methods.
 
+[#examples-performancecomparewithblock]
 === Examples
 
 [source,ruby]
@@ -473,6 +503,7 @@ array.minmax_by(&:foo)
 array.sort_by { |a| a[:foo] }
 ----
 
+[#performanceconcurrentmonotonictime]
 == Performance/ConcurrentMonotonicTime
 
 |===
@@ -488,6 +519,7 @@ array.sort_by { |a| a[:foo] }
 Identifies places where `Concurrent.monotonic_time`
 can be replaced by `Process.clock_gettime(Process::CLOCK_MONOTONIC)`.
 
+[#examples-performanceconcurrentmonotonictime]
 === Examples
 
 [source,ruby]
@@ -499,10 +531,12 @@ Concurrent.monotonic_time
 Process.clock_gettime(Process::CLOCK_MONOTONIC)
 ----
 
+[#references-performanceconcurrentmonotonictime]
 === References
 
 * https://github.com/rails/rails/pull/43502
 
+[#performanceconstantregexp]
 == Performance/ConstantRegexp
 
 |===
@@ -522,6 +556,7 @@ a regular expression. It is more efficient to extract it into a constant,
 memoize it, or add an `/o` option to perform `#{}` interpolation only once and
 reuse that Regexp object.
 
+[#examples-performanceconstantregexp]
 === Examples
 
 [source,ruby]
@@ -548,6 +583,7 @@ def separators
 end
 ----
 
+[#performancecount]
 == Performance/Count
 
 |===
@@ -564,6 +600,7 @@ Identifies usages of `count` on an `Enumerable` that
 follow calls to `select`, `find_all`, `filter` or `reject`. Querying logic can instead be
 passed to the `count` call.
 
+[#safety-performancecount]
 === Safety
 
 This cop is unsafe because it has known compatibility issues with `ActiveRecord` and other
@@ -586,6 +623,7 @@ becomes:
 `Model.where(id: [1, 2, 3]).to_a.count { |m| m.method == true }`
 ----
 
+[#examples-performancecount]
 === Examples
 
 [source,ruby]
@@ -608,6 +646,7 @@ Model.select('field AS field_one').count
 Model.select(:value).count
 ----
 
+[#performancedeleteprefix]
 == Performance/DeletePrefix
 
 NOTE: Required Ruby version: 2.5
@@ -633,10 +672,12 @@ for receiver is multiline string.
 
 The `delete_prefix('prefix')` method is faster than `gsub(/\Aprefix/, '')`.
 
+[#safety-performancedeleteprefix]
 === Safety
 
 This cop is unsafe because `Pathname` has `sub` but not `delete_prefix`.
 
+[#examples-performancedeleteprefix]
 === Examples
 
 [source,ruby]
@@ -653,6 +694,7 @@ str.delete_prefix('prefix')
 str.delete_prefix!('prefix')
 ----
 
+[#safemultiline_-true-_default_-performancedeleteprefix]
 ==== SafeMultiline: true (default)
 
 [source,ruby]
@@ -664,6 +706,7 @@ str.sub(/^prefix/, '')
 str.sub!(/^prefix/, '')
 ----
 
+[#safemultiline_-false-performancedeleteprefix]
 ==== SafeMultiline: false
 
 [source,ruby]
@@ -675,6 +718,7 @@ str.sub(/^prefix/, '')
 str.sub!(/^prefix/, '')
 ----
 
+[#configurable-attributes-performancedeleteprefix]
 === Configurable attributes
 
 |===
@@ -685,6 +729,7 @@ str.sub!(/^prefix/, '')
 | Boolean
 |===
 
+[#performancedeletesuffix]
 == Performance/DeleteSuffix
 
 NOTE: Required Ruby version: 2.5
@@ -710,10 +755,12 @@ for receiver is multiline string.
 
 The `delete_suffix('suffix')` method is faster than `gsub(/suffix\z/, '')`.
 
+[#safety-performancedeletesuffix]
 === Safety
 
 This cop is unsafe because `Pathname` has `sub` but not `delete_suffix`.
 
+[#examples-performancedeletesuffix]
 === Examples
 
 [source,ruby]
@@ -730,6 +777,7 @@ str.delete_suffix('suffix')
 str.delete_suffix!('suffix')
 ----
 
+[#safemultiline_-true-_default_-performancedeletesuffix]
 ==== SafeMultiline: true (default)
 
 [source,ruby]
@@ -741,6 +789,7 @@ str.sub(/suffix$/, '')
 str.sub!(/suffix$/, '')
 ----
 
+[#safemultiline_-false-performancedeletesuffix]
 ==== SafeMultiline: false
 
 [source,ruby]
@@ -752,6 +801,7 @@ str.sub(/suffix$/, '')
 str.sub!(/suffix$/, '')
 ----
 
+[#configurable-attributes-performancedeletesuffix]
 === Configurable attributes
 
 |===
@@ -762,6 +812,7 @@ str.sub!(/suffix$/, '')
 | Boolean
 |===
 
+[#performancedetect]
 == Performance/Detect
 
 |===
@@ -778,12 +829,14 @@ Identifies usages of `first`, `last`, `[0]` or `[-1]`
 chained to `select`, `find_all` or `filter` and change them to use
 `detect` instead.
 
+[#safety-performancedetect]
 === Safety
 
 This cop is unsafe because it assumes that the receiver is an
 `Array` or equivalent, but can't reliably detect it. For example,
 if the receiver is a `Hash`, it may report a false positive.
 
+[#examples-performancedetect]
 === Examples
 
 [source,ruby]
@@ -803,10 +856,12 @@ if the receiver is a `Hash`, it may report a false positive.
 [].reverse.detect { |item| true }
 ----
 
+[#references-performancedetect]
 === References
 
 * https://github.com/fastruby/fast-ruby#enumerabledetect-vs-enumerableselectfirst-code
 
+[#performancedoublestartendwith]
 == Performance/DoubleStartEndWith
 
 |===
@@ -826,6 +881,7 @@ with an single `#start_with?`/`#end_with?` call.
 `IncludeActiveSupportAliases` configuration option is used to check for
 `starts_with?` and `ends_with?`. These methods are defined by Active Support.
 
+[#examples-performancedoublestartendwith]
 === Examples
 
 [source,ruby]
@@ -841,6 +897,7 @@ str.start_with?("a", "b", "c")
 str.end_with?(var1, var2)
 ----
 
+[#includeactivesupportaliases_-false-_default_-performancedoublestartendwith]
 ==== IncludeActiveSupportAliases: false (default)
 
 [source,ruby]
@@ -853,6 +910,7 @@ str.starts_with?("a", "b", "c")
 str.ends_with?(var1, var2)
 ----
 
+[#includeactivesupportaliases_-true-performancedoublestartendwith]
 ==== IncludeActiveSupportAliases: true
 
 [source,ruby]
@@ -866,6 +924,7 @@ str.starts_with?("a", "b", "c")
 str.ends_with?(var1, var2)
 ----
 
+[#configurable-attributes-performancedoublestartendwith]
 === Configurable attributes
 
 |===
@@ -876,6 +935,7 @@ str.ends_with?(var1, var2)
 | Boolean
 |===
 
+[#performanceendwith]
 == Performance/EndWith
 
 |===
@@ -894,12 +954,14 @@ This cop has `SafeMultiline` configuration option that `true` by default because
 `end$` is unsafe as it will behave incompatible with `end_with?`
 for receiver is multiline string.
 
+[#safety-performanceendwith]
 === Safety
 
 This will change to a new method call which isn't guaranteed to be on the
 object. Switching these methods has to be done with knowledge of the types
 of the variables which rubocop doesn't have.
 
+[#examples-performanceendwith]
 === Examples
 
 [source,ruby]
@@ -916,6 +978,7 @@ of the variables which rubocop doesn't have.
 'abc'.end_with?('bc')
 ----
 
+[#safemultiline_-true-_default_-performanceendwith]
 ==== SafeMultiline: true (default)
 
 [source,ruby]
@@ -929,6 +992,7 @@ of the variables which rubocop doesn't have.
 /bc$/.match('abc')
 ----
 
+[#safemultiline_-false-performanceendwith]
 ==== SafeMultiline: false
 
 [source,ruby]
@@ -942,6 +1006,7 @@ of the variables which rubocop doesn't have.
 /bc$/.match('abc')
 ----
 
+[#configurable-attributes-performanceendwith]
 === Configurable attributes
 
 |===
@@ -952,10 +1017,12 @@ of the variables which rubocop doesn't have.
 | Boolean
 |===
 
+[#references-performanceendwith]
 === References
 
 * https://github.com/fastruby/fast-ruby#stringmatch-vs-stringmatch-vs-stringstart_withstringend_with-code-start-code-end
 
+[#performancefixedsize]
 == Performance/FixedSize
 
 |===
@@ -970,6 +1037,7 @@ of the variables which rubocop doesn't have.
 
 Do not compute the size of statically sized objects.
 
+[#examples-performancefixedsize]
 === Examples
 
 [source,ruby]
@@ -1014,6 +1082,7 @@ waldo = { a: corge, b: grault }
 waldo.size
 ----
 
+[#performanceflatmap]
 == Performance/FlatMap
 
 |===
@@ -1029,6 +1098,7 @@ waldo.size
 Identifies usages of `map { ... }.flatten` and
 change them to use `flat_map { ... }` instead.
 
+[#examples-performanceflatmap]
 === Examples
 
 [source,ruby]
@@ -1043,6 +1113,7 @@ change them to use `flat_map { ... }` instead.
 [1, 2, 3, 4].collect { |e| [e, e] }.flatten
 ----
 
+[#configurable-attributes-performanceflatmap]
 === Configurable attributes
 
 |===
@@ -1053,10 +1124,12 @@ change them to use `flat_map { ... }` instead.
 | Boolean
 |===
 
+[#references-performanceflatmap]
 === References
 
 * https://github.com/fastruby/fast-ruby#enumerablemaparrayflatten-vs-enumerableflat_map-code
 
+[#performanceinefficienthashsearch]
 == Performance/InefficientHashSearch
 
 |===
@@ -1081,10 +1154,12 @@ performs a faster O(1) search for the key.
 both perform an O(n) search through all of the values, calling `values`
 allocates a new array while using `value?` does not.
 
+[#safety-performanceinefficienthashsearch]
 === Safety
 
 This cop is unsafe because it can't tell whether the receiver is a hash object.
 
+[#examples-performanceinefficienthashsearch]
 === Examples
 
 [source,ruby]
@@ -1110,10 +1185,12 @@ h = { a: 1, b: 2 }; h.values.include?(nil)
 h = { a: 1, b: 2 }; h.value?(nil)
 ----
 
+[#references-performanceinefficienthashsearch]
 === References
 
 * https://github.com/fastruby/fast-ruby#hashkey-instead-of-hashkeysinclude-code
 
+[#performanceioreadlines]
 == Performance/IoReadlines
 
 |===
@@ -1129,6 +1206,7 @@ h = { a: 1, b: 2 }; h.value?(nil)
 Identifies places where inefficient `readlines` method
 can be replaced by `each_line` to avoid fully loading file content into memory.
 
+[#examples-performanceioreadlines]
 === Examples
 
 [source,ruby]
@@ -1150,10 +1228,12 @@ file.each_line.find { |l| l.start_with?('#') }
 file.each_line { |l| puts l }
 ----
 
+[#references-performanceioreadlines]
 === References
 
 * https://docs.gitlab.com/ee/development/performance.html#reading-from-files-and-other-data-sources
 
+[#performancemapcompact]
 == Performance/MapCompact
 
 NOTE: Required Ruby version: 2.7
@@ -1178,12 +1258,14 @@ This cop identifies places where `map { ... }.compact` can be replaced by `filte
 [true, false, nil].filter_map(&:itself) #=> [true]
 ----
 
+[#safety-performancemapcompact]
 === Safety
 
 This cop's autocorrection is unsafe because `map { ... }.compact` might yield
 different results than `filter_map`. As illustrated in the example, `filter_map`
 also filters out falsy values, while `compact` only gets rid of `nil`.
 
+[#examples-performancemapcompact]
 === Examples
 
 [source,ruby]
@@ -1198,6 +1280,7 @@ ary.map(&:foo).compact!
 ary.compact.map(&:foo)
 ----
 
+[#performancemapmethodchain]
 == Performance/MapMethodChain
 
 |===
@@ -1235,11 +1318,13 @@ end
 [X.new, X.new].map { |x| x.foo.bar } # => [2, 4]
 ----
 
+[#safety-performancemapmethodchain]
 === Safety
 
 This cop is unsafe because false positives occur if the number of times the first method is executed
 affects the return value of subsequent methods.
 
+[#examples-performancemapmethodchain]
 === Examples
 
 [source,ruby]
@@ -1251,6 +1336,7 @@ array.map(&:foo).map(&:bar)
 array.map { |item| item.foo.bar }
 ----
 
+[#performancemethodobjectasblock]
 == Performance/MethodObjectAsBlock
 
 |===
@@ -1267,6 +1353,7 @@ Identifies places where methods are converted to blocks, with the
 use of `&method`, and passed as arguments to method calls.
 It is faster to replace those with explicit blocks, calling those methods inside.
 
+[#examples-performancemethodobjectasblock]
 === Examples
 
 [source,ruby]
@@ -1280,10 +1367,12 @@ array.map { |x| do_something(x) }
 [1, 2, 3].each { |x| out.puts(x) }
 ----
 
+[#references-performancemethodobjectasblock]
 === References
 
 * https://github.com/fastruby/fast-ruby#normal-way-to-apply-method-vs-method-code
 
+[#performanceopenstruct]
 == Performance/OpenStruct
 
 |===
@@ -1304,11 +1393,13 @@ This could have an effect on performance,
 especially in case of single-threaded
 applications with multiple `OpenStruct` instantiations.
 
+[#safety-performanceopenstruct]
 === Safety
 
 This cop is unsafe because `OpenStruct.new` and `Struct.new`
 are not equivalent.
 
+[#examples-performanceopenstruct]
 === Examples
 
 [source,ruby]
@@ -1329,6 +1420,7 @@ class MyClass
 end
 ----
 
+[#performancerangeinclude]
 == Performance/RangeInclude
 
 |===
@@ -1347,6 +1439,7 @@ item in a `Range` to see if a specified item is there. In contrast,
 end points of the `Range`. In a great majority of cases, this is what
 is wanted.
 
+[#safety-performancerangeinclude]
 === Safety
 
 This cop is unsafe because `Range#include?` (or `Range#member?`) and `Range#cover?`
@@ -1358,6 +1451,7 @@ Example of a case where `Range#cover?` may not provide the desired result:
 ('a'..'z').cover?('yellow') # => true
 ----
 
+[#examples-performancerangeinclude]
 === Examples
 
 [source,ruby]
@@ -1370,10 +1464,12 @@ Example of a case where `Range#cover?` may not provide the desired result:
 ('a'..'z').cover?('b') # => true
 ----
 
+[#references-performancerangeinclude]
 === References
 
 * https://github.com/fastruby/fast-ruby#cover-vs-include-code
 
+[#performanceredundantblockcall]
 == Performance/RedundantBlockCall
 
 |===
@@ -1389,6 +1485,7 @@ Example of a case where `Range#cover?` may not provide the desired result:
 Identifies the use of a `&block` parameter and `block.call`
 where `yield` would do just as well.
 
+[#examples-performanceredundantblockcall]
 === Examples
 
 [source,ruby]
@@ -1410,10 +1507,12 @@ def another
 end
 ----
 
+[#references-performanceredundantblockcall]
 === References
 
 * https://github.com/fastruby/fast-ruby#proccall-and-block-arguments-vs-yieldcode
 
+[#performanceredundantequalitycomparisonblock]
 == Performance/RedundantEqualityComparisonBlock
 
 NOTE: Required Ruby version: 2.5
@@ -1445,10 +1544,12 @@ This cop has `AllowRegexpMatch` option and it is true by default because
 [/pattern/].all?('pattern')                            # => false
 ----
 
+[#safety-performanceredundantequalitycomparisonblock]
 === Safety
 
 This cop is unsafe because `===` and `==` do not always behave the same.
 
+[#examples-performanceredundantequalitycomparisonblock]
 === Examples
 
 [source,ruby]
@@ -1464,6 +1565,7 @@ items.all?(pattern)
 items.all?(Klass)
 ----
 
+[#allowregexpmatch_-true-_default_-performanceredundantequalitycomparisonblock]
 ==== AllowRegexpMatch: true (default)
 
 [source,ruby]
@@ -1473,6 +1575,7 @@ items.all? { |item| item =~ pattern }
 items.all? { |item| item.match?(pattern) }
 ----
 
+[#allowregexpmatch_-false-performanceredundantequalitycomparisonblock]
 ==== AllowRegexpMatch: false
 
 [source,ruby]
@@ -1482,6 +1585,7 @@ items.all? { |item| item =~ pattern }
 items.all? { |item| item.match?(pattern) }
 ----
 
+[#configurable-attributes-performanceredundantequalitycomparisonblock]
 === Configurable attributes
 
 |===
@@ -1492,10 +1596,12 @@ items.all? { |item| item.match?(pattern) }
 | Boolean
 |===
 
+[#references-performanceredundantequalitycomparisonblock]
 === References
 
 * https://github.com/rails/rails/pull/41363
 
+[#performanceredundantmatch]
 == Performance/RedundantMatch
 
 |===
@@ -1512,6 +1618,7 @@ Identifies the use of `Regexp#match` or `String#match`, which
 returns `#<MatchData>`/`nil`. The return value of `=~` is an integral
 index/`nil` and is more performant.
 
+[#examples-performanceredundantmatch]
 === Examples
 
 [source,ruby]
@@ -1527,6 +1634,7 @@ method(str =~ /regex/)
 return value unless regex =~ 'str'
 ----
 
+[#performanceredundantmerge]
 == Performance/RedundantMerge
 
 |===
@@ -1543,11 +1651,13 @@ Identifies places where `Hash#merge!` can be replaced by `Hash#[]=`.
 You can set the maximum number of key-value pairs to consider
 an offense with `MaxKeyValuePairs`.
 
+[#safety-performanceredundantmerge]
 === Safety
 
 This cop is unsafe because RuboCop cannot determine if the
 receiver of `merge!` is actually a hash or not.
 
+[#examples-performanceredundantmerge]
 === Examples
 
 [source,ruby]
@@ -1561,6 +1671,7 @@ hash[:a] = 1
 hash['key'] = 'value'
 ----
 
+[#maxkeyvaluepairs_-2-_default_-performanceredundantmerge]
 ==== MaxKeyValuePairs: 2 (default)
 
 [source,ruby]
@@ -1573,6 +1684,7 @@ hash[:a] = 1
 hash[:b] = 2
 ----
 
+[#configurable-attributes-performanceredundantmerge]
 === Configurable attributes
 
 |===
@@ -1583,10 +1695,12 @@ hash[:b] = 2
 | Integer
 |===
 
+[#references-performanceredundantmerge]
 === References
 
 * https://github.com/fastruby/fast-ruby#hashmerge-vs-hash-code
 
+[#performanceredundantsortblock]
 == Performance/RedundantSortBlock
 
 |===
@@ -1601,6 +1715,7 @@ hash[:b] = 2
 
 Identifies places where `sort { |a, b| a <=> b }` can be replaced with `sort`.
 
+[#examples-performanceredundantsortblock]
 === Examples
 
 [source,ruby]
@@ -1612,6 +1727,7 @@ array.sort { |a, b| a <=> b }
 array.sort
 ----
 
+[#performanceredundantsplitregexpargument]
 == Performance/RedundantSplitRegexpArgument
 
 |===
@@ -1627,6 +1743,7 @@ array.sort
 Identifies places where `split` argument can be replaced from
 a deterministic regexp to a string.
 
+[#examples-performanceredundantsplitregexpargument]
 === Examples
 
 [source,ruby]
@@ -1638,6 +1755,7 @@ a deterministic regexp to a string.
 'a,b,c'.split(',')
 ----
 
+[#performanceredundantstringchars]
 == Performance/RedundantStringChars
 
 |===
@@ -1652,6 +1770,7 @@ a deterministic regexp to a string.
 
 Checks for redundant `String#chars`.
 
+[#examples-performanceredundantstringchars]
 === Examples
 
 [source,ruby]
@@ -1691,6 +1810,7 @@ str.chars.last(2) # Incompatible with `str[-2..-1].chars`.
 str.chars.drop(2) # Incompatible with `str[2..-1].chars`.
 ----
 
+[#performanceregexpmatch]
 == Performance/RegexpMatch
 
 NOTE: Required Ruby version: 2.4
@@ -1711,6 +1831,7 @@ Because the methods avoid creating a `MatchData` object or saving
 backref.
 So, when `MatchData` is not used, use `match?` instead of `match`.
 
+[#examples-performanceregexpmatch]
 === Examples
 
 [source,ruby]
@@ -1779,10 +1900,12 @@ def foo
 end
 ----
 
+[#references-performanceregexpmatch]
 === References
 
 * https://github.com/fastruby/fast-ruby#regexp-vs-regexpmatch-vs-regexpmatch-vs-stringmatch-vs-string-vs-stringmatch-code-
 
+[#performancereverseeach]
 == Performance/ReverseEach
 
 |===
@@ -1805,6 +1928,7 @@ If the return value is used, it will not be detected because the result will be 
 [1, 2, 3].reverse_each {} #=> [1, 2, 3]
 ----
 
+[#examples-performancereverseeach]
 === Examples
 
 [source,ruby]
@@ -1816,10 +1940,12 @@ items.reverse.each
 items.reverse_each
 ----
 
+[#references-performancereverseeach]
 === References
 
 * https://github.com/fastruby/fast-ruby#enumerablereverseeach-vs-enumerablereverse_each-code
 
+[#performancereversefirst]
 == Performance/ReverseFirst
 
 |===
@@ -1835,6 +1961,7 @@ items.reverse_each
 Identifies places where `reverse.first(n)` and `reverse.first`
 can be replaced by `last(n).reverse` and `last`.
 
+[#examples-performancereversefirst]
 === Examples
 
 [source,ruby]
@@ -1848,6 +1975,7 @@ array.last(5).reverse
 array.last
 ----
 
+[#performanceselectmap]
 == Performance/SelectMap
 
 NOTE: Required Ruby version: 2.7
@@ -1866,6 +1994,7 @@ In Ruby 2.7, `Enumerable#filter_map` has been added.
 
 This cop identifies places where `select.map` can be replaced by `filter_map`.
 
+[#examples-performanceselectmap]
 === Examples
 
 [source,ruby]
@@ -1878,6 +2007,7 @@ ary.filter(&:foo).map(&:bar)
 ary.filter_map { |o| o.bar if o.foo }
 ----
 
+[#performancesize]
 == Performance/Size
 
 |===
@@ -1895,6 +2025,7 @@ Identifies usages of `count` on an `Array` and `Hash` and change them to `size`.
 TODO: Add advanced detection of variables that could
 have been assigned to an array or a hash.
 
+[#examples-performancesize]
 === Examples
 
 [source,ruby]
@@ -1927,10 +2058,12 @@ Hash(key: :value).size
 [1, 2, 3].count { |e| e > 2 }
 ----
 
+[#references-performancesize]
 === References
 
 * https://github.com/fastruby/fast-ruby#arraylength-vs-arraysize-vs-arraycount-code
 
+[#performancesortreverse]
 == Performance/SortReverse
 
 |===
@@ -1946,6 +2079,7 @@ Hash(key: :value).size
 Identifies places where `sort { |a, b| b <=> a }`
 can be replaced by a faster `sort.reverse`.
 
+[#examples-performancesortreverse]
 === Examples
 
 [source,ruby]
@@ -1957,6 +2091,7 @@ array.sort { |a, b| b <=> a }
 array.sort.reverse
 ----
 
+[#performancesqueeze]
 == Performance/Squeeze
 
 |===
@@ -1974,6 +2109,7 @@ can be replaced by `squeeze('a')` and `squeeze!('a')`.
 
 The `squeeze('a')` method is faster than `gsub(/a+/, 'a')`.
 
+[#examples-performancesqueeze]
 === Examples
 
 [source,ruby]
@@ -1987,10 +2123,12 @@ str.squeeze('a')
 str.squeeze!('a')
 ----
 
+[#references-performancesqueeze]
 === References
 
 * https://github.com/fastruby/fast-ruby#remove-extra-spaces-or-other-contiguous-characters-code
 
+[#performancestartwith]
 == Performance/StartWith
 
 |===
@@ -2009,12 +2147,14 @@ This cop has `SafeMultiline` configuration option that `true` by default because
 `^start` is unsafe as it will behave incompatible with `start_with?`
 for receiver is multiline string.
 
+[#safety-performancestartwith]
 === Safety
 
 This will change to a new method call which isn't guaranteed to be on the
 object. Switching these methods has to be done with knowledge of the types
 of the variables which rubocop doesn't have.
 
+[#examples-performancestartwith]
 === Examples
 
 [source,ruby]
@@ -2031,6 +2171,7 @@ of the variables which rubocop doesn't have.
 'abc'.start_with?('ab')
 ----
 
+[#safemultiline_-true-_default_-performancestartwith]
 ==== SafeMultiline: true (default)
 
 [source,ruby]
@@ -2044,6 +2185,7 @@ of the variables which rubocop doesn't have.
 /^ab/.match('abc')
 ----
 
+[#safemultiline_-false-performancestartwith]
 ==== SafeMultiline: false
 
 [source,ruby]
@@ -2057,6 +2199,7 @@ of the variables which rubocop doesn't have.
 /^ab/.match('abc')
 ----
 
+[#configurable-attributes-performancestartwith]
 === Configurable attributes
 
 |===
@@ -2067,10 +2210,49 @@ of the variables which rubocop doesn't have.
 | Boolean
 |===
 
+[#references-performancestartwith]
 === References
 
 * https://github.com/fastruby/fast-ruby#stringmatch-vs-stringmatch-vs-stringstart_withstringend_with-code-start-code-end
 
+[#performancestringbytesize]
+== Performance/StringBytesize
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| No
+| Always (Unsafe)
+| 1.23
+| -
+|===
+
+Checks for calls to `#bytes` counting method and suggests using `bytesize` instead.
+The `bytesize` method is more efficient and directly returns the size in bytes,
+avoiding the intermediate array allocation that `bytes.size` incurs.
+
+[#safety-performancestringbytesize]
+=== Safety
+
+This cop is unsafe because it assumes that the receiver
+responds to `#bytesize` method.
+
+[#examples-performancestringbytesize]
+=== Examples
+
+[source,ruby]
+----
+# bad
+string_var.bytes.count
+"foobar".bytes.size
+
+# good
+string_var.bytesize
+"foobar".bytesize
+----
+
+[#performancestringidentifierargument]
 == Performance/StringIdentifierArgument
 
 |===
@@ -2090,6 +2272,7 @@ It prevents the redundancy of the internal string-to-symbol conversion.
 This cop targets methods that take identifier (e.g. method name) argument
 and the following examples are parts of it.
 
+[#examples-performancestringidentifierargument]
 === Examples
 
 [source,ruby]
@@ -2112,6 +2295,7 @@ const_source_location("#{module_path}::Base")
 const_defined?("#{module_path}::Base")
 ----
 
+[#performancestringinclude]
 == Performance/StringInclude
 
 |===
@@ -2126,10 +2310,12 @@ const_defined?("#{module_path}::Base")
 
 Identifies unnecessary use of a regex where `String#include?` would suffice.
 
+[#safety-performancestringinclude]
 === Safety
 
 This cop's offenses are not safe to autocorrect if a receiver is nil or a Symbol.
 
+[#examples-performancestringinclude]
 === Examples
 
 [source,ruby]
@@ -2147,6 +2333,7 @@ str.match(/ab/)
 str.include?('ab')
 ----
 
+[#performancestringreplacement]
 == Performance/StringReplacement
 
 |===
@@ -2161,6 +2348,7 @@ str.include?('ab')
 
 Identifies places where `gsub` can be replaced by `tr` or `delete`.
 
+[#examples-performancestringreplacement]
 === Examples
 
 [source,ruby]
@@ -2178,10 +2366,12 @@ Identifies places where `gsub` can be replaced by `tr` or `delete`.
 'a b c'.delete(' ')
 ----
 
+[#references-performancestringreplacement]
 === References
 
 * https://github.com/fastruby/fast-ruby#stringgsub-vs-stringtr-code
 
+[#performancesum]
 == Performance/Sum
 
 NOTE: Required Ruby version: 2.4
@@ -2199,6 +2389,7 @@ NOTE: Required Ruby version: 2.4
 Identifies places where custom code finding the sum of elements
 in some Enumerable object can be replaced by `Enumerable#sum` method.
 
+[#safety-performancesum]
 === Safety
 
 Autocorrections are unproblematic wherever an initial value is provided explicitly:
@@ -2235,8 +2426,10 @@ as initial value and successively add all following values to it, whereas
 ['H', 'e', 'l', 'l', 'o'].sum # => in `+': String can't be coerced into Integer (TypeError)
 ----
 
+[#examples-performancesum]
 === Examples
 
+[#onlysumorwithinitialvalue_-false-_default_-performancesum]
 ==== OnlySumOrWithInitialValue: false (default)
 
 [source,ruby]
@@ -2256,6 +2449,7 @@ as initial value and successively add all following values to it, whereas
 [1, 2, 3].sum(10, &:count)
 ----
 
+[#onlysumorwithinitialvalue_-true-performancesum]
 ==== OnlySumOrWithInitialValue: true
 
 [source,ruby]
@@ -2271,6 +2465,7 @@ as initial value and successively add all following values to it, whereas
 [1, 2, 3].sum(10, &:count)
 ----
 
+[#configurable-attributes-performancesum]
 === Configurable attributes
 
 |===
@@ -2281,10 +2476,12 @@ as initial value and successively add all following values to it, whereas
 | Boolean
 |===
 
+[#references-performancesum]
 === References
 
 * https://blog.bigbinary.com/2016/11/02/ruby-2-4-introduces-enumerable-sum.html
 
+[#performancetimesmap]
 == Performance/TimesMap
 
 |===
@@ -2301,6 +2498,7 @@ Checks for .times.map calls.
 In most cases such calls can be replaced
 with an explicit array creation.
 
+[#safety-performancetimesmap]
 === Safety
 
 This cop's autocorrection is unsafe because `Integer#times` does nothing if receiver is 0
@@ -2314,6 +2512,7 @@ For example:
 Array.new(-1) # ArgumentError: negative array size
 ----
 
+[#examples-performancetimesmap]
 === Examples
 
 [source,ruby]
@@ -2329,6 +2528,7 @@ Array.new(9) do |i|
 end
 ----
 
+[#performanceunfreezestring]
 == Performance/UnfreezeString
 
 NOTE: Required Ruby version: 2.3
@@ -2347,6 +2547,7 @@ In Ruby 2.3 or later, use unary plus operator to unfreeze a string
 literal instead of `String#dup` and `String.new`.
 Unary plus operator is faster than `String#dup`.
 
+[#safety-performanceunfreezestring]
 === Safety
 
 This cop's autocorrection is unsafe because `String.new` (without operator) is not
@@ -2354,6 +2555,7 @@ exactly the same as `+''`. These differ in encoding. `String.new.encoding` is al
 `ASCII-8BIT`. However, `(+'').encoding` is the same as script encoding(e.g. `UTF-8`).
 if you expect `ASCII-8BIT` encoding, disable this cop.
 
+[#examples-performanceunfreezestring]
 === Examples
 
 [source,ruby]
@@ -2370,6 +2572,7 @@ String.new('something')
 +''
 ----
 
+[#performanceuridefaultparser]
 == Performance/UriDefaultParser
 
 |===
@@ -2384,6 +2587,7 @@ String.new('something')
 
 Identifies places where `URI::Parser.new` can be replaced by `URI::DEFAULT_PARSER`.
 
+[#examples-performanceuridefaultparser]
 === Examples
 
 [source,ruby]

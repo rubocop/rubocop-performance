@@ -11,6 +11,8 @@
 
 ## master (unreleased)
 
+## 1.23.0 (2024-11-14)
+
 ### New features
 
 * [#474](https://github.com/rubocop/rubocop-performance/pull/474): Add new `Performance/StringBytesize` cop. ([@viralpraxis][])
