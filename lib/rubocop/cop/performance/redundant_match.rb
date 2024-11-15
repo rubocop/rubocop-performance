@@ -72,7 +72,7 @@ module RuboCop
 
         def requires_parentheses?(arg)
           return true if arg.if_type? && arg.ternary?
-          return true if arg.and_type? || arg.or_type? || arg.range_type?
+          return true if arg.operator_keyword? || arg.range_type?
 
           call_like?(arg) && requires_parentheses_for_call_like?(arg)
         end
