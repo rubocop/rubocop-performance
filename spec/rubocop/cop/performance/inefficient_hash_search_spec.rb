@@ -138,28 +138,24 @@ RSpec.describe RuboCop::Cop::Performance::InefficientHashSearch, :config do
   end
 
   context 'when config specifies long hash methods but is not enabled' do
-    let(:config) do
-      RuboCop::Config.new(
-        'AllCops' => {
-          'Style/PreferredHashMethods' => {
-            'EnforcedStyle' => 'long', 'Enabled' => false
-          }
+    let(:other_cops) do
+      {
+        'Style/PreferredHashMethods' => {
+          'EnforcedStyle' => 'long', 'Enabled' => false
         }
-      )
+      }
     end
 
     it_behaves_like 'correct behavior', :short
   end
 
   context 'when config enforces long hash methods' do
-    let(:config) do
-      RuboCop::Config.new(
-        'AllCops' => {
-          'Style/PreferredHashMethods' => {
-            'EnforcedStyle' => 'long', 'Enabled' => true
-          }
+    let(:other_cops) do
+      {
+        'Style/PreferredHashMethods' => {
+          'EnforcedStyle' => 'long', 'Enabled' => true
         }
-      )
+      }
     end
 
     it_behaves_like 'correct behavior', :long
