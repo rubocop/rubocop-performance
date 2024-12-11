@@ -48,7 +48,7 @@ module RuboCop
         RESTRICT_ON_SEND = %i[[] slice first last take length size empty?].freeze
 
         def_node_matcher :redundant_chars_call?, <<~PATTERN
-          (send $(send _ :chars) $_ $...)
+          (send $(send !nil? :chars) $_ $...)
         PATTERN
 
         def on_send(node)
