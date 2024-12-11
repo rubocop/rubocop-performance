@@ -139,4 +139,10 @@ RSpec.describe RuboCop::Cop::Performance::RedundantStringChars, :config do
       str.chars.max
     RUBY
   end
+
+  it 'does not register an offense with implicit receiver' do
+    expect_no_offenses(<<~RUBY)
+      chars.size
+    RUBY
+  end
 end
