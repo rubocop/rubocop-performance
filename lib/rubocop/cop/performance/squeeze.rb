@@ -46,7 +46,11 @@ module RuboCop
             message = format(MSG, current: bad_method, prefer: good_method)
 
             add_offense(node.loc.selector, message: message) do |corrector|
-              string_literal = to_string_literal(replace_str)
+              # FIXME: When requiring only RuboCop 1.70.0 and above,
+              # `dup` in `replace_str.dup` becomes unnecessary, as
+              # frozen strings are handled in the `to_string_literal`
+              # implementation. Please remove it.
+              string_literal = to_string_literal(replace_str.dup)
               new_code = "#{receiver.source}#{node.loc.dot.source}#{good_method}(#{string_literal})"
 
               corrector.replace(node, new_code)
