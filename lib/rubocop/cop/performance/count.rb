@@ -18,14 +18,14 @@ module RuboCop
       #
       #   [source,ruby]
       #   ----
-      #   `Model.where(id: [1, 2, 3]).select { |m| m.method == true }.size`
+      #   Model.where(id: [1, 2, 3]).select { |m| m.method == true }.size
       #   ----
       #
       #   becomes:
       #
       #   [source,ruby]
       #   ----
-      #   `Model.where(id: [1, 2, 3]).to_a.count { |m| m.method == true }`
+      #   Model.where(id: [1, 2, 3]).to_a.count { |m| m.method == true }
       #   ----
       #
       # @example
