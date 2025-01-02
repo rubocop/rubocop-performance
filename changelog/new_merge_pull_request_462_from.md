@@ -1,0 +1,1 @@
+* [#462](https://github.com/rubocop/rubocop-performance/pull/462): Add new `Performance/ZipForArrayWrapping` cop that checks patterns like `.map { |id| [id] }` or `.map { [_1] }` and can safely replace them with `.zip`. ([@corsonknowles][])
