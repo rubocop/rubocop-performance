@@ -27,9 +27,11 @@ Gem::Specification.new do |s|
     'source_code_uri' => 'https://github.com/rubocop/rubocop-performance/',
     'documentation_uri' => "https://docs.rubocop.org/rubocop-performance/#{RuboCop::Performance::Version.document_version}/",
     'bug_tracker_uri' => 'https://github.com/rubocop/rubocop-performance/issues',
-    'rubygems_mfa_required' => 'true'
+    'rubygems_mfa_required' => 'true',
+    'default_lint_roller_plugin' => 'RuboCop::Performance::Plugin'
   }
 
-  s.add_dependency('rubocop', '>= 1.48.1', '< 2.0')
+  s.add_dependency('lint_roller', '~> 1.1')
+  s.add_dependency('rubocop', '>= 1.72.1', '< 2.0')
   s.add_dependency('rubocop-ast', '>= 1.38.0', '< 2.0')
 end
