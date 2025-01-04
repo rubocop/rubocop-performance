@@ -4,9 +4,17 @@ require 'rubocop'
 
 require_relative 'rubocop/performance'
 require_relative 'rubocop/performance/version'
-require_relative 'rubocop/performance/inject'
 
-RuboCop::Performance::Inject.defaults!
+# FIXME: When RuboCop Rails requires RuboCop 1.72.0+ only, the following compatibility code can be removed.
+if RuboCop.const_defined?(:Plugin)
+  require_relative 'rubocop/performance/plugin'
+else
+  # NOTE: Until the plugin stabilizes, an option to use the older version of RuboCop is provided.
+  # The plugin will be unified in the future.
+  require_relative 'rubocop/performance/inject'
+
+  RuboCop::Performance::Inject.defaults!
+end
 
 require_relative 'rubocop/cop/performance_cops'
 
