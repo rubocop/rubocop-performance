@@ -11,6 +11,11 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#478](https://github.com/rubocop/rubocop-performance/pull/478): Fix `Performance/RedundantStringChars` cop error in case of implicit receiver. ([@viralpraxis][])
+* [#480](https://github.com/rubocop/rubocop-performance/pull/480): Fix `Performance/Squeeze` cop error on frozen AST string node value. ([@viralpraxis][])
+
 ## 1.23.0 (2024-11-14)
 
 ### New features
