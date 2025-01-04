@@ -47,7 +47,7 @@ A <= B
 [#performancearraysemiinfiniterangeslice]
 == Performance/ArraySemiInfiniteRangeSlice
 
-NOTE: Required Ruby version: 2.7
+NOTE: Requires Ruby version 2.7
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -92,7 +92,7 @@ array.take(3)
 [#performancebigdecimalwithnumericargument]
 == Performance/BigDecimalWithNumericArgument
 
-NOTE: Required Ruby version: 3.1
+NOTE: Requires Ruby version 3.1
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -135,7 +135,7 @@ BigDecimal(1, 2)
 [#performancebindcall]
 == Performance/BindCall
 
-NOTE: Required Ruby version: 2.7
+NOTE: Requires Ruby version 2.7
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -613,14 +613,14 @@ For example:
 
 [source,ruby]
 ----
-`Model.where(id: [1, 2, 3]).select { |m| m.method == true }.size`
+Model.where(id: [1, 2, 3]).select { |m| m.method == true }.size
 ----
 
 becomes:
 
 [source,ruby]
 ----
-`Model.where(id: [1, 2, 3]).to_a.count { |m| m.method == true }`
+Model.where(id: [1, 2, 3]).to_a.count { |m| m.method == true }
 ----
 
 [#examples-performancecount]
@@ -649,7 +649,7 @@ Model.select(:value).count
 [#performancedeleteprefix]
 == Performance/DeletePrefix
 
-NOTE: Required Ruby version: 2.5
+NOTE: Requires Ruby version 2.5
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -732,7 +732,7 @@ str.sub!(/^prefix/, '')
 [#performancedeletesuffix]
 == Performance/DeleteSuffix
 
-NOTE: Required Ruby version: 2.5
+NOTE: Requires Ruby version 2.5
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -1236,7 +1236,7 @@ file.each_line { |l| puts l }
 [#performancemapcompact]
 == Performance/MapCompact
 
-NOTE: Required Ruby version: 2.7
+NOTE: Requires Ruby version 2.7
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -1515,7 +1515,7 @@ end
 [#performanceredundantequalitycomparisonblock]
 == Performance/RedundantEqualityComparisonBlock
 
-NOTE: Required Ruby version: 2.5
+NOTE: Requires Ruby version 2.5
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -1813,7 +1813,7 @@ str.chars.drop(2) # Incompatible with `str[2..-1].chars`.
 [#performanceregexpmatch]
 == Performance/RegexpMatch
 
-NOTE: Required Ruby version: 2.4
+NOTE: Requires Ruby version 2.4
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -1978,7 +1978,7 @@ array.last
 [#performanceselectmap]
 == Performance/SelectMap
 
-NOTE: Required Ruby version: 2.7
+NOTE: Requires Ruby version 2.7
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -2374,7 +2374,7 @@ Identifies places where `gsub` can be replaced by `tr` or `delete`.
 [#performancesum]
 == Performance/Sum
 
-NOTE: Required Ruby version: 2.4
+NOTE: Requires Ruby version 2.4
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -2531,7 +2531,7 @@ end
 [#performanceunfreezestring]
 == Performance/UnfreezeString
 
-NOTE: Required Ruby version: 2.3
+NOTE: Requires Ruby version 2.3
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
