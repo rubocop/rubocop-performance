@@ -54,6 +54,31 @@ RSpec.describe RuboCop::Cop::Performance::CaseWhenSplat, :config do
     RUBY
   end
 
+  it 'registers an offense for case when with a splat in the first condition with branch without body' do
+    expect_offense(<<~RUBY)
+      case foo
+      when *cond
+      ^^^^^^^^^^ Reordering `when` conditions with a splat to the end of the `when` branches can improve performance.
+        # bar
+        # bar
+          # bar
+      when 3
+        baz
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      case foo
+      when 3
+        baz
+      when *cond
+        # bar
+        # bar
+          # bar
+      end
+    RUBY
+  end
+
   it 'registers an offense for case when with a splat without an else' do
     expect_offense(<<~RUBY)
       case foo

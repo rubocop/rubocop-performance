@@ -58,6 +58,7 @@ module RuboCop
       class CaseWhenSplat < Base
         include Alignment
         include RangeHelp
+        include CommentsHelp
         extend AutoCorrector
 
         MSG = 'Reordering `when` conditions with a splat to the end of the `when` branches can improve performance.'
@@ -116,11 +117,18 @@ module RuboCop
         def reordering_correction(when_node)
           new_condition = replacement(when_node.conditions)
 
-          if same_line?(when_node, when_node.body)
-            new_condition_with_then(when_node, new_condition)
-          else
-            new_branch_without_then(when_node, new_condition)
-          end
+          condition =
+            if same_line?(when_node, when_node.body)
+              new_condition_with_then(when_node, new_condition)
+            else
+              new_branch_without_then(when_node, new_condition)
+            end
+
+          condition_comments = comments_in_range(when_node).map do |comment_node|
+            "#{indent_for(comment_node)}#{comment_node.source}"
+          end.join("\n")
+
+          "#{condition}#{condition_comments}"
         end
 
         def when_branch_range(when_node)
@@ -134,7 +142,13 @@ module RuboCop
         end
 
         def new_branch_without_then(node, new_condition)
-          "\n#{indent_for(node)}when #{new_condition}\n#{indent_for(node.body)}#{node.body.source}"
+          new_branch = "\n#{indent_for(node)}when #{new_condition}\n"
+
+          if node.body
+            "#{new_branch}#{indent_for(node.body)}#{node.body.source}"
+          else
+            new_branch
+          end
         end
 
         def indent_for(node)
