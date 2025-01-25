@@ -65,6 +65,8 @@ module RuboCop
 
         HASH_METHODS = (ENUMERABLE_METHOD_NAMES | NONMUTATING_HASH_METHODS).to_set.freeze
 
+        RESTRICT_ON_SEND = ARRAY_METHODS + HASH_METHODS
+
         def_node_matcher :kernel_loop?, <<~PATTERN
           (block
             (send {nil? (const nil? :Kernel)} :loop)

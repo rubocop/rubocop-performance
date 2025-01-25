@@ -45,6 +45,8 @@ module RuboCop
 
         RETURNS_NEW_ARRAY = (ALWAYS_RETURNS_NEW_ARRAY + RETURNS_NEW_ARRAY_WHEN_NO_BLOCK).freeze
 
+        RESTRICT_ON_SEND = RETURNS_NEW_ARRAY
+
         MSG = 'Use unchained `%<method>s` and `%<second_method>s!` ' \
               '(followed by `return array` if required) instead of chaining ' \
               '`%<method>s...%<second_method>s`.'
