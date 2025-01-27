@@ -44,8 +44,8 @@ module RuboCop
 
         def_node_matcher :endless_range?, <<~PATTERN
           {
-            ({irange erange} nil? (int positive?))
-            ({irange erange} (int positive?) nil?)
+            (range nil? (int positive?))
+            (range (int positive?) nil?)
           }
         PATTERN
 
