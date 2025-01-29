@@ -381,3 +381,9 @@ Performance/UriDefaultParser:
   Description: 'Use `URI::DEFAULT_PARSER` instead of `URI::Parser.new`.'
   Enabled: true
   VersionAdded: '0.50'
+
+Performance/ZipWithoutBlock:
+  Description: 'Checks for `map { |id| [id] }` and suggests replacing it with `zip`.'
+  Enabled: pending
+  Safe: false
+  VersionAdded: <<next>>
