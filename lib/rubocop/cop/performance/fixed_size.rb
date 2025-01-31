@@ -75,7 +75,7 @@ module RuboCop
         end
 
         def allowed_parent?(node)
-          node && (node.casgn_type? || node.block_type?)
+          node&.type?(:casgn, :block)
         end
 
         def contains_splat?(node)

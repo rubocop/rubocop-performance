@@ -69,7 +69,7 @@ module RuboCop
 
         def handleable_receiver?(node)
           receiver = node.receiver.receiver
-          return true if receiver.literal? && (receiver.int_type? || receiver.float_type?)
+          return true if receiver.literal? && receiver.type?(:int, :float)
 
           node.receiver.dot?
         end

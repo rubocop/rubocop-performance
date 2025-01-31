@@ -84,7 +84,7 @@ module RuboCop
         end
 
         def call_like?(arg)
-          arg.call_type? || arg.yield_type? || arg.super_type?
+          arg.type?(:call, :yield, :super)
         end
       end
     end
