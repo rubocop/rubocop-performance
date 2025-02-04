@@ -138,6 +138,16 @@ RSpec.describe 'RuboCop Performance Project', type: :feature do
       end
     end
 
+    it 'is expected that all cops have a benchmark script' do
+      cop_names.each do |cop_name|
+        cop = cop_name.split('/')[1].gsub!(/[A-Z]/) do |capture|
+          "_#{capture.downcase}"
+        end.delete_prefix('_')
+        bench_path = "bench/#{cop}.rb"
+        expect(File.exist?(bench_path)).to be(true), "Create benchmark script #{bench_path}"
+      end
+    end
+
     it 'sorts cop names alphabetically' do
       previous_key = ''
       config_default = YAML.load_file('config/default.yml')
