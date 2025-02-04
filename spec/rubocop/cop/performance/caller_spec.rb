@@ -17,11 +17,11 @@ RSpec.describe RuboCop::Cop::Performance::Caller, :config do
     expect(caller.first).to eq(caller(1..1).first)
     expect_offense(<<~RUBY)
       caller.first
-      ^^^^^^^^^^^^ Use `caller(1..1).first` instead of `caller.first`.
+      ^^^^^^^^^^^^ Use `caller(1..1)&.first` instead of `caller.first`.
     RUBY
 
     expect_correction(<<~RUBY)
-      caller(1..1).first
+      caller(1..1)&.first
     RUBY
   end
 
@@ -29,11 +29,11 @@ RSpec.describe RuboCop::Cop::Performance::Caller, :config do
     expect(caller(1).first).to eq(caller(1..1).first)
     expect_offense(<<~RUBY)
       caller(1).first
-      ^^^^^^^^^^^^^^^ Use `caller(1..1).first` instead of `caller(1).first`.
+      ^^^^^^^^^^^^^^^ Use `caller(1..1)&.first` instead of `caller(1).first`.
     RUBY
 
     expect_correction(<<~RUBY)
-      caller(1..1).first
+      caller(1..1)&.first
     RUBY
   end
 
@@ -41,11 +41,11 @@ RSpec.describe RuboCop::Cop::Performance::Caller, :config do
     expect(caller(2).first).to eq(caller(2..2).first)
     expect_offense(<<~RUBY)
       caller(2).first
-      ^^^^^^^^^^^^^^^ Use `caller(2..2).first` instead of `caller(2).first`.
+      ^^^^^^^^^^^^^^^ Use `caller(2..2)&.first` instead of `caller(2).first`.
     RUBY
 
     expect_correction(<<~RUBY)
-      caller(2..2).first
+      caller(2..2)&.first
     RUBY
   end
 
@@ -53,11 +53,11 @@ RSpec.describe RuboCop::Cop::Performance::Caller, :config do
     expect(caller[1]).to eq(caller(2..2).first)
     expect_offense(<<~RUBY)
       caller[1]
-      ^^^^^^^^^ Use `caller(2..2).first` instead of `caller[1]`.
+      ^^^^^^^^^ Use `caller(2..2)&.first` instead of `caller[1]`.
     RUBY
 
     expect_correction(<<~RUBY)
-      caller(2..2).first
+      caller(2..2)&.first
     RUBY
   end
 
@@ -65,11 +65,11 @@ RSpec.describe RuboCop::Cop::Performance::Caller, :config do
     expect(caller(1)[1]).to eq(caller(2..2).first)
     expect_offense(<<~RUBY)
       caller(1)[1]
-      ^^^^^^^^^^^^ Use `caller(2..2).first` instead of `caller(1)[1]`.
+      ^^^^^^^^^^^^ Use `caller(2..2)&.first` instead of `caller(1)[1]`.
     RUBY
 
     expect_correction(<<~RUBY)
-      caller(2..2).first
+      caller(2..2)&.first
     RUBY
   end
 
@@ -77,11 +77,11 @@ RSpec.describe RuboCop::Cop::Performance::Caller, :config do
     expect(caller(2)[1]).to eq(caller(3..3).first)
     expect_offense(<<~RUBY)
       caller(2)[1]
-      ^^^^^^^^^^^^ Use `caller(3..3).first` instead of `caller(2)[1]`.
+      ^^^^^^^^^^^^ Use `caller(3..3)&.first` instead of `caller(2)[1]`.
     RUBY
 
     expect_correction(<<~RUBY)
-      caller(3..3).first
+      caller(3..3)&.first
     RUBY
   end
 
@@ -89,11 +89,11 @@ RSpec.describe RuboCop::Cop::Performance::Caller, :config do
     expect(caller_locations.first.to_s).to eq(caller_locations(1..1).first.to_s)
     expect_offense(<<~RUBY)
       caller_locations.first
-      ^^^^^^^^^^^^^^^^^^^^^^ Use `caller_locations(1..1).first` instead of `caller_locations.first`.
+      ^^^^^^^^^^^^^^^^^^^^^^ Use `caller_locations(1..1)&.first` instead of `caller_locations.first`.
     RUBY
 
     expect_correction(<<~RUBY)
-      caller_locations(1..1).first
+      caller_locations(1..1)&.first
     RUBY
   end
 
@@ -101,11 +101,11 @@ RSpec.describe RuboCop::Cop::Performance::Caller, :config do
     expect(caller_locations[1].to_s).to eq(caller_locations(2..2).first.to_s)
     expect_offense(<<~RUBY)
       caller_locations[1]
-      ^^^^^^^^^^^^^^^^^^^ Use `caller_locations(2..2).first` instead of `caller_locations[1]`.
+      ^^^^^^^^^^^^^^^^^^^ Use `caller_locations(2..2)&.first` instead of `caller_locations[1]`.
     RUBY
 
     expect_correction(<<~RUBY)
-      caller_locations(2..2).first
+      caller_locations(2..2)&.first
     RUBY
   end
 end
