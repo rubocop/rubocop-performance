@@ -30,6 +30,9 @@ Gem::Specification.new do |s|
     'rubygems_mfa_required' => 'true'
   }
 
+  s.metadata['default_lint_roller_plugin'] = 'RuboCop::Performance::Plugin'
+
+  s.add_dependency('lint_roller', '~> 1.1')
   s.add_dependency('rubocop', '>= 1.48.1', '< 2.0')
   s.add_dependency('rubocop-ast', '>= 1.38.0', '< 2.0')
 end

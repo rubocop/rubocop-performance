@@ -15,7 +15,7 @@ task update_cops_documentation: :yard_for_generate_documentation do
 
   # NOTE: Update `<<next>>` version for docs/modules/ROOT/pages/cops_performance.adoc
   # when running release tasks.
-  RuboCop::Performance::Inject.defaults!
+  RuboCop::ConfigLoader.inject_defaults!("#{__dir__}/../config/default.yml")
 
   CopsDocumentationGenerator.new(departments: deps).call
 end

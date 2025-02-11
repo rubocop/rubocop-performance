@@ -3,6 +3,9 @@
 require 'rubocop-performance'
 require 'rubocop/rspec/support'
 
+# FIXME: Once only RuboCop versions that support plugins remain, please remove the `if` condition.
+RuboCop::ConfigLoader.inject_defaults!("#{__dir__}/../config/default.yml") if RuboCop.const_defined?(:Plugin)
+
 if ENV.fetch('COVERAGE', nil) == 'true'
   require 'simplecov'
   SimpleCov.start
