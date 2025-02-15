@@ -2598,3 +2598,38 @@ URI::Parser.new
 # good
 URI::DEFAULT_PARSER
 ----
+
+[#performancezipwithoutblock]
+== Performance/ZipWithoutBlock
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| No
+| Always (Unsafe)
+| 1.24
+| -
+|===
+
+Checks for `map { |id| [id] }` and suggests replacing it with `zip`.
+
+[#safety-performancezipwithoutblock]
+=== Safety
+
+This cop is unsafe for novel definitions of `map` and `collect`
+on non-Enumerable objects that do not respond to `zip`.
+To make your object enumerable, define an `each` method
+as described in https://ruby-doc.org/core/Enumerable.html
+
+[#examples-performancezipwithoutblock]
+=== Examples
+
+[source,ruby]
+----
+# bad
+[1, 2, 3].map { |id| [id] }
+
+# good
+[1, 2, 3].zip
+----

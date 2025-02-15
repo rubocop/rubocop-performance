@@ -63,5 +63,6 @@ Performance cops optimization analysis for your projects.
 * xref:cops_performance.adoc#performancetimesmap[Performance/TimesMap]
 * xref:cops_performance.adoc#performanceunfreezestring[Performance/UnfreezeString]
 * xref:cops_performance.adoc#performanceuridefaultparser[Performance/UriDefaultParser]
+* xref:cops_performance.adoc#performancezipwithoutblock[Performance/ZipWithoutBlock]
 
 // END_COP_LIST

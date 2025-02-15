@@ -386,4 +386,4 @@ Performance/ZipWithoutBlock:
   Description: 'Checks for `map { |id| [id] }` and suggests replacing it with `zip`.'
   Enabled: pending
   Safe: false
-  VersionAdded: <<next>>
+  VersionAdded: '1.24'

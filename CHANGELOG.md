@@ -11,6 +11,8 @@
 
 ## master (unreleased)
 
+## 1.24.0 (2025-02-16)
+
 ### New features
 
 * [#490](https://github.com/rubocop/rubocop-performance/pull/490): Pluginfy RuboCop Performance. ([@koic][])
