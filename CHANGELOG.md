@@ -11,6 +11,15 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#490](https://github.com/rubocop/rubocop-performance/pull/490): Pluginfy RuboCop Performance. ([@koic][])
+* [#462](https://github.com/rubocop/rubocop-performance/pull/462): Add new `Performance/ZipWithoutBlock` cop that checks patterns like `.map { |id| [id] }` or `.map { [_1] }` and can replace them with `.zip`. ([@corsonknowles][])
+
+### Bug fixes
+
+* [#484](https://github.com/rubocop/rubocop-performance/pull/484): Fix `Performance/CaseWhenSplat` cop error on `when` node without body. ([@viralpraxis][])
+
 ## 1.23.1 (2025-01-04)
 
 ### Bug fixes
@@ -569,3 +578,4 @@
 [@earlopain]: https://github.com/earlopain
 [@parkerfinch]: https://github.com/parkerfinch
 [@viralpraxis]: https://github.com/viralpraxis
+[@corsonknowles]: https://github.com/corsonknowles
