@@ -269,4 +269,71 @@ RSpec.describe RuboCop::Cop::Performance::CollectionLiteralInLoop, :config do
       RUBY
     end
   end
+
+  context 'when Ruby >= 3.4', :ruby34 do
+    it 'registers an offense for `include?` on a Hash literal' do
+      expect_offense(<<~RUBY)
+        each do
+          { foo: :bar }.include?(:foo)
+          ^^^^^^^^^^^^^ Avoid immutable Hash literals in loops. It is better to extract it into a local variable or a constant.
+        end
+      RUBY
+    end
+
+    it 'registers an offense for other array methods' do
+      expect_offense(<<~RUBY)
+        each do
+          [1, 2, 3].index(foo)
+          ^^^^^^^^^ Avoid immutable Array literals in loops. It is better to extract it into a local variable or a constant.
+        end
+      RUBY
+    end
+
+    context 'when using an Array literal and calling `include?`' do
+      [
+        '"string"',
+        'self',
+        'local_variable',
+        'method_call',
+        '@instance_variable'
+      ].each do |argument|
+        it "registers no offense when the argument is #{argument}" do
+          expect_no_offenses(<<~RUBY)
+            #{'local_variable = 123' if argument == 'local_variable'}
+            array.all? do |e|
+              [1, 2, 3].include?(#{argument})
+            end
+          RUBY
+        end
+
+        it "registers no offense when the argument is #{argument} with method chain" do
+          expect_no_offenses(<<~RUBY)
+            #{'local_variable = 123' if argument == 'local_variable'}
+            array.all? do |e|
+              [1, 2, 3].include?(#{argument}.call)
+            end
+          RUBY
+        end
+
+        it "registers no offense when the argument is #{argument} with double method chain" do
+          expect_no_offenses(<<~RUBY)
+            #{'local_variable = 123' if argument == 'local_variable'}
+            array.all? do |e|
+              [1, 2, 3].include?(#{argument}.call.call)
+            end
+          RUBY
+        end
+
+        it "registers an offense when the argument is #{argument} with method chain and arguments" do
+          expect_offense(<<~RUBY)
+            #{'local_variable = 123' if argument == 'local_variable'}
+            array.all? do |e|
+              [1, 2, 3].include?(#{argument}.call(true))
+              ^^^^^^^^^ Avoid immutable Array literals in loops. It is better to extract it into a local variable or a constant.
+            end
+          RUBY
+        end
+      end
+    end
+  end
 end
