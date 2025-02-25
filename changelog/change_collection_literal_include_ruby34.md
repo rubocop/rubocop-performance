@@ -1,0 +1,1 @@
+* [#482](https://github.com/rubocop/rubocop-performance/issues/482): Change `Performance/CollectionLiteralInLoop` to not register offenses for `Array#include?` that are optimized directly in Ruby. ([@earlopain][])
