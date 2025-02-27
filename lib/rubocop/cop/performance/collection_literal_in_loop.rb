@@ -12,6 +12,14 @@ module RuboCop
       # You can set the minimum number of elements to consider
       # an offense with `MinSize`.
       #
+      # NOTE: Since Ruby 3.4, certain simple arguments to `Array#include?` are
+      # optimized directly in Ruby. This avoids allocations without changing the
+      # code, as such no offense will be registered in those cases. Currently that
+      # includes: strings, `self`, local variables, instance variables, and method
+      # calls without arguments. Additionally, any number of methods can be chained:
+      # `[1, 2, 3].include?(@foo)` and `[1, 2, 3].include?(@foo.bar.baz)` both avoid
+      # the array allocation.
+      #
       # @example
       #   # bad
       #   users.select do |user|
@@ -55,6 +63,8 @@ module RuboCop
 
         ARRAY_METHODS = (ENUMERABLE_METHOD_NAMES | NONMUTATING_ARRAY_METHODS).to_set.freeze
 
+        ARRAY_INCLUDE_OPTIMIZED_TYPES = %i[str self lvar ivar send].freeze
+
         NONMUTATING_HASH_METHODS = %i[< <= == > >= [] any? assoc compact dig
                                       each each_key each_pair each_value empty?
                                       eql? fetch fetch_values filter flatten has_key?
@@ -80,8 +90,8 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          receiver, method, = *node.children
-          return unless check_literal?(receiver, method) && parent_is_loop?(receiver)
+          receiver, method, *arguments = *node.children
+          return unless check_literal?(receiver, method, arguments) && parent_is_loop?(receiver)
 
           message = format(MSG, literal_class: literal_class(receiver))
           add_offense(receiver, message: message)
@@ -89,12 +99,33 @@ module RuboCop
 
         private
 
-        def check_literal?(node, method)
+        def check_literal?(node, method, arguments)
           !node.nil? &&
             nonmutable_method_of_array_or_hash?(node, method) &&
             node.children.size >= min_size &&
-            node.recursive_basic_literal?
+            node.recursive_basic_literal? &&
+            !optimized_array_include?(node, method, arguments)
         end
+
+        # Since Ruby 3.4, simple arguments to Array#include? are optimized.
+        # See https://github.com/ruby/ruby/pull/12123 for more details.
+        # rubocop:disable Metrics/CyclomaticComplexity
+        def optimized_array_include?(node, method, arguments)
+          return false unless target_ruby_version >= 3.4 && node.array_type? && method == :include?
+          # Disallow include?(1, 2)
+          return false if arguments.count != 1
+
+          arg = arguments.first
+          # Allow `include?(foo.bar.baz.bat)`
+          while arg.send_type?
+            return false if arg.arguments.any? # Disallow include?(foo(bar))
+            break unless arg.receiver
+
+            arg = arg.receiver
+          end
+          ARRAY_INCLUDE_OPTIMIZED_TYPES.include?(arg.type)
+        end
+        # rubocop:enable Metrics/CyclomaticComplexity
 
         def nonmutable_method_of_array_or_hash?(node, method)
           (node.array_type? && ARRAY_METHODS.include?(method)) ||
