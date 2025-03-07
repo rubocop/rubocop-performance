@@ -44,26 +44,19 @@ RSpec.describe RuboCop::Cop::Performance::StringIdentifierArgument, :config do
         RUBY
       end
 
-      if described_class::INTERPOLATION_IGNORE_METHODS.include?(method)
-        it 'does not register an offense when using string interpolation for `#{method}` method' do
-          # NOTE: These methods don't support `::` when passing a symbol. const_get('A::B') is valid
-          # but const_get(:'A::B') isn't. Since interpolated arguments may contain any content these
-          # cases are not detected as an offense to prevent false positives.
-          expect_no_offenses(<<~RUBY)
-            #{method}("\#{module_name}class_name")
-          RUBY
-        end
-      else
-        it 'registers an offense when using interpolated string argument' do
-          expect_offense(<<~RUBY, method: method)
-            #{method}("do_something_\#{var}")
-            _{method} ^^^^^^^^^^^^^^^^^^^^^ Use `:"do_something_\#{var}"` instead of `"do_something_\#{var}"`.
-          RUBY
+      it 'does not register an offense when using string interpolation for `#{method}` method' do
+        # NOTE: These methods don't support `::` when passing a symbol. const_get('A::B') is valid
+        # but const_get(:'A::B') isn't. Since interpolated arguments may contain any content these
+        # cases are not detected as an offense to prevent false positives.
+        expect_no_offenses(<<~RUBY)
+          #{method}("\#{module_name}class_name")
+        RUBY
+      end
 
-          expect_correction(<<~RUBY)
-            #{method}(:"do_something_\#{var}")
-          RUBY
-        end
+      it 'does not register an offense when using interpolated string argument' do
+        expect_no_offenses(<<~RUBY)
+          #{method}("do_something_\#{var}")
+        RUBY
       end
     end
   end
