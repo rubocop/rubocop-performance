@@ -16,19 +16,19 @@ module RuboCop
       #   send('do_something')
       #   attr_accessor 'do_something'
       #   instance_variable_get('@ivar')
-      #   respond_to?("string_#{interpolation}")
       #
       #   # good
       #   send(:do_something)
       #   attr_accessor :do_something
       #   instance_variable_get(:@ivar)
-      #   respond_to?(:"string_#{interpolation}")
       #
       #   # good - these methods don't support namespaced symbols
       #   const_get("#{module_path}::Base")
       #   const_source_location("#{module_path}::Base")
       #   const_defined?("#{module_path}::Base")
       #
+      #   # good - using a symbol when string interpolation is involved causes a performance regression.
+      #   respond_to?("string_#{interpolation}")
       #
       class StringIdentifierArgument < Base
         extend AutoCorrector
@@ -39,8 +39,6 @@ module RuboCop
           alias_method attr_accessor attr_reader attr_writer autoload autoload? private private_constant
           protected public public_constant module_function
         ].freeze
-
-        INTERPOLATION_IGNORE_METHODS = %i[const_get const_source_location const_defined?].freeze
 
         TWO_ARGUMENTS_METHOD = :alias_method
         MULTIPLE_ARGUMENTS_METHODS = %i[
@@ -59,7 +57,7 @@ module RuboCop
           deprecate_constant remove_const ruby2_keywords define_singleton_method instance_variable_defined?
           instance_variable_get instance_variable_set method public_method public_send remove_instance_variable
           respond_to? send singleton_method __send__
-        ] + COMMAND_METHODS + INTERPOLATION_IGNORE_METHODS).freeze
+        ] + COMMAND_METHODS).freeze
 
         def on_send(node)
           return if COMMAND_METHODS.include?(node.method_name) && node.receiver
@@ -83,13 +81,7 @@ module RuboCop
                         [node.first_argument]
                       end
 
-          arguments.compact.filter { |argument| string_argument_compatible?(argument, node) }
-        end
-
-        def string_argument_compatible?(argument, node)
-          return true if argument.str_type?
-
-          argument.dstr_type? && INTERPOLATION_IGNORE_METHODS.none? { |method| node.method?(method) }
+          arguments.compact.filter(&:str_type?)
         end
 
         def register_offense(argument, argument_value)
