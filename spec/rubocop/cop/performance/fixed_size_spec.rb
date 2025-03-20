@@ -204,6 +204,14 @@ RSpec.describe RuboCop::Cop::Performance::FixedSize, :config do
       expect_no_offenses("#{variable}.count { |v| v == 'a' }")
     end
 
+    it 'accepts calling count with a numblock', :ruby27 do
+      expect_no_offenses("#{variable}.count { _1 == 'a' }")
+    end
+
+    it 'accepts calling count with an itblock', :ruby34 do
+      expect_no_offenses("#{variable}.count { it == 'a' }")
+    end
+
     it 'accepts calling count with a symbol proc' do
       expect_no_offenses("#{variable}.count(&:any?) ")
     end
