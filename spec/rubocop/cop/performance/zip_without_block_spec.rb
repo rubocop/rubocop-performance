@@ -163,6 +163,17 @@ RSpec.describe RuboCop::Cop::Performance::ZipWithoutBlock, :config do
           [1, 2, 3].zip
         RUBY
       end
+
+      it 'registers an offense for collect with a numblock', :ruby34, unsupported_on: :parser do
+        expect_offense(<<~RUBY)
+          [1, 2, 3].collect { [it] }
+                    ^^^^^^^^^^^^^^^^ Use `zip` without a block argument instead.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          [1, 2, 3].zip
+        RUBY
+      end
     end
 
     context 'when using select with an array literal' do

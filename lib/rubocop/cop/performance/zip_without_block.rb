@@ -28,6 +28,7 @@ module RuboCop
           {
             (block (call !nil? RESTRICT_ON_SEND) (args (arg _)) (array (lvar _)))
             (numblock (call !nil? RESTRICT_ON_SEND) 1 (array (lvar _)))
+            (itblock (call !nil? RESTRICT_ON_SEND) :it (array (lvar _)))
           }
         PATTERN
 

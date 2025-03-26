@@ -80,6 +80,15 @@ RSpec.describe RuboCop::Cop::Performance::ChainArrayAllocation, :config do
     end
   end
 
+  describe 'when using `select` with block argument after `select` with `it` block', :ruby34, unsupported_on: :parser do
+    it 'registers an offense' do
+      expect_offense(<<~RUBY)
+        model.select { it.foo }.select { |item| item.bar }
+                                ^^^^^^ Use unchained `select` and `select!` (followed by `return array` if required) instead of chaining `select...select`.
+      RUBY
+    end
+  end
+
   describe 'when using `select` with positional arguments after `select`' do
     it 'does not register an offense' do
       expect_no_offenses(<<~RUBY)
