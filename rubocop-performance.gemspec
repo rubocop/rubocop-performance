@@ -32,6 +32,6 @@ Gem::Specification.new do |s|
   }
 
   s.add_dependency('lint_roller', '~> 1.1')
-  s.add_dependency('rubocop', '>= 1.72.1', '< 2.0')
+  s.add_dependency('rubocop', '>= 1.75.0', '< 2.0')
   s.add_dependency('rubocop-ast', '>= 1.38.0', '< 2.0')
 end
