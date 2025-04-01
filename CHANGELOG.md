@@ -11,6 +11,19 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#496](https://github.com/rubocop/rubocop-performance/pull/496): Support `it` block parameter in `Performance` cops. ([@koic][])
+
+### Bug fixes
+
+* [#494](https://github.com/rubocop/rubocop-performance/pull/494): Fix `Performance/FixedSize` false positive when `count` is called with a `numblock`. ([@dvandersluis][])
+* [#492](https://github.com/rubocop/rubocop-performance/issues/492): Fix false positives for `Performance/StringIdentifierArgument` when using interpolated string argument. ([@koic][])
+
+### Changes
+
+* [#482](https://github.com/rubocop/rubocop-performance/issues/482): Change `Performance/CollectionLiteralInLoop` to not register offenses for `Array#include?` that are optimized directly in Ruby. ([@earlopain][])
+
 ## 1.24.0 (2025-02-16)
 
 ### New features
