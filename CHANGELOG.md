@@ -11,6 +11,8 @@
 
 ## master (unreleased)
 
+## 1.25.0 (2025-04-01)
+
 ### New features
 
 * [#496](https://github.com/rubocop/rubocop-performance/pull/496): Support `it` block parameter in `Performance` cops. ([@koic][])
