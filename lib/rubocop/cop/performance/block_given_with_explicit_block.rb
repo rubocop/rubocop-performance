@@ -36,7 +36,7 @@ module RuboCop
         def_node_matcher :reassigns_block_arg?, '`(lvasgn %1 ...)'
 
         def on_send(node)
-          def_node = node.each_ancestor(:def, :defs).first
+          def_node = node.each_ancestor(:any_def).first
           return unless def_node
 
           block_arg = def_node.arguments.find(&:blockarg_type?)

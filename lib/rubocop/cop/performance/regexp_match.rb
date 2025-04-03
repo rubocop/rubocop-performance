@@ -239,7 +239,7 @@ module RuboCop
 
         def scope_root(node)
           node.each_ancestor.find do |ancestor|
-            ancestor.type?(:def, :defs, :class, :module)
+            ancestor.type?(:any_def, :class, :module)
           end
         end
 
