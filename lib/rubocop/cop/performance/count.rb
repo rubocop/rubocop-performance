@@ -87,7 +87,9 @@ module RuboCop
         end
 
         def eligible_node?(node)
-          !(node.parent && node.parent.block_type?)
+          return false if node.parent&.block_type?
+
+          node.receiver.call_type? || node.receiver.body
         end
 
         def source_starting_at(node)
