@@ -89,6 +89,13 @@ Performance/ConcurrentMonotonicTime:
   Enabled: pending
   VersionAdded: '1.12'
 
+Performance/ConditionalDefinition:
+  Description: >-
+               Move conditional logic outside of the method body to
+               improve performance by avoiding repeated evaluation of conditions.
+  Enabled: pending
+  VersionAdded: '<<next>>'
+
 Performance/ConstantRegexp:
   Description: 'Finds regular expressions with dynamic components that are all constants.'
   Enabled: pending
