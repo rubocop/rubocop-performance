@@ -353,4 +353,12 @@ RSpec.describe RuboCop::Cop::Performance::Count, :config do
       RUBY
     end
   end
+
+  context 'with `reject` with empty block body' do
+    it 'does not register an offense' do
+      expect_no_offenses(<<~RUBY)
+        array.reject {}.size
+      RUBY
+    end
+  end
 end
