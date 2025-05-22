@@ -194,7 +194,7 @@ Performance/IoReadlines:
 Performance/MapCompact:
   Description: 'Use `filter_map` instead of `collection.map(&:do_something).compact`.'
   Enabled: pending
-  SafeAutoCorrect: false
+  Safe: false
   VersionAdded: '1.11'
 
 Performance/MapMethodChain:
