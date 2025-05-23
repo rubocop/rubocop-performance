@@ -8,7 +8,7 @@ module RuboCop
       # This cop identifies places where `map { ... }.compact` can be replaced by `filter_map`.
       #
       # @safety
-      #   This cop's autocorrection is unsafe because `map { ... }.compact` might yield
+      #   This cop is unsafe because `map { ... }.compact` might yield
       #   different results than `filter_map`. As illustrated in the example, `filter_map`
       #   also filters out falsy values, while `compact` only gets rid of `nil`.
       #
