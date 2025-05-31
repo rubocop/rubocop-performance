@@ -74,8 +74,8 @@ module RuboCop
 
         def correct_method(node)
           case current_method(node)
-          when :keys then use_long_method ? 'has_key?' : 'key?'
-          when :values then use_long_method ? 'has_value?' : 'value?'
+          when :keys then use_long_method? ? 'has_key?' : 'key?'
+          when :values then use_long_method? ? 'has_value?' : 'value?'
           end
         end
 
@@ -83,7 +83,7 @@ module RuboCop
           node.receiver.method_name
         end
 
-        def use_long_method
+        def use_long_method?
           config.for_enabled_cop('Style/PreferredHashMethods')['EnforcedStyle'] == 'long'
         end
 
