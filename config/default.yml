@@ -67,7 +67,6 @@ Performance/ChainArrayAllocation:
   Description: >-
                   Instead of chaining array methods that allocate new arrays, mutate an
                   existing array.
-  Reference: 'https://twitter.com/schneems/status/1034123879978029057'
   Enabled: false
   VersionAdded: '0.59'
 
@@ -187,7 +186,7 @@ Performance/InefficientHashSearch:
 
 Performance/IoReadlines:
   Description: 'Use `IO.each_line` (`IO#each_line`) instead of `IO.readlines` (`IO#readlines`).'
-  Reference: 'https://docs.gitlab.com/ee/development/performance.html#reading-from-files-and-other-data-sources'
+  Reference: 'https://docs.gitlab.com/development/performance/#reading-from-files-and-other-data-sources'
   Enabled: false
   VersionAdded: '1.7'
 
