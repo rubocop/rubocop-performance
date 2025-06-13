@@ -81,7 +81,7 @@ module RuboCop
 
           range = source_starting_at(node) { |n| n.loc.dot.begin_pos }
 
-          corrector.remove(range)
+          corrector.remove(range_with_surrounding_space(range, side: :left))
           corrector.replace(selector_loc, 'count')
           negate_reject(corrector, node) if selector == :reject
         end
