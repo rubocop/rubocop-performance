@@ -1,12 +1,22 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Performance::Count, :config do
-  shared_examples 'selectors' do |selector|
+  shared_examples 'selectors' do |selector, negate_condition|
     it "registers an offense for using array.#{selector}...size" do
       expect_offense(<<~RUBY, selector: selector)
         [1, 2, 3].#{selector} { |e| e.even? }.size
                   ^{selector}^^^^^^^^^^^^^^^^^^^^^ Use `count` instead of `#{selector}...size`.
       RUBY
+
+      if negate_condition
+        expect_correction(<<~RUBY)
+          [1, 2, 3].count { |e| !(e.even?) }
+        RUBY
+      else
+        expect_correction(<<~RUBY)
+          [1, 2, 3].count { |e| e.even? }
+        RUBY
+      end
     end
 
     it "registers an offense for using array&.#{selector}...size" do
@@ -14,6 +24,16 @@ RSpec.describe RuboCop::Cop::Performance::Count, :config do
         [1, 2, 3]&.#{selector} { |e| e.even? }&.size
                    ^{selector}^^^^^^^^^^^^^^^^^^^^^^ Use `count` instead of `#{selector}...size`.
       RUBY
+
+      if negate_condition
+        expect_correction(<<~RUBY)
+          [1, 2, 3]&.count { |e| !(e.even?) }
+        RUBY
+      else
+        expect_correction(<<~RUBY)
+          [1, 2, 3]&.count { |e| e.even? }
+        RUBY
+      end
     end
 
     it "registers an offense for using hash.#{selector}...size" do
@@ -21,6 +41,16 @@ RSpec.describe RuboCop::Cop::Performance::Count, :config do
         {a: 1, b: 2, c: 3}.#{selector} { |e| e == :a }.size
                            ^{selector}^^^^^^^^^^^^^^^^^^^^^ Use `count` instead of `#{selector}...size`.
       RUBY
+
+      if negate_condition
+        expect_correction(<<~RUBY)
+          {a: 1, b: 2, c: 3}.count { |e| !(e == :a) }
+        RUBY
+      else
+        expect_correction(<<~RUBY)
+          {a: 1, b: 2, c: 3}.count { |e| e == :a }
+        RUBY
+      end
     end
 
     it "registers an offense for using array.#{selector}...length" do
@@ -28,6 +58,16 @@ RSpec.describe RuboCop::Cop::Performance::Count, :config do
         [1, 2, 3].#{selector} { |e| e.even? }.length
                   ^{selector}^^^^^^^^^^^^^^^^^^^^^^^ Use `count` instead of `#{selector}...length`.
       RUBY
+
+      if negate_condition
+        expect_correction(<<~RUBY)
+          [1, 2, 3].count { |e| !(e.even?) }
+        RUBY
+      else
+        expect_correction(<<~RUBY)
+          [1, 2, 3].count { |e| e.even? }
+        RUBY
+      end
     end
 
     it "registers an offense for using hash.#{selector}...length" do
@@ -35,6 +75,16 @@ RSpec.describe RuboCop::Cop::Performance::Count, :config do
         {a: 1, b: 2}.#{selector} { |e| e == :a }.length
                      ^{selector}^^^^^^^^^^^^^^^^^^^^^^^ Use `count` instead of `#{selector}...length`.
       RUBY
+
+      if negate_condition
+        expect_correction(<<~RUBY)
+          {a: 1, b: 2}.count { |e| !(e == :a) }
+        RUBY
+      else
+        expect_correction(<<~RUBY)
+          {a: 1, b: 2}.count { |e| e == :a }
+        RUBY
+      end
     end
 
     it "registers an offense for using array.#{selector}...count" do
@@ -42,6 +92,16 @@ RSpec.describe RuboCop::Cop::Performance::Count, :config do
         [1, 2, 3].#{selector} { |e| e.even? }.count
                   ^{selector}^^^^^^^^^^^^^^^^^^^^^^ Use `count` instead of `#{selector}...count`.
       RUBY
+
+      if negate_condition
+        expect_correction(<<~RUBY)
+          [1, 2, 3].count { |e| !(e.even?) }
+        RUBY
+      else
+        expect_correction(<<~RUBY)
+          [1, 2, 3].count { |e| e.even? }
+        RUBY
+      end
     end
 
     it "registers an offense for using hash.#{selector}...count" do
@@ -49,6 +109,16 @@ RSpec.describe RuboCop::Cop::Performance::Count, :config do
         {a: 1, b: 2}.#{selector} { |e| e == :a }.count
                      ^{selector}^^^^^^^^^^^^^^^^^^^^^^ Use `count` instead of `#{selector}...count`.
       RUBY
+
+      if negate_condition
+        expect_correction(<<~RUBY)
+          {a: 1, b: 2}.count { |e| !(e == :a) }
+        RUBY
+      else
+        expect_correction(<<~RUBY)
+          {a: 1, b: 2}.count { |e| e == :a }
+        RUBY
+      end
     end
 
     it "allows usage of #{selector}...count with a block on an array" do
@@ -70,6 +140,20 @@ RSpec.describe RuboCop::Cop::Performance::Count, :config do
         puts array.#{selector}(&:value).count
                    ^{selector}^^^^^^^^^^^^^^^ Use `count` instead of `#{selector}...count`.
       RUBY
+
+      if negate_condition
+        expect_correction(<<~RUBY)
+          Data = Struct.new(:value)
+          array = [Data.new(2), Data.new(3), Data.new(2)]
+          puts array.count { |element| !element.value }
+        RUBY
+      else
+        expect_correction(<<~RUBY)
+          Data = Struct.new(:value)
+          array = [Data.new(2), Data.new(3), Data.new(2)]
+          puts array.count(&:value)
+        RUBY
+      end
     end
 
     it "registers an offense for #{selector}(&:something).count" do
@@ -77,6 +161,40 @@ RSpec.describe RuboCop::Cop::Performance::Count, :config do
         foo.#{selector}(&:something).count
             ^{selector}^^^^^^^^^^^^^^^^^^^ Use `count` instead of `#{selector}...count`.
       RUBY
+
+      if negate_condition
+        expect_correction(<<~RUBY)
+          foo.count { |element| !element.something }
+        RUBY
+      else
+        expect_correction(<<~RUBY)
+          foo.count(&:something)
+        RUBY
+      end
+    end
+
+    it "registers an offense for multiline #{selector}(&:something).count.positive?" do
+      expect_offense(<<~RUBY, selector: selector)
+        foo
+          .#{selector}(&:something)
+           ^{selector}^^^^^^^^^^^^^ Use `count` instead of `#{selector}...count`.
+          .count
+          .positive?
+      RUBY
+
+      if negate_condition
+        expect_correction(<<~RUBY)
+          foo
+            .count { |element| !element.something }
+            .positive?
+        RUBY
+      else
+        expect_correction(<<~RUBY)
+          foo
+            .count(&:something)
+            .positive?
+        RUBY
+      end
     end
 
     it "registers an offense for #{selector}(&:something)&.count" do
@@ -84,6 +202,16 @@ RSpec.describe RuboCop::Cop::Performance::Count, :config do
         foo&.#{selector}(&:something)&.count
              ^{selector}^^^^^^^^^^^^^^^^^^^^ Use `count` instead of `#{selector}...count`.
       RUBY
+
+      if negate_condition
+        expect_correction(<<~RUBY)
+          foo&.count { |element| !element.something }
+        RUBY
+      else
+        expect_correction(<<~RUBY)
+          foo&.count(&:something)
+        RUBY
+      end
     end
 
     it "registers an offense for #{selector}(&:something).count " \
@@ -96,6 +224,24 @@ RSpec.describe RuboCop::Cop::Performance::Count, :config do
           end
         end
       RUBY
+
+      if negate_condition
+        expect_correction(<<~RUBY)
+          class A < Array
+            def count(&block)
+              count { !block.call }
+            end
+          end
+        RUBY
+      else
+        expect_correction(<<~RUBY)
+          class A < Array
+            def count(&block)
+              count(&block)
+            end
+          end
+        RUBY
+      end
     end
 
     it "allows usage of #{selector} without getting the size" do
@@ -117,10 +263,10 @@ RSpec.describe RuboCop::Cop::Performance::Count, :config do
     end
   end
 
-  it_behaves_like('selectors', 'select')
-  it_behaves_like('selectors', 'find_all')
-  it_behaves_like('selectors', 'filter')
-  it_behaves_like('selectors', 'reject')
+  it_behaves_like('selectors', 'select', false)
+  it_behaves_like('selectors', 'find_all', false)
+  it_behaves_like('selectors', 'filter', false)
+  it_behaves_like('selectors', 'reject', true)
 
   context 'Active Record select' do
     it 'allows usage of select with a string' do
