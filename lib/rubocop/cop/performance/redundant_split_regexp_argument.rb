@@ -48,7 +48,7 @@ module RuboCop
           stack = []
           chars = regexp_content.chars.each_with_object([]) do |char, strings|
             if stack.empty? && char == '\\'
-              stack.push(char)
+              stack.push(char) # rubocop:disable Performance/ArrayPushSingle
             else
               strings << "#{stack.pop}#{char}"
             end

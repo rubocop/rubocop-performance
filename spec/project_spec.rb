@@ -71,12 +71,12 @@ RSpec.describe 'RuboCop Performance Project', type: :feature do
           supported_key = RuboCop::Cop::Util.to_supported_styles(style_name)
           valid = config[name][supported_key]
           unless valid
-            errors.push("#{supported_key} is missing for #{name}")
+            errors << "#{supported_key} is missing for #{name}"
             next
           end
           next if valid.include?(style)
 
-          errors.push("invalid #{style_name} '#{style}' for #{name} found")
+          errors << "invalid #{style_name} '#{style}' for #{name} found"
         end
       end
 
