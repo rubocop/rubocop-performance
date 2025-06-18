@@ -294,6 +294,13 @@ Performance/SelectMap:
   Enabled: false
   VersionAdded: '1.11'
 
+Performance/ShortCircuitAnd:
+  Description: >-
+                  Use Ruby's short-circuiting behavior to evaluate cheaper
+                  expressions before expensive ones in `and` operations.
+  Enabled: 'pending'
+  VersionAdded: <<next>>
+
 Performance/Size:
   Description: >-
                   Use `size` instead of `count` for counting
