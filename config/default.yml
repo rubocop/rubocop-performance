@@ -17,8 +17,8 @@ Performance/ArrayInsert:
     The `unshift` method is specifically optimized for prepending elements
     and is faster than using `insert` at index 0.
   Reference: 'https://github.com/fastruby/fast-ruby#arrayinsert-vs-arrayunshift'
-  Enabled: true
-  VersionAdded: '1.25'
+  Enabled: 'pending'
+  VersionAdded: '<<next>>'
   Details: |
     This cop identifies array prepend operations using the general-purpose
     `insert` method at index 0, which can be replaced with the specialized
