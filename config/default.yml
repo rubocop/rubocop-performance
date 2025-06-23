@@ -11,6 +11,19 @@ Performance/AncestorsInclude:
   Safe: false
   VersionAdded: '1.7'
 
+Performance/ArrayInsert:
+  Description: >-
+    Use `unshift` instead of `insert(0, ...)` for better performance.
+    The `unshift` method is specifically optimized for prepending elements
+    and is faster than using `insert` at index 0.
+  Reference: 'https://github.com/fastruby/fast-ruby#arrayinsert-vs-arrayunshift'
+  Enabled: true
+  VersionAdded: '1.25'
+  Details: |
+    This cop identifies array prepend operations using the general-purpose
+    `insert` method at index 0, which can be replaced with the specialized
+    `unshift` method for a significant performance improvement.
+
 Performance/ArraySemiInfiniteRangeSlice:
   Description: 'Identifies places where slicing arrays with semi-infinite ranges can be replaced by `Array#take` and `Array#drop`.'
   # This cop was created due to a mistake in microbenchmark.
