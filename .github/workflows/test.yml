@@ -26,7 +26,7 @@ jobs:
 
     steps:
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -42,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -57,7 +57,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Prism
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -73,7 +73,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Check documentation syntax
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -86,7 +86,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Check the oldest supported RuboCop version
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Use the oldest supported RuboCop
         run: |
           sed -e "/gem 'rubocop', github: 'rubocop\/rubocop'/d" \
