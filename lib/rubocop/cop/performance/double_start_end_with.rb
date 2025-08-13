@@ -3,9 +3,9 @@
 module RuboCop
   module Cop
     module Performance
-      # Checks for double `#start_with?` or `#end_with?` calls
-      # separated by `||`. In some cases such calls can be replaced
-      # with an single `#start_with?`/`#end_with?` call.
+      # Checks for consecutive `#start_with?` or `#end_with?` calls.
+      # These methods accept multiple arguments, so in some cases like when
+      # they are separated by `||`, they can be combined into a single method call.
       #
       # `IncludeActiveSupportAliases` configuration option is used to check for
       # `starts_with?` and `ends_with?`. These methods are defined by Active Support.
@@ -14,11 +14,13 @@ module RuboCop
       #   # bad
       #   str.start_with?("a") || str.start_with?(Some::CONST)
       #   str.start_with?("a", "b") || str.start_with?("c")
+      #   !str.start_with?(foo) && !str.start_with?(bar)
       #   str.end_with?(var1) || str.end_with?(var2)
       #
       #   # good
       #   str.start_with?("a", Some::CONST)
       #   str.start_with?("a", "b", "c")
+      #   !str.start_with?(foo, bar)
       #   str.end_with?(var1, var2)
       #
       # @example IncludeActiveSupportAliases: false (default)
@@ -43,19 +45,32 @@ module RuboCop
 
         MSG = 'Use `%<replacement>s` instead of `%<original_code>s`.'
 
+        METHODS = %i[start_with? end_with?].to_set
+        METHODS_WITH_ACTIVE_SUPPORT = %i[start_with? starts_with? end_with? ends_with?].to_set
+
         def on_or(node)
-          receiver, method, first_call_args, second_call_args = process_source(node)
+          two_start_end_with_calls(node, methods_to_check: methods) do |*matched|
+            check(node, *matched)
+          end
+        end
 
-          return unless receiver && second_call_args.all?(&:pure?)
-
-          combined_args = combine_args(first_call_args, second_call_args)
-
-          add_offense(node, message: message(node, receiver, first_call_args, method, combined_args)) do |corrector|
-            autocorrect(corrector, first_call_args, second_call_args, combined_args)
+        def on_and(node)
+          two_start_end_with_calls_negated(node, methods_to_check: methods) do |*matched|
+            check(node, *matched)
           end
         end
 
         private
+
+        def check(node, receiver, method, first_call_args, second_call_args)
+          return unless receiver && second_call_args.all?(&:pure?)
+
+          combined_args = combine_args(first_call_args, second_call_args)
+
+          add_offense(node, message: message(node, receiver, method, combined_args)) do |corrector|
+            autocorrect(corrector, first_call_args, second_call_args, combined_args)
+          end
+        end
 
         def autocorrect(corrector, first_call_args, second_call_args, combined_args)
           first_argument = first_call_args.first.source_range
@@ -65,17 +80,20 @@ module RuboCop
           corrector.replace(range, combined_args)
         end
 
-        def process_source(node)
+        def methods
           if check_for_active_support_aliases?
-            check_with_active_support_aliases(node)
+            METHODS_WITH_ACTIVE_SUPPORT
           else
-            two_start_end_with_calls(node)
+            METHODS
           end
         end
 
-        def message(node, receiver, first_call_args, method, combined_args)
-          dot = first_call_args.first.parent.send_type? ? '.' : '&.'
-          replacement = "#{receiver.source}#{dot}#{method}(#{combined_args})"
+        def message(node, receiver, method, combined_args)
+          parent = receiver.parent
+          grandparent = parent.parent
+          dot = parent.send_type? ? '.' : '&.'
+          bang = grandparent.send_type? && grandparent.prefix_bang? ? '!' : ''
+          replacement = "#{bang}#{receiver.source}#{dot}#{method}(#{combined_args})"
           format(MSG, replacement: replacement, original_code: node.source)
         end
 
@@ -89,16 +107,14 @@ module RuboCop
 
         def_node_matcher :two_start_end_with_calls, <<~PATTERN
           (or
-            (call $_recv [{:start_with? :end_with?} $_method] $...)
+            (call $_recv [%methods_to_check $_method] $...)
             (call _recv _method $...))
         PATTERN
 
-        def_node_matcher :check_with_active_support_aliases, <<~PATTERN
-          (or
-            (call $_recv
-                    [{:start_with? :starts_with? :end_with? :ends_with?} $_method]
-                  $...)
-            (call _recv _method $...))
+        def_node_matcher :two_start_end_with_calls_negated, <<~PATTERN
+          (and
+            (send (call $_recv [%methods_to_check $_method] $...) :!)
+            (send (call _recv _method $...) :!))
         PATTERN
       end
     end
