@@ -1,0 +1,1 @@
+* [#512](https://github.com/rubocop/rubocop-performance/issues/512): Detect negated conditions like `!foo.start_with('bar') && !foo.start_with('baz')` with `Performance/DoubleStartEndWith`. ([@earlopain][])
