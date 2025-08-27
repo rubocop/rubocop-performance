@@ -10,7 +10,7 @@ module RuboCop
       # @safety
       #   This cop is unsafe because `map { ... }.compact` might yield
       #   different results than `filter_map`. As illustrated in the example, `filter_map`
-      #   also filters out falsy values, while `compact` only gets rid of `nil`.
+      #   also filters out falsey values, while `compact` only gets rid of `nil`.
       #
       # [source,ruby]
       # ----

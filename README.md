@@ -84,7 +84,7 @@ You can read a lot more about RuboCop Performance in its [official docs](https:/
 
 ## Compatibility
 
-RuboCop Performance complies with the RuboCop core compatibility.
+RuboCop Performance is compatible with RuboCop core.
 
 See the [compatibility documentation](https://docs.rubocop.org/rubocop/compatibility.html) for further details.
 
