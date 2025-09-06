@@ -11,6 +11,17 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#444](https://github.com/rubocop/rubocop-performance/issues/444): Fix an incorrect autocorrect for `Performance/BlockGivenWithExplicitBlock` when using `Naming/BlockForwarding`'s autocorrection together. ([@a-lavis][])
+* [#500](https://github.com/rubocop/rubocop-performance/issues/500): Mark `Performance/MapCompact` cop as unsafe. ([@jbpextra][])
+* [#498](https://github.com/rubocop/rubocop-performance/pull/498): Fix `Performance/Count` cop error on empty selector block. ([@viralpraxis][])
+* [#504](https://github.com/rubocop/rubocop-performance/pull/504): Fix autocorrection syntax error for `Performance/Count` with multiline calls. ([@lovro-bikic][])
+
+### Changes
+
+* [#512](https://github.com/rubocop/rubocop-performance/issues/512): Detect negated conditions like `!foo.start_with('bar') && !foo.start_with('baz')` with `Performance/DoubleStartEndWith`. ([@earlopain][])
+
 ## 1.25.0 (2025-04-01)
 
 ### New features
@@ -596,3 +607,6 @@
 [@parkerfinch]: https://github.com/parkerfinch
 [@viralpraxis]: https://github.com/viralpraxis
 [@corsonknowles]: https://github.com/corsonknowles
+[@a-lavis]: https://github.com/a-lavis
+[@jbpextra]: https://github.com/jbpextra
+[@lovro-bikic]: https://github.com/lovro-bikic

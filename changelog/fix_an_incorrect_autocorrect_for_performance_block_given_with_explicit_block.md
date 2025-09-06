@@ -1,1 +1,0 @@
-* [#444](https://github.com/rubocop/rubocop-performance/issues/444): Fix an incorrect autocorrect for `Performance/BlockGivenWithExplicitBlock` when using `Naming/BlockForwarding`'s autocorrection together. ([@a-lavis][])
