@@ -11,6 +11,8 @@
 
 ## master (unreleased)
 
+## 1.26.0 (2025-09-06)
+
 ### Bug fixes
 
 * [#444](https://github.com/rubocop/rubocop-performance/issues/444): Fix an incorrect autocorrect for `Performance/BlockGivenWithExplicitBlock` when using `Naming/BlockForwarding`'s autocorrection together. ([@a-lavis][])

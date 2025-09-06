@@ -400,11 +400,6 @@ array.map! { |x| x.downcase }
 array
 ----
 
-[#references-performancechainarrayallocation]
-=== References
-
-* https://twitter.com/schneems/status/1034123879978029057
-
 [#performancecollectionliteralinloop]
 == Performance/CollectionLiteralInLoop
 
@@ -882,9 +877,9 @@ if the receiver is a `Hash`, it may report a false positive.
 | 0.48
 |===
 
-Checks for double `#start_with?` or `#end_with?` calls
-separated by `||`. In some cases such calls can be replaced
-with an single `#start_with?`/`#end_with?` call.
+Checks for consecutive `#start_with?` or `#end_with?` calls.
+These methods accept multiple arguments, so in some cases like when
+they are separated by `||`, they can be combined into a single method call.
 
 `IncludeActiveSupportAliases` configuration option is used to check for
 `starts_with?` and `ends_with?`. These methods are defined by Active Support.
@@ -897,11 +892,13 @@ with an single `#start_with?`/`#end_with?` call.
 # bad
 str.start_with?("a") || str.start_with?(Some::CONST)
 str.start_with?("a", "b") || str.start_with?("c")
+!str.start_with?(foo) && !str.start_with?(bar)
 str.end_with?(var1) || str.end_with?(var2)
 
 # good
 str.start_with?("a", Some::CONST)
 str.start_with?("a", "b", "c")
+!str.start_with?(foo, bar)
 str.end_with?(var1, var2)
 ----
 
@@ -1239,7 +1236,7 @@ file.each_line { |l| puts l }
 [#references-performanceioreadlines]
 === References
 
-* https://docs.gitlab.com/ee/development/performance.html#reading-from-files-and-other-data-sources
+* https://docs.gitlab.com/development/performance/#reading-from-files-and-other-data-sources
 
 [#performancemapcompact]
 == Performance/MapCompact
@@ -1250,7 +1247,7 @@ NOTE: Requires Ruby version 2.7
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
 
 | Pending
-| Yes
+| No
 | Always (Unsafe)
 | 1.11
 | -
@@ -1269,7 +1266,7 @@ This cop identifies places where `map { ... }.compact` can be replaced by `filte
 [#safety-performancemapcompact]
 === Safety
 
-This cop's autocorrection is unsafe because `map { ... }.compact` might yield
+This cop is unsafe because `map { ... }.compact` might yield
 different results than `filter_map`. As illustrated in the example, `filter_map`
 also filters out falsey values, while `compact` only gets rid of `nil`.
 
@@ -2488,7 +2485,7 @@ as initial value and successively add all following values to it, whereas
 [#references-performancesum]
 === References
 
-* https://blog.bigbinary.com/2016/11/02/ruby-2-4-introduces-enumerable-sum.html
+* https://www.bigbinary.com/blog/ruby-2-4-introduces-enumerable-sum
 
 [#performancetimesmap]
 == Performance/TimesMap
