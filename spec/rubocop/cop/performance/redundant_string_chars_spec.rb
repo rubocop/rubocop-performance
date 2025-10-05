@@ -134,6 +134,12 @@ RSpec.describe RuboCop::Cop::Performance::RedundantStringChars, :config do
     RUBY
   end
 
+  it 'does not register an offense and corrects when using `str.chars[0, 2]`' do
+    expect_no_offenses(<<~RUBY)
+      str.chars[0, 2]
+    RUBY
+  end
+
   it 'does not register an offense when using `str.chars.max`' do
     expect_no_offenses(<<~RUBY)
       str.chars.max
