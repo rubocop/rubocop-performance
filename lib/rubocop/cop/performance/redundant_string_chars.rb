@@ -54,6 +54,7 @@ module RuboCop
         def on_send(node)
           return unless (receiver, method, args = redundant_chars_call?(node))
           return if method == :last && !args.empty?
+          return if args.count == 2
 
           range = offense_range(receiver, node)
           message = build_message(method, args)
