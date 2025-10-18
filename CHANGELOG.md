@@ -11,6 +11,14 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#517](https://github.com/rubocop/rubocop-performance/issues/517): Fix false positives for `Performance/RedundantStringChars` when using `str.chars[0, 2]`. ([@koic][])
+
+### Changes
+
+* [#520](https://github.com/rubocop/rubocop-performance/issues/520): Disable `Performance/BigDecimalWithNumericArgument` by default. ([@earlopain][])
+
 ## 1.26.0 (2025-09-06)
 
 ### Bug fixes
