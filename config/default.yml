@@ -24,7 +24,7 @@ Performance/BigDecimalWithNumericArgument:
   Description: 'Convert numeric literal to string and pass it to `BigDecimal`.'
   Enabled: false
   VersionAdded: '1.7'
-  VersionChanged: <<next>>
+  VersionChanged: '1.26'
 
 Performance/BindCall:
   Description: 'Use `bind_call(obj, args, ...)` instead of `bind(obj).call(args, ...)`.'
