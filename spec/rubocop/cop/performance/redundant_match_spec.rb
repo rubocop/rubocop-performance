@@ -103,6 +103,38 @@ RSpec.describe RuboCop::Cop::Performance::RedundantMatch, :config do
     expect_no_offenses('match("bar")')
   end
 
+  it 'does not register an error when numbered capture variable is used after match with conditional' do
+    expect_no_offenses(<<~RUBY)
+      def method(str)
+        puts $1 if str.match(/regex/)
+      end
+    RUBY
+  end
+
+  it 'does not register an error when numbered capture variable is used after match without conditional' do
+    expect_no_offenses(<<~RUBY)
+      def method(str)
+        str.match(/regex/)
+        puts $1
+      end
+    RUBY
+  end
+
+  it 'does not register an error when numbered capture variable is used after a match in a conditional expression' do
+    expect_no_offenses(<<~RUBY)
+      def method(str)
+        puts str.match(/regex/) ? $1 : ''
+      end
+    RUBY
+  end
+
+  it 'does not register an error when numbered capture variable is used in a subsequent statement after match' do
+    expect_no_offenses(<<~RUBY)
+      exit unless str.match(/regex/)
+      puts $1
+    RUBY
+  end
+
   it 'formats error message correctly for something if str.match(/regex/)' do
     expect_offense(<<~RUBY)
       something if str.match(/regex/)
