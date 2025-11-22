@@ -69,7 +69,7 @@ module RuboCop
         def remove_compact_method(corrector, map_node, compact_node, chained_method)
           compact_method_range = compact_node.loc.selector
 
-          if compact_node.multiline? && chained_method&.loc.respond_to?(:selector) && use_dot?(chained_method) &&
+          if compact_node.multiline? && chained_method&.loc?(:selector) && use_dot?(chained_method) &&
              !map_method_and_compact_method_on_same_line?(map_node, compact_node) &&
              !invoke_method_after_map_compact_on_same_line?(compact_node, chained_method)
             compact_method_range = compact_method_with_final_newline_range(compact_method_range)
