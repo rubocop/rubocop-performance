@@ -37,9 +37,7 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          return unless match_call?(node) &&
-                        (!node.value_used? || only_truthiness_matters?(node)) &&
-                        !(node.parent && node.parent.block_type?)
+          return unless should_register_offense?(node)
 
           add_offense(node) do |corrector|
             autocorrect(corrector, node) if autocorrectable?(node)
@@ -47,6 +45,32 @@ module RuboCop
         end
 
         private
+
+        def should_register_offense?(node)
+          match_call?(node) &&
+            used_only_for_truthiness?(node) &&
+            !inside_block_argument?(node) &&
+            !special_global_variable_used_after_match?(node)
+        end
+
+        def used_only_for_truthiness?(node)
+          !node.value_used? || only_truthiness_matters?(node)
+        end
+
+        def inside_block_argument?(node)
+          node.parent&.block_type?
+        end
+
+        def special_global_variable_used_after_match?(node)
+          scope = scope_root(node) || node.ancestors.last
+          scope.each_node(:gvar, :back_ref, :nth_ref).any?
+        end
+
+        def scope_root(node)
+          node.each_ancestor.find do |ancestor|
+            ancestor.type?(:any_def, :class, :module)
+          end
+        end
 
         def autocorrect(corrector, node)
           new_source = "#{node.receiver.source} =~ #{replacement(node)}"
