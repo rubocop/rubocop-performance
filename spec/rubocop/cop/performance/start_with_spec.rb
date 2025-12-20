@@ -193,9 +193,9 @@ RSpec.describe RuboCop::Cop::Performance::StartWith, :config do
   context 'when `SafeMultiline: false`' do
     let(:safe_multiline) { false }
 
-    include_examples('different match methods', '.match?')
-    include_examples('different match methods', ' =~')
-    include_examples('different match methods', '.match')
+    it_behaves_like('different match methods', '.match?')
+    it_behaves_like('different match methods', ' =~')
+    it_behaves_like('different match methods', '.match')
 
     it 'allows match without a receiver' do
       expect_no_offenses('expect(subject.spin).to match(/\A\n/)')

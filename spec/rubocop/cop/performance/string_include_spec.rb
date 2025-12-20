@@ -143,9 +143,9 @@ RSpec.describe RuboCop::Cop::Performance::StringInclude, :config do
     end
   end
 
-  include_examples('different match methods', '.match?')
-  include_examples('different match methods', ' =~')
-  include_examples('different match methods', '.match')
+  it_behaves_like('different match methods', '.match?')
+  it_behaves_like('different match methods', ' =~')
+  it_behaves_like('different match methods', '.match')
 
   it 'registers an offense and corrects /abc/ === str' do
     expect_offense(<<~RUBY)

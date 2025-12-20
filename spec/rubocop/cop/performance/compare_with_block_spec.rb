@@ -55,9 +55,9 @@ RSpec.describe RuboCop::Cop::Performance::CompareWithBlock, :config do
     end
   end
 
-  include_examples 'compare with block', 'sort',   'sort_by'
-  include_examples 'compare with block', 'sort!',  'sort_by!'
-  include_examples 'compare with block', 'max',    'max_by'
-  include_examples 'compare with block', 'min',    'min_by'
-  include_examples 'compare with block', 'minmax', 'minmax_by'
+  it_behaves_like 'compare with block', 'sort',   'sort_by'
+  it_behaves_like 'compare with block', 'sort!',  'sort_by!'
+  it_behaves_like 'compare with block', 'max',    'max_by'
+  it_behaves_like 'compare with block', 'min',    'min_by'
+  it_behaves_like 'compare with block', 'minmax', 'minmax_by'
 end

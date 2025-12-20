@@ -241,7 +241,7 @@ RSpec.describe 'RuboCop Performance Project', type: :feature do
     let(:path) { File.expand_path('../CHANGELOG.md', __dir__) }
     let(:entries) { lines.grep(/^\*/).map(&:chomp) }
 
-    include_examples 'has Changelog format'
+    it_behaves_like 'has Changelog format'
 
     context 'future entries' do
       let(:allowed_cop_names) do
@@ -256,7 +256,9 @@ RSpec.describe 'RuboCop Performance Project', type: :feature do
         RuboCop::ConfigObsoletion.legacy_cop_names
       end
 
+      # rubocop:disable RSpec/LeakyLocalVariable
       dir = File.expand_path('../changelog', __dir__)
+      # rubocop:enable RSpec/LeakyLocalVariable
 
       it 'does not have a directory' do
         expect(Dir["#{dir}/*"].none? { |path| File.directory?(path) }).to be(true)
@@ -266,7 +268,7 @@ RSpec.describe 'RuboCop Performance Project', type: :feature do
         context "For #{path}" do
           let(:path) { path }
 
-          include_examples 'has Changelog format'
+          it_behaves_like 'has Changelog format'
 
           it 'has a link to the issue or pull request address at the beginning' do
             repo = 'rubocop/rubocop-performance'

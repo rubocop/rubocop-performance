@@ -16,7 +16,7 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
   end
 
   shared_examples 'all legacy match methods' do |name, cond, correction|
-    include_examples 'offense', "#{name} in if condition", <<-RUBY, <<-RUBY2
+    it_behaves_like 'offense', "#{name} in if condition", <<~RUBY, <<~RUBY2
       if #{cond}
         do_something
       end
@@ -26,7 +26,7 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
       end
     RUBY2
 
-    include_examples 'offense', "#{name} in unless condition", <<-RUBY, <<-RUBY2
+    it_behaves_like 'offense', "#{name} in unless condition", <<~RUBY, <<~RUBY2
       unless #{cond}
         do_something
       end
@@ -36,19 +36,19 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
       end
     RUBY2
 
-    include_examples 'offense', "#{name} in if condition", <<-RUBY, <<-RUBY2
+    it_behaves_like 'offense', "#{name} in if condition", <<~RUBY, <<~RUBY2
       do_something if #{cond}
     RUBY
       do_something if #{correction}
     RUBY2
 
-    include_examples 'offense', "#{name} in unless condition", <<-RUBY, <<-RUBY2
+    it_behaves_like 'offense', "#{name} in unless condition", <<~RUBY, <<~RUBY2
       do_something unless #{cond}
     RUBY
       do_something unless #{correction}
     RUBY2
 
-    include_examples 'offense', "#{name} in elsif condition", <<-RUBY, <<-RUBY2
+    it_behaves_like 'offense', "#{name} in elsif condition", <<~RUBY, <<~RUBY2
       if cond
         do_something
       elsif #{cond}
@@ -62,7 +62,7 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
       end
     RUBY2
 
-    include_examples 'offense', "#{name} in case condition", <<-RUBY, <<-RUBY2
+    it_behaves_like 'offense', "#{name} in case condition", <<~RUBY, <<~RUBY2
       case
       when #{cond}
         do_something
@@ -74,14 +74,13 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
       end
     RUBY2
 
-    include_examples 'offense', "#{name} in ternary operator", <<-RUBY, <<-RUBY2
+    it_behaves_like 'offense', "#{name} in ternary operator", <<~RUBY, <<~RUBY2
       #{cond} ? do_something : do_something2
     RUBY
       #{correction} ? do_something : do_something2
     RUBY2
 
-    include_examples 'offense', "#{name} in method definition",
-                     <<-RUBY, <<-RUBY2
+    it_behaves_like 'offense', "#{name} in method definition", <<~RUBY, <<~RUBY2
       def foo
         if #{cond}
           do_something
@@ -146,9 +145,8 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
         RUBY
       end
 
-      include_examples 'offense',
-                       "#{name} in if guard condition with " \
-                       "#{var} is used in another method", <<-RUBY, <<-RUBY2
+      # rubocop:disable Layout/LineLength
+      it_behaves_like 'offense', "#{name} in if guard condition with #{var} is used in another method", <<~RUBY, <<~RUBY2
         def foo
           return if #{cond}
         end
@@ -165,6 +163,7 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
           do_something(#{var})
         end
       RUBY2
+      # rubocop:enable Layout/LineLength
 
       it "accepts #{name} in method with #{var} in block" do
         expect_no_offenses(<<~RUBY)
@@ -179,8 +178,7 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
         RUBY
       end
 
-      include_examples 'offense',
-                       "#{name} in method before `#{var}`", <<-RUBY, <<-RUBY2
+      it_behaves_like 'offense', "#{name} in method before `#{var}`", <<~RUBY, <<~RUBY2
         def foo
           do_something(#{var})
           if #{cond}
@@ -196,9 +194,7 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
         end
       RUBY2
 
-      include_examples 'offense',
-                       "#{name} in method, `#{var}` is in other method",
-                       <<-RUBY, <<-RUBY2
+      it_behaves_like 'offense', "#{name} in method, `#{var}` is in other method", <<~RUBY, <<~RUBY2
         def foo
           if #{cond}
             do_something2
@@ -220,9 +216,7 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
         end
       RUBY2
 
-      include_examples 'offense',
-                       "#{name} in class method, `#{var}` is in other method",
-                       <<-RUBY, <<-RUBY2
+      it_behaves_like 'offense', "#{name} in class method, `#{var}` is in other method", <<~RUBY, <<~RUBY2
         def self.foo
           if #{cond}
             do_something2
@@ -244,9 +238,7 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
         end
       RUBY2
 
-      include_examples 'offense',
-                       "#{name} in class, `#{var}` is in method",
-                       <<-RUBY, <<-RUBY2
+      it_behaves_like 'offense', "#{name} in class, `#{var}` is in method", <<~RUBY, <<~RUBY2
         class Foo
           if #{cond}
             do_something
@@ -268,9 +260,7 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
         end
       RUBY2
 
-      include_examples 'offense',
-                       "#{name} in module, `#{var}` is in method",
-                       <<-RUBY, <<-RUBY2
+      it_behaves_like 'offense', "#{name} in module, `#{var}` is in method", <<~RUBY, <<~RUBY2
         module Foo
           if #{cond}
             do_something
@@ -292,8 +282,7 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
         end
       RUBY2
 
-      include_examples 'offense', "#{name}, #{var} reference is overridden",
-                       <<-RUBY, <<-RUBY2
+      it_behaves_like 'offense', "#{name}, #{var} reference is overridden", <<~RUBY, <<~RUBY2
         if #{cond}
           do_something
           #{cond}
@@ -310,20 +299,16 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
   end
 
   it_behaves_like('all legacy match methods', 'String#match method call', '"foo".match(re)', '"foo".match?(re)')
-  it_behaves_like('all legacy match methods',
-                  'String#match method call with position',
+  it_behaves_like('all legacy match methods', 'String#match method call with position',
                   '"foo".match(re, 1)', '"foo".match?(re, 1)')
   it_behaves_like('all legacy match methods', 'Regexp#match method call', '/re/.match(foo)', '/re/.match?(foo)')
-  it_behaves_like('all legacy match methods',
-                  'Regexp#match method call with position',
+  it_behaves_like('all legacy match methods', 'Regexp#match method call with position',
                   '/re/.match(foo, 1)', '/re/.match?(foo, 1)')
   it_behaves_like('all legacy match methods', 'Symbol#match method call', ':foo.match(re)', ':foo.match?(re)')
-  it_behaves_like('all legacy match methods',
-                  'Symbol#match method call with position',
+  it_behaves_like('all legacy match methods', 'Symbol#match method call with position',
                   ':foo.match(re, 1)', ':foo.match?(re, 1)')
   it_behaves_like('all legacy match methods', 'match method call for a variable', 'foo.match(/re/)', 'foo.match?(/re/)')
-  it_behaves_like('all legacy match methods',
-                  'match method call for a variable with position',
+  it_behaves_like('all legacy match methods', 'match method call for a variable with position',
                   'foo.match(/re/, 1)', 'foo.match?(/re/, 1)')
   it_behaves_like('all legacy match methods', 'matching by =~`', '/re/ =~ foo', '/re/.match?(foo)')
   it_behaves_like('all legacy match methods', 'matching by =~`', 'foo =~ /re/', '/re/.match?(foo)')
