@@ -154,7 +154,7 @@ module RuboCop
 
         def empty_array_literal?(node)
           receiver = node.children.first
-          array_literal?(node) && receiver && receiver.children.empty?
+          receiver && array_literal?(node) && receiver.children.empty?
         end
 
         def array_literal?(node)
