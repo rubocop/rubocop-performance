@@ -19,6 +19,7 @@ module RuboCop
 
         MSG = 'Use `%<prefer>s` instead.'
 
+        # rubocop:disable InternalAffairs/ItblockHandler -- `it` block accepts only a single block parameter.
         def on_block(node)
           sort_with_block?(node) do |send, var_a, var_b, body|
             replaceable_body?(body, var_b, var_a) do
@@ -26,6 +27,7 @@ module RuboCop
             end
           end
         end
+        # rubocop:enable InternalAffairs/ItblockHandler
 
         def on_numblock(node)
           sort_with_numblock?(node) do |send, arg_count, body|

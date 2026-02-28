@@ -6,6 +6,13 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
+# Offense count: 3
+InternalAffairs/ItblockHandler:
+  Exclude:
+    - 'lib/rubocop/cop/performance/compare_with_block.rb'
+    - 'lib/rubocop/cop/performance/redundant_equality_comparison_block.rb'
+    - 'lib/rubocop/cop/performance/sum.rb'
+
 # Offense count: 12
 InternalAffairs/NodeDestructuring:
   Exclude:

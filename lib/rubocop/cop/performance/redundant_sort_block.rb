@@ -18,6 +18,7 @@ module RuboCop
 
         MSG = 'Use `sort` without block.'
 
+        # rubocop:disable InternalAffairs/ItblockHandler -- `it` block accepts only a single block parameter.
         def on_block(node)
           return unless (send, var_a, var_b, body = sort_with_block?(node))
 
@@ -25,6 +26,7 @@ module RuboCop
             register_offense(send, node)
           end
         end
+        # rubocop:enable InternalAffairs/ItblockHandler
 
         def on_numblock(node)
           return unless (send, arg_count, body = sort_with_numblock?(node))
