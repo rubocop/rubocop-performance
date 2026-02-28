@@ -24,10 +24,14 @@ module RuboCop
         extend AutoCorrector
 
         MSG = 'Use `reverse_each` instead of `reverse.each`.'
-        RESTRICT_ON_SEND = %i[each].freeze
+        RESTRICT_ON_SEND = %i{each each_with_index}.freeze
 
         def_node_matcher :reverse_each?, <<~MATCHER
           (call (call _ :reverse) :each)
+        MATCHER
+
+        def_node_matcher :reverse_each_with_index?, <<~MATCHER
+          (call (call _ :reverse) :each_with_index)
         MATCHER
 
         def on_send(node)
@@ -40,6 +44,15 @@ module RuboCop
               corrector.replace(range, 'reverse_each')
             end
           end
+
+          reverse_each_with_index?(node) do
+            range = offense_range(node)
+
+            add_offense(range) do |corrector|
+              corrector.replace(range, 'reverse_each.with_index')
+            end
+          end
+
         end
         alias on_csend on_send
 
