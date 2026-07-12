@@ -5,7 +5,7 @@ require 'rubocop'
 require_relative 'rubocop/performance'
 require_relative 'rubocop/performance/version'
 require_relative 'rubocop/performance/plugin'
-require_relative 'rubocop/cop/performance_cops'
+require_relative 'rubocop/cop/performance'
 
 autocorrect_incompatible_with_block_given_with_explicit_block = Module.new do
   def autocorrect_incompatible_with
