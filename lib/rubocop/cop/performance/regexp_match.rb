@@ -81,7 +81,7 @@ module RuboCop
         # Constants are included in this list because it is unlikely that
         # someone will store `nil` as a constant and then use it for comparison
         TYPES_IMPLEMENTING_MATCH = %i[const regexp str sym].freeze
-        MSG = 'Use `match?` instead of `%<current>s` when `MatchData` is not used.'
+        MSG = 'Use `%<negation>smatch?` instead of `%<current>s` when `MatchData` is not used.'
 
         def_node_matcher :match_method?, <<~PATTERN
           {
@@ -175,7 +175,9 @@ module RuboCop
         end
 
         def message(node)
-          format(MSG, current: node.loc.selector.source)
+          negation = ('!' if node.send_type? && node.method?(:!~))
+
+          format(MSG, negation: negation, current: node.loc.selector.source)
         end
 
         def last_match_used?(match_node)
