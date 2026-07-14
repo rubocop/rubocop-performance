@@ -239,7 +239,7 @@ RSpec.describe 'RuboCop Performance Project', type: :feature do
     end
 
     let(:path) { File.expand_path('../CHANGELOG.md', __dir__) }
-    let(:entries) { lines.grep(/^\*/).map(&:chomp) }
+    let(:entries) { changelog.each_line.grep(/^\*/).map(&:chomp) }
 
     it_behaves_like 'has Changelog format'
 
