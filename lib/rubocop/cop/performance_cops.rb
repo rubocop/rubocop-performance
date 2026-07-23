@@ -4,6 +4,7 @@ require_relative 'mixin/regexp_metacharacter'
 require_relative 'mixin/sort_block'
 
 require_relative 'performance/ancestors_include'
+require_relative 'performance/array_insert'
 require_relative 'performance/array_semi_infinite_range_slice'
 require_relative 'performance/big_decimal_with_numeric_argument'
 require_relative 'performance/bind_call'
