@@ -106,6 +106,13 @@ Performance/Count:
   VersionAdded: '0.31'
   VersionChanged: '1.8'
 
+Performance/Defined:
+  Description: >-
+                  Identifies usages of `class_variable_defined?`, `const_defined?`,
+                  `instance_variable_defined?` that can be replaced with `defined?`.
+  Enabled: pending
+  VersionAdded: '<<next>>'
+
 Performance/DeletePrefix:
   Description: 'Use `delete_prefix` instead of `gsub`.'
   Enabled: true
