@@ -1,0 +1,1 @@
+* [#438](https://github.com/rubocop/rubocop-performance/issues/438): Fix an incorrect autocorrect for `Performance/ConstantRegexp` when a regexp is used as a pattern in pattern matching. ([@pcbeingused333][])

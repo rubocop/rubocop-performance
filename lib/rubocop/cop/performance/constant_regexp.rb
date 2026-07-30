@@ -43,7 +43,8 @@ module RuboCop
         end
 
         def on_regexp(node)
-          return if within_allowed_assignment?(node) || !include_interpolated_const?(node) || node.single_interpolation?
+          return if within_allowed_assignment?(node) || within_pattern_matching?(node) ||
+                    !include_interpolated_const?(node) || node.single_interpolation?
 
           add_offense(node) do |corrector|
             corrector.insert_after(node, 'o')
@@ -54,6 +55,20 @@ module RuboCop
 
         def within_allowed_assignment?(node)
           node.each_ancestor(:casgn, :or_asgn).any?
+        end
+
+        # `/o` is invalid when a regexp is used as a pattern in pattern matching,
+        # so an offense should not be registered in that case.
+        def within_pattern_matching?(node)
+          pattern_matching = node.each_ancestor(:in_pattern, :any_match_pattern).first
+          return false unless pattern_matching
+
+          pattern = if pattern_matching.in_pattern_type?
+                      pattern_matching.children.first
+                    else
+                      pattern_matching.children[1]
+                    end
+          node.equal?(pattern) || node.each_ancestor.any? { |ancestor| ancestor.equal?(pattern) }
         end
 
         def_node_matcher :regexp_escape?, <<~PATTERN
