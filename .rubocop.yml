@@ -47,6 +47,10 @@ Naming/PredicatePrefix:
     - def_node_matcher
     - def_node_search
 
+Style/Documentation:
+  Exclude:
+    - lib/rubocop/cop/mixin.rb
+
 Style/FormatStringToken:
   # Because we parse a lot of source codes from strings. Percent arrays
   # look like unannotated format string tokens to this cop.
