@@ -46,6 +46,43 @@ RSpec.describe RuboCop::Cop::Performance::ChainArrayAllocation, :config do
     end
   end
 
+  describe 'methods that always return a new array' do
+    it 'registers an offense for each link when chaining `flat_map`, `compact`, and `uniq`' do
+      expect_offense(<<~RUBY)
+        nodes.flat_map(&:file_ids).compact.uniq
+                                   ^^^^^^^ Use unchained `flat_map` and `compact!` (followed by `return array` if required) instead of chaining `flat_map...compact`.
+                                           ^^^^ Use unchained `compact` and `uniq!` (followed by `return array` if required) instead of chaining `compact...uniq`.
+      RUBY
+    end
+
+    it 'registers an offense for `flat_map` with a block followed by `uniq`' do
+      expect_offense(<<~RUBY)
+        nodes.flat_map { |node| node.file_ids }.uniq
+                                                ^^^^ Use unchained `flat_map` and `uniq!` (followed by `return array` if required) instead of chaining `flat_map...uniq`.
+      RUBY
+    end
+
+    it 'registers an offense for `filter_map` followed by `uniq`' do
+      expect_offense(<<~RUBY)
+        nodes.filter_map(&:file_id).uniq
+                                    ^^^^ Use unchained `filter_map` and `uniq!` (followed by `return array` if required) instead of chaining `filter_map...uniq`.
+      RUBY
+    end
+
+    it 'registers an offense for `collect_concat` followed by `uniq`' do
+      expect_offense(<<~RUBY)
+        nodes.collect_concat(&:file_ids).uniq
+                                         ^^^^ Use unchained `collect_concat` and `uniq!` (followed by `return array` if required) instead of chaining `collect_concat...uniq`.
+      RUBY
+    end
+
+    it 'does not register an offense for `flat_map` without chaining' do
+      expect_no_offenses(<<~RUBY)
+        nodes.flat_map(&:file_ids)
+      RUBY
+    end
+  end
+
   describe 'when using `Enumerable#lazy`' do
     it 'does not register an offense' do
       expect_no_offenses(<<~RUBY)

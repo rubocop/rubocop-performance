@@ -32,9 +32,9 @@ module RuboCop
 
         # These methods ALWAYS return a new array
         # after they're called it's safe to mutate the resulting array
-        ALWAYS_RETURNS_NEW_ARRAY = %i[* + - collect compact drop
-                                      drop_while flatten map reject
-                                      reverse rotate select shuffle sort
+        ALWAYS_RETURNS_NEW_ARRAY = %i[* + - collect collect_concat compact drop
+                                      drop_while filter_map flat_map flatten map
+                                      reject reverse rotate select shuffle sort
                                       take take_while transpose uniq
                                       values_at |].to_set.freeze
 
