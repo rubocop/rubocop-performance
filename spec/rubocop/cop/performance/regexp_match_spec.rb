@@ -370,6 +370,17 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
     RUBY
   end
 
+  it 'registers an offense with a negated message when using `!~`' do
+    expect_offense(<<~RUBY)
+      puts 1 if foo !~ /re/
+                ^^^^^^^^^^^ Use `!match?` instead of `!~` when `MatchData` is not used.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      puts 1 if !/re/.match?(foo)
+    RUBY
+  end
+
   it 'registers an offense when a regexp used independently with a regexp used in `if` are mixed' do
     expect_offense(<<~RUBY)
       def foo
