@@ -33,7 +33,7 @@ module RuboCop
            (send (regexp (str $#literal?) (regopt)) :=~ $_)}
         PATTERN
 
-        # rubocop:disable Metrics/AbcSize
+        # rubocop:disable-next Metrics/AbcSize
         def on_send(node)
           return unless (receiver, regex_str = redundant_regex?(node))
 
@@ -50,7 +50,6 @@ module RuboCop
             corrector.replace(node, new_source)
           end
         end
-        # rubocop:enable Metrics/AbcSize
         alias on_csend on_send
         alias on_match_with_lvasgn on_send
 

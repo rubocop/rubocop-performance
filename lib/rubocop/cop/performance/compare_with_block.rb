@@ -87,7 +87,7 @@ module RuboCop
           true
         end
 
-        # rubocop:disable Metrics/MethodLength
+        # rubocop:disable-next Metrics/MethodLength
         def message(send, method, var_a, var_b, args)
           compare_method     = send.method_name
           replacement_method = REPLACEMENT[compare_method]
@@ -109,7 +109,6 @@ module RuboCop
                       str_a: str_a,
                       str_b: str_b)
         end
-        # rubocop:enable Metrics/MethodLength
 
         def compare_range(send, node)
           range_between(send.loc.selector.begin_pos, node.loc.end.end_pos)

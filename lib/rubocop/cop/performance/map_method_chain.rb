@@ -68,7 +68,7 @@ module RuboCop
 
         private
 
-        # rubocop:disable Metrics/CyclomaticComplexity
+        # rubocop:disable-next Metrics/CyclomaticComplexity
         def find_begin_of_chained_map_method(node, map_args)
           return unless (chained_map_method = node.receiver)
           return if !chained_map_method.call_type? || !RESTRICT_ON_SEND.include?(chained_map_method.method_name)
@@ -82,7 +82,6 @@ module RuboCop
 
           find_begin_of_chained_map_method(chained_map_method, map_args)
         end
-        # rubocop:enable Metrics/CyclomaticComplexity
       end
     end
   end

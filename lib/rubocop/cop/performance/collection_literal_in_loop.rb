@@ -109,7 +109,7 @@ module RuboCop
 
         # Since Ruby 3.4, simple arguments to Array#include? are optimized.
         # See https://github.com/ruby/ruby/pull/12123 for more details.
-        # rubocop:disable Metrics/CyclomaticComplexity
+        # rubocop:disable-next Metrics/CyclomaticComplexity
         def optimized_array_include?(node, method, arguments)
           return false unless target_ruby_version >= 3.4 && node.array_type? && method == :include?
           # Disallow include?(1, 2)
@@ -125,7 +125,6 @@ module RuboCop
           end
           ARRAY_INCLUDE_OPTIMIZED_TYPES.include?(arg.type)
         end
-        # rubocop:enable Metrics/CyclomaticComplexity
 
         def nonmutable_method_of_array_or_hash?(node, method)
           (node.array_type? && ARRAY_METHODS.include?(method)) ||

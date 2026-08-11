@@ -35,7 +35,7 @@ module RuboCop
             (str $_))
         PATTERN
 
-        # rubocop:disable Metrics/AbcSize
+        # rubocop:disable-next Metrics/AbcSize
         def on_send(node)
           squeeze_candidate?(node) do |receiver, bad_method, regexp_str, replace_str|
             regexp_str = regexp_str[0..-2] # delete '+' from the end
@@ -57,7 +57,6 @@ module RuboCop
             end
           end
         end
-        # rubocop:enable Metrics/AbcSize
         alias on_csend on_send
 
         private

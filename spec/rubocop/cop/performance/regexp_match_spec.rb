@@ -145,7 +145,7 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
         RUBY
       end
 
-      # rubocop:disable Layout/LineLength
+      # rubocop:disable-next Layout/LineLength
       it_behaves_like 'offense', "#{name} in if guard condition with #{var} is used in another method", <<~RUBY, <<~RUBY2
         def foo
           return if #{cond}
@@ -163,7 +163,6 @@ RSpec.describe RuboCop::Cop::Performance::RegexpMatch, :config do
           do_something(#{var})
         end
       RUBY2
-      # rubocop:enable Layout/LineLength
 
       it "accepts #{name} in method with #{var} in block" do
         expect_no_offenses(<<~RUBY)

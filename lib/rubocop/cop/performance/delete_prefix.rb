@@ -67,7 +67,7 @@ module RuboCop
           (call $!nil? ${:gsub :gsub! :sub :sub!} (regexp (str $#literal_at_start?) (regopt)) (str $_))
         PATTERN
 
-        # rubocop:disable Metrics/AbcSize
+        # rubocop:disable-next Metrics/AbcSize
         def on_send(node)
           return unless (receiver, bad_method, regexp_str, replace_string = delete_prefix_candidate?(node))
           return unless replace_string.empty?
@@ -86,7 +86,6 @@ module RuboCop
             corrector.replace(node, new_code)
           end
         end
-        # rubocop:enable Metrics/AbcSize
         alias on_csend on_send
       end
     end

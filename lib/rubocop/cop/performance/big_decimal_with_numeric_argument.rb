@@ -49,7 +49,7 @@ module RuboCop
           (send [!nil? ${float_type? str_type?}] :to_d ...)
         PATTERN
 
-        # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/MethodLength
+        # rubocop:disable-next Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/MethodLength
         def on_send(node)
           if (numeric = big_decimal_with_numeric_argument(node))
             if numeric.numeric_type?
@@ -75,7 +75,6 @@ module RuboCop
             end
           end
         end
-        # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/MethodLength
       end
     end
   end
