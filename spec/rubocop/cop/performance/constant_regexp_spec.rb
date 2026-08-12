@@ -63,4 +63,19 @@ RSpec.describe RuboCop::Cop::Performance::ConstantRegexp, :config do
       str.match?(/\#{CONST}\#{do_something(1)}/)
     RUBY
   end
+
+  it 'does not register an offense when regexp is used as a pattern in `case`/`in`' do
+    expect_no_offenses(<<~RUBY)
+      case string
+      in /\#{CONST}/
+        do_something
+      end
+    RUBY
+  end
+
+  it 'does not register an offense when regexp is used as a one-line `in` pattern' do
+    expect_no_offenses(<<~RUBY)
+      string in /\#{CONST}/
+    RUBY
+  end
 end
