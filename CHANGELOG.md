@@ -11,6 +11,8 @@
 
 ## master (unreleased)
 
+## 1.27.0 (2026-08-16)
+
 ### Bug fixes
 
 * [#532](https://github.com/rubocop/rubocop-performance/issues/532): Fix false negatives for `Performance/ChainArrayAllocation` when using `flat_map`, `filter_map`, and `collect_concat`. ([@koic][])
