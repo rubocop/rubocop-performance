@@ -62,4 +62,18 @@ RSpec.describe RuboCop::Cop::Performance::Squeeze, :config do
       str.squeeze("\n")
     RUBY
   end
+
+  context 'when the receiver is itself a chained `gsub` call' do
+    it 'registers an offense for each call and corrects without clobbering' do
+      expect_offense(<<~RUBY)
+        str.gsub(/a+/, 'a').gsub(/b+/, 'b')
+            ^^^^ Use `squeeze` instead of `gsub`.
+                            ^^^^ Use `squeeze` instead of `gsub`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        str.squeeze('a').squeeze('b')
+      RUBY
+    end
+  end
 end

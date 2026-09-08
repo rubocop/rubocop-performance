@@ -28,7 +28,7 @@ module RuboCop
 
         def_node_matcher :squeeze_candidate?, <<~PATTERN
           (call
-            $!nil? ${:gsub :gsub!}
+            !nil? ${:gsub :gsub!}
             (regexp
               (str $#repeating_literal?)
               (regopt))
@@ -37,7 +37,7 @@ module RuboCop
 
         # rubocop:disable-next Metrics/AbcSize
         def on_send(node)
-          squeeze_candidate?(node) do |receiver, bad_method, regexp_str, replace_str|
+          squeeze_candidate?(node) do |bad_method, regexp_str, replace_str|
             regexp_str = regexp_str[0..-2] # delete '+' from the end
             regexp_str = interpret_string_escapes(regexp_str)
             return unless replace_str == regexp_str
@@ -51,9 +51,8 @@ module RuboCop
               # frozen strings are handled in the `to_string_literal`
               # implementation. Please remove it.
               string_literal = to_string_literal(replace_str.dup)
-              new_code = "#{receiver.source}#{node.loc.dot.source}#{good_method}(#{string_literal})"
 
-              corrector.replace(node, new_code)
+              corrector.replace(node.loc.selector.join(node.source_range.end), "#{good_method}(#{string_literal})")
             end
           end
         end
