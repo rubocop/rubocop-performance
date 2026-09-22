@@ -28,7 +28,7 @@ RSpec.describe 'cop lazy loading' do # rubocop:disable RSpec/DescribeClass
       puts "loaded_mixin_files=\#{loaded_mixins.size}"
     RUBY
 
-    expect(output).to include('registered=52', 'loaded_cop_files=0', 'loaded_mixin_files=0')
+    expect(output).to include('registered=53', 'loaded_cop_files=0', 'loaded_mixin_files=0')
   end
 
   it 'does not register a cop twice when its file is required directly' do

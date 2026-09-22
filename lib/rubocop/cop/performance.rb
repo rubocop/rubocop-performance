@@ -17,6 +17,7 @@ module RuboCop
       register_cop :Caller, "#{__dir__}/performance/caller"
       register_cop :CaseWhenSplat, "#{__dir__}/performance/case_when_splat"
       register_cop :Casecmp, "#{__dir__}/performance/casecmp"
+      register_cop :ChainedHashMerge, "#{__dir__}/performance/chained_hash_merge"
       register_cop :CollectionLiteralInLoop, "#{__dir__}/performance/collection_literal_in_loop"
       register_cop :CompareWithBlock, "#{__dir__}/performance/compare_with_block"
       register_cop :ConcurrentMonotonicTime, "#{__dir__}/performance/concurrent_monotonic_time"
