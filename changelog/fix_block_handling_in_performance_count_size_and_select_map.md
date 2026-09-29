@@ -1,0 +1,1 @@
+* [#547](https://github.com/rubocop/rubocop-performance/pull/547): Fix `Performance/Count` autocorrecting `[1, 2, 3].select { |e| e.even? }.count { it.odd? }` into invalid code, `Performance/Size` flagging `count` with an `it` or numbered-parameter block, and false positives for `Performance/SelectMap` when `select` is the body of a block or an argument of `map`. ([@jnstq][])

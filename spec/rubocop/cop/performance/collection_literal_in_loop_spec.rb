@@ -336,4 +336,22 @@ RSpec.describe RuboCop::Cop::Performance::CollectionLiteralInLoop, :config do
       end
     end
   end
+
+  context 'when using numbered parameter', :ruby27 do
+    it 'registers an offense when using Array literal inside an enumerable loop' do
+      expect_offense(<<~RUBY)
+        items.each { [1, 2, 3].index(_1) }
+                     ^^^^^^^^^ Avoid immutable Array literals in loops. It is better to extract it into a local variable or a constant.
+      RUBY
+    end
+  end
+
+  context 'when using `it` parameter', :ruby34, unsupported_on: :parser do
+    it 'registers an offense when using Array literal inside an enumerable loop' do
+      expect_offense(<<~RUBY)
+        items.each { [1, 2, 3].index(it) }
+                     ^^^^^^^^^ Avoid immutable Array literals in loops. It is better to extract it into a local variable or a constant.
+      RUBY
+    end
+  end
 end

@@ -61,9 +61,7 @@ module RuboCop
 
         def on_block(node)
           return unless TARGET_METHODS.include?(node.method_name)
-          return unless one_block_argument?(node.arguments)
-
-          block_argument = node.first_argument
+          return unless (block_argument = block_argument_source(node))
           return unless (block_body = node.body)
           return unless use_equality_comparison_block?(block_body)
           return if same_block_argument_and_is_a_argument?(block_body, block_argument)
@@ -76,15 +74,26 @@ module RuboCop
             corrector.replace(range, prefer)
           end
         end
+        alias on_numblock on_block
+        alias on_itblock on_block
 
         private
+
+        def block_argument_source(node)
+          return if node.block_type? && !(one_block_argument?(node.arguments) && node.first_argument.arg_type?)
+
+          arguments = node.argument_list
+          return unless arguments.one? && arguments.first.arg_type?
+
+          arguments.first.name.to_s
+        end
 
         def one_block_argument?(block_arguments)
           block_arguments.one? && !block_arguments.source.include?(',')
         end
 
         def use_equality_comparison_block?(block_body)
-          return false unless block_body.send_type?
+          return false unless block_body.send_type? && block_body.receiver && block_body.arguments.one?
 
           method_name = block_body.method_name
 
@@ -93,35 +102,30 @@ module RuboCop
 
         def same_block_argument_and_is_a_argument?(block_body, block_argument)
           if block_body.method?(:===)
-            block_argument.source != block_body.children[2].source
+            block_argument != block_body.children[2].source
           elsif IS_A_METHODS.include?(block_body.method_name)
-            block_argument.source == block_body.first_argument.source
+            block_argument == block_body.first_argument.source
           else
             block_body.receiver.source == block_body.first_argument.receiver&.source
           end
         end
 
         def new_argument(block_argument, block_body)
-          if block_argument.source == block_body.receiver.source
+          if block_argument == block_body.receiver.source
             rhs = block_body.first_argument
-            return if use_block_argument_in_method_argument_of_operand?(block_argument, rhs)
+            return if use_block_argument_in_operand?(block_argument, rhs)
 
             rhs.source
-          elsif block_argument.source == block_body.first_argument.source
+          elsif block_argument == block_body.first_argument.source
             lhs = block_body.receiver
-            return if use_block_argument_in_method_argument_of_operand?(block_argument, lhs)
+            return if use_block_argument_in_operand?(block_argument, lhs)
 
             lhs.source
           end
         end
 
-        def use_block_argument_in_method_argument_of_operand?(block_argument, operand)
-          return false unless operand.send_type?
-
-          arguments = operand.arguments
-          arguments.inject(arguments.map(&:source)) do |operand_sources, argument|
-            operand_sources + argument.each_descendant(:lvar).map(&:source)
-          end.any?(block_argument.source)
+        def use_block_argument_in_operand?(block_argument, operand)
+          operand.each_node(:lvar).any? { |lvar| lvar.source == block_argument }
         end
 
         def offense_range(node)

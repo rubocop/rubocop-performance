@@ -86,7 +86,7 @@ module RuboCop
         def_node_matcher :sum_map_candidate?, <<~PATTERN
           (call
             {
-              (block $(call _ {:map :collect}) ...)
+              (any_block $(call _ {:map :collect}) ...)
               $(call _ {:map :collect} (block_pass _))
             }
           :sum $_init ?)

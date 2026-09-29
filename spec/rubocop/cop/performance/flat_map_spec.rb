@@ -146,4 +146,30 @@ RSpec.describe RuboCop::Cop::Performance::FlatMap, :config do
     it_behaves_like('flatten_with_params_enabled', 'map', 'flatten!')
     it_behaves_like('flatten_with_params_enabled', 'collect', 'flatten!')
   end
+
+  context 'when using numbered parameter', :ruby27 do
+    it 'registers an offense and corrects when using `map...flatten(1)`' do
+      expect_offense(<<~RUBY)
+        [1, 2, 3, 4].map { [_1, _1] }.flatten(1)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `flat_map` instead of `map...flatten`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        [1, 2, 3, 4].flat_map { [_1, _1] }
+      RUBY
+    end
+  end
+
+  context 'when using `it` parameter', :ruby34, unsupported_on: :parser do
+    it 'registers an offense and corrects when using `map...flatten(1)`' do
+      expect_offense(<<~RUBY)
+        [1, 2, 3, 4].map { [it, it] }.flatten(1)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `flat_map` instead of `map...flatten`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        [1, 2, 3, 4].flat_map { [it, it] }
+      RUBY
+    end
+  end
 end

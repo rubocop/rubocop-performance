@@ -507,4 +507,119 @@ RSpec.describe RuboCop::Cop::Performance::Count, :config do
       RUBY
     end
   end
+
+  context 'when using numbered parameter', :ruby27 do
+    it 'registers an offense and corrects when using `select...size`' do
+      expect_offense(<<~RUBY)
+        [1, 2, 3].select { _1.even? }.size
+                  ^^^^^^^^^^^^^^^^^^^^^^^^ Use `count` instead of `select...size`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        [1, 2, 3].count { _1.even? }
+      RUBY
+    end
+
+    it 'registers an offense and corrects when using `reject...count`' do
+      expect_offense(<<~RUBY)
+        [1, 2, 3].reject { _1.even? }.count
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^ Use `count` instead of `reject...count`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        [1, 2, 3].count { !(_1.even?) }
+      RUBY
+    end
+  end
+
+  context 'when using `it` parameter', :ruby34, unsupported_on: :parser do
+    it 'registers an offense and corrects when using `select...size`' do
+      expect_offense(<<~RUBY)
+        [1, 2, 3].select { it.even? }.size
+                  ^^^^^^^^^^^^^^^^^^^^^^^^ Use `count` instead of `select...size`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        [1, 2, 3].count { it.even? }
+      RUBY
+    end
+
+    it 'registers an offense and corrects when using `reject...count`' do
+      expect_offense(<<~RUBY)
+        [1, 2, 3].reject { it.even? }.count
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^ Use `count` instead of `reject...count`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        [1, 2, 3].count { !(it.even?) }
+      RUBY
+    end
+  end
+
+  context 'when the chain is the body of a block' do
+    context 'with a named block parameter' do
+      it 'registers an offense and corrects' do
+        expect_offense(<<~RUBY)
+          groups.map { |x| x.select(&:active?).size }
+                             ^^^^^^^^^^^^^^^^^^^^^^ Use `count` instead of `select...size`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          groups.map { |x| x.count(&:active?) }
+        RUBY
+      end
+    end
+
+    context 'with a numbered parameter', :ruby27 do
+      it 'registers an offense and corrects' do
+        expect_offense(<<~RUBY)
+          groups.map { _1.select(&:active?).size }
+                          ^^^^^^^^^^^^^^^^^^^^^^ Use `count` instead of `select...size`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          groups.map { _1.count(&:active?) }
+        RUBY
+      end
+    end
+
+    context 'with the `it` parameter', :ruby34, unsupported_on: :parser do
+      it 'registers an offense and corrects' do
+        expect_offense(<<~RUBY)
+          groups.map { it.select(&:active?).size }
+                          ^^^^^^^^^^^^^^^^^^^^^^ Use `count` instead of `select...size`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          groups.map { it.count(&:active?) }
+        RUBY
+      end
+    end
+  end
+
+  context 'when `count` is given a block' do
+    context 'with a named block parameter' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          [1, 2, 3].select { |e| e.even? }.count { |x| x.odd? }
+        RUBY
+      end
+    end
+
+    context 'with a numbered parameter', :ruby27 do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          [1, 2, 3].select { |e| e.even? }.count { _1.odd? }
+        RUBY
+      end
+    end
+
+    context 'with the `it` parameter', :ruby34, unsupported_on: :parser do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          [1, 2, 3].select { |e| e.even? }.count { it.odd? }
+        RUBY
+      end
+    end
+  end
 end

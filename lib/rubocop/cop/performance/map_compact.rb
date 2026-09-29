@@ -45,9 +45,9 @@ module RuboCop
                 (block_pass
                   (sym _))) _)
             (call
-              (block
+              (any_block
                 $(call _ {:map :collect})
-                  (args ...) _) _)
+                  _ _) _)
           }
         PATTERN
 
