@@ -374,4 +374,30 @@ RSpec.describe RuboCop::Cop::Performance::MapCompact, :config do
       RUBY
     end
   end
+
+  context 'when using numbered parameter', :ruby27 do
+    it 'registers an offense and corrects when using `map...compact`' do
+      expect_offense(<<~RUBY)
+        collection.map { _1.do_something }.compact
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `filter_map` instead.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        collection.filter_map { _1.do_something }
+      RUBY
+    end
+  end
+
+  context 'when using `it` parameter', :ruby34, unsupported_on: :parser do
+    it 'registers an offense and corrects when using `map...compact`' do
+      expect_offense(<<~RUBY)
+        collection.map { it.do_something }.compact
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `filter_map` instead.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        collection.filter_map { it.do_something }
+      RUBY
+    end
+  end
 end

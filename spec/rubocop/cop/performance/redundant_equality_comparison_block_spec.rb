@@ -102,6 +102,13 @@ RSpec.describe RuboCop::Cop::Performance::RedundantEqualityComparisonBlock, :con
       RUBY
     end
 
+    it 'does not register an offense when the block argument is destructured' do
+      expect_no_offenses(<<~RUBY)
+        items.any? { |(item)| item == other }
+        items.any? { |(item, other_item)| item == other }
+      RUBY
+    end
+
     it 'does not register an offense when the block variable is used on both sides of `==`' do
       expect_no_offenses(<<~RUBY)
         items.all? { |item| item == item.do_something }
@@ -192,5 +199,207 @@ RSpec.describe RuboCop::Cop::Performance::RedundantEqualityComparisonBlock, :con
     expect_no_offenses(<<~RUBY)
       items.any? { }
     RUBY
+  end
+
+  context 'when using numbered parameter', :ruby27 do
+    it 'registers and corrects an offense when using `==` comparison block' do
+      expect_offense(<<~RUBY)
+        items.any? { _1 == other }
+              ^^^^^^^^^^^^^^^^^^^^ Use `any?(other)` instead of block.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        items.any?(other)
+      RUBY
+    end
+
+    it 'registers and corrects an offense when using `===` comparison block' do
+      expect_offense(<<~RUBY)
+        items.all? { pattern === _1 }
+              ^^^^^^^^^^^^^^^^^^^^^^^ Use `all?(pattern)` instead of block.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        items.all?(pattern)
+      RUBY
+    end
+
+    it 'does not register an offense when the block argument is used on both sides' do
+      expect_no_offenses(<<~RUBY)
+        items.any? { _1 == _1.foo }
+      RUBY
+    end
+  end
+
+  context 'when using `it` parameter', :ruby34, unsupported_on: :parser do
+    it 'registers and corrects an offense when using `==` comparison block' do
+      expect_offense(<<~RUBY)
+        items.any? { it == other }
+              ^^^^^^^^^^^^^^^^^^^^ Use `any?(other)` instead of block.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        items.any?(other)
+      RUBY
+    end
+
+    it 'registers and corrects an offense when using `===` comparison block' do
+      expect_offense(<<~RUBY)
+        items.all? { pattern === it }
+              ^^^^^^^^^^^^^^^^^^^^^^^ Use `all?(pattern)` instead of block.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        items.all?(pattern)
+      RUBY
+    end
+
+    it 'does not register an offense when the block argument is used on both sides' do
+      expect_no_offenses(<<~RUBY)
+        items.any? { it == it.foo }
+      RUBY
+    end
+  end
+
+  context 'when the block argument is used in the other operand' do
+    context 'with a named block parameter' do
+      it 'does not register an offense for a method chain on the block argument' do
+        expect_no_offenses(<<~RUBY)
+          strings.all? { |x| x == x.strip.downcase }
+        RUBY
+      end
+
+      it 'does not register an offense when both operands are the block argument' do
+        expect_no_offenses(<<~RUBY)
+          items.all? { |x| x == x }
+        RUBY
+      end
+
+      it 'does not register an offense when the block argument is inside an array' do
+        expect_no_offenses(<<~RUBY)
+          items.all? { |x| x == [x] }
+        RUBY
+      end
+
+      it 'does not register an offense when the block argument is inside parentheses' do
+        expect_no_offenses(<<~RUBY)
+          items.all? { |x| x == (x + 1) }
+        RUBY
+      end
+
+      it 'does not register an offense for a longer chain on the left side' do
+        expect_no_offenses(<<~RUBY)
+          items.all? { |x| x.foo.bar == x }
+        RUBY
+      end
+    end
+
+    context 'with a numbered parameter', :ruby27 do
+      it 'does not register an offense for a method chain on the block argument' do
+        expect_no_offenses(<<~RUBY)
+          strings.all? { _1 == _1.strip.downcase }
+        RUBY
+      end
+
+      it 'does not register an offense when both operands are the block argument' do
+        expect_no_offenses(<<~RUBY)
+          items.all? { _1 == _1 }
+        RUBY
+      end
+
+      it 'does not register an offense when the block argument is inside an array' do
+        expect_no_offenses(<<~RUBY)
+          items.all? { _1 == [_1] }
+        RUBY
+      end
+
+      it 'does not register an offense when the block argument is inside parentheses' do
+        expect_no_offenses(<<~RUBY)
+          items.all? { _1 == (_1 + 1) }
+        RUBY
+      end
+
+      it 'does not register an offense for a longer chain on the left side' do
+        expect_no_offenses(<<~RUBY)
+          items.all? { _1.foo.bar == _1 }
+        RUBY
+      end
+    end
+
+    context 'with the `it` parameter', :ruby34, unsupported_on: :parser do
+      it 'does not register an offense for a method chain on the block argument' do
+        expect_no_offenses(<<~RUBY)
+          strings.all? { it == it.strip.downcase }
+        RUBY
+      end
+
+      it 'does not register an offense when both operands are the block argument' do
+        expect_no_offenses(<<~RUBY)
+          items.all? { it == it }
+        RUBY
+      end
+
+      it 'does not register an offense when the block argument is inside an array' do
+        expect_no_offenses(<<~RUBY)
+          items.all? { it == [it] }
+        RUBY
+      end
+
+      it 'does not register an offense when the block argument is inside parentheses' do
+        expect_no_offenses(<<~RUBY)
+          items.all? { it == (it + 1) }
+        RUBY
+      end
+
+      it 'does not register an offense for a longer chain on the left side' do
+        expect_no_offenses(<<~RUBY)
+          items.all? { it.foo.bar == it }
+        RUBY
+      end
+    end
+  end
+
+  context 'when the comparison has no receiver or no argument' do
+    context 'with a named block parameter' do
+      it 'does not register an offense for `is_a?` without a receiver' do
+        expect_no_offenses(<<~RUBY)
+          items.all? { |x| is_a?(x.class) }
+        RUBY
+      end
+
+      it 'does not register an offense for `is_a?` without an argument' do
+        expect_no_offenses(<<~RUBY)
+          items.all? { |x| x.is_a? }
+        RUBY
+      end
+    end
+
+    context 'with a numbered parameter', :ruby27 do
+      it 'does not register an offense for `is_a?` without a receiver' do
+        expect_no_offenses(<<~RUBY)
+          items.all? { is_a?(_1.class) }
+        RUBY
+      end
+
+      it 'does not register an offense for `is_a?` without an argument' do
+        expect_no_offenses(<<~RUBY)
+          items.all? { _1.is_a? }
+        RUBY
+      end
+    end
+
+    context 'with the `it` parameter', :ruby34, unsupported_on: :parser do
+      it 'does not register an offense for `is_a?` without a receiver' do
+        expect_no_offenses(<<~RUBY)
+          items.all? { is_a?(it.class) }
+        RUBY
+      end
+
+      it 'does not register an offense for `is_a?` without an argument' do
+        expect_no_offenses(<<~RUBY)
+          items.all? { it.is_a? }
+        RUBY
+      end
+    end
   end
 end

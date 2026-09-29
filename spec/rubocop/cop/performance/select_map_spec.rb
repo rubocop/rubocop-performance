@@ -137,4 +137,95 @@ RSpec.describe RuboCop::Cop::Performance::SelectMap, :config do
       RUBY
     end
   end
+
+  context 'when using numbered parameter', :ruby27 do
+    it 'registers an offense when using `select...map`' do
+      expect_offense(<<~RUBY)
+        ary.select { _1.present? }.map { _1.to_i }
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `filter_map` instead of `select.map`.
+      RUBY
+    end
+  end
+
+  context 'when using `it` parameter', :ruby34, unsupported_on: :parser do
+    it 'registers an offense when using `select...map`' do
+      expect_offense(<<~RUBY)
+        ary.select { it.present? }.map { it.to_i }
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `filter_map` instead of `select.map`.
+      RUBY
+    end
+  end
+
+  context 'when `select` is the body of a block' do
+    context 'with a named block parameter' do
+      it 'does not register an offense when `map` is called on the outer block' do
+        expect_no_offenses(<<~RUBY)
+          groups.map { |x| x.select(&:active?) }.map(&:size)
+        RUBY
+      end
+
+      it 'registers an offense for the chain inside the block' do
+        expect_offense(<<~RUBY)
+          items.each { |x| x.select(&:x).map(&:y) }
+                             ^^^^^^^^^^^^^^^^^^^^ Use `filter_map` instead of `select.map`.
+        RUBY
+      end
+    end
+
+    context 'with a numbered parameter', :ruby27 do
+      it 'does not register an offense when `map` is called on the outer block' do
+        expect_no_offenses(<<~RUBY)
+          groups.map { _1.select(&:active?) }.map(&:size)
+        RUBY
+      end
+
+      it 'registers an offense for the chain inside the block' do
+        expect_offense(<<~RUBY)
+          items.each { _1.select(&:x).map(&:y) }
+                          ^^^^^^^^^^^^^^^^^^^^ Use `filter_map` instead of `select.map`.
+        RUBY
+      end
+    end
+
+    context 'with the `it` parameter', :ruby34, unsupported_on: :parser do
+      it 'does not register an offense when `map` is called on the outer block' do
+        expect_no_offenses(<<~RUBY)
+          groups.map { it.select(&:active?) }.map(&:size)
+        RUBY
+      end
+
+      it 'registers an offense for the chain inside the block' do
+        expect_offense(<<~RUBY)
+          items.each { it.select(&:x).map(&:y) }
+                          ^^^^^^^^^^^^^^^^^^^^ Use `filter_map` instead of `select.map`.
+        RUBY
+      end
+    end
+  end
+
+  context 'when `select` is an argument of `map`' do
+    context 'with a named block parameter' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          map(ary.select { |x| x.x })
+        RUBY
+      end
+    end
+
+    context 'with a numbered parameter', :ruby27 do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          map(ary.select { _1.x })
+        RUBY
+      end
+    end
+
+    context 'with the `it` parameter', :ruby34, unsupported_on: :parser do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          map(ary.select { it.x })
+        RUBY
+      end
+    end
+  end
 end

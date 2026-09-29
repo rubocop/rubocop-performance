@@ -257,4 +257,52 @@ RSpec.describe RuboCop::Cop::Performance::Detect, :config do
     it_behaves_like 'detect_autocorrect', 'detect'
     it_behaves_like 'detect_autocorrect', 'find'
   end
+
+  context 'when using numbered parameter', :ruby27 do
+    it 'registers an offense and corrects when using `select...first`' do
+      expect_offense(<<~RUBY)
+        [1, 2, 3].select { _1.even? }.first
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^ Use `detect` instead of `select.first`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        [1, 2, 3].detect { _1.even? }
+      RUBY
+    end
+
+    it 'registers an offense and corrects when using `select...last`' do
+      expect_offense(<<~RUBY)
+        [1, 2, 3].select { _1.even? }.last
+                  ^^^^^^^^^^^^^^^^^^^^^^^^ Use `reverse.detect` instead of `select.last`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        [1, 2, 3].reverse.detect { _1.even? }
+      RUBY
+    end
+  end
+
+  context 'when using `it` parameter', :ruby34, unsupported_on: :parser do
+    it 'registers an offense and corrects when using `select...first`' do
+      expect_offense(<<~RUBY)
+        [1, 2, 3].select { it.even? }.first
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^ Use `detect` instead of `select.first`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        [1, 2, 3].detect { it.even? }
+      RUBY
+    end
+
+    it 'registers an offense and corrects when using `select...last`' do
+      expect_offense(<<~RUBY)
+        [1, 2, 3].select { it.even? }.last
+                  ^^^^^^^^^^^^^^^^^^^^^^^^ Use `reverse.detect` instead of `select.last`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        [1, 2, 3].reverse.detect { it.even? }
+      RUBY
+    end
+  end
 end

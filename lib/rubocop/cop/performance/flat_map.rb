@@ -28,7 +28,7 @@ module RuboCop
         def_node_matcher :flat_map_candidate?, <<~PATTERN
           (call
             {
-              $(block (call _ ${:collect :map}) ...)
+              $(any_block (call _ ${:collect :map}) ...)
               $(call _ ${:collect :map} (block_pass _))
             }
             ${:flatten :flatten!}
@@ -61,7 +61,7 @@ module RuboCop
         end
 
         def register_offense(node, map_node, first_method, flatten, message)
-          map_send_node = map_node.block_type? ? map_node.send_node : map_node
+          map_send_node = map_node.any_block_type? ? map_node.send_node : map_node
           range = range_between(map_send_node.loc.selector.begin_pos, node.source_range.end_pos)
           message = format(message, method: first_method, flatten: flatten)
 
@@ -76,7 +76,7 @@ module RuboCop
 
           return unless flatten_level
 
-          map_send_node = map_node.block_type? ? map_node.send_node : map_node
+          map_send_node = map_node.any_block_type? ? map_node.send_node : map_node
           range = range_between(map_node.source_range.end_pos, node.source_range.end_pos)
 
           corrector.remove(range)
