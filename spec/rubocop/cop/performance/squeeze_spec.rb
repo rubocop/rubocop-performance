@@ -62,4 +62,18 @@ RSpec.describe RuboCop::Cop::Performance::Squeeze, :config do
       str.squeeze("\n")
     RUBY
   end
+
+  context 'when the receiver is itself a chained call' do
+    it 'registers an offense for each call' do
+      expect_offense(<<~RUBY)
+        s.gsub(/a+/, 'a').gsub(/b+/, 'b')
+          ^^^^ Use `squeeze` instead of `gsub`.
+                          ^^^^ Use `squeeze` instead of `gsub`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        s.squeeze('a').squeeze('b')
+      RUBY
+    end
+  end
 end
