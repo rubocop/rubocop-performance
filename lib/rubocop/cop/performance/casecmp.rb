@@ -9,8 +9,8 @@ module RuboCop
       # This cop is disabled by default because `String#casecmp` only works with
       # ASCII characters. See https://github.com/rubocop/rubocop/issues/9753.
       #
-      # If you are working only with ASCII characters, then this cop can be
-      # safely enabled.
+      # Only consider enabling this cop for ASCII inputs when the original
+      # comparisons already use the same case-normalization convention.
       #
       # @safety
       #   This cop is unsafe because `String#casecmp` does not perform the same
@@ -21,6 +21,9 @@ module RuboCop
       #   Replacing `casecmp` with `casecmp?` is not an equivalent workaround:
       #   `casecmp?` uses Unicode case folding, so `'ß'.casecmp?('ss')` is true,
       #   while `'ß'.downcase == 'ss'` is false.
+      #
+      #   ASCII inputs also need review when a literal is not normalized:
+      #   `'a'.downcase == 'A'` is false, but `'a'.casecmp('A').zero?` is true.
       #
       # @example
       #   # bad
