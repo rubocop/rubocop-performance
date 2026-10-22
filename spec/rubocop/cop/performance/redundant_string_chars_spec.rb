@@ -4,22 +4,22 @@ RSpec.describe RuboCop::Cop::Performance::RedundantStringChars, :config do
   it 'registers an offense and corrects when using `str.chars[0..2]`' do
     expect_offense(<<~RUBY)
       str.chars[0..2]
-          ^^^^^^^^^^^ Use `[0..2].chars` instead of `chars[0..2]`.
+          ^^^^^^^^^^^ Use `[0..2]&.chars` instead of `chars[0..2]`.
     RUBY
 
     expect_correction(<<~RUBY)
-      str[0..2].chars
+      str[0..2]&.chars
     RUBY
   end
 
   it 'registers an offense and corrects when using `str.chars.slice(0..2)`' do
     expect_offense(<<~RUBY)
       str.chars.slice(0..2)
-          ^^^^^^^^^^^^^^^^^ Use `[0..2].chars` instead of `chars.slice(0..2)`.
+          ^^^^^^^^^^^^^^^^^ Use `[0..2]&.chars` instead of `chars.slice(0..2)`.
     RUBY
 
     expect_correction(<<~RUBY)
-      str[0..2].chars
+      str[0..2]&.chars
     RUBY
   end
 
@@ -59,11 +59,11 @@ RSpec.describe RuboCop::Cop::Performance::RedundantStringChars, :config do
   it 'registers an offense and corrects when using `str.chars.first(2)`' do
     expect_offense(<<~RUBY)
       str.chars.first(2)
-          ^^^^^^^^^^^^^^ Use `[0...2].chars` instead of `chars.first(2)`.
+          ^^^^^^^^^^^^^^ Use `[0, 2].chars` instead of `chars.first(2)`.
     RUBY
 
     expect_correction(<<~RUBY)
-      str[0...2].chars
+      str[0, 2].chars
     RUBY
   end
 
@@ -87,11 +87,11 @@ RSpec.describe RuboCop::Cop::Performance::RedundantStringChars, :config do
   it 'registers an offense and corrects when using `str.chars.take(2)`' do
     expect_offense(<<~RUBY)
       str.chars.take(2)
-          ^^^^^^^^^^^^^ Use `[0...2].chars` instead of `chars.take(2)`.
+          ^^^^^^^^^^^^^ Use `[0, 2].chars` instead of `chars.take(2)`.
     RUBY
 
     expect_correction(<<~RUBY)
-      str[0...2].chars
+      str[0, 2].chars
     RUBY
   end
 
@@ -149,6 +149,44 @@ RSpec.describe RuboCop::Cop::Performance::RedundantStringChars, :config do
   it 'does not register an offense with implicit receiver' do
     expect_no_offenses(<<~RUBY)
       chars.size
+    RUBY
+  end
+
+  it 'preserves the string result of an integer slice' do
+    expect_offense(<<~RUBY)
+      str.chars.slice(1)
+          ^^^^^^^^^^^^^^ Use `[1]` instead of `chars.slice(1)`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      str[1]
+    RUBY
+  end
+
+  it 'preserves nil for an out-of-bounds range' do
+    expect_offense(<<~RUBY)
+      'abc'.chars[4..8]
+            ^^^^^^^^^^^ Use `[4..8]&.chars` instead of `chars[4..8]`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      'abc'[4..8]&.chars
+    RUBY
+  end
+
+  it 'does not guess the type of a dynamic index' do
+    expect_no_offenses(<<~RUBY)
+      str.chars[index]
+      str.chars.slice(index)
+    RUBY
+  end
+
+  it 'preserves negative and dynamic count errors' do
+    expect_no_offenses(<<~RUBY)
+      str.chars.first(-1)
+      str.chars.take(-1)
+      str.chars.first(count)
+      str.chars.take(count)
     RUBY
   end
 end
