@@ -407,7 +407,7 @@ not mutate the original receiver merely to avoid intermediate arrays.
 array = ["a", "b", "c"]
 array.compact.flatten.map { |x| x.downcase }
 
-# good
+# good - the standard Array#compact returns an unshared, mutable array here
 array = ["a", "b", "c"]
 array = array.compact
 array.flatten!
@@ -415,8 +415,8 @@ array.map! { |x| x.downcase }
 array
 ----
 
-[#an-overridden-method-can-retain-the-intermediate-array-performancechainarrayallocation]
-==== An overridden method can retain the intermediate array
+[#unsafe-when-an-overridden-method-retains-the-intermediate-array-performancechainarrayallocation]
+==== Unsafe when an overridden method retains the intermediate array
 
 [source,ruby]
 ----

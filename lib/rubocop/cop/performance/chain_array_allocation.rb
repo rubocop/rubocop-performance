@@ -20,14 +20,14 @@ module RuboCop
       #   array = ["a", "b", "c"]
       #   array.compact.flatten.map { |x| x.downcase }
       #
-      #   # good
+      #   # good - the standard Array#compact returns an unshared, mutable array here
       #   array = ["a", "b", "c"]
       #   array = array.compact
       #   array.flatten!
       #   array.map! { |x| x.downcase }
       #   array
       #
-      # @example An overridden method can retain the intermediate array
+      # @example Unsafe when an overridden method retains the intermediate array
       #   class RetainingArray < Array
       #     attr_reader :unique
       #

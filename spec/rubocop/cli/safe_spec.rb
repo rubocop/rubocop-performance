@@ -28,12 +28,13 @@ RSpec.describe 'RuboCop::CLI --safe', :isolated_environment do # rubocop:disable
   end
 
   it 'omits array mutation suggestions in safe mode' do
-    expect(cli.run(['--safe', 'example.rb'])).to eq(0), $stderr.string
-    expect($stdout.string.include?('no offenses detected')).to be(true)
+    expect(cli.run(['--safe', '--format', 'json', 'example.rb'])).to eq(0), $stderr.string
+    expect(JSON.parse($stdout.string).dig('summary', 'offense_count')).to eq(0)
   end
 
   it 'keeps array mutation suggestions available outside safe mode' do
-    expect(cli.run(['example.rb'])).to eq(1), $stderr.string
-    expect($stdout.string.include?('Performance/ChainArrayAllocation')).to be(true)
+    expect(cli.run(['--format', 'json', 'example.rb'])).to eq(1), $stderr.string
+    offenses = JSON.parse($stdout.string).fetch('files').flat_map { |file| file.fetch('offenses') }
+    expect(offenses.map { |offense| offense.fetch('cop_name') }).to eq(['Performance/ChainArrayAllocation'])
   end
 end
