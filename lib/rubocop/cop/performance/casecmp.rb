@@ -6,17 +6,21 @@ module RuboCop
       # Identifies places where a case-insensitive string comparison
       # can better be implemented using `casecmp`.
       #
-      # This cop is disabled by default because `String#casecmp` only works with
-      # ASCII characters. See https://github.com/rubocop/rubocop/issues/9753.
+      # This cop is disabled by default because `String#casecmp` only folds
+      # ASCII letters. See https://github.com/rubocop/rubocop/issues/9753.
       #
-      # Only consider enabling this cop for ASCII inputs when the original
-      # comparisons already use the same case-normalization convention.
+      # Only consider enabling this cop for ASCII strings. Literals must already
+      # be in the case produced by the original conversion, and comparisons
+      # between converted strings must use the same conversion on both sides.
       #
       # @safety
       #   This cop is unsafe because `String#casecmp` does not perform the same
       #   Unicode case conversion as `String#downcase` or `String#upcase`.
       #   For example, `'Ä'.downcase == 'ä'` is true, but
       #   `'Ä'.casecmp('ä').zero?` is false.
+      #
+      #   An ASCII literal does not guarantee equivalence: `'ß'.upcase == 'SS'`
+      #   is true, but `'ß'.casecmp('SS').zero?` is false.
       #
       #   Replacing `casecmp` with `casecmp?` is not an equivalent workaround:
       #   `casecmp?` uses Unicode case folding, so `'ß'.casecmp?('ss')` is true,
