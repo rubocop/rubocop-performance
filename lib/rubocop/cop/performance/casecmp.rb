@@ -13,8 +13,14 @@ module RuboCop
       # safely enabled.
       #
       # @safety
-      #   This cop is unsafe because `String#casecmp` and `String#casecmp?` behave
-      #   differently when using Non-ASCII characters.
+      #   This cop is unsafe because `String#casecmp` does not perform the same
+      #   Unicode case conversion as `String#downcase` or `String#upcase`.
+      #   For example, `'Ä'.downcase == 'ä'` is true, but
+      #   `'Ä'.casecmp('ä').zero?` is false.
+      #
+      #   Replacing `casecmp` with `casecmp?` is not an equivalent workaround:
+      #   `casecmp?` uses Unicode case folding, so `'ß'.casecmp?('ss')` is true,
+      #   while `'ß'.downcase == 'ss'` is false.
       #
       # @example
       #   # bad
