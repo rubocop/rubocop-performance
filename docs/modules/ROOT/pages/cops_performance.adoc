@@ -1772,13 +1772,21 @@ a deterministic regexp to a string.
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
 
 | Pending
-| Yes
-| Always
+| No
+| Always (Unsafe)
 | 1.7
-| -
+| <<next>>
 |===
 
 Checks for redundant `String#chars`.
+
+[#safety-performanceredundantstringchars]
+=== Safety
+
+This cop is unsafe because a String subclass can override the methods
+that replace `chars`. For example, `ActiveSupport::SafeBuffer#[]` returns
+another SafeBuffer, while `chars.first` returns a plain String. This can
+change the HTML-safety of the result.
 
 [#examples-performanceredundantstringchars]
 === Examples
@@ -1791,7 +1799,7 @@ str.chars.slice(0..2)
 str.chars.last
 
 # good
-str[0..2].chars
+str[0..2]&.chars
 
 # bad
 str.chars.first
@@ -1799,7 +1807,7 @@ str.chars.first(2)
 
 # good
 str[0]
-str[0...2].chars
+str[0, 2].chars
 str[-1]
 
 # bad
@@ -1809,7 +1817,7 @@ str.chars.size
 str.chars.empty?
 
 # good
-str[0...2].chars
+str[0, 2].chars
 str.length
 str.size
 str.empty?
