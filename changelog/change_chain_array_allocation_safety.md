@@ -1,0 +1,1 @@
+* [#432](https://github.com/rubocop/rubocop-performance/issues/432): Mark `Performance/ChainArrayAllocation` as unsafe because overridden methods may return shared or frozen arrays. The cop is now excluded by `--safe` even when enabled; normal detection and the lack of autocorrection are unchanged. ([@thomasklemm][])

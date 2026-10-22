@@ -7,17 +7,40 @@ module RuboCop
       # Each of these methods (`compact`, `flatten`, `map`) will generate a new intermediate array
       # that is promptly thrown away. Instead it is faster to mutate when we know it's safe.
       #
+      # @safety
+      #   This cop is unsafe because it cannot determine whether a method returns
+      #   a fresh, mutable array that is not retained elsewhere. An overridden
+      #   method may return a shared or frozen array, even when its name matches
+      #   an Array method. Mutating that result can change observable state or raise
+      #   `FrozenError`. Verify ownership before applying the suggestion, and do
+      #   not mutate the original receiver merely to avoid intermediate arrays.
+      #
       # @example
       #   # bad
       #   array = ["a", "b", "c"]
       #   array.compact.flatten.map { |x| x.downcase }
       #
-      #   # good
+      #   # good - the standard Array#compact returns an unshared, mutable array here
       #   array = ["a", "b", "c"]
-      #   array.compact!
+      #   array = array.compact
       #   array.flatten!
       #   array.map! { |x| x.downcase }
       #   array
+      #
+      # @example Unsafe when an overridden method retains the intermediate array
+      #   class RetainingArray < Array
+      #     attr_reader :unique
+      #
+      #     def uniq
+      #       @unique = super
+      #     end
+      #   end
+      #
+      #   values = RetainingArray.new([1, 1, 2])
+      #   values.uniq.map { |n| n * 2 }
+      #   values.unique # => [1, 2]
+      #   values.uniq.map! { |n| n * 2 }
+      #   values.unique # => [2, 4]
       class ChainArrayAllocation < Base
         # These methods return a new array but only sometimes. They must be
         # called with an argument. For example:
@@ -30,8 +53,8 @@ module RuboCop
         # These methods return a new array only when called without a block.
         RETURNS_NEW_ARRAY_WHEN_NO_BLOCK = %i[zip product].to_set.freeze
 
-        # These methods ALWAYS return a new array
-        # after they're called it's safe to mutate the resulting array
+        # The standard Array implementations return new arrays. Overrides may
+        # retain or freeze their results, so their ownership still needs review.
         ALWAYS_RETURNS_NEW_ARRAY = %i[* + - collect collect_concat compact drop
                                       drop_while filter_map flat_map flatten map
                                       reject reverse rotate select shuffle sort
