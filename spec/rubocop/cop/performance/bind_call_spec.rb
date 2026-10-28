@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Performance::BindCall, :config do
+  describe '.autocorrect_incompatible_with' do
+    it 'declares `Style::ExplicitBlockArgument` as incompatible to avoid producing `bind_call(obj)(&block)`' do
+      incompatible = described_class.autocorrect_incompatible_with
+
+      expect(incompatible.include?(RuboCop::Cop::Style::ExplicitBlockArgument)).to be(true)
+    end
+  end
+
   context 'when TargetRubyVersion <= 2.6', :ruby26, unsupported_on: :prism do
     it 'does not register an offense when using `bind(obj).call(args, ...)`' do
       expect_no_offenses(<<~RUBY)
