@@ -59,12 +59,17 @@ module RuboCop
 
           add_offense(range) do |corrector|
             corrector.replace(map_node.loc.selector, 'filter_map')
-            remove_compact_method(corrector, map_node, node, node.parent)
+            remove_compact_method(corrector, map_node, node, chained_method(node))
           end
         end
         alias on_csend on_send
 
         private
+
+        def chained_method(compact_node)
+          parent = compact_node.parent
+          parent if parent&.call_type? && parent.receiver.equal?(compact_node)
+        end
 
         def remove_compact_method(corrector, map_node, compact_node, chained_method)
           compact_method_range = compact_node.loc.selector
