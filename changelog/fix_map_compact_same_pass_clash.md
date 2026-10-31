@@ -1,0 +1,1 @@
+* [#549](https://github.com/rubocop/rubocop-performance/pull/549): Fix an incorrect autocorrect for `Performance/MapCompact` when used together with `Style/SafeNavigation` or `Layout/SingleLineBlockChain`. ([@Starlexxx][])

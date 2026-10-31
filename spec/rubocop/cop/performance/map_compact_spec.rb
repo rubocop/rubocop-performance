@@ -1,6 +1,20 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Performance::MapCompact, :config do
+  describe '.autocorrect_incompatible_with' do
+    it 'declares `Style::SafeNavigation` as incompatible to avoid producing `end&`' do
+      incompatible = described_class.autocorrect_incompatible_with
+
+      expect(incompatible.include?(RuboCop::Cop::Style::SafeNavigation)).to be(true)
+    end
+
+    it 'declares `Layout::SingleLineBlockChain` as incompatible to avoid leaving a dangling line break' do
+      incompatible = described_class.autocorrect_incompatible_with
+
+      expect(incompatible.include?(RuboCop::Cop::Layout::SingleLineBlockChain)).to be(true)
+    end
+  end
+
   context 'when TargetRubyVersion >= 2.7', :ruby27 do
     it 'registers an offense when using `collection.map(&:do_something).compact`' do
       expect_offense(<<~RUBY)
@@ -217,6 +231,30 @@ RSpec.describe RuboCop::Cop::Performance::MapCompact, :config do
         collection.
           filter_map { |item| item.do_something }.
           first
+      RUBY
+    end
+
+    it 'registers an offense when using `map { ... }.compact` with `.compact` on its own line' do
+      expect_offense(<<~RUBY)
+        collection.map { |item| item.do_something }
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `filter_map` instead.
+          .compact
+      RUBY
+
+      expect_correction(<<~RUBY)
+        collection.filter_map { |item| item.do_something }
+      RUBY
+    end
+
+    it 'registers an offense when using `map { ... }.compact` with `.compact` on its own line before an argument' do
+      expect_offense(<<~RUBY)
+        do_something(collection.map { |item| item.do_something }
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `filter_map` instead.
+          .compact, arg)
+      RUBY
+
+      expect_correction(<<~RUBY)
+        do_something(collection.filter_map { |item| item.do_something }, arg)
       RUBY
     end
 

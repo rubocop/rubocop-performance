@@ -38,6 +38,10 @@ module RuboCop
 
         minimum_target_ruby_version 2.7
 
+        def self.autocorrect_incompatible_with
+          [Style::SafeNavigation, Layout::SingleLineBlockChain]
+        end
+
         def_node_matcher :map_compact, <<~PATTERN
           {
             (call
@@ -69,15 +73,26 @@ module RuboCop
         def remove_compact_method(corrector, map_node, compact_node, chained_method)
           compact_method_range = compact_node.loc.selector
 
-          if compact_node.multiline? && chained_method&.loc?(:selector) && use_dot?(chained_method) &&
-             !map_method_and_compact_method_on_same_line?(map_node, compact_node) &&
-             !invoke_method_after_map_compact_on_same_line?(compact_node, chained_method)
+          if chained_method_on_next_line?(map_node, compact_node, chained_method)
             compact_method_range = compact_method_with_final_newline_range(compact_method_range)
+          elsif compact_on_its_own_line?(compact_node)
+            compact_method_range = range_between(compact_node.receiver.source_range.end_pos,
+                                                 compact_method_range.end_pos)
           else
             corrector.remove(compact_node.loc.dot)
           end
 
           corrector.remove(compact_method_range)
+        end
+
+        def chained_method_on_next_line?(map_node, compact_node, chained_method)
+          compact_node.multiline? && chained_method&.loc?(:selector) && use_dot?(chained_method) &&
+            !map_method_and_compact_method_on_same_line?(map_node, compact_node) &&
+            !invoke_method_after_map_compact_on_same_line?(compact_node, chained_method)
+        end
+
+        def compact_on_its_own_line?(compact_node)
+          compact_node.loc.dot.line > compact_node.receiver.last_line
         end
 
         def use_dot?(node)
