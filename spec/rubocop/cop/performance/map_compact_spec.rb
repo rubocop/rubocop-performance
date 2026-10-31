@@ -90,6 +90,25 @@ RSpec.describe RuboCop::Cop::Performance::MapCompact, :config do
       RUBY
     end
 
+    it 'registers an offense when a multiline `map do ... end.compact` is an argument of a dotted call' do
+      expect_offense(<<~RUBY)
+        Set.new(
+          collection.map do |item|
+                     ^^^^^^^^^^^^^ Use `filter_map` instead.
+            item.do_something
+          end.compact
+        )
+      RUBY
+
+      expect_correction(<<~RUBY)
+        Set.new(
+          collection.filter_map do |item|
+            item.do_something
+          end
+        )
+      RUBY
+    end
+
     it 'registers an offense when using `map(&:do_something).compact.first` with single-line method calls' do
       expect_offense(<<~RUBY)
         collection.map(&:do_something).compact.first
