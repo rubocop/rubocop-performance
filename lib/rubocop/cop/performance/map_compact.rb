@@ -74,10 +74,19 @@ module RuboCop
              !invoke_method_after_map_compact_on_same_line?(compact_node, chained_method)
             compact_method_range = compact_method_with_final_newline_range(compact_method_range)
           else
-            corrector.remove(compact_node.loc.dot)
+            corrector.remove(dot_with_surrounding_whitespace_range(compact_node))
           end
 
           corrector.remove(compact_method_range)
+        end
+
+        # When `compact` is on its own line, the line break before it has to be removed too,
+        # or whatever follows `compact` on that line would be cut off from the expression.
+        def dot_with_surrounding_whitespace_range(compact_node)
+          dot = compact_node.loc.dot
+          range = range_between(compact_node.receiver.source_range.end_pos, compact_node.loc.selector.begin_pos)
+
+          range.source.strip == dot.source ? range : dot
         end
 
         def use_dot?(node)

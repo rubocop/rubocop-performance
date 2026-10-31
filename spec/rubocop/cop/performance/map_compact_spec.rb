@@ -275,6 +275,54 @@ RSpec.describe RuboCop::Cop::Performance::MapCompact, :config do
       RUBY
     end
 
+    it 'registers an offense when using a leading dot `.compact` on its own line followed by a modifier' do
+      expect_offense(<<~RUBY)
+        collection.map { |item| item.do_something }
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `filter_map` instead.
+          .compact if condition
+      RUBY
+
+      expect_correction(<<~RUBY)
+        collection.filter_map { |item| item.do_something } if condition
+      RUBY
+    end
+
+    it 'registers an offense when using a leading dot `.compact` on its own line followed by an operator' do
+      expect_offense(<<~RUBY)
+        collection.map { |item| item.do_something }
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `filter_map` instead.
+          .compact + other
+      RUBY
+
+      expect_correction(<<~RUBY)
+        collection.filter_map { |item| item.do_something } + other
+      RUBY
+    end
+
+    it 'registers an offense when using a trailing dot `compact` on its own line followed by a modifier' do
+      expect_offense(<<~RUBY)
+        collection.map { |item| item.do_something }.
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `filter_map` instead.
+          compact if condition
+      RUBY
+
+      expect_correction(<<~RUBY)
+        collection.filter_map { |item| item.do_something } if condition
+      RUBY
+    end
+
+    it 'registers an offense when using a leading dot `.compact` on its own line at the end of an expression' do
+      expect_offense(<<~RUBY)
+        values = collection.map(&:do_something)
+                            ^^^^^^^^^^^^^^^^^^^ Use `filter_map` instead.
+                   .compact
+      RUBY
+
+      expect_correction(<<~RUBY)
+        values = collection.filter_map(&:do_something)
+      RUBY
+    end
+
     it 'registers an offense when using multi-line `collection.map { ... }.compact` as a method argument' do
       expect_offense(<<~RUBY)
         do_something(

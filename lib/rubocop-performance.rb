@@ -20,3 +20,11 @@ RuboCop::Cop::Lint::UnusedMethodArgument.singleton_class.prepend(
 RuboCop::Cop::Naming::BlockForwarding.singleton_class.prepend(
   autocorrect_incompatible_with_block_given_with_explicit_block
 )
+
+autocorrect_incompatible_with_map_compact = Module.new do
+  def autocorrect_incompatible_with
+    super.push(RuboCop::Cop::Performance::MapCompact)
+  end
+end
+
+RuboCop::Cop::Layout::SingleLineBlockChain.singleton_class.prepend(autocorrect_incompatible_with_map_compact)
