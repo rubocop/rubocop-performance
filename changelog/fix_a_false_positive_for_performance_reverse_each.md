@@ -1,0 +1,1 @@
+* [#536](https://github.com/rubocop/rubocop-performance/issues/536): Fix a false positive for `Performance/ReverseEach` when the value of `reverse.each` is used, such as an implicit method return. ([@pcbeingused333][])

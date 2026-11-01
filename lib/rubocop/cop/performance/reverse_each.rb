@@ -46,9 +46,11 @@ module RuboCop
         private
 
         def use_return_value?(node)
-          !!node.ancestors.detect do |ancestor|
-            ancestor.assignment? || ancestor.send_type? || ancestor.return_type?
-          end
+          # `reverse.each` returns the reversed receiver while `reverse_each` returns the
+          # original one, so the rewrite is only safe when the value is thrown away. This
+          # covers assignments, method chains and explicit `return`, but also implicit
+          # method returns and any other value context the ancestor walk used to miss.
+          (node.block_node || node).value_used?
         end
 
         def offense_range(node)

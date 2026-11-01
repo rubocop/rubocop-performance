@@ -185,4 +185,41 @@ RSpec.describe RuboCop::Cop::Performance::ReverseEach, :config do
       return [1, 2, 3].reverse.each { |e| puts e }
     RUBY
   end
+
+  it 'does not register an offense when `reverse.each` is the implicit return value of a method' do
+    expect_no_offenses(<<~RUBY)
+      def process
+        [1, 2, 3].reverse.each { |e| puts e }
+      end
+    RUBY
+  end
+
+  it 'does not register an offense when `reverse.each` is the implicit return value after another statement' do
+    expect_no_offenses(<<~RUBY)
+      def process
+        log_start
+        [1, 2, 3].reverse.each { |e| puts e }
+      end
+    RUBY
+  end
+
+  it 'registers an offense when `reverse.each` is followed by another statement in a method' do
+    expect_offense(<<~RUBY)
+      def process
+        [1, 2, 3].reverse.each { |e| puts e }
+                  ^^^^^^^^^^^^ Use `reverse_each` instead of `reverse.each`.
+        log_done
+      end
+    RUBY
+  end
+
+  it 'does not register an offense when `reverse.each` is the used value of an `if` branch' do
+    expect_no_offenses(<<~RUBY)
+      def process(flag)
+        if flag
+          [1, 2, 3].reverse.each { |e| puts e }
+        end
+      end
+    RUBY
+  end
 end
