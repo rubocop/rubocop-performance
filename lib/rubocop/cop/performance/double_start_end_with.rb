@@ -10,6 +10,10 @@ module RuboCop
       # `IncludeActiveSupportAliases` configuration option is used to check for
       # `starts_with?` and `ends_with?`. These methods are defined by Active Support.
       #
+      # The receiver is only combined when it is pure (a local variable, an
+      # instance variable, a constant, ...), since the original code evaluates it
+      # twice and the replacement evaluates it once.
+      #
       # @example
       #   # bad
       #   str.start_with?("a") || str.start_with?(Some::CONST)
@@ -63,7 +67,9 @@ module RuboCop
         private
 
         def check(node, receiver, method, first_call_args, second_call_args)
-          return unless receiver && second_call_args.all?(&:pure?)
+          # The receiver is evaluated twice in the original code and once in the
+          # replacement, so combining the calls is only equivalent when it is pure.
+          return unless receiver&.pure? && second_call_args.all?(&:pure?)
 
           combined_args = combine_args(first_call_args, second_call_args)
 
