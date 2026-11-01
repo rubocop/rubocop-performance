@@ -71,6 +71,12 @@ Performance/ChainArrayAllocation:
   Enabled: false
   VersionAdded: '0.59'
 
+Performance/ChainedHashMerge:
+  Description: 'Identifies chained `merge` calls that can be replaced with a single multi-argument call.'
+  Enabled: pending
+  Safe: false
+  VersionAdded: '1.28'
+
 Performance/CollectionLiteralInLoop:
   Description: 'Extract Array and Hash literals outside of loops into local variables or constants.'
   Enabled: 'pending'
