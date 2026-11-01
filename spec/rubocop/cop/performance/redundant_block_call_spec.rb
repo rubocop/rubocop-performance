@@ -186,6 +186,29 @@ RSpec.describe RuboCop::Cop::Performance::RedundantBlockCall, :config do
     RUBY
   end
 
+  it 'accepts a block that is overridden by a block variable when a statement precedes the block' do
+    expect_no_offenses(<<~RUBY)
+      def method(&block)
+        do_setup
+        ->(i) { puts i }.then do |block|
+          block.call(1)
+        end
+      end
+    RUBY
+  end
+
+  it 'accepts a block that is overridden by a nested block variable' do
+    expect_no_offenses(<<~RUBY)
+      def method(&block)
+        [1, 2].each do |i|
+          [3, 4].each do |block|
+            block.call(i)
+          end
+        end
+      end
+    RUBY
+  end
+
   it 'registers and corrects an offense when an optional block that is not overridden by block variable' do
     expect_offense(<<~RUBY)
       def method(&block)
