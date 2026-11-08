@@ -63,4 +63,88 @@ RSpec.describe RuboCop::Cop::Performance::ConstantRegexp, :config do
       str.match?(/\#{CONST}\#{do_something(1)}/)
     RUBY
   end
+
+  it 'does not register an offense when regexp is used as a pattern in `case`/`in`' do
+    expect_no_offenses(<<~RUBY)
+      case string
+      in /\#{CONST}/
+        do_something
+      end
+    RUBY
+  end
+
+  it 'does not register an offense when regexp is used as a one-line `in` pattern' do
+    expect_no_offenses(<<~RUBY)
+      string in /\#{CONST}/
+    RUBY
+  end
+
+  context 'when Ruby 3.0 or higher', :ruby30 do
+    it 'does not register an offense when regexp is used as a rightward assignment pattern' do
+      expect_no_offenses(<<~RUBY)
+        string => /\#{CONST}/
+      RUBY
+    end
+  end
+
+  it 'does not register an offense when regexp is nested in an array pattern' do
+    expect_no_offenses(<<~RUBY)
+      case string
+      in [/\#{CONST}/, *]
+        do_something
+      end
+    RUBY
+  end
+
+  it 'does not register an offense when regexp is nested in a hash pattern' do
+    expect_no_offenses(<<~RUBY)
+      case string
+      in {key: /\#{CONST}/}
+        do_something
+      end
+    RUBY
+  end
+
+  it 'does not register an offense when regexp is nested in an alternative pattern' do
+    expect_no_offenses(<<~RUBY)
+      case string
+      in /\#{CONST}/ | String
+        do_something
+      end
+    RUBY
+  end
+
+  it 'registers an offense and corrects when regexp is used in an `in` pattern guard' do
+    expect_offense(<<~RUBY)
+      case string
+      in String if str.match?(/\#{CONST}/)
+                              ^^^^^^^^^^ Extract this regexp into a constant, memoize it, or append an `/o` option to its options.
+        do_something
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      case string
+      in String if str.match?(/\#{CONST}/o)
+        do_something
+      end
+    RUBY
+  end
+
+  it 'registers an offense and corrects when regexp is used in the body of an `in` branch' do
+    expect_offense(<<~RUBY)
+      case string
+      in String
+        str.match?(/\#{CONST}/)
+                   ^^^^^^^^^^ Extract this regexp into a constant, memoize it, or append an `/o` option to its options.
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      case string
+      in String
+        str.match?(/\#{CONST}/o)
+      end
+    RUBY
+  end
 end
