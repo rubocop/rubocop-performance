@@ -1,0 +1,1 @@
+* [#535](https://github.com/rubocop/rubocop-performance/issues/535): Fix `Performance/DoubleStartEndWith` to not combine `start_with?`/`end_with?` calls when the shared receiver is not pure, since that changes how often the receiver is evaluated. ([@pcbeingused333][])
