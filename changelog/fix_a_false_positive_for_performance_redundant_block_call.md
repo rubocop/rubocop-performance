@@ -1,0 +1,1 @@
+* [#534](https://github.com/rubocop/rubocop-performance/issues/534): Fix a false positive for `Performance/RedundantBlockCall` when a block argument is shadowed by a nested block and the method body is not itself a block. ([@pcbeingused333][])

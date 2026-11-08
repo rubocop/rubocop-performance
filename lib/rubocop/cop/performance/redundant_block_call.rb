@@ -91,9 +91,13 @@ module RuboCop
         end
 
         def shadowed_block_argument?(body, block_argument_of_method_signature)
-          return false unless body.block_type?
+          return false unless body
 
-          body.arguments.map(&:source).include?(block_argument_of_method_signature.to_s)
+          name = block_argument_of_method_signature.to_s
+
+          body.each_node(:block).any? do |block_node|
+            block_node.arguments.map(&:source).include?(name)
+          end
         end
 
         def args_include_block_pass?(blockcall)
