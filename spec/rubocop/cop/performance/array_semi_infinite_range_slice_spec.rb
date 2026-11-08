@@ -95,5 +95,17 @@ RSpec.describe RuboCop::Cop::Performance::ArraySemiInfiniteRangeSlice, :config d
         `str`[3..]
       RUBY
     end
+
+    it 'corrects chained slices without clobbering' do
+      expect_offense(<<~RUBY)
+        array.slice(1..).slice(2..)
+        ^^^^^^^^^^^^^^^^ Use `drop` instead of `slice` with semi-infinite range.
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `drop` instead of `slice` with semi-infinite range.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        array.drop(1).drop(2)
+      RUBY
+    end
   end
 end

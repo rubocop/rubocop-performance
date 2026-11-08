@@ -39,7 +39,7 @@ module RuboCop
         RESTRICT_ON_SEND = SLICE_METHODS
 
         def_node_matcher :endless_range_slice?, <<~PATTERN
-          (call $!any_str $%SLICE_METHODS $#endless_range?)
+          (call !any_str $%SLICE_METHODS $#endless_range?)
         PATTERN
 
         def_node_matcher :endless_range?, <<~PATTERN
@@ -50,12 +50,15 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          endless_range_slice?(node) do |receiver, method_name, range_node|
+          endless_range_slice?(node) do |method_name, range_node|
             prefer = range_node.begin ? :drop : :take
             message = format(MSG, prefer: prefer, current: method_name)
 
             add_offense(node, message: message) do |corrector|
-              corrector.replace(node, correction(receiver, range_node))
+              # Replace only the slice call (everything after the receiver), so chained slices such as
+              # `array.slice(1..).slice(2..)` do not produce overlapping corrections (Parser::ClobberingError).
+              range = node.receiver.source_range.end.join(node.source_range.end)
+              corrector.replace(range, ".#{correction(range_node)}")
             end
           end
         end
@@ -63,16 +66,14 @@ module RuboCop
 
         private
 
-        def correction(receiver, range_node)
-          method_call = if range_node.begin
-                          "drop(#{range_node.begin.value})"
-                        elsif range_node.irange_type?
-                          "take(#{range_node.end.value + 1})"
-                        else
-                          "take(#{range_node.end.value})"
-                        end
-
-          "#{receiver.source}.#{method_call}"
+        def correction(range_node)
+          if range_node.begin
+            "drop(#{range_node.begin.value})"
+          elsif range_node.irange_type?
+            "take(#{range_node.end.value + 1})"
+          else
+            "take(#{range_node.end.value})"
+          end
         end
       end
     end
