@@ -378,15 +378,25 @@ str.casecmp('ABC').zero?
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
 
 | Disabled
-| Yes
+| No
 | No
 | 0.59
-| -
+| <<next>>
 |===
 
 Identifies usages of `array.compact.flatten.map { |x| x.downcase }`.
 Each of these methods (`compact`, `flatten`, `map`) will generate a new intermediate array
 that is promptly thrown away. Instead it is faster to mutate when we know it's safe.
+
+[#safety-performancechainarrayallocation]
+=== Safety
+
+This cop is unsafe because it cannot determine whether a method returns
+a fresh, mutable array that is not retained elsewhere. An overridden
+method may return a shared or frozen array, even when its name matches
+an Array method. Mutating that result can change observable state or raise
+`FrozenError`. Verify ownership before applying the suggestion, and do
+not mutate the original receiver merely to avoid intermediate arrays.
 
 [#examples-performancechainarrayallocation]
 === Examples
@@ -397,12 +407,32 @@ that is promptly thrown away. Instead it is faster to mutate when we know it's s
 array = ["a", "b", "c"]
 array.compact.flatten.map { |x| x.downcase }
 
-# good
+# good - the standard Array#compact returns an unshared, mutable array here
 array = ["a", "b", "c"]
-array.compact!
+array = array.compact
 array.flatten!
 array.map! { |x| x.downcase }
 array
+----
+
+[#unsafe-when-an-overridden-method-retains-the-intermediate-array-performancechainarrayallocation]
+==== Unsafe when an overridden method retains the intermediate array
+
+[source,ruby]
+----
+class RetainingArray < Array
+  attr_reader :unique
+
+  def uniq
+    @unique = super
+  end
+end
+
+values = RetainingArray.new([1, 1, 2])
+values.uniq.map { |n| n * 2 }
+values.unique # => [1, 2]
+values.uniq.map! { |n| n * 2 }
+values.unique # => [2, 4]
 ----
 
 [#performancecollectionliteralinloop]

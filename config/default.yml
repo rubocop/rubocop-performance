@@ -69,7 +69,9 @@ Performance/ChainArrayAllocation:
                   Instead of chaining array methods that allocate new arrays, mutate an
                   existing array.
   Enabled: false
+  Safe: false
   VersionAdded: '0.59'
+  VersionChanged: '<<next>>'
 
 Performance/CollectionLiteralInLoop:
   Description: 'Extract Array and Hash literals outside of loops into local variables or constants.'
