@@ -5,6 +5,12 @@ module RuboCop
     module Performance
       # Checks for redundant `String#chars`.
       #
+      # @safety
+      #   This cop is unsafe because a String subclass can override the methods
+      #   that replace `chars`. For example, `ActiveSupport::SafeBuffer#[]` returns
+      #   another SafeBuffer, while `chars.first` returns a plain String. This can
+      #   change the HTML-safety of the result.
+      #
       # @example
       #   # bad
       #   str.chars[0..2]
@@ -12,7 +18,7 @@ module RuboCop
       #   str.chars.last
       #
       #   # good
-      #   str[0..2].chars
+      #   str[0..2]&.chars
       #
       #   # bad
       #   str.chars.first
@@ -20,7 +26,7 @@ module RuboCop
       #
       #   # good
       #   str[0]
-      #   str[0...2].chars
+      #   str[0, 2].chars
       #   str[-1]
       #
       #   # bad
@@ -30,7 +36,7 @@ module RuboCop
       #   str.chars.empty?
       #
       #   # good
-      #   str[0...2].chars
+      #   str[0, 2].chars
       #   str.length
       #   str.size
       #   str.empty?
@@ -53,8 +59,7 @@ module RuboCop
 
         def on_send(node)
           return unless (receiver, method, args = redundant_chars_call?(node))
-          return if method == :last && !args.empty?
-          return if args.count == 2
+          return unless compatible_arguments?(method, args)
 
           range = offense_range(receiver, node)
           message = build_message(method, args)
@@ -68,6 +73,19 @@ module RuboCop
         end
 
         private
+
+        def compatible_arguments?(method, args)
+          return false if args.count > 1
+
+          case method
+          when :[], :slice
+            args.first&.type?(:int, :range)
+          when :first, :take
+            args.empty? ? method == :first : args.first.int_type? && !args.first.value.negative?
+          else
+            args.empty?
+          end
+        end
 
         def offense_range(receiver, node)
           range_between(receiver.loc.selector.begin_pos, node.source_range.end_pos)
@@ -85,14 +103,12 @@ module RuboCop
 
         def build_good_method(method, args)
           case method
-          when :slice
-            "[#{build_call_args(args)}].chars"
-          when :[], :first
+          when :[], :slice, :first
             build_good_method_for_brackets_or_first_method(method, args)
           when :last
             '[-1]'
           when :take
-            "[0...#{args.first.source}].chars"
+            "[0, #{args.first.source}].chars"
           else
             ".#{method}"
           end
@@ -102,9 +118,9 @@ module RuboCop
           first_arg = args.first
 
           if first_arg&.range_type?
-            "[#{build_call_args(args)}].chars"
+            "[#{build_call_args(args)}]&.chars"
           elsif method == :first && args.any?
-            "[0...#{args.first.source}].chars"
+            "[0, #{args.first.source}].chars"
           else
             first_arg ? "[#{first_arg.source}]" : '[0]'
           end
