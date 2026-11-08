@@ -72,6 +72,17 @@ RSpec.describe 'RuboCop::CLI --autocorrect', :isolated_environment do # rubocop:
     RUBY
   end
 
+  it 'corrects `Performance/MapCompact` with `Layout/SingleLineBlockChain`' do
+    source = <<~RUBY
+      values = collection.map { |item| item.do_something }.compact if condition
+    RUBY
+    create_file('example.rb', source)
+    expect(cli.run(['--autocorrect-all', '--only', 'Performance/MapCompact,Layout/SingleLineBlockChain'])).to eq(0)
+    expect(File.read('example.rb')).to eq(<<~RUBY)
+      values = collection.filter_map { |item| item.do_something } if condition
+    RUBY
+  end
+
   private
 
   def create_file(file_path, content)
