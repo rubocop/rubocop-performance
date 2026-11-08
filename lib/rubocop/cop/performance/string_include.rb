@@ -36,8 +36,9 @@ module RuboCop
         # rubocop:disable-next Metrics/AbcSize
         def on_send(node)
           return unless (receiver, regex_str = redundant_regex?(node))
+          return if match_result_used?(node)
 
-          negation = node.send_type? && node.method?(:!~)
+          negation = negation?(node)
           message = format(MSG, negation: ('!' if negation))
 
           add_offense(node, message: message) do |corrector|
@@ -54,6 +55,17 @@ module RuboCop
         alias on_match_with_lvasgn on_send
 
         private
+
+        # `match` returns `MatchData`, so a call on its result is not a predicate.
+        def match_result_used?(node)
+          return false unless node.call_type? && node.method?(:match)
+
+          node.parent&.call_type? && node.parent.receiver == node
+        end
+
+        def negation?(node)
+          node.send_type? && node.method?(:!~)
+        end
 
         def literal?(regex_str)
           regex_str.match?(/\A#{Util::LITERAL_REGEX}+\z/o)

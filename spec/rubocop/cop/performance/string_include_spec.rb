@@ -174,6 +174,14 @@ RSpec.describe RuboCop::Cop::Performance::StringInclude, :config do
     expect_no_offenses('expect(subject.spin).to match(/\A\n/)')
   end
 
+  it 'does not register an offense when a method is called on the result of `match`' do
+    expect_no_offenses(<<~RUBY)
+      str.match(/abc/).to_s
+      str.match(/abc/)&.to_s
+      /abc/.match(str)[0]
+    RUBY
+  end
+
   it 'registers an offense and corrects when argument of `match?` is not a string literal' do
     expect_offense(<<~RUBY)
       / /.match?(content)
