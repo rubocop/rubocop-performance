@@ -337,17 +337,30 @@ end
 Identifies places where a case-insensitive string comparison
 can better be implemented using `casecmp`.
 
-This cop is disabled by default because `String#casecmp` only works with
-ASCII characters. See https://github.com/rubocop/rubocop/issues/9753.
+This cop is disabled by default because `String#casecmp` only folds
+ASCII letters. See https://github.com/rubocop/rubocop/issues/9753.
 
-If you are working only with ASCII characters, then this cop can be
-safely enabled.
+Only consider enabling this cop for ASCII strings. Literals must already
+be in the case produced by the original conversion, and comparisons
+between converted strings must use the same conversion on both sides.
 
 [#safety-performancecasecmp]
 === Safety
 
-This cop is unsafe because `String#casecmp` and `String#casecmp?` behave
-differently when using Non-ASCII characters.
+This cop is unsafe because `String#casecmp` does not perform the same
+Unicode case conversion as `String#downcase` or `String#upcase`.
+For example, `'Ä'.downcase == 'ä'` is true, but
+`'Ä'.casecmp('ä').zero?` is false.
+
+An ASCII literal does not guarantee equivalence: `'ß'.upcase == 'SS'`
+is true, but `'ß'.casecmp('SS').zero?` is false.
+
+Replacing `casecmp` with `casecmp?` is not an equivalent workaround:
+`casecmp?` uses Unicode case folding, so `'ß'.casecmp?('ss')` is true,
+while `'ß'.downcase == 'ss'` is false.
+
+ASCII inputs also need review when a literal is not normalized:
+`'a'.downcase == 'A'` is false, but `'a'.casecmp('A').zero?` is true.
 
 [#examples-performancecasecmp]
 === Examples

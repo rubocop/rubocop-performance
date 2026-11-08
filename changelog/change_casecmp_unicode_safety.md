@@ -1,0 +1,1 @@
+* [#100](https://github.com/rubocop/rubocop-performance/issues/100): Clarify the Unicode differences between case conversion, `casecmp`, and `casecmp?` in the safety documentation for `Performance/Casecmp`. ([@thomasklemm][])
