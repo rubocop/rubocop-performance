@@ -499,4 +499,30 @@ RSpec.describe RuboCop::Cop::Performance::Sum, :config do
       end
     end
   end
+
+  context 'when using numbered parameter', :ruby27 do
+    it 'registers an offense and corrects when using `map...sum`' do
+      expect_offense(<<~RUBY)
+        array.map { _1.size }.sum
+              ^^^^^^^^^^^^^^^^^^^ Use `sum { ... }` instead of `map { ... }.sum`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        array.sum { _1.size }
+      RUBY
+    end
+  end
+
+  context 'when using `it` parameter', :ruby34, unsupported_on: :parser do
+    it 'registers an offense and corrects when using `map...sum`' do
+      expect_offense(<<~RUBY)
+        array.map { it.size }.sum
+              ^^^^^^^^^^^^^^^^^^^ Use `sum { ... }` instead of `map { ... }.sum`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        array.sum { it.size }
+      RUBY
+    end
+  end
 end

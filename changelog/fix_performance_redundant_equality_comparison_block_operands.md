@@ -1,0 +1,1 @@
+* [#547](https://github.com/rubocop/rubocop-performance/pull/547): Fix an incorrect autocorrect for `Performance/RedundantEqualityComparisonBlock` when the block argument is used in the other operand, such as `all? { |s| s == s.strip }`, and an error when the comparison has no receiver or no argument. ([@jnstq][])

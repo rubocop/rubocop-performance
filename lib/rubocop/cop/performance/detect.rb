@@ -40,8 +40,8 @@ module RuboCop
 
         def_node_matcher :detect_candidate?, <<~PATTERN
           {
-            (send $(block (call _ %CANDIDATE_METHODS) ...) ${:first :last} $...)
-            (send $(block (send _ %CANDIDATE_METHODS) ...) $:[] (int ${0 -1}))
+            (send $(any_block (call _ %CANDIDATE_METHODS) ...) ${:first :last} $...)
+            (send $(any_block (send _ %CANDIDATE_METHODS) ...) $:[] (int ${0 -1}))
             (send $(call _ %CANDIDATE_METHODS ...) ${:first :last} $...)
             (send $(send _ %CANDIDATE_METHODS ...) $:[] (int ${0 -1}))
           }
@@ -57,7 +57,7 @@ module RuboCop
             return unless args.empty?
             return unless receiver
 
-            receiver, _args, body = *receiver if receiver.block_type?
+            receiver, _args, body = *receiver if receiver.any_block_type?
             return if accept_first_call?(receiver, body)
 
             register_offense(node, receiver, second_method, index)
@@ -104,7 +104,7 @@ module RuboCop
 
           first_range = receiver.source_range.end.join(node.loc.selector)
 
-          receiver, _args, _body = *receiver if receiver.block_type?
+          receiver, _args, _body = *receiver if receiver.any_block_type?
 
           corrector.remove(first_range)
           corrector.replace(receiver.loc.selector, replacement)

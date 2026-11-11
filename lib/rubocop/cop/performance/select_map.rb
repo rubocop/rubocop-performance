@@ -29,7 +29,7 @@ module RuboCop
           return unless (send_node = map_method_candidate(node))
           return unless send_node.method?(:map)
 
-          map_method = send_node.parent&.block_type? ? send_node.parent : send_node
+          map_method = send_node.block_node || send_node
 
           range = offense_range(node, map_method)
           add_offense(range, message: format(MSG, method_name: node.method_name))
@@ -39,13 +39,10 @@ module RuboCop
         private
 
         def map_method_candidate(node)
-          return unless (parent = node.parent)
+          receiver = node.block_node || node
+          return unless (parent = receiver.parent)&.call_type?
 
-          if parent.block_type? && parent.parent&.call_type?
-            parent.parent
-          elsif parent.call_type?
-            parent
-          end
+          parent if parent.receiver.equal?(receiver)
         end
 
         def offense_range(node, map_method)

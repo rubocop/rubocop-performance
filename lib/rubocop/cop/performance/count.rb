@@ -54,7 +54,7 @@ module RuboCop
 
         def_node_matcher :count_candidate?, <<~PATTERN
           {
-            (call (block $(call _ ${:select :filter :find_all :reject}) ...) ${:count :length :size})
+            (call (any_block $(call _ ${:select :filter :find_all :reject}) ...) ${:count :length :size})
             (call $(call _ ${:select :filter :find_all :reject} (:block_pass _)) ${:count :length :size})
           }
         PATTERN
@@ -87,7 +87,7 @@ module RuboCop
         end
 
         def eligible_node?(node)
-          return false if node.parent&.block_type?
+          return false if node.block_literal?
 
           node.receiver.call_type? || node.receiver.body
         end

@@ -63,7 +63,7 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          return if node.parent&.block_type? || !count?(node)
+          return if node.block_literal? || !count?(node)
 
           add_offense(node.loc.selector) do |corrector|
             corrector.replace(node.loc.selector, 'size')

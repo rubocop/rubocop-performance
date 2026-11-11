@@ -78,13 +78,13 @@ module RuboCop
         RESTRICT_ON_SEND = ARRAY_METHODS + HASH_METHODS
 
         def_node_matcher :kernel_loop?, <<~PATTERN
-          (block
+          (any_block
             (send {nil? (const nil? :Kernel)} :loop)
             ...)
         PATTERN
 
         def_node_matcher :enumerable_loop?, <<~PATTERN
-          (block
+          (any_block
             (send $_ #enumerable_method? ...)
             ...)
         PATTERN
